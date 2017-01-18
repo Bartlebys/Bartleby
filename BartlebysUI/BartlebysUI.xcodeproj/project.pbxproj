@@ -21,6 +21,11 @@
 		E55FF9971E1564D600EE3393 /* SetupCollaborativeServerViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = E55FF9951E1564D600EE3393 /* SetupCollaborativeServerViewController.xib */; };
 		E55FF99A1E15667800EE3393 /* ConfirmActivationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E55FF9981E15667800EE3393 /* ConfirmActivationViewController.swift */; };
 		E55FF99B1E15667800EE3393 /* ConfirmActivationViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = E55FF9991E15667800EE3393 /* ConfirmActivationViewController.xib */; };
+		E5717E621E2F6B7C00850303 /* ConfirmPasswordActivationCode.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5717E5D1E2F6B7C00850303 /* ConfirmPasswordActivationCode.swift */; };
+		E5717E631E2F6B7C00850303 /* ConfirmPasswordActivationCode.xib in Resources */ = {isa = PBXBuildFile; fileRef = E5717E5E1E2F6B7C00850303 /* ConfirmPasswordActivationCode.xib */; };
+		E5717E651E2F6B7C00850303 /* RecoverSugarViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5717E601E2F6B7C00850303 /* RecoverSugarViewController.swift */; };
+		E5717E661E2F6B7C00850303 /* RecoverSugarViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = E5717E611E2F6B7C00850303 /* RecoverSugarViewController.xib */; };
+		E5717E681E2F6B9500850303 /* Media.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = E5717E671E2F6B9500850303 /* Media.xcassets */; };
 		E59AABA31E1A889B00BE4BF1 /* IdentityStepViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E59AABA21E1A889B00BE4BF1 /* IdentityStepViewController.swift */; };
 		E59AABA61E1A937F00BE4BF1 /* RevealPasswordViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E59AABA41E1A937F00BE4BF1 /* RevealPasswordViewController.swift */; };
 		E59AABA71E1A937F00BE4BF1 /* RevealPasswordViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = E59AABA51E1A937F00BE4BF1 /* RevealPasswordViewController.xib */; };
@@ -45,6 +50,11 @@
 		E55FF9951E1564D600EE3393 /* SetupCollaborativeServerViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SetupCollaborativeServerViewController.xib; sourceTree = "<group>"; };
 		E55FF9981E15667800EE3393 /* ConfirmActivationViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ConfirmActivationViewController.swift; sourceTree = "<group>"; };
 		E55FF9991E15667800EE3393 /* ConfirmActivationViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ConfirmActivationViewController.xib; sourceTree = "<group>"; };
+		E5717E5D1E2F6B7C00850303 /* ConfirmPasswordActivationCode.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ConfirmPasswordActivationCode.swift; sourceTree = "<group>"; };
+		E5717E5E1E2F6B7C00850303 /* ConfirmPasswordActivationCode.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ConfirmPasswordActivationCode.xib; sourceTree = "<group>"; };
+		E5717E601E2F6B7C00850303 /* RecoverSugarViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RecoverSugarViewController.swift; sourceTree = "<group>"; };
+		E5717E611E2F6B7C00850303 /* RecoverSugarViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = RecoverSugarViewController.xib; sourceTree = "<group>"; };
+		E5717E671E2F6B9500850303 /* Media.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Media.xcassets; sourceTree = "<group>"; };
 		E59AABA21E1A889B00BE4BF1 /* IdentityStepViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IdentityStepViewController.swift; sourceTree = "<group>"; };
 		E59AABA41E1A937F00BE4BF1 /* RevealPasswordViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RevealPasswordViewController.swift; sourceTree = "<group>"; };
 		E59AABA51E1A937F00BE4BF1 /* RevealPasswordViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = RevealPasswordViewController.xib; sourceTree = "<group>"; };
@@ -105,6 +115,10 @@
 		E5FAC5221DF95B1C00398C95 /* BartlebysUI */ = {
 			isa = PBXGroup;
 			children = (
+				E5717E5D1E2F6B7C00850303 /* ConfirmPasswordActivationCode.swift */,
+				E5717E5E1E2F6B7C00850303 /* ConfirmPasswordActivationCode.xib */,
+				E5717E601E2F6B7C00850303 /* RecoverSugarViewController.swift */,
+				E5717E611E2F6B7C00850303 /* RecoverSugarViewController.xib */,
 				E55FF9821E155F5900EE3393 /* IdentityWindowController.swift */,
 				E55FF9831E155F5900EE3393 /* IdentityWindowController.xib */,
 				E55FF9861E155FF300EE3393 /* UpdatePasswordViewController.swift */,
@@ -121,6 +135,7 @@
 				E59AABA51E1A937F00BE4BF1 /* RevealPasswordViewController.xib */,
 				E59AABA21E1A889B00BE4BF1 /* IdentityStepViewController.swift */,
 				E53F0B561DF95D80003301DD /* DropView.swift */,
+				E5717E671E2F6B9500850303 /* Media.xcassets */,
 				E53F0B611DF95EBE003301DD /* supportFiles */,
 			);
 			path = BartlebysUI;
@@ -198,8 +213,11 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E5717E681E2F6B9500850303 /* Media.xcassets in Resources */,
+				E5717E631E2F6B7C00850303 /* ConfirmPasswordActivationCode.xib in Resources */,
 				E59AABA71E1A937F00BE4BF1 /* RevealPasswordViewController.xib in Resources */,
 				E55FF9891E155FF300EE3393 /* UpdatePasswordViewController.xib in Resources */,
+				E5717E661E2F6B7C00850303 /* RecoverSugarViewController.xib in Resources */,
 				E55FF9851E155F5900EE3393 /* IdentityWindowController.xib in Resources */,
 				E55FF9971E1564D600EE3393 /* SetupCollaborativeServerViewController.xib in Resources */,
 				E55FF98D1E1562E000EE3393 /* PrepareUserCreationViewController.xib in Resources */,
@@ -215,6 +233,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E5717E621E2F6B7C00850303 /* ConfirmPasswordActivationCode.swift in Sources */,
 				E59AABA31E1A889B00BE4BF1 /* IdentityStepViewController.swift in Sources */,
 				E59AABA61E1A937F00BE4BF1 /* RevealPasswordViewController.swift in Sources */,
 				E55FF98C1E1562E000EE3393 /* PrepareUserCreationViewController.swift in Sources */,
@@ -224,6 +243,7 @@
 				E55FF9841E155F5900EE3393 /* IdentityWindowController.swift in Sources */,
 				E55FF9901E15637F00EE3393 /* ValidatePasswordViewController.swift in Sources */,
 				E55FF9881E155FF300EE3393 /* UpdatePasswordViewController.swift in Sources */,
+				E5717E651E2F6B7C00850303 /* RecoverSugarViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

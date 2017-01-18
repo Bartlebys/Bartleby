@@ -100,27 +100,13 @@ class ValidatePasswordViewController: IdentityStepViewController{
                                 /// GetActivationCode(for :lockerUID)
                                 /// -> Will verify the user ID and use the found user PhoneNumber to send the activation code.
 
-
-                                GetActivationCode.execute(baseURL: document.baseURL, documentUID: document.UID, lockerUID: lockerUID,
+                                GetActivationCode.execute(baseURL: document.baseURL,
+                                                          documentUID: document.UID,
+                                                          lockerUID: lockerUID,
                                                           title: "",
                                                           body: NSLocalizedString("Your activation code is: \n$code", comment: "Your activation code is"),
                                                           sucessHandler: { (context) in
-
-
-                                                            /// Go to activation screen.
-
-                                                            /// On activation if necessary set user.status = .actived
-
-                                                            /// On activation Proceed to Verify Locker
-                                                            /// When the locker is verifyed use the sugar to retrieve the Collections and blocks data
-
-
-                                                            self.identityWindowController?.identificationIsValid=true
-                                                            self.stepDelegate?.didValidateStep(number: self.stepIndex)
-
-
-                                                            
-
+                                                            self.identityWindowController?.activationMode=true
                                 }, failureHandler: { (context) in
                                     self.messageTextField.stringValue=NSLocalizedString("We are unable to activate this account", comment: "We are unable to activate this account")
 

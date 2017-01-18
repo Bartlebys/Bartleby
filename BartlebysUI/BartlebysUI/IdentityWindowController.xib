@@ -11,6 +11,7 @@
                 <outlet property="confirmActivation" destination="uEZ-ba-9Iq" id="jdK-5O-Kic"/>
                 <outlet property="leftButton" destination="fDC-hP-g9s" id="Qju-DJ-VpW"/>
                 <outlet property="prepareUserCreation" destination="DaE-jK-97s" id="i0n-BR-2lC"/>
+                <outlet property="recoverSugar" destination="Viv-WP-Y5M" id="VVh-Qc-nbB"/>
                 <outlet property="revealPassword" destination="BhJ-PB-9OU" id="7kA-Cz-wDH"/>
                 <outlet property="rightButton" destination="uUc-Qk-CbG" id="PzL-bL-bJP"/>
                 <outlet property="setUpCollaborativeServer" destination="dNR-CV-jVC" id="Cks-GK-DLS"/>
@@ -32,7 +33,7 @@
             <windowStyleMask key="styleMask" titled="YES"/>
             <windowPositionMask key="initialPositionMask" leftStrut="YES" rightStrut="YES" topStrut="YES" bottomStrut="YES"/>
             <rect key="contentRect" x="196" y="240" width="500" height="270"/>
-            <rect key="screenRect" x="0.0" y="0.0" width="1680" height="1028"/>
+            <rect key="screenRect" x="0.0" y="0.0" width="2560" height="1578"/>
             <view key="contentView" wantsLayer="YES" focusRingType="none" id="se5-gp-TjO">
                 <rect key="frame" x="0.0" y="0.0" width="500" height="270"/>
                 <autoresizingMask key="autoresizingMask"/>
@@ -76,5 +77,6 @@
                 <outlet property="delegate" destination="-2" id="0bl-1N-AYu"/>
             </connections>
         </window>
+        <viewController id="Viv-WP-Y5M" customClass="RecoverSugarViewController" customModule="BartlebysUI" customModuleProvider="target"/>
     </objects>
 </document>

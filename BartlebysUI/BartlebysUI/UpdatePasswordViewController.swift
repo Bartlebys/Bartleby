@@ -11,12 +11,17 @@ import BartlebyKit
 
 class UpdatePasswordViewController: IdentityStepViewController{
 
+    override var nibName : String { return "UpdatePasswordViewController" }
+
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do view setup here.
     }
 
     override func proceedToValidation(){
+        // use
+        self.identityWindowController?.passwordCandidate
+        self.identityWindowController?.passwordResetCode
         super.proceedToValidation()
     }
 

@@ -58,16 +58,30 @@ public class IdentityWindowController: NSWindowController,DocumentProvider,Ident
         return self.document as? BartlebyDocument
     }
 
-
+    // Document creation
     public var creationMode=false
 
-    public var identification:Identification?
+    // Set to true when the key is not available in the local bowl
+    public var activationMode=false{
+        didSet{
+            if activationMode==true{
+                self.recoverTheKey()
+            }
+        }
+    }
 
-    public var reuseCredentials=false
+    public var identification:Identification?
 
     public var identificationIsValid=false
 
     public var identificationDelegate:IdentifactionDelegate?
+
+
+    // MARK: - Update Password
+
+    public var passwordCandidate:String=""
+
+    public var passwordResetCode:String=""
 
     // MARK: - Outlets
 
@@ -82,6 +96,8 @@ public class IdentityWindowController: NSWindowController,DocumentProvider,Ident
     @IBOutlet var validatePassword: ValidatePasswordViewController!
 
     @IBOutlet var updatePassword: UpdatePasswordViewController!
+
+    @IBOutlet var recoverSugar: RecoverSugarViewController!
 
     @IBOutlet weak var tabView: NSTabView!
 
@@ -232,8 +248,6 @@ public class IdentityWindowController: NSWindowController,DocumentProvider,Ident
                         // Mark as committed to prevent from re-upserting
                         document.currentUser.hasBeenCommitted()
                     }
-
-
                 }
             }
             if number == 3 {}
@@ -263,12 +277,52 @@ public class IdentityWindowController: NSWindowController,DocumentProvider,Ident
         self.rightButton.isEnabled=true
     }
     
-    
-    public func resetMyPassword(){
-        //
+
+    /// MARK: Activation 
+
+    public func recoverTheKey(){
+        /// Go to activation screen.
+        let recoverSugarItem=NSTabViewItem(viewController:self.recoverSugar)
+        self.recoverSugar.documentProvider=self
+        self.recoverSugar.stepDelegate=self
+        self.recoverSugar.stepIndex=1
+        self.tabView.addTabViewItem(recoverSugarItem)
+        self.currentStep=1
     }
-    
-    
+
+
+    /// MARK: Password Reset procedure
+
+
+    public func resetMyPassword(){
+        let updatePasswordItem=NSTabViewItem(viewController:self.updatePassword)
+        self.updatePassword.documentProvider=self
+        self.updatePassword.stepDelegate=self
+        self.updatePassword.stepIndex=1
+        self.tabView.addTabViewItem(updatePasswordItem)
+        self.currentStep=1
+
+        /// + CONFIRMATION ?  ConfirmPassword...
+        ///
+
+        /// IL Est POSSIBLE QUE NOUS N'AYONS PAS LE DROIT DE LE FAIRE
+        /// PREVOIR L IMPOSSIBILITE ( pas de bouton reset sur certains doc?)
+
+        ///
+
+
+    }
+
+    /// APPELER password has been changed après le changement
+    public func passwordHasBeenChanged(){
+        self.currentStep=0
+        let u=self.tabView.tabViewItem(at: 1)
+        let c=self.tabView.tabViewItem(at: 2)
+        self.tabView.removeTabViewItem(u)
+        self.tabView.removeTabViewItem(c)
+    }
+
+
 }
 
 

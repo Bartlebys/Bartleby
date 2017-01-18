@@ -88,6 +88,8 @@ class SetupCollaborativeServerViewController: IdentityStepViewController{
                             // Let's login
                             user.login(sucessHandler: {
                                 let locker:Locker=document.newObject(commit:false)
+                                locker.startDate=Date()// now
+                                locker.endDate=Date.distantFuture//
                                 locker.doNotCommit {
                                     locker.gems=document.metadata.sugar
                                     locker.associatedDocumentUID=document.UID
