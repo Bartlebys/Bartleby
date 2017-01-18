@@ -131,12 +131,30 @@ import Foundation
 	//set to true on the first successfull login in the session (this property is not serialized)
 	dynamic open var loginHasSucceed:Bool = false
 
+	//Can a user update its own password
+	dynamic open var supportsPasswordUpdate:Bool = true  {
+	    didSet { 
+	       if !self.wantsQuietChanges && supportsPasswordUpdate != oldValue {
+	            self.provisionChanges(forKey: "supportsPasswordUpdate",oldValue: oldValue,newValue: supportsPasswordUpdate)  
+	       } 
+	    }
+	}
+
+	//If a local user has the same credentials can its password be syndicated
+	dynamic open var supportsPasswordSyndication:Bool = true  {
+	    didSet { 
+	       if !self.wantsQuietChanges && supportsPasswordSyndication != oldValue {
+	            self.provisionChanges(forKey: "supportsPasswordSyndication",oldValue: oldValue,newValue: supportsPasswordSyndication)  
+	       } 
+	    }
+	}
+
     // MARK: - Exposed (Bartleby's KVC like generative implementation)
 
     /// Return all the exposed instance variables keys. (Exposed == public and modifiable).
     override open var exposedKeys:[String] {
         var exposed=super.exposedKeys
-        exposed.append(contentsOf:["spaceUID","verificationMethod","localAssociationID","firstname","lastname","email","phoneCountryCode","phoneNumber","password","status","notes","loginHasSucceed"])
+        exposed.append(contentsOf:["spaceUID","verificationMethod","localAssociationID","firstname","lastname","email","phoneCountryCode","phoneNumber","password","status","notes","loginHasSucceed","supportsPasswordUpdate","supportsPasswordSyndication"])
         return exposed
     }
 
@@ -197,6 +215,14 @@ import Foundation
                 if let casted=value as? Bool{
                     self.loginHasSucceed=casted
                 }
+            case "supportsPasswordUpdate":
+                if let casted=value as? Bool{
+                    self.supportsPasswordUpdate=casted
+                }
+            case "supportsPasswordSyndication":
+                if let casted=value as? Bool{
+                    self.supportsPasswordSyndication=casted
+                }
             default:
                 return try super.setExposedValue(value, forKey: key)
         }
@@ -236,6 +262,10 @@ import Foundation
                return self.notes
             case "loginHasSucceed":
                return self.loginHasSucceed
+            case "supportsPasswordUpdate":
+               return self.supportsPasswordUpdate
+            case "supportsPasswordSyndication":
+               return self.supportsPasswordSyndication
             default:
                 return try super.getExposedValueForKey(key)
         }
@@ -260,6 +290,8 @@ import Foundation
 			self.password <- ( map["password"], CryptedStringTransform() )
 			self.status <- ( map["status"] )
 			self.notes <- ( map["notes"] )
+			self.supportsPasswordUpdate <- ( map["supportsPasswordUpdate"] )
+			self.supportsPasswordSyndication <- ( map["supportsPasswordSyndication"] )
         }
     }
 
@@ -280,6 +312,8 @@ import Foundation
 			self.password=String(describing: decoder.decodeObject(of: NSString.self, forKey:"password") as NSString?)
 			self.status=User.Status(rawValue:String(describing: decoder.decodeObject(of: NSString.self, forKey: "status")! as NSString))! 
 			self.notes=String(describing: decoder.decodeObject(of: NSString.self, forKey:"notes") as NSString?)
+			self.supportsPasswordUpdate=decoder.decodeBool(forKey:"supportsPasswordUpdate") 
+			self.supportsPasswordSyndication=decoder.decodeBool(forKey:"supportsPasswordSyndication") 
         }
     }
 
@@ -306,6 +340,8 @@ import Foundation
 		if let notes = self.notes {
 			coder.encode(notes,forKey:"notes")
 		}
+		coder.encode(self.supportsPasswordUpdate,forKey:"supportsPasswordUpdate")
+		coder.encode(self.supportsPasswordSyndication,forKey:"supportsPasswordSyndication")
     }
 
     override open class var supportsSecureCoding:Bool{
