@@ -88,7 +88,7 @@ extension BartlebyDocument{
             } else {
                 // ERROR
             }
-            try self.loadCollectionData(from:fileWrappers)
+            try self._loadCollectionData(from:fileWrappers)
 
             Async.main{
                 self.documentDidLoad()
@@ -99,8 +99,14 @@ extension BartlebyDocument{
     }
 
 
+    open func reload()throws{
+        if let fileWrappers=self.documentFileWrapper.fileWrappers {
+            try self._loadCollectionData(from: fileWrappers)
+        }
+    }
 
-    open func loadCollectionData(from fileWrappers: [String : FileWrapper])throws{
+
+    fileprivate func _loadCollectionData(from fileWrappers: [String : FileWrapper])throws{
 
         // We load the data if the sugar is defined
         if self.metadata.sugar != Default.NO_UID{

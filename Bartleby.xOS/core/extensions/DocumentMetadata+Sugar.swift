@@ -45,6 +45,12 @@ public extension DocumentMetadata{
         try cryptedSugar.write(toFile: self._bowlPath+"/"+self.persistentUID, atomically: true, encoding: String.Encoding.utf8)
     }
 
+    /// Tries to put the sugar in the Bowl
+    public func putSomeSugarInYourBowl() throws{
+        let cryptedSugar = try Bartleby.cryptoDelegate.encryptString(self.sugar, useKey: Bartleby.configuration.KEY)
+        try cryptedSugar.write(toFile: self._bowlPath+"/"+self.persistentUID, atomically: true, encoding: String.Encoding.utf8)
+    }
+
 
     // The sugar path
     fileprivate var _bowlPath:String{
