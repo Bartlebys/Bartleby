@@ -13,16 +13,33 @@ class UpdatePasswordViewController: IdentityStepViewController{
 
     override var nibName : String { return "UpdatePasswordViewController" }
 
+    @IBOutlet weak var passwordTextField: NSTextField!
+
+    @IBOutlet weak var refreshButton: NSButton!
+
+    @IBOutlet weak var messageTextField: NSTextField!
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do view setup here.
     }
 
-    override func proceedToValidation(){
-        // use
-        self.identityWindowController?.passwordCandidate
-        self.identityWindowController?.passwordResetCode
-        super.proceedToValidation()
+    override func viewWillAppear() {
+        super.viewWillAppear()
+        self.refresh(self)
     }
+
+
+    @IBAction func refresh(_ sender: Any) {
+        self.passwordTextField.stringValue=Bartleby.randomStringWithLength(8,signs:Bartleby.configuration.PASSWORD_CHAR_CART)
+    }
+
+
+    override func proceedToValidation(){
+        super.proceedToValidation()
+        self.identityWindowController?.passwordCandidate=self.passwordTextField.stringValue
+        self.identityWindowController?.passwordResetCode=Bartleby.randomStringWithLength(8,signs:Bartleby.configuration.PASSWORD_CHAR_CART)
+        self.stepDelegate?.didValidateStep(number: self.stepIndex)
+    }
+
 
 }

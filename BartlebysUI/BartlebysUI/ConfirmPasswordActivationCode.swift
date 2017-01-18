@@ -7,6 +7,7 @@
 //
 
 import Cocoa
+import BartlebyKit
 
 class ConfirmPasswordActivationCode: IdentityStepViewController {
 
@@ -16,5 +17,17 @@ class ConfirmPasswordActivationCode: IdentityStepViewController {
         super.viewDidLoad()
         // Do view setup here.
     }
-    
+
+    override func proceedToValidation() {
+        super.proceedToValidation()
+
+        let candidatePassword=self.identityWindowController?.passwordCandidate
+        let resetCode=self.identityWindowController?.passwordResetCode
+
+        if let document=self.documentProvider?.getDocument(){
+            // Will produce the syndication
+            IdentitiesManager.synchronize(document)
+        }
+
+    }
 }

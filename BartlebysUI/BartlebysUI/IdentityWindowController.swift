@@ -97,6 +97,8 @@ public class IdentityWindowController: NSWindowController,DocumentProvider,Ident
 
     @IBOutlet var updatePassword: UpdatePasswordViewController!
 
+    @IBOutlet var updatePasswordConfirmation: ConfirmPasswordActivationCode!
+
     @IBOutlet var recoverSugar: RecoverSugarViewController!
 
     @IBOutlet weak var tabView: NSTabView!
@@ -295,11 +297,19 @@ public class IdentityWindowController: NSWindowController,DocumentProvider,Ident
 
 
     public func resetMyPassword(){
+
         let updatePasswordItem=NSTabViewItem(viewController:self.updatePassword)
         self.updatePassword.documentProvider=self
         self.updatePassword.stepDelegate=self
         self.updatePassword.stepIndex=1
         self.tabView.addTabViewItem(updatePasswordItem)
+
+        let confirmItem=NSTabViewItem(viewController:self.updatePasswordConfirmation)
+        self.updatePasswordConfirmation.documentProvider=self
+        self.updatePasswordConfirmation.stepDelegate=self
+        self.updatePasswordConfirmation.stepIndex=2
+        self.tabView.addTabViewItem(confirmItem)
+
         self.currentStep=1
 
         /// + CONFIRMATION ?  ConfirmPassword...

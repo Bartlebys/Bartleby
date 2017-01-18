@@ -45,7 +45,14 @@ class ValidatePasswordViewController: IdentityStepViewController{
                 self.memorizePasswordCheckBox.state=0
                 self.passwordTextField.stringValue=""
             }
-            if document.metadata.sugar == Default.NO_UID {
+
+            var supportsPasswordUpdate=true
+            if let user = document.metadata.currentUser{
+                supportsPasswordUpdate=user.supportsPasswordUpdate
+            }
+
+            if document.metadata.sugar == Default.NO_UID
+                || supportsPasswordUpdate == true {
                 self.resetMyPasswordButton.isEnabled=false
                 self.resetMyPasswordButton.isHidden=true
             }

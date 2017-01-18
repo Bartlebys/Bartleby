@@ -248,7 +248,12 @@ public struct IdentitiesManager {
 
     fileprivate static func _patch(_ profile:Profile, with identification:Identification, from document:BartlebyDocument){
 
-        if profile.user?.supportsPasswordSyndication==true && profile.user?.UID != document.currentUser.UID{
+        var supportsPasswordSyndication=true
+        if let user=profile.user{
+            supportsPasswordSyndication=user.supportsPasswordSyndication
+        }
+
+        if supportsPasswordSyndication == true && profile.user?.UID != document.currentUser.UID{
 
             // We do patch user that explicitly accept to be patched
 
