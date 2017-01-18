@@ -107,7 +107,7 @@ public struct IdentitiesManager {
                     if let idx=identities.profiles.index(where: { (p) -> Bool in
                         return p.user?.UID == profile.user?.UID
                     }){
-                        identities.profiles[idx].requiresSynchronization=true
+                        identities.profiles[idx].requiresPatch=true
                     }
                 }
             }
@@ -201,7 +201,7 @@ public struct IdentitiesManager {
     /// There is no guarantee it will work as we may refer to various servers.
     fileprivate static func _synchronize(identities:Identities, with user:User,from document:BartlebyDocument){
         for profile in identities.profiles {
-            if profile.requiresSynchronization{
+            if profile.requiresPatch{
                 if let identification=identities.identifications.first(where: { (identification) -> Bool in
                     return IdentitiesManager._matching(user, identification)
                 }){
@@ -265,7 +265,7 @@ public struct IdentitiesManager {
             profile.user?.phoneNumber=identification.phoneNumber
             profile.user?.password=identification.password
             profile.user?.externalID=identification.externalID
-            profile.requiresSynchronization=false
+            profile.requiresPatch=false
             do{
                 var identities=try Identities.loadFromKeyChain()
                 if let idx=identities.profiles.index(where: { (p) -> Bool in
@@ -282,6 +282,7 @@ public struct IdentitiesManager {
         // STORE the password in  associated.lastPassword on success
         // Login then call PatchUser with the CryptoPassword, Email and PhoneNumber
         if let user=profile.user{
+
             user.referentDocument=document
             // Login with the previous credentials.
             user.login(sucessHandler: {
@@ -297,6 +298,7 @@ public struct IdentitiesManager {
                                   sucessHandler:{ (context) in
                                     __patchHasSucceededOn(profile, with: identification)
                 }, failureHandler: { (context) in
+                    // This may be normal if user.supportsPasswordSyndication == false
                     glog("User patch has failed \(context)", file: #file, function: #function, line: #line, category: Default.LOG_WARNING, decorative: false)
                 })
             }, failureHandler: { (context) in

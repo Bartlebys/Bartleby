@@ -15,6 +15,11 @@ import Foundation
 
 open class PatchUser {
 
+
+    /// This operation will fail if : 
+    ///  1. user.supportsPasswordUpdate==false
+    ///  2. user.supportsPasswordSyndication==false
+
     static open func execute(  baseURL:URL,
                               documentUID:String,
                               userUID: String,

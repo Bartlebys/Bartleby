@@ -19,7 +19,7 @@ public struct Profile:Mappable{
     public var documentUID:String=Default.NO_UID
     public var documentSpaceUID:String=Default.NO_UID
     public var user:User?
-    public var requiresSynchronization=false
+    public var requiresPatch=false
 
     public init() {}
 
@@ -30,6 +30,6 @@ public struct Profile:Mappable{
         self.documentUID <- (map["documentUID"])
         self.documentSpaceUID <- (map["documentSpaceUID"])
         self.user <- ( map["user"] )
-        self.requiresSynchronization <- (map["requiresSynchronization"])
+        self.requiresPatch <- ( map["requiresPatch"] )
     }
 }
