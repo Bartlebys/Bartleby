@@ -132,7 +132,7 @@ import Foundation
 	dynamic open var loginHasSucceed:Bool = false
 
 	//Can a user update its own password
-	dynamic open var supportsPasswordUpdate:Bool = true  {
+	dynamic open var supportsPasswordUpdate:Bool = false  {
 	    didSet { 
 	       if !self.wantsQuietChanges && supportsPasswordUpdate != oldValue {
 	            self.provisionChanges(forKey: "supportsPasswordUpdate",oldValue: oldValue,newValue: supportsPasswordUpdate)  
@@ -141,7 +141,7 @@ import Foundation
 	}
 
 	//If a local user has the same credentials can its password be syndicated
-	dynamic open var supportsPasswordSyndication:Bool = true  {
+	dynamic open var supportsPasswordSyndication:Bool = false  {
 	    didSet { 
 	       if !self.wantsQuietChanges && supportsPasswordSyndication != oldValue {
 	            self.provisionChanges(forKey: "supportsPasswordSyndication",oldValue: oldValue,newValue: supportsPasswordSyndication)  
