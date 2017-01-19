@@ -42,15 +42,7 @@ public extension DocumentMetadata{
         if let email=user.email{
             self.currentUserEmail=email
         }
-        var prefix=""
-        if let phoneCountryCode=user.phoneCountryCode{
-            if let match = phoneCountryCode.range(of:"(?<=\\()[^()]{1,10}(?=\\))", options: .regularExpression) {
-                prefix=phoneCountryCode.substring(with: match)
-            }
-        }
-        if let phoneNumber=user.phoneNumber{
-            self.currentUserFullPhoneNumber=prefix+phoneNumber
-        }
+        self.currentUserFullPhoneNumber=user.fullPhoneNumber
     }
 
 }

@@ -46,5 +46,19 @@ extension User {
                      failureHandler failure:@escaping(_ context: HTTPContext)->()) {
         LogoutUser.execute(self, sucessHandler: success, failureHandler: failure)
     }
+
+    /// Returns the full phone number
+    open var fullPhoneNumber:String{
+        var prefix=""
+        if let phoneCountryCode=self.phoneCountryCode{
+            if let match = phoneCountryCode.range(of:"(?<=\\()[^()]{1,10}(?=\\))", options: .regularExpression) {
+                prefix=phoneCountryCode.substring(with: match)
+            }
+        }
+        if let phoneNumber=self.phoneNumber{
+            return prefix+phoneNumber
+        }
+        return "NO_PHONE_NUMBER"
+    }
     
 }
