@@ -286,6 +286,16 @@ public struct IdentitiesManager {
                 }catch{
                     glog("\(error)", file: #file, function: #function, line: #line, category: Default.LOG_SECURITY, decorative: false)
                 }
+
+                if let user=profile.user{
+                    if user.UID != document.currentUser.UID{
+                        user.logout(sucessHandler: {
+                        }, failureHandler: { (context) in
+                            glog("Error on syndicaton logout \(context)", file: #file, function: #function, line: #line, category: Default.LOG_SECURITY, decorative: false)
+                        })
+                    }
+                }
+
             }
 
             // STORE the password in  associated.lastPassword on success
