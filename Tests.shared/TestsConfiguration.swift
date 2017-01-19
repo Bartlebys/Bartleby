@@ -81,7 +81,7 @@ open class TestsConfiguration: BartlebyConfiguration {
     public static var CHANGES_ARE_INSPECTABLES_BY_DEFAULT: Bool = false
 
     // If set to true the confirmation code will be for example printed in the console...
-    open static var DEVELOPER_MODE: Bool = true // Should be turned to false in production
+    open static let DEVELOPER_MODE: Bool = true // Should be turned to false in production
     
     //MARK: - Variable base URL
 

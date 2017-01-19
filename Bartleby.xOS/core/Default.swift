@@ -70,7 +70,7 @@ public protocol BartlebyConfiguration {
     static var CHANGES_ARE_INSPECTABLES_BY_DEFAULT: Bool { get set }
 
     // If set to true the confirmation code will be for example printed in the console...
-    static var DEVELOPER_MODE: Bool { get set }
+    static var DEVELOPER_MODE: Bool { get }
 }
 
 
@@ -140,7 +140,7 @@ public struct BartlebyDefaultConfiguration: BartlebyConfiguration {
     public static var CHANGES_ARE_INSPECTABLES_BY_DEFAULT: Bool = false
 
     // If set to true the confirmation code will be for example printed in the console...
-    public static var DEVELOPER_MODE: Bool = false
+    public static let DEVELOPER_MODE: Bool = false
 }
 
 // MARK: - Default values

@@ -56,6 +56,7 @@ public struct IdentitiesManager {
     public static func synchronize(_ document:BartlebyDocument){
         do{
             var identities=try Identities.loadFromKeyChain()
+
             /// Update the Masters users.
             var newUser=true
             let currentUser=document.currentUser
