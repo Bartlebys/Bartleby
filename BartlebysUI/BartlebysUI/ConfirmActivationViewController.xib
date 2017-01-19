@@ -11,7 +11,7 @@
             <connections>
                 <outlet property="codeTextField" destination="Kf9-VO-i0z" id="Rkb-dC-XMW"/>
                 <outlet property="confirmLabel" destination="R40-bJ-MGi" id="3eK-1c-amV"/>
-                <outlet property="messagesTextField" destination="Mfc-7U-D8X" id="jrR-dm-Ifd"/>
+                <outlet property="messageTextField" destination="Mfc-7U-D8X" id="xY8-fl-QcO"/>
                 <outlet property="view" destination="Hz6-mo-xeY" id="0bl-1N-x8E"/>
             </connections>
         </customObject>

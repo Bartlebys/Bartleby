@@ -81,8 +81,6 @@ public class IdentityWindowController: NSWindowController,DocumentProvider,Ident
 
     public var passwordCandidate:String=""
 
-    public var passwordResetCode:String=""
-
     // MARK: - Outlets
 
     @IBOutlet var prepareUserCreation: PrepareUserCreationViewController!
@@ -107,12 +105,15 @@ public class IdentityWindowController: NSWindowController,DocumentProvider,Ident
 
     @IBOutlet weak var rightButton: NSButton!
 
+    @IBOutlet weak var progressIndicator: NSProgressIndicator!
 
     // MARK: - Life cycle
 
     override public func windowDidLoad() {
         super.windowDidLoad()
         self.configureControllers()
+        self.progressIndicator.isHidden=true
+        IdentitiesManager.dumpKeyChainedProfiles()
     }
 
     func configureControllers() -> () {
@@ -269,12 +270,15 @@ public class IdentityWindowController: NSWindowController,DocumentProvider,Ident
     }
     
     public func disableActions(){
+        self.progressIndicator.isHidden=false
+        self.progressIndicator.startAnimation(self)
         self.leftButton.isEnabled=false
         self.rightButton.isEnabled=false
     }
 
     public func enableActions(){
-        
+        self.progressIndicator.isHidden=true
+        self.progressIndicator.stopAnimation(self)
         self.leftButton.isEnabled=true
         self.rightButton.isEnabled=true
     }

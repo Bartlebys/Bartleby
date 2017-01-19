@@ -11,6 +11,7 @@
                 <outlet property="confirmActivation" destination="uEZ-ba-9Iq" id="jdK-5O-Kic"/>
                 <outlet property="leftButton" destination="fDC-hP-g9s" id="Qju-DJ-VpW"/>
                 <outlet property="prepareUserCreation" destination="DaE-jK-97s" id="i0n-BR-2lC"/>
+                <outlet property="progressIndicator" destination="v9q-il-xM5" id="L2c-x3-HjD"/>
                 <outlet property="recoverSugar" destination="Viv-WP-Y5M" id="VVh-Qc-nbB"/>
                 <outlet property="revealPassword" destination="BhJ-PB-9OU" id="7kA-Cz-wDH"/>
                 <outlet property="rightButton" destination="uUc-Qk-CbG" id="PzL-bL-bJP"/>
@@ -45,9 +46,12 @@
                         <font key="font" metaFont="system"/>
                         <tabViewItems/>
                     </tabView>
-                    <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="fDC-hP-g9s">
+                    <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="fDC-hP-g9s">
                         <rect key="frame" x="8" y="5" width="161" height="32"/>
-                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="21" id="fW2-VV-poo"/>
+                            <constraint firstAttribute="width" constant="149" id="nog-9C-H9S"/>
+                        </constraints>
                         <buttonCell key="cell" type="push" title="Cancel" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="s9F-u9-gee">
                             <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                             <font key="font" metaFont="system"/>
@@ -56,9 +60,11 @@
                             <action selector="leftAction:" target="-2" id="EfZ-tF-3qz"/>
                         </connections>
                     </button>
-                    <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="uUc-Qk-CbG">
+                    <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="uUc-Qk-CbG">
                         <rect key="frame" x="317" y="5" width="161" height="32"/>
-                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                        <constraints>
+                            <constraint firstAttribute="width" constant="149" id="96a-N0-fQV"/>
+                        </constraints>
                         <buttonCell key="cell" type="push" title="Validate" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="RlW-Fo-pop">
                             <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                             <font key="font" metaFont="system"/>
@@ -67,12 +73,24 @@
                             <action selector="rightAction:" target="-2" id="gMv-cH-WGE"/>
                         </connections>
                     </button>
+                    <progressIndicator wantsLayer="YES" horizontalHuggingPriority="750" verticalHuggingPriority="750" maxValue="100" bezeled="NO" indeterminate="YES" controlSize="small" style="spinning" translatesAutoresizingMaskIntoConstraints="NO" id="v9q-il-xM5">
+                        <rect key="frame" x="239" y="15" width="16" height="16"/>
+                    </progressIndicator>
                 </subviews>
                 <constraints>
+                    <constraint firstAttribute="bottom" secondItem="fDC-hP-g9s" secondAttribute="bottom" constant="12" id="5Ay-Gj-hQg"/>
                     <constraint firstAttribute="bottom" secondItem="N3Z-Og-1Mr" secondAttribute="bottom" constant="50" id="8N1-nY-WBJ"/>
+                    <constraint firstItem="uUc-Qk-CbG" firstAttribute="width" secondItem="fDC-hP-g9s" secondAttribute="width" id="8sI-cn-SzJ"/>
+                    <constraint firstAttribute="trailing" secondItem="uUc-Qk-CbG" secondAttribute="trailing" constant="28" id="F7T-xy-fSE"/>
                     <constraint firstItem="N3Z-Og-1Mr" firstAttribute="leading" secondItem="se5-gp-TjO" secondAttribute="leading" id="IPf-b0-XmC"/>
+                    <constraint firstItem="uUc-Qk-CbG" firstAttribute="height" secondItem="fDC-hP-g9s" secondAttribute="height" id="JXI-8v-Ul3"/>
+                    <constraint firstItem="uUc-Qk-CbG" firstAttribute="centerY" secondItem="fDC-hP-g9s" secondAttribute="centerY" id="KWA-33-dZI"/>
+                    <constraint firstItem="v9q-il-xM5" firstAttribute="centerY" secondItem="fDC-hP-g9s" secondAttribute="centerY" id="QaL-o0-18D"/>
                     <constraint firstItem="N3Z-Og-1Mr" firstAttribute="top" secondItem="se5-gp-TjO" secondAttribute="top" id="U8T-FR-u7W"/>
+                    <constraint firstItem="fDC-hP-g9s" firstAttribute="leading" secondItem="se5-gp-TjO" secondAttribute="leading" constant="14" id="dDq-Cb-yfn"/>
+                    <constraint firstItem="v9q-il-xM5" firstAttribute="leading" secondItem="fDC-hP-g9s" secondAttribute="trailing" constant="76" id="eiK-3v-wHo"/>
                     <constraint firstAttribute="trailing" secondItem="N3Z-Og-1Mr" secondAttribute="trailing" id="uFo-L2-4DV"/>
+                    <constraint firstItem="uUc-Qk-CbG" firstAttribute="leading" secondItem="v9q-il-xM5" secondAttribute="trailing" constant="68" id="xWT-xu-vvy"/>
                 </constraints>
             </view>
             <connections>

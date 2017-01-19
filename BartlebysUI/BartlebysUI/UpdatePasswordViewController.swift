@@ -28,7 +28,6 @@ class UpdatePasswordViewController: IdentityStepViewController{
         self.refresh(self)
     }
 
-
     @IBAction func refresh(_ sender: Any) {
         self.passwordTextField.stringValue=Bartleby.randomStringWithLength(8,signs:Bartleby.configuration.PASSWORD_CHAR_CART)
     }
@@ -36,7 +35,6 @@ class UpdatePasswordViewController: IdentityStepViewController{
     override func proceedToValidation(){
         super.proceedToValidation()
         self.identityWindowController?.passwordCandidate=self.passwordTextField.stringValue
-        self.identityWindowController?.passwordResetCode=Bartleby.randomStringWithLength(8,signs:Bartleby.configuration.PASSWORD_CHAR_CART)
         self.stepDelegate?.didValidateStep(number: self.stepIndex)
     }
 

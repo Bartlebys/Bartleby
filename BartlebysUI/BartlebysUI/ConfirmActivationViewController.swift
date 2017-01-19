@@ -18,7 +18,7 @@ class ConfirmActivationViewController: IdentityStepViewController{
 
     @IBOutlet weak var codeTextField: NSTextField!
 
-    @IBOutlet weak var messagesTextField: NSTextField!
+    @IBOutlet weak var messageTextField: NSTextField!
 
     var locker:Locker?
 
@@ -50,7 +50,7 @@ class ConfirmActivationViewController: IdentityStepViewController{
             if codeTextField.stringValue == locker.code{
                 self.stepDelegate?.didValidateStep(number: self.stepIndex)
             }else{
-                self.messagesTextField.stringValue=NSLocalizedString("The activation code is not correct!", comment: "The activation code is not correct!")
+                self.messageTextField.stringValue=NSLocalizedString("The activation code is not correct!", comment: "The activation code is not correct!")
                 self.stepDelegate?.enableActions()
             }
         }

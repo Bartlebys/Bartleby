@@ -101,13 +101,7 @@ class SetupCollaborativeServerViewController: IdentityStepViewController{
 
                                     CreateLocker.execute(locker, in:  document.UID, sucessHandler: { (context) in
                                         let email=user.email!
-                                        var prefix=""
-                                        if let phoneCountryCode=user.phoneCountryCode{
-                                            if let match = phoneCountryCode.range(of:"(?<=\\()[^()]{1,10}(?=\\))", options: .regularExpression) {
-                                                prefix=phoneCountryCode.substring(with: match)
-                                            }
-                                        }
-                                        let phoneNumber=prefix+user.phoneNumber!
+                                        let phoneNumber=user.fullPhoneNumber
 
                                         if self.relayActivationCode{
                                             // The Locker has been successfully pushed
