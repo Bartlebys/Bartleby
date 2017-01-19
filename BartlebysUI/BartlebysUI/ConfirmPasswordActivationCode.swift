@@ -28,6 +28,5 @@ class ConfirmPasswordActivationCode: IdentityStepViewController {
             // Will produce the syndication
             IdentitiesManager.synchronize(document)
         }
-
     }
 }

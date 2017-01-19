@@ -33,13 +33,11 @@ class UpdatePasswordViewController: IdentityStepViewController{
         self.passwordTextField.stringValue=Bartleby.randomStringWithLength(8,signs:Bartleby.configuration.PASSWORD_CHAR_CART)
     }
 
-
     override func proceedToValidation(){
         super.proceedToValidation()
         self.identityWindowController?.passwordCandidate=self.passwordTextField.stringValue
         self.identityWindowController?.passwordResetCode=Bartleby.randomStringWithLength(8,signs:Bartleby.configuration.PASSWORD_CHAR_CART)
         self.stepDelegate?.didValidateStep(number: self.stepIndex)
     }
-
 
 }

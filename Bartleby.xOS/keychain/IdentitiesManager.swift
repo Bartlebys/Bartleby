@@ -248,7 +248,7 @@ public struct IdentitiesManager {
 
     fileprivate static func _patch(_ profile:Profile, with identification:Identification, from document:BartlebyDocument){
 
-        var supportsPasswordSyndication=true
+        var supportsPasswordSyndication=false
         if let user=profile.user{
             supportsPasswordSyndication=user.supportsPasswordSyndication
         }

@@ -36,25 +36,30 @@ class ValidatePasswordViewController: IdentityStepViewController{
         if let document=self.documentProvider?.getDocument(){
             self.emailTextField.stringValue=document.metadata.currentUserEmail
             self.phoneNumberTextField.stringValue=document.metadata.currentUserFullPhoneNumber
-            if document.metadata.saveThePassword == true{
+            var supportsPasswordUpdate=false
+            var supportsPasswordMemorization=false
+            if let user = document.metadata.currentUser{
+                supportsPasswordUpdate=user.supportsPasswordUpdate
+                supportsPasswordMemorization=user.supportsPasswordMemorization
+            }
+
+            if !supportsPasswordMemorization{
+                self.memorizePasswordCheckBox.isEnabled=false
+                self.memorizePasswordCheckBox.isHidden=true
+            }
+
+            if document.metadata.sugar == Default.NO_UID
+                || supportsPasswordUpdate == false {
+                self.resetMyPasswordButton.isEnabled=false
+                self.resetMyPasswordButton.isHidden=true
+            }
+            if document.metadata.saveThePassword == true && supportsPasswordMemorization{
                 self.memorizePasswordCheckBox.state=1
                 if let password=document.currentUser.password{
                     self.passwordTextField.stringValue=password
                 }
             }else{
-                self.memorizePasswordCheckBox.state=0
                 self.passwordTextField.stringValue=""
-            }
-
-            var supportsPasswordUpdate=true
-            if let user = document.metadata.currentUser{
-                supportsPasswordUpdate=user.supportsPasswordUpdate
-            }
-
-            if document.metadata.sugar == Default.NO_UID
-                || supportsPasswordUpdate == true {
-                self.resetMyPasswordButton.isEnabled=false
-                self.resetMyPasswordButton.isHidden=true
             }
         }
     }

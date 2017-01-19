@@ -131,7 +131,16 @@ import Foundation
 	//set to true on the first successfull login in the session (this property is not serialized)
 	dynamic open var loginHasSucceed:Bool = false
 
-	//Can a user update its own password
+	//Can a user memorize her/his password
+	dynamic open var supportsPasswordMemorization:Bool = false  {
+	    didSet { 
+	       if !self.wantsQuietChanges && supportsPasswordMemorization != oldValue {
+	            self.provisionChanges(forKey: "supportsPasswordMemorization",oldValue: oldValue,newValue: supportsPasswordMemorization)  
+	       } 
+	    }
+	}
+
+	//Can a user update her/his  own password
 	dynamic open var supportsPasswordUpdate:Bool = false  {
 	    didSet { 
 	       if !self.wantsQuietChanges && supportsPasswordUpdate != oldValue {
@@ -140,7 +149,7 @@ import Foundation
 	    }
 	}
 
-	//If a local user has the same credentials can its password be syndicated
+	//If a local user has the same credentials can her/his password be syndicated
 	dynamic open var supportsPasswordSyndication:Bool = false  {
 	    didSet { 
 	       if !self.wantsQuietChanges && supportsPasswordSyndication != oldValue {
@@ -154,7 +163,7 @@ import Foundation
     /// Return all the exposed instance variables keys. (Exposed == public and modifiable).
     override open var exposedKeys:[String] {
         var exposed=super.exposedKeys
-        exposed.append(contentsOf:["spaceUID","verificationMethod","localAssociationID","firstname","lastname","email","phoneCountryCode","phoneNumber","password","status","notes","loginHasSucceed","supportsPasswordUpdate","supportsPasswordSyndication"])
+        exposed.append(contentsOf:["spaceUID","verificationMethod","localAssociationID","firstname","lastname","email","phoneCountryCode","phoneNumber","password","status","notes","loginHasSucceed","supportsPasswordMemorization","supportsPasswordUpdate","supportsPasswordSyndication"])
         return exposed
     }
 
@@ -215,6 +224,10 @@ import Foundation
                 if let casted=value as? Bool{
                     self.loginHasSucceed=casted
                 }
+            case "supportsPasswordMemorization":
+                if let casted=value as? Bool{
+                    self.supportsPasswordMemorization=casted
+                }
             case "supportsPasswordUpdate":
                 if let casted=value as? Bool{
                     self.supportsPasswordUpdate=casted
@@ -262,6 +275,8 @@ import Foundation
                return self.notes
             case "loginHasSucceed":
                return self.loginHasSucceed
+            case "supportsPasswordMemorization":
+               return self.supportsPasswordMemorization
             case "supportsPasswordUpdate":
                return self.supportsPasswordUpdate
             case "supportsPasswordSyndication":
@@ -290,6 +305,7 @@ import Foundation
 			self.password <- ( map["password"], CryptedStringTransform() )
 			self.status <- ( map["status"] )
 			self.notes <- ( map["notes"] )
+			self.supportsPasswordMemorization <- ( map["supportsPasswordMemorization"] )
 			self.supportsPasswordUpdate <- ( map["supportsPasswordUpdate"] )
 			self.supportsPasswordSyndication <- ( map["supportsPasswordSyndication"] )
         }
@@ -312,6 +328,7 @@ import Foundation
 			self.password=String(describing: decoder.decodeObject(of: NSString.self, forKey:"password") as NSString?)
 			self.status=User.Status(rawValue:String(describing: decoder.decodeObject(of: NSString.self, forKey: "status")! as NSString))! 
 			self.notes=String(describing: decoder.decodeObject(of: NSString.self, forKey:"notes") as NSString?)
+			self.supportsPasswordMemorization=decoder.decodeBool(forKey:"supportsPasswordMemorization") 
 			self.supportsPasswordUpdate=decoder.decodeBool(forKey:"supportsPasswordUpdate") 
 			self.supportsPasswordSyndication=decoder.decodeBool(forKey:"supportsPasswordSyndication") 
         }
@@ -340,6 +357,7 @@ import Foundation
 		if let notes = self.notes {
 			coder.encode(notes,forKey:"notes")
 		}
+		coder.encode(self.supportsPasswordMemorization,forKey:"supportsPasswordMemorization")
 		coder.encode(self.supportsPasswordUpdate,forKey:"supportsPasswordUpdate")
 		coder.encode(self.supportsPasswordSyndication,forKey:"supportsPasswordSyndication")
     }
