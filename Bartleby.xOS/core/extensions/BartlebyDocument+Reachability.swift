@@ -90,39 +90,13 @@ extension BartlebyDocument{
     }
 
     fileprivate func _transitionFromOffToOn(){
-
+        self.online=true
+        self.startPushLoopIfNecessary()
     }
 
     fileprivate func _transitionFromOnToOff(){
-
+        self.online=false
+        self.destroyThePushLoop()
     }
-
-
-    /*
- open var online:Bool=false{
- willSet{
-     // Transition on line
-     if newValue==true && online==false{
-     self.transition(.offToOn)
-     self._connectToSSE()
-     }
-     // Transition off line
-     if newValue==false && online==true{
-     self.transition(.onToOff)
-     self.log("SSE is transitioning offline",file:#file,function:#function,line:#line,category: "SSE")
-     self._closeSSE()
-     }
-     if newValue==online{
-     self.transition(.none)
-     self.log("Neutral online var setting",file:#file,function:#function,line:#line,category: "SSE")
-     }
-     }
-     didSet{
-     self.metadata.online=online
-     self.startPushLoopIfNecessary()
-     }
- }
- */
-
 
 }

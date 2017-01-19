@@ -67,7 +67,12 @@ extension BartlebyDocument {
                         self.synchronizationHandlers.on(Completion.failureState("Push operations has failed. Error: \(error)", statusCode: StatusOfCompletion.expectation_Failed))
                     }
                     }, failureHandler: { (context) in
-                        self.synchronizationHandlers.on(Completion.failureStateFromHTTPContext(context))
+                        if context.httpStatusCode==403{
+                            self.close()
+                        }else{
+                            self.log("synchronizePendingOperations Login has failed \(context)", file: #file, function: #function, line: #line, category: Default.LOG_DEFAULT, decorative: false)
+                            self.transition(DocumentMetadata.Transition.onToOff)
+                        }
                 })
             }
         }
