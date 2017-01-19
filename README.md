@@ -1,12 +1,14 @@
-# An experimental + efficient alternative to ICloud Sync
- 
+# Bartleby
+
 Bartleby Is a full stack generative suite to build fault tolerant native distributed applications that can perform "*on*" and "*off line*". Client side components are Written in Swift 3.0, Server side relies on PHP 5.X + MongoDB, Generative tools are written in PHP 5.x and wrapped to a Swift CLI.
 
 ## Some Benefits?
 
-- Bartleby is simple to use.
-- Bartleby is cross platform.
-- Data conflict resolution is automatic.
+Bartleby 
+
+- is simple to use (Data conflict resolution is automatic) 
+- is cross platform.
+- is secured.
 - Supports Web clients, and api hooks.
 - You can deploy your own servers.
 
