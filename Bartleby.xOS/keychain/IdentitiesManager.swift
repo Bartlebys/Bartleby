@@ -48,6 +48,22 @@ public struct IdentitiesManager {
     }
 
 
+    /// Dumps the Identities founds in the key Chain
+    public static func dumpKeyChainedProfiles(){
+        if Bartleby.configuration.DEVELOPER_MODE{
+            do{
+                var identities=try Identities.loadFromKeyChain()
+                for profile in identities.profiles{
+                    glog("\(profile.toJSONString() ?? "NO PROFILE" )", file: #file, function: #function, line: #line, category: Default.LOG_SECURITY, decorative: false)
+                }
+            }catch{
+                glog("\(error)", file: #file, function: #function, line: #line, category: Default.LOG_SECURITY, decorative: false)
+            }
+        }else{
+            glog("Bartleby.configuration.DEVELOPER_MODE must be set to true to be able to dumpKeyChainedProfiles", file: #file, function: #function, line: #line, category: Default.LOG_SECURITY, decorative: false)
+        }
+    }
+
 
     /// Take the information from the Document Current User
     /// and synchronizes the identification and associated profiles.
