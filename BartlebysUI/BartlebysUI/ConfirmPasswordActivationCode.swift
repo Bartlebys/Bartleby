@@ -82,16 +82,16 @@ class ConfirmPasswordActivationCode: IdentityStepViewController {
     override func proceedToValidation() {
         super.proceedToValidation()
         self.stepDelegate?.disableActions()
-        if let document = self.documentProvider?.getDocument(){
-            let candidatePassword=self.identityWindowController?.passwordCandidate
+        if let document = self.documentProvider?.getDocument(),
+            let candidatePassword=self.identityWindowController?.passwordCandidate {
             if self.confirmationIsImpossible==false{
                 if PString.trim(self.code)==PString.trim(self.codeTextField.stringValue){
+                    document.currentUser.password=candidatePassword
                     // Will produce the syndication
                     IdentitiesManager.synchronize(document)
-                    self.stepDelegate?.didValidateStep(number: self.stepIndex)
+                    self.identityWindowController?.passwordHasBeenChanged()
                 }else{
                     self.messageTextField.stringValue=NSLocalizedString("The activation code is not correct!", comment: "The activation code is not correct!")
-
                 }
             }
         }

@@ -113,7 +113,7 @@ public class IdentityWindowController: NSWindowController,DocumentProvider,Ident
         super.windowDidLoad()
         self.configureControllers()
         self.progressIndicator.isHidden=true
-        IdentitiesManager.dumpKeyChainedProfiles()
+        //IdentitiesManager.dumpKeyChainedProfiles()
     }
 
     func configureControllers() -> () {
@@ -148,20 +148,24 @@ public class IdentityWindowController: NSWindowController,DocumentProvider,Ident
                 self.tabView.addTabViewItem(revealPasswordItem)
                 self.currentStep=0
             }else{
-                self.creationMode=false
-
-                let validatePasswordItem=NSTabViewItem(viewController:self.validatePassword)
-                self.validatePassword.documentProvider=self
-                self.validatePassword.stepDelegate=self
-                self.validatePassword.stepIndex=0
-                self.tabView.addTabViewItem(validatePasswordItem)
-
-                self.currentStep=0
-
+                self.displayValidatePassword()
             }
         }
     }
 
+
+    public func displayValidatePassword(){
+        self.creationMode=false
+
+        let validatePasswordItem=NSTabViewItem(viewController:self.validatePassword)
+        self.validatePassword.documentProvider=self
+        self.validatePassword.stepDelegate=self
+        self.validatePassword.stepIndex=0
+        self.tabView.addTabViewItem(validatePasswordItem)
+
+        self.currentStep=0
+
+    }
 
 
     /// Appends a view Controller to the stack
@@ -313,28 +317,22 @@ public class IdentityWindowController: NSWindowController,DocumentProvider,Ident
         self.updatePasswordConfirmation.stepDelegate=self
         self.updatePasswordConfirmation.stepIndex=2
         self.tabView.addTabViewItem(confirmItem)
-
         self.currentStep=1
-
-        /// + CONFIRMATION ?  ConfirmPassword...
-        ///
-
-        /// IL Est POSSIBLE QUE NOUS N'AYONS PAS LE DROIT DE LE FAIRE
-        /// PREVOIR L IMPOSSIBILITE ( pas de bouton reset sur certains doc?)
-
-        ///
-
 
     }
 
-    /// APPELER password has been changed après le changement
+    /// Called by Confirm Password ActivationCode
     public func passwordHasBeenChanged(){
         self.currentStep=0
         let u=self.tabView.tabViewItem(at: 1)
         let c=self.tabView.tabViewItem(at: 2)
         self.tabView.removeTabViewItem(u)
         self.tabView.removeTabViewItem(c)
+        self.enableActions()
     }
+
+
+
 
 
 }
