@@ -20,23 +20,17 @@ open class PatchUser {
     ///  1. user.supportsPasswordUpdate==false
     ///  2. user.supportsPasswordSyndication==false
 
-    static open func execute(  baseURL:URL,
+    static open func execute( baseURL:URL,
                               documentUID:String,
                               userUID: String,
                               cryptoPassword:String,
-                              email:String,
-                              phoneNumber:String,
-                              externalID:String,
                               sucessHandler success: @escaping(_ context:HTTPContext)->(),
                               failureHandler failure:@escaping (_ context: HTTPContext)->()) {
 
         /// This operation is special
 
         let pathURL=baseURL.appendingPathComponent("patchUser")
-        var dictionary: Dictionary<String, String>=["userId":userUID,"password":cryptoPassword,"email":email,"phoneNumber":phoneNumber]
-        if externalID != Default.NO_UID{
-            dictionary["externalID"]=externalID
-        }
+        let dictionary: Dictionary<String, String>=["userId":userUID,"password":cryptoPassword]
         let urlRequest=HTTPManager.requestWithToken(inDocumentWithUID:documentUID, withActionName:"PatchUser", forMethod:"POST", and: pathURL)
         do {
             let r=try JSONEncoding().encode(urlRequest,with:dictionary)
