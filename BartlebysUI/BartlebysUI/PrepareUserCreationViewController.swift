@@ -34,10 +34,13 @@ class PrepareUserCreationViewController: IdentityStepViewController{
 
     @IBOutlet weak var messageTextField: NSTextField!
 
+    @IBOutlet weak var allowPasswordSyndicationCheckBox: NSButton!
+
     var countryCodes:[String]=["Greece (+30)","Netherlands (+31)","Belgium (+32)","France (+33)","United Kingdom (+44)"]
 
     override func viewWillAppear() {
         super.viewWillAppear()
+        self.allowPasswordSyndicationCheckBox.state=0
         self.messageTextField.stringValue=""
         self.explanationsTextField.stringValue=NSLocalizedString("We need a valid email and a valid phone number. You can reuse previous identifications or create a new one for this document.", comment: "We need a valid email and a valid phone number. You can reuse previous identifications or create a new one for this document.")
         if let document=self.documentProvider?.getDocument(){
@@ -45,6 +48,11 @@ class PrepareUserCreationViewController: IdentityStepViewController{
             for identification in self._suggestedIdentifications{
                 self.emailComboBox.addItem(withObjectValue: identification.email)
                 self.phoneNumberComboBox.addItem(withObjectValue: identification.phoneNumber)
+                if identification.supportsPasswordSyndication{
+                     self.allowPasswordSyndicationCheckBox.state=1
+                }else{
+                    self.allowPasswordSyndicationCheckBox.state=0
+                }
             }
             self.emailComboBox.addItem(withObjectValue:NSLocalizedString("Add your Email", comment: "Add your Email"))
             self.phoneNumberComboBox.addItem(withObjectValue:NSLocalizedString("Phone number", comment: "Phone number"))
@@ -117,6 +125,7 @@ class PrepareUserCreationViewController: IdentityStepViewController{
                     id.email=email
                     id.phoneCountryCode=self.phoneCountryCodeComboBox.stringValue
                     id.phoneNumber=self.phoneNumberComboBox.stringValue
+                    id.supportsPasswordSyndication=(self.allowPasswordSyndicationCheckBox.state==1)
                     // We store the prepared identification
                     self.identityWindowController?.identification=id
                     self.stepDelegate?.didValidateStep(number: self.stepIndex)

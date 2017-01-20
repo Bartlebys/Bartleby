@@ -240,17 +240,16 @@ public class IdentityWindowController: NSWindowController,DocumentProvider,Ident
                         // It permits to use PERMISSION_BY_IDENTIFICATION_AND_ACTIVATION 
                         // for the majority of the CRUD/URD calls
                         document.currentUser.status = .actived
-                        UpdateUser.execute(document.currentUser, in: document.UID,
-                                           sucessHandler: { (context) in
-
-                                            IdentitiesManager.synchronize(document)
-                                            document.online=true
-                                            self.identificationIsValid=true
-                                            self.nextStep()
-                                            self.enableActions()
-                        }, failureHandler: { (context) in
-                            document.log("Activation status updated did fail \(context)", file: #file, function: #function, line: #line, category: Default.LOG_DEFAULT, decorative: false)
-                            self.enableActions()
+                        IdentitiesManager.synchronize(document, completed: { (completion) in
+                            if completion.success{
+                                document.online=true
+                                self.identificationIsValid=true
+                                self.nextStep()
+                                self.enableActions()
+                            }else{
+                                document.log("Activation status updated did fail \(completion)", file: #file, function: #function, line: #line, category: Default.LOG_DEFAULT, decorative: false)
+                                self.enableActions()
+                            }
                         })
                         // Mark as committed to prevent from re-upserting
                         document.currentUser.hasBeenCommitted()
@@ -331,10 +330,4 @@ public class IdentityWindowController: NSWindowController,DocumentProvider,Ident
         self.enableActions()
     }
 
-
-
-
-
 }
-
-

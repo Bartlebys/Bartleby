@@ -26,7 +26,7 @@ public struct IdentitiesManager {
     /// - Returns: the suggested profiles (can be used to propose a user account)
     public static func suggestedIdentifications(forDocument document:BartlebyDocument)->[Identification]{
         var identifications=[Identification]()
-        var allProfiles=IdentitiesManager._suggestedProfiles(forDocument:document)
+        let allProfiles=IdentitiesManager._suggestedProfiles(forDocument:document)
         for profile in allProfiles{
             if !identifications.contains(where: { (embeddedIdentification) -> Bool in
                 let email = PString.trim(profile.user?.email ?? "")
@@ -52,7 +52,7 @@ public struct IdentitiesManager {
     public static func dumpKeyChainedProfiles(){
         if Bartleby.configuration.DEVELOPER_MODE{
             do{
-                var identities=try Identities.loadFromKeyChain()
+                let identities=try Identities.loadFromKeyChain()
                 for profile in identities.profiles{
                     glog("\(profile.toJSONString() ?? "NO PROFILE" )", file: #file, function: #function, line: #line, category: Default.LOG_SECURITY, decorative: false)
                 }
@@ -65,75 +65,57 @@ public struct IdentitiesManager {
     }
 
 
+
+    /// - Parameter document: the document
+
+
     /// Take the information from the Document Current User
     /// and synchronizes the identification and associated profiles.
+    /// the Completion status is success if the main user has been updated (there is no guarantee for the other profiles)
+    /// each stored profile.user is modified in the key chain on success only.
+    /// - Parameters:
+    ///   - document: the concerned document
+    ///   - completed: this closure is called when all the syndicable update has been executed.
     ///
-    /// - Parameter document: the document
-    public static func synchronize(_ document:BartlebyDocument){
-        do{
-            var identities=try Identities.loadFromKeyChain()
-
-            /// Update the Masters users.
-            var newUser=true
-            let currentUser=document.currentUser
-            let n=identities.identifications.count
-            var identification:Identification?
-            for i in 0..<n {
-                identification=identities.identifications[i]
-                if IdentitiesManager._matching(currentUser, identification!){
-                    identification!.email=currentUser.email ?? ""
-                    identification!.phoneNumber=currentUser.phoneNumber ?? ""
-                    identification!.password=currentUser.password ?? Default.NO_PASSWORD
-                    newUser=false
-                }
-            }
-
-            if newUser{
-                // Add the new identification
-                identification=Identification()
-                identification!.email=currentUser.email ?? ""
-                identification!.phoneNumber=currentUser.phoneNumber ?? ""
-                identification!.password=currentUser.password ?? Default.NO_PASSWORD
-                identities.identifications.append(identification!)
-            }
-
-            if identities.profiles.contains(where: { (profile) -> Bool in
-                return profile.user?.UID==currentUser.UID
-            }){
-                // We already have this user.
-                // This is the current User
-                // It will be Upserted normally.
-            }else{
-                // Add the user to the stored profiles.
-                var profile=Profile()
-                profile.documentUID=document.UID
-                profile.documentSpaceUID=document.spaceUID
-                profile.user=document.currentUser
-                profile.url=document.baseURL
-                identities.profiles.append(profile)
-            }
-
-            let relatedProfiles=identities.profiles.filter({ (profile) -> Bool in
-                return _matching(currentUser, profile)
+    public static func synchronize(_ document:BartlebyDocument,completed:@escaping (Completion)->()){
+        document.currentUser.login(sucessHandler: {
+                UpdateUser.execute(document.currentUser, in: document.UID,
+                                   sucessHandler: { (context) in
+                                    Async.main{
+                                        document.save(self)
+                                           do{
+                                            try IdentitiesManager._syndicateProfiles(document)
+                                            completed(Completion.successStateFromHTTPContext(context))
+                                           }catch{
+                                            completed(Completion.failureStateFromError(error))
+                                        }
+                                    }
+                }, failureHandler: { (context) in
+                    completed(Completion.failureStateFromHTTPContext(context))
             })
 
-            for profile in relatedProfiles{
-                if profile.user?.email != identification!.email
-                    || profile.user?.phoneNumber != identification!.phoneNumber
-                    || profile.user?.password != identification!.password{
-                    if let idx=identities.profiles.index(where: { (p) -> Bool in
-                        return p.user?.UID == profile.user?.UID
-                    }){
-                        identities.profiles[idx].requiresPatch=true
+        }, failureHandler: { (context) in
+            completed(Completion.failureStateFromHTTPContext(context))
+        })
+    }
+
+
+    public static func profileMatching(identification:Identification, inDocument document:BartlebyDocument)->Profile?{
+        let identities=try? Identities.loadFromKeyChain()
+        if let profiles=identities?.profiles{
+            for profile in profiles{
+                if let user=profile.user{
+                    if IdentitiesManager._matching(user,identification){
+                        return profile
                     }
                 }
             }
-            try identities.saveToKeyChain()
-            IdentitiesManager._synchronize(identities: identities,with:currentUser,from:document)
-        }catch{
-            glog("\(error)", file: #file, function: #function, line: #line, category: Default.LOG_SECURITY, decorative: false)
         }
+        return nil
     }
+
+
+    // MARK: - Suggestions
 
 
     /// Returns suggested profiles for the document.
@@ -196,93 +178,89 @@ public struct IdentitiesManager {
         }
         return profiles
     }
+    
 
-    public static func profileMatching(identification:Identification, inDocument document:BartlebyDocument)->Profile?{
-        let identities=try? Identities.loadFromKeyChain()
-        if let profiles=identities?.profiles{
-            for profile in profiles{
-                if let user=profile.user{
-                    if IdentitiesManager._matching(user,identification){
-                        return profile
-                    }
+    // MARK: - Syndication
+
+    fileprivate static func _syndicateProfiles(_ document:BartlebyDocument) throws{
+        var identities=try Identities.loadFromKeyChain()
+
+        /// Update the Masters users.
+        var newUser=true
+        let currentUser=document.currentUser
+        let n=identities.identifications.count
+        var identification=Identification()
+        for i in 0..<n {
+            identification=identities.identifications[i]
+            if IdentitiesManager._matching(currentUser, identification){
+                identification.email=currentUser.email ?? ""
+                identification.phoneCountryCode=currentUser.phoneCountryCode ?? ""
+                identification.phoneNumber=currentUser.phoneNumber ?? ""
+                identification.password=currentUser.password ?? Default.NO_PASSWORD
+                identification.externalID=currentUser.externalID ?? Default.NO_UID
+                newUser=false
+            }
+        }
+
+        if newUser{
+            identities.identifications.append(Identification.identificationFrom(user: currentUser))
+        }
+
+        if identities.profiles.contains(where: { (profile) -> Bool in
+            return profile.user?.UID==currentUser.UID
+        }){
+            // We already have this user.
+            // This is the current User
+            // It will be Upserted normally.
+        }else{
+            // Add the user to the stored profiles.
+            var profile=Profile()
+            profile.documentUID=document.UID
+            profile.documentSpaceUID=document.spaceUID
+            profile.user=document.currentUser
+            profile.url=document.baseURL
+            identities.profiles.append(profile)
+        }
+
+        let currentUserIdentification=Identification.identificationFrom(user: currentUser)
+
+        let relatedProfiles=identities.profiles.filter({ (profile) -> Bool in
+            return _matching(currentUser, profile)
+        })
+
+        for profile in relatedProfiles{
+            if profile.user?.email != currentUserIdentification.email
+                || profile.user?.phoneNumber != currentUserIdentification.phoneNumber
+                || profile.user?.password != currentUserIdentification.password{
+                if let idx=identities.profiles.index(where: { (p) -> Bool in
+                    return p.user?.UID == profile.user?.UID
+                }){
+                    identities.profiles[idx].requiresPatch=true
                 }
             }
         }
-        return nil
-    }
-
-    // MARK: - Implementation
 
 
-    /// Intents to patch the associatied identification with the new password
-    /// There is no guarantee it will work as we may refer to various servers.
-    fileprivate static func _synchronize(identities:Identities, with user:User,from document:BartlebyDocument){
+
+        /// Intents to patch the associatied identification with the new password
+        /// There is no guarantee it will work as we may refer to various servers.
         for profile in identities.profiles {
             if profile.requiresPatch{
-                if let identification=identities.identifications.first(where: { (identification) -> Bool in
-                    return IdentitiesManager._matching(user, identification)
-                }){
-                    IdentitiesManager._patch(profile, with: identification,from:document)
-                }else{
-                    glog("Matching Identification not found \(profile))", file: #file, function: #function, line: #line, category: Default.LOG_FAULT, decorative: false)
-                }
+                // We patch syndicated profiles only the document user has already been Updated.
+                IdentitiesManager._patch(profile, with: currentUserIdentification,from:document)
             }
         }
     }
 
-
-    fileprivate static func _matching(_ user:User,_ identification:Identification)->Bool{
-        if let email=user.email{
-            if PString.trim(email,characters:" \n-.")==PString.trim(identification.email,characters:" \n-."){
-                return true
-            }
-        }
-        if let phone=user.phoneNumber{
-            if PString.trim(phone,characters:" \n-.")==PString.trim(identification.phoneNumber,characters:" \n-."){
-                return true
-            }
-        }
-        return false
-    }
-
-
-    fileprivate static func _matching(_ user:User,_ profile:Profile)->Bool{
-        if user.UID == profile.user?.UID{
-            return true
-        }
-        if let email=user.email, let profileEmail=profile.user?.email{
-            if PString.trim(email,characters:" \n-.")==PString.trim(profileEmail,characters:" \n-."){
-                return true
-            }
-        }
-        if let phone=user.phoneNumber,let profilePhoneNumber=profile.user?.email{
-            if PString.trim(phone,characters:" \n-.")==PString.trim(profilePhoneNumber,characters:" \n-."){
-                return true
-            }
-        }
-        return false
-    }
 
     fileprivate static func _patch(_ profile:Profile, with identification:Identification, from document:BartlebyDocument){
-
         var supportsPasswordSyndication=false
         if let user=profile.user{
             supportsPasswordSyndication=user.supportsPasswordSyndication
         }
 
+        // We do patch user that explicitly accepts syndication
         if supportsPasswordSyndication == true && profile.user?.UID != document.currentUser.UID{
-
-            // We do patch user that explicitly accept to be patched
-
-            func __cryptoPassword(_ identification:Identification )->String{
-                let p=identification.password
-                do{
-                    let encrypted=try Bartleby.cryptoDelegate.encryptString(p,useKey:Bartleby.configuration.KEY)
-                    return encrypted
-                }catch{
-                    return  "CRYPTO_ERROR"
-                }
-            }
 
             func __patchHasSucceededOn(_ profile:Profile, with identification:Identification){
                 // Recover the identification and profile.
@@ -318,21 +296,17 @@ public struct IdentitiesManager {
             // STORE the password in  associated.lastPassword on success
             // Login then call PatchUser with the CryptoPassword, Email and PhoneNumber
             if let user=profile.user{
-
                 user.referentDocument=document
                 // Login with the previous credentials.
                 user.login(sucessHandler: {
-                    // On success patch the user
-                    let cryptoPassword=__cryptoPassword(identification)
                     PatchUser.execute(baseURL: profile.url,
                                       documentUID: profile.documentUID,
-                                      userUID: profile.documentUID,
-                                      cryptoPassword: cryptoPassword,
-                                      email:identification.email ,
-                                      phoneNumber: identification.phoneNumber,
-                                      externalID: identification.externalID,
+                                      userUID: user.UID,
+                                      cryptoPassword: user.cryptoPassword,
                                       sucessHandler:{ (context) in
-                                        __patchHasSucceededOn(profile, with: identification)
+                                        Async.main{
+                                            __patchHasSucceededOn(profile, with: identification)
+                                        }
                     }, failureHandler: { (context) in
                         // This may be normal if user.supportsPasswordSyndication == false
                         glog("User patch has failed \(context)", file: #file, function: #function, line: #line, category: Default.LOG_WARNING, decorative: false)
@@ -343,5 +317,44 @@ public struct IdentitiesManager {
             }
         }
     }
+
+
+
+    // MARK: - Matchs finding
+
+
+    fileprivate static func _matching(_ user:User,_ identification:Identification)->Bool{
+        if let email=user.email{
+            if PString.trim(email,characters:" \n-.")==PString.trim(identification.email,characters:" \n-."){
+                return true
+            }
+        }
+        if let phone=user.phoneNumber{
+            if PString.trim(phone,characters:" \n-.")==PString.trim(identification.phoneNumber,characters:" \n-."){
+                return true
+            }
+        }
+        return false
+    }
+
+    fileprivate static func _matching(_ user:User,_ profile:Profile)->Bool{
+        if user.UID == profile.user?.UID{
+            return true
+        }
+        if let email=user.email, let profileEmail=profile.user?.email{
+            if PString.trim(email,characters:" \n-.")==PString.trim(profileEmail,characters:" \n-."){
+                return true
+            }
+        }
+        if let phone=user.phoneNumber,let profilePhoneNumber=profile.user?.email{
+            if PString.trim(phone,characters:" \n-.")==PString.trim(profilePhoneNumber,characters:" \n-."){
+                return true
+            }
+        }
+        return false
+    }
+    
+    
+    
     
 }

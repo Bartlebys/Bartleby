@@ -88,8 +88,14 @@ class ConfirmPasswordActivationCode: IdentityStepViewController {
                 if PString.trim(self.code)==PString.trim(self.codeTextField.stringValue){
                     document.currentUser.password=candidatePassword
                     // Will produce the syndication
-                    IdentitiesManager.synchronize(document)
-                    self.identityWindowController?.passwordHasBeenChanged()
+                    IdentitiesManager.synchronize(document, completed: { (completion) in
+                        if completion.success{
+                            self.identityWindowController?.passwordHasBeenChanged()
+                        }else{
+                             self.messageTextField.stringValue=NSLocalizedString("Password change has failed. For security reason you must contact your support supervisor.", comment: "Password change has failed. For security reason you must contact your support supervisor.")
+                        }
+                    })
+
                 }else{
                     self.messageTextField.stringValue=NSLocalizedString("The activation code is not correct!", comment: "The activation code is not correct!")
                 }

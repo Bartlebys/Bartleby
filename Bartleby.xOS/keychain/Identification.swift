@@ -19,6 +19,7 @@ public struct Identification:Mappable {
     public var phoneNumber:String=""
     public var password:String=""
     public var externalID:String=Default.NO_UID
+    public var supportsPasswordSyndication:Bool=false
 
     public init() {}
 
@@ -30,5 +31,18 @@ public struct Identification:Mappable {
         self.phoneNumber <- ( map["phoneNumber"] )
         self.password <- ( map["password"] )
         self.externalID <- (map["externalID"])
+        self.supportsPasswordSyndication <- (map["supportsPasswordSyndication"])
+    }
+
+
+    public static func identificationFrom(user:User)->Identification{
+        var identification=Identification()
+        identification.email=user.email ?? ""
+        identification.phoneCountryCode=user.phoneCountryCode ?? ""
+        identification.phoneNumber=user.phoneNumber ?? ""
+        identification.password=user.password ?? Default.NO_PASSWORD
+        identification.externalID=user.externalID ?? Default.NO_UID
+        identification.supportsPasswordSyndication=user.supportsPasswordSyndication
+        return identification
     }
 }
