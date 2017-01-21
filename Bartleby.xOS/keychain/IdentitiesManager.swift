@@ -79,19 +79,18 @@ public struct IdentitiesManager {
     ///
     public static func synchronize(_ document:BartlebyDocument,completed:@escaping (Completion)->()){
         document.currentUser.login(sucessHandler: {
-                UpdateUser.execute(document.currentUser, in: document.UID,
-                                   sucessHandler: { (context) in
-                                    Async.main{
-                                        document.save(self)
-                                           do{
-                                            try IdentitiesManager._syndicateProfiles(document)
-                                            completed(Completion.successStateFromHTTPContext(context))
-                                           }catch{
-                                            completed(Completion.failureStateFromError(error))
-                                        }
-                                    }
-                }, failureHandler: { (context) in
-                    completed(Completion.failureStateFromHTTPContext(context))
+            UpdateUser.execute(document.currentUser, in: document.UID,
+                               sucessHandler: { (context) in
+                                // Mark as committed to prevent from re-upserting
+                                document.currentUser.hasBeenCommitted()
+                                do{
+                                    try IdentitiesManager._syndicateProfiles(document)
+                                    completed(Completion.successStateFromHTTPContext(context))
+                                }catch{
+                                    completed(Completion.failureStateFromError(error))
+                                }
+            }, failureHandler: { (context) in
+                completed(Completion.failureStateFromHTTPContext(context))
             })
 
         }, failureHandler: { (context) in
@@ -178,7 +177,7 @@ public struct IdentitiesManager {
         }
         return profiles
     }
-    
+
 
     // MARK: - Syndication
 
@@ -193,11 +192,13 @@ public struct IdentitiesManager {
         for i in 0..<n {
             identification=identities.identifications[i]
             if IdentitiesManager._matching(currentUser, identification){
-                identification.email=currentUser.email ?? ""
-                identification.phoneCountryCode=currentUser.phoneCountryCode ?? ""
-                identification.phoneNumber=currentUser.phoneNumber ?? ""
-                identification.password=currentUser.password ?? Default.NO_PASSWORD
-                identification.externalID=currentUser.externalID ?? Default.NO_UID
+                if identification.supportsPasswordSyndication{
+                    identification.email=currentUser.email ?? ""
+                    identification.phoneCountryCode=currentUser.phoneCountryCode ?? ""
+                    identification.phoneNumber=currentUser.phoneNumber ?? ""
+                    identification.password=currentUser.password ?? Default.NO_PASSWORD
+                    identification.externalID=currentUser.externalID ?? Default.NO_UID
+                }
                 newUser=false
             }
         }

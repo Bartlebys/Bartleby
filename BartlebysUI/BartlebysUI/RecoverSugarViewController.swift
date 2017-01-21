@@ -53,7 +53,7 @@ class RecoverSugarViewController: IdentityStepViewController {
                                             try document.reload()
                                             try document.metadata.putSomeSugarInYourBowl() // Save the key
                                             self.identityWindowController?.identificationIsValid=true
-                                            self.stepDelegate?.didValidateStep(number: self.stepIndex)
+                                            self.stepDelegate?.didValidateStep( self.stepIndex)
                                         }catch{
                                             self.messageTextField.stringValue=NSLocalizedString("Unable to decrypt the package", comment: "Unable to decrypt the package")
                                              document.log("\(error)", file: #file, function: #function, line: #line, category: Default.LOG_DEFAULT, decorative: false)

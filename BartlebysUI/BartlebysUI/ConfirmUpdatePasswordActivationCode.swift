@@ -1,5 +1,5 @@
 //
-//  ConfirmPasswordActivationCode.swift
+//  ConfirmUpdatePasswordActivationCode.swift
 //  BartlebysUI
 //
 //  Created by Benoit Pereira da silva on 17/01/2017.
@@ -9,7 +9,7 @@
 import Cocoa
 import BartlebyKit
 
-class ConfirmPasswordActivationCode: IdentityStepViewController {
+class ConfirmUpdatePasswordActivationCode: IdentityStepViewController {
 
     @IBOutlet weak var consignsLabel: NSTextField!
 
@@ -22,7 +22,7 @@ class ConfirmPasswordActivationCode: IdentityStepViewController {
     var confirmationIsImpossible=false
 
 
-    override var nibName : String { return "ConfirmPasswordActivationCode" }
+    override var nibName : String { return "ConfirmUpdatePasswordActivationCode" }
 
     override func viewDidLoad() {
         super.viewDidLoad()

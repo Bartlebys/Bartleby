@@ -74,11 +74,15 @@ class SetupCollaborativeServerViewController: IdentityStepViewController{
                             user.email=identityWindowController.identification?.email
                             user.phoneCountryCode=identityWindowController.identification?.phoneCountryCode
                             user.phoneNumber=identityWindowController.identification?.phoneNumber
+                            user.externalID=identityWindowController.identification?.externalID
                             user.supportsPasswordSyndication=identityWindowController.identification?.supportsPasswordSyndication ?? false
                             if let matchingProfile=matchingProfile {
                                 if let matchingUser=matchingProfile.user{
-                                    user.password=matchingUser.password
-                                    user.externalID=matchingUser.externalID
+                                    if user.supportsPasswordSyndication == true{
+                                        user.password=matchingUser.password
+                                        user.externalID=matchingUser.externalID
+                                    }
+
                                 }
                             }
                             document.metadata.memorizeUser(user)
@@ -114,13 +118,13 @@ class SetupCollaborativeServerViewController: IdentityStepViewController{
                                                                         code: locker.code, title: NSLocalizedString("Your activation code", comment: "Your activation code"),
                                                                         body: NSLocalizedString("Your activation code is: \n$code", comment: "Your activation code is"),
                                                                         sucessHandler: { (context) in
-                                                                            self.stepDelegate?.didValidateStep(number: self.stepIndex)
+                                                                            self.stepDelegate?.didValidateStep( self.stepIndex)
                                             }, failureHandler: { (context) in
                                                 self.stepDelegate?.enableActions()
                                                 document.log("\(context.responseString)", file: #file, function: #function, line: #line, category: Default.LOG_WARNING, decorative: false)
                                             })
                                         }else{
-                                            self.stepDelegate?.didValidateStep(number: self.stepIndex)
+                                            self.stepDelegate?.didValidateStep( self.stepIndex)
                                         }
 
                                     }, failureHandler: { (context) in

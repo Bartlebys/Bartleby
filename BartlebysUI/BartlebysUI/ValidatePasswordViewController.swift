@@ -82,7 +82,7 @@ class ValidatePasswordViewController: IdentityStepViewController{
                     document.metadata.saveThePassword=(self.memorizePasswordCheckBox.state==1)
                     self.identityWindowController?.identificationIsValid=true
                     document.online=true
-                    self.stepDelegate?.didValidateStep(number: self.stepIndex)
+                    self.stepDelegate?.didValidateStep( self.stepIndex)
                 }else{
                     self.messageTextField.stringValue=NSLocalizedString("Invalid Password", comment: "Invalid Password")
                 }

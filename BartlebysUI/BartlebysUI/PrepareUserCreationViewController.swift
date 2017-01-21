@@ -55,6 +55,7 @@ class PrepareUserCreationViewController: IdentityStepViewController{
                 }
             }
             self.emailComboBox.addItem(withObjectValue:NSLocalizedString("Add your Email", comment: "Add your Email"))
+            self.phoneCountryCodeComboBox.addItem(withObjectValue:NSLocalizedString("Phone Country Code", comment: "Phone Country Code"))
             self.phoneNumberComboBox.addItem(withObjectValue:NSLocalizedString("Phone number", comment: "Phone number"))
             for country in countryCodes.sorted(){
                 self.phoneCountryCodeComboBox.addItem(withObjectValue: country)
@@ -128,7 +129,7 @@ class PrepareUserCreationViewController: IdentityStepViewController{
                     id.supportsPasswordSyndication=(self.allowPasswordSyndicationCheckBox.state==1)
                     // We store the prepared identification
                     self.identityWindowController?.identification=id
-                    self.stepDelegate?.didValidateStep(number: self.stepIndex)
+                    self.stepDelegate?.didValidateStep(self.stepIndex)
                 }else{
                     self.messageTextField.stringValue=NSLocalizedString("Invalid phone number!", comment: "Invalid phone number!")
                 }

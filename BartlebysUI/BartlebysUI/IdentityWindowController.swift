@@ -18,7 +18,7 @@ public protocol IdentifactionDelegate{
 // MARK: - IdentityStepNavigation
 
 public protocol IdentityStepNavigation{
-    func didValidateStep(number:Int)
+    func didValidateStep(_ step:Int)
     func disableActions()
     func enableActions()
 }
@@ -95,7 +95,7 @@ public class IdentityWindowController: NSWindowController,DocumentProvider,Ident
 
     @IBOutlet var updatePassword: UpdatePasswordViewController!
 
-    @IBOutlet var updatePasswordConfirmation: ConfirmPasswordActivationCode!
+    @IBOutlet var updatePasswordConfirmation: ConfirmUpdatePasswordActivationCode!
 
     @IBOutlet var recoverSugar: RecoverSugarViewController!
 
@@ -111,60 +111,27 @@ public class IdentityWindowController: NSWindowController,DocumentProvider,Ident
 
     override public func windowDidLoad() {
         super.windowDidLoad()
-        self.configureControllers()
+        self._configureControllers()
         self.progressIndicator.isHidden=true
-        //IdentitiesManager.dumpKeyChainedProfiles()
-    }
-
-    func configureControllers() -> () {
-        if let document=self.getDocument(){
-            if document.metadata.currentUserUID == Default.NO_UID {
-
-                self.creationMode=true
-                // It is a new document
-
-                let prepareUserCreationItem=NSTabViewItem(viewController:self.prepareUserCreation)
-                self.prepareUserCreation.documentProvider=self
-                self.prepareUserCreation.stepDelegate=self
-                self.prepareUserCreation.stepIndex=0
-                self.tabView.addTabViewItem(prepareUserCreationItem)
-
-                let setupServerItem=NSTabViewItem(viewController:self.setUpCollaborativeServer)
-                self.setUpCollaborativeServer.documentProvider=self
-                self.setUpCollaborativeServer.stepDelegate=self
-                self.setUpCollaborativeServer.stepIndex=1
-                self.tabView.addTabViewItem(setupServerItem)
-
-                let confirmActivationItem=NSTabViewItem(viewController:self.confirmActivation)
-                self.confirmActivation.documentProvider=self
-                self.confirmActivation.stepDelegate=self
-                self.confirmActivation.stepIndex=2
-                self.tabView.addTabViewItem(confirmActivationItem)
-
-                let revealPasswordItem=NSTabViewItem(viewController:self.revealPassword)
-                self.revealPassword.documentProvider=self
-                self.revealPassword.stepDelegate=self
-                self.revealPassword.stepIndex=3
-                self.tabView.addTabViewItem(revealPasswordItem)
-                self.currentStep=0
-            }else{
-                self.displayValidatePassword()
-            }
+        if Bartleby.configuration.DEVELOPER_MODE{
+            IdentitiesManager.dumpKeyChainedProfiles()
         }
     }
 
-
-    public func displayValidatePassword(){
-        self.creationMode=false
-
-        let validatePasswordItem=NSTabViewItem(viewController:self.validatePassword)
-        self.validatePassword.documentProvider=self
-        self.validatePassword.stepDelegate=self
-        self.validatePassword.stepIndex=0
-        self.tabView.addTabViewItem(validatePasswordItem)
-
-        self.currentStep=0
-
+    fileprivate func _configureControllers() -> () {
+        if let document=self.getDocument(){
+            if document.metadata.currentUserUID == Default.NO_UID {
+                self.creationMode=true
+                // It is a new document
+                self.append(viewController: self.prepareUserCreation, selectImmediately: true)
+                self.append(viewController: self.setUpCollaborativeServer, selectImmediately: false)
+                self.append(viewController: self.confirmActivation, selectImmediately: false)
+                self.append(viewController: self.revealPassword, selectImmediately: false)
+            }else{
+                self.creationMode=false
+                self.append(viewController: self.validatePassword, selectImmediately: true)
+            }
+        }
     }
 
 
@@ -184,6 +151,25 @@ public class IdentityWindowController: NSWindowController,DocumentProvider,Ident
         }
     }
 
+
+    /// Removes the viewController
+    ///
+    /// - Parameter viewController: the view controller to remove
+    public func remove(viewController:IdentityStepViewController){
+        let nb=self.tabView.tabViewItems.count
+        for i in 0..<self.tabView.tabViewItems.count{
+            let item=self.tabView.tabViewItems[i]
+            if item.viewController==viewController{
+                self.tabView.removeTabViewItem(item)
+                break
+            }
+        }
+    }
+
+    fileprivate func _currentStepIs(_ viewController:IdentityStepViewController)->Bool{
+        let item=self.tabView.tabViewItems[currentStep]
+        return item.viewController==viewController
+    }
 
     // MARK: -
 
@@ -224,13 +210,11 @@ public class IdentityWindowController: NSWindowController,DocumentProvider,Ident
 
     // MARK: - IdentityStepNavigation
 
-    public func didValidateStep(number:Int){
+    public func didValidateStep(_ step:Int){
         var proceedImmediately=true
         if self.creationMode {
-            if number == 0{}
-            if number == 1{}
             // The SMS / second factor auth has been verified.
-            if number == 2{
+            if self._currentStepIs(self.confirmActivation){
                 // user is confirmed.
                 if let document=self.getDocument(){
                     proceedImmediately = false
@@ -251,20 +235,18 @@ public class IdentityWindowController: NSWindowController,DocumentProvider,Ident
                                 self.enableActions()
                             }
                         })
-                        // Mark as committed to prevent from re-upserting
-                        document.currentUser.hasBeenCommitted()
                     }
                 }
             }
-            if number == 3 {}
             if proceedImmediately{
                 self.nextStep()
                 self.enableActions()
             }
-            if number > 2 {
+            if step > 2 {
                 self.leftButton.isEnabled=false
             }
         }else{
+            // Not in creation Mode
             if proceedImmediately{
                 self.nextStep()
                 self.enableActions()
@@ -273,54 +255,44 @@ public class IdentityWindowController: NSWindowController,DocumentProvider,Ident
     }
     
     public func disableActions(){
-        self.progressIndicator.isHidden=false
-        self.progressIndicator.startAnimation(self)
+        self.enableProgressIndicator()
         self.leftButton.isEnabled=false
         self.rightButton.isEnabled=false
     }
 
     public func enableActions(){
-        self.progressIndicator.isHidden=true
-        self.progressIndicator.stopAnimation(self)
+        self.disableProgressIndicator()
         self.leftButton.isEnabled=true
         self.rightButton.isEnabled=true
     }
-    
+
+    public func enableProgressIndicator(){
+        self.progressIndicator.isHidden=false
+        self.progressIndicator.startAnimation(self)
+    }
+
+    public func disableProgressIndicator(){
+        self.progressIndicator.isHidden=true
+        self.progressIndicator.stopAnimation(self)
+    }
+
 
     /// MARK: Activation 
 
     public func recoverTheKey(){
-        /// Go to activation screen.
-        let recoverSugarItem=NSTabViewItem(viewController:self.recoverSugar)
-        self.recoverSugar.documentProvider=self
-        self.recoverSugar.stepDelegate=self
-        self.recoverSugar.stepIndex=1
-        self.tabView.addTabViewItem(recoverSugarItem)
-        self.currentStep=1
+        self.append(viewController: self.recoverSugar, selectImmediately: true)
     }
 
 
     /// MARK: Password Reset procedure
 
-
     public func resetMyPassword(){
-
-        let updatePasswordItem=NSTabViewItem(viewController:self.updatePassword)
-        self.updatePassword.documentProvider=self
-        self.updatePassword.stepDelegate=self
-        self.updatePassword.stepIndex=1
-        self.tabView.addTabViewItem(updatePasswordItem)
-
-        let confirmItem=NSTabViewItem(viewController:self.updatePasswordConfirmation)
-        self.updatePasswordConfirmation.documentProvider=self
-        self.updatePasswordConfirmation.stepDelegate=self
-        self.updatePasswordConfirmation.stepIndex=2
-        self.tabView.addTabViewItem(confirmItem)
-        self.currentStep=1
-
+        self.append(viewController: self.updatePassword, selectImmediately: true)
+        self.append(viewController: self.updatePasswordConfirmation, selectImmediately: false)
     }
 
-    /// Called by Confirm Password ActivationCode
+
+    /// Called by ConfirmUpdatePasswordActivationCode
     public func passwordHasBeenChanged(){
         self.currentStep=0
         let u=self.tabView.tabViewItem(at: 1)

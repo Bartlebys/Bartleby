@@ -34,6 +34,7 @@ open class IdentityStepViewController: NSViewController ,DocumentDependent,Ident
     open var stepIndex:Int = -1
 
     open func proceedToValidation(){
-        // On success You should call: self.stepDelegate?.didValidateStep(number: self.stepIndex)
+        // On success You should call: self.stepDelegate?.didValidateStep(self.stepIndex)
+        // Else you can embedd the navigation logic
     }
 }
