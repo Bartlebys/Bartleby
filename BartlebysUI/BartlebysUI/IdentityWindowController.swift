@@ -147,7 +147,7 @@ public class IdentityWindowController: NSWindowController,DocumentProvider,Ident
         viewController.stepIndex=self.tabView.tabViewItems.count
         self.tabView.addTabViewItem(viewControllerItem)
         if selectImmediately{
-            self.tabView.selectTabViewItem(at: viewController.stepIndex)
+            self.currentStep=viewController.stepIndex
         }
     }
 
@@ -167,8 +167,9 @@ public class IdentityWindowController: NSWindowController,DocumentProvider,Ident
     }
 
     fileprivate func _currentStepIs(_ viewController:IdentityStepViewController)->Bool{
-        let item=self.tabView.tabViewItems[currentStep]
-        return item.viewController==viewController
+        let item=self.tabView.tabViewItems[self.currentStep]
+        let matching=item.viewController?.className==viewController.className
+        return matching
     }
 
     // MARK: -
