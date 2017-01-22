@@ -30,7 +30,9 @@ class ConfirmUpdatePasswordActivationCode: IdentityStepViewController {
 
     override func viewWillAppear() {
         super.viewWillAppear()
-        self.consignsLabel.stringValue=""
+        if let document=self.documentProvider?.getDocument(){
+            self.consignsLabel.stringValue=NSLocalizedString("We have sent a confirmation code to: ", comment: "We have sent a confirmation code to: ")+document.currentUser.fullPhoneNumber
+        }
         self.messageTextField.stringValue=""
         self.codeTextField.stringValue=""
         if Bartleby.configuration.DEVELOPER_MODE{
@@ -86,12 +88,12 @@ class ConfirmUpdatePasswordActivationCode: IdentityStepViewController {
             let candidatePassword=self.identityWindowController?.passwordCandidate {
             if self.confirmationIsImpossible==false{
                 if PString.trim(self.code)==PString.trim(self.codeTextField.stringValue){
-                    document.currentUser.password=candidatePassword
                     // Will produce the syndication
-                    IdentitiesManager.synchronize(document, completed: { (completion) in
+                    IdentitiesManager.synchronize(document,password:candidatePassword, completed: { (completion) in
                         if completion.success{
                             self.identityWindowController?.passwordHasBeenChanged()
                         }else{
+                            self.identityWindowController?.enableActions()
                              self.messageTextField.stringValue=NSLocalizedString("Password change has failed. For security reason you must contact your support supervisor.", comment: "Password change has failed. For security reason you must contact your support supervisor.")
                         }
                     })

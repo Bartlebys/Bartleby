@@ -149,7 +149,6 @@ class SetupCollaborativeServerViewController: IdentityStepViewController{
                             if userHasBeenFound{
                                 __postCreationPhase(user: user)
                             }else{
-
                                 CreateUser.execute(user, in: document.UID, sucessHandler: { (context) in
                                     __postCreationPhase(user: user)
                                 }, failureHandler: { (context) in

@@ -20,7 +20,7 @@ public enum IdentitiesError:Error{
 
 public struct Identities:Mappable {
 
-    static let storageKey="identities.org.bartlebys"
+    static var storageKey="identities.org.bartlebys"
 
     var identifications:[Identification]=[Identification]()
     var profiles:[Profile]=[Profile]()

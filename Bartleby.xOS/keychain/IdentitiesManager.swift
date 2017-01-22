@@ -92,10 +92,15 @@ public struct IdentitiesManager {
     /// each stored profile.user is modified in the key chain on success only.
     /// - Parameters:
     ///   - document: the concerned document
+    ///   - password: the current user password
     ///   - completed: this closure is called when all the syndicable update has been executed.
     ///
-    public static func synchronize(_ document:BartlebyDocument,completed:@escaping (Completion)->()){
-        document.currentUser.login(sucessHandler: {
+    public static func synchronize(_ document:BartlebyDocument,password:String,completed:@escaping (Completion)->()){
+        if let appGroup=document.metadata.appGroup{
+            // We use the app Group has storage key
+            Identities.storageKey="identities."+appGroup
+        }
+        func __updateCurrentUser(){
             UpdateUser.execute(document.currentUser, in: document.UID,
                                sucessHandler: { (context) in
                                 // Mark as committed to prevent from re-upserting
@@ -109,7 +114,13 @@ public struct IdentitiesManager {
             }, failureHandler: { (context) in
                 completed(Completion.failureStateFromHTTPContext(context))
             })
-
+        }
+        // Update of an  already pushed user.
+        document.currentUser.login(sucessHandler: {
+            document.currentUser.doNotCommit {
+                document.currentUser.password=password
+            }
+            __updateCurrentUser()
         }, failureHandler: { (context) in
             completed(Completion.failureStateFromHTTPContext(context))
         })
@@ -146,58 +157,58 @@ public struct IdentitiesManager {
         guard let appGroup=document.metadata.appGroup else{
             throw IdentitiesManagerError.appGroupIsMissing
         }
-            do{
-                let identities = try Identities.loadFromKeyChain(accessGroup: appGroup)
-                /// Try to find the better profile
+        do{
+            let identities = try Identities.loadFromKeyChain(accessGroup: appGroup)
+            /// Try to find the better profile
 
-                // Do we have already profiles with the same currentUser UID
-                for profile in identities.profiles{
-                    if profile.user?.UID==document.currentUser.UID{
-                        profiles.append(profile)
-                    }
+            // Do we have already profiles with the same currentUser UID
+            for profile in identities.profiles{
+                if profile.user?.UID==document.currentUser.UID{
+                    profiles.append(profile)
                 }
-                if profiles.count>0{
-                    return profiles
-                }
-
-                // Do we have already profiles for this document
-                for profile in identities.profiles{
-                    if profile.documentUID==document.UID{
-                        profiles.append(profile)
-                    }
-                }
-                if profiles.count>0{
-                    return profiles
-                }
-
-                // Do we have already profiles in this dataspace
-                for profile in identities.profiles{
-                    if profile.documentSpaceUID==document.spaceUID{
-                        profiles.append(profile)
-                    }
-                }
-                if profiles.count>0{
-                    return profiles
-                }
-
-                // Do we have already a profiles on this server
-                for profile in identities.profiles{
-                    if profile.url==document.baseURL{
-                        profiles.append(profile)
-                    }
-                }
-                if profiles.count>0{
-                    return profiles
-                }
-
-                // Return all the profiles a
-                if identities.profiles.count>0{
-                    return identities.profiles
-                }
-
-            }catch{
-                document.log("\(error)", file: #file, function: #function, line: #line, category: Default.LOG_SECURITY, decorative: false)
             }
+            if profiles.count>0{
+                return profiles
+            }
+
+            // Do we have already profiles for this document
+            for profile in identities.profiles{
+                if profile.documentUID==document.UID{
+                    profiles.append(profile)
+                }
+            }
+            if profiles.count>0{
+                return profiles
+            }
+
+            // Do we have already profiles in this dataspace
+            for profile in identities.profiles{
+                if profile.documentSpaceUID==document.spaceUID{
+                    profiles.append(profile)
+                }
+            }
+            if profiles.count>0{
+                return profiles
+            }
+
+            // Do we have already a profiles on this server
+            for profile in identities.profiles{
+                if profile.url==document.baseURL{
+                    profiles.append(profile)
+                }
+            }
+            if profiles.count>0{
+                return profiles
+            }
+
+            // Return all the profiles a
+            if identities.profiles.count>0{
+                return identities.profiles
+            }
+
+        }catch{
+            document.log("\(error)", file: #file, function: #function, line: #line, category: Default.LOG_SECURITY, decorative: false)
+        }
 
         return profiles
     }
@@ -346,10 +357,10 @@ public struct IdentitiesManager {
                                         }
                     }, failureHandler: { (context) in
                         // This may be normal if user.supportsPasswordSyndication == false
-                        glog("User patch has failed \(context)", file: #file, function: #function, line: #line, category: Default.LOG_WARNING, decorative: false)
+                        document.log("User patch has failed \(context)", file: #file, function: #function, line: #line, category: Default.LOG_WARNING, decorative: false)
                     })
                 }, failureHandler: { (context) in
-                    glog("Not able to patch the user because the Login has failed \(context)", file: #file, function: #function, line: #line, category: Default.LOG_WARNING, decorative: false)
+                    document.log("Not able to patch the user because the Login has failed \(context)", file: #file, function: #function, line: #line, category: Default.LOG_WARNING, decorative: false)
                 })
             }
         }

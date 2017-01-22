@@ -27,12 +27,7 @@ class ConfirmActivationViewController: IdentityStepViewController{
         if let document=self.documentProvider?.getDocument(){
             if let locker:Locker = try? Bartleby.registredObjectByUID(document.metadata.lockerUID) {
                 self.locker=locker
-                var phoneNumber=""
-                if let c=document.currentUser.phoneCountryCode,
-                    let p=document.currentUser.phoneNumber{
-                    phoneNumber=c+p
-                }
-                self.confirmLabel.stringValue=NSLocalizedString("We have sent a confirmation code to: ", comment: "We have sent a confirmation code to: ")+phoneNumber
+                self.confirmLabel.stringValue=NSLocalizedString("We have sent a confirmation code to: ", comment: "We have sent a confirmation code to: ")+document.currentUser.fullPhoneNumber
                 self.codeTextField.stringValue=""
                 if Bartleby.configuration.DEVELOPER_MODE{
                     print("\(locker.code)")
