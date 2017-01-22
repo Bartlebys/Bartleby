@@ -8,6 +8,14 @@
 
 import Foundation
 
+
+
+public enum IdentitiesManagerError:Error{
+    case appGroupIsMissing
+}
+
+
+
 /// We group the different Identities in the keyChain (Synchronized by iCloud )
 /// It allows to patch the email, phone & password between multiple users in different DataSpaces.
 ///
@@ -26,41 +34,50 @@ public struct IdentitiesManager {
     /// - Returns: the suggested profiles (can be used to propose a user account)
     public static func suggestedIdentifications(forDocument document:BartlebyDocument)->[Identification]{
         var identifications=[Identification]()
-        let allProfiles=IdentitiesManager._suggestedProfiles(forDocument:document)
-        for profile in allProfiles{
-            if !identifications.contains(where: { (embeddedIdentification) -> Bool in
-                let email = PString.trim(profile.user?.email ?? "")
-                let phone = PString.trim(profile.user?.phoneNumber ?? "")
-                if PString.trim(embeddedIdentification.email) == email &&
-                    PString.trim(embeddedIdentification.phoneNumber) == phone {
+        do{
+            let allProfiles=try IdentitiesManager._suggestedProfiles(forDocument:document)
+            for profile in allProfiles{
+                if !identifications.contains(where: { (embeddedIdentification) -> Bool in
+                    let email = PString.trim(profile.user?.email ?? "")
+                    let phone = PString.trim(profile.user?.phoneNumber ?? "")
+                    if PString.trim(embeddedIdentification.email) == email &&
+                        PString.trim(embeddedIdentification.phoneNumber) == phone {
+                    }
+                    return true
+                }){
+                    var identification=Identification()
+                    identification.email=profile.user?.email ?? ""
+                    identification.phoneCountryCode=profile.user?.phoneCountryCode ?? ""
+                    identification.phoneNumber=profile.user?.phoneNumber ?? ""
+                    identification.password=profile.user?.password ?? Default.NO_PASSWORD
+                    identifications.append(identification)
                 }
-                return true
-            }){
-                var identification=Identification()
-                identification.email=profile.user?.email ?? ""
-                identification.phoneCountryCode=profile.user?.phoneCountryCode ?? ""
-                identification.phoneNumber=profile.user?.phoneNumber ?? ""
-                identification.password=profile.user?.password ?? Default.NO_PASSWORD
-                identifications.append(identification)
             }
+        }catch{
+            document.log("\(error)", file: #file, function: #function, line: #line, category: Default.LOG_SECURITY, decorative: false)
         }
         return identifications
     }
 
 
     /// Dumps the Identities founds in the key Chain
-    public static func dumpKeyChainedProfiles(){
+    public static func dumpKeyChainedProfiles(_ document:BartlebyDocument){
         if Bartleby.configuration.DEVELOPER_MODE{
             do{
-                let identities=try Identities.loadFromKeyChain()
-                for profile in identities.profiles{
-                    glog("\(profile.toJSONString() ?? "NO PROFILE" )", file: #file, function: #function, line: #line, category: Default.LOG_SECURITY, decorative: false)
+                if let appGroup=document.metadata.appGroup{
+                    let identities=try Identities.loadFromKeyChain(accessGroup: appGroup)
+                    for profile in identities.profiles{
+                        document.log("\(profile.toJSONString() ?? "NO PROFILE" )", file: #file, function: #function, line: #line, category: Default.LOG_SECURITY, decorative: false)
+                    }
+                }else{
+                    document.log("App group is a must to allow shared storage", file: #file, function: #function, line: #line, category: Default.LOG_SECURITY, decorative: false)
                 }
+
             }catch{
-                glog("\(error)", file: #file, function: #function, line: #line, category: Default.LOG_SECURITY, decorative: false)
+                document.log("\(error)", file: #file, function: #function, line: #line, category: Default.LOG_SECURITY, decorative: false)
             }
         }else{
-            glog("Bartleby.configuration.DEVELOPER_MODE must be set to true to be able to dumpKeyChainedProfiles", file: #file, function: #function, line: #line, category: Default.LOG_SECURITY, decorative: false)
+            document.log("Bartleby.configuration.DEVELOPER_MODE must be set to true to be able to dumpKeyChainedProfiles", file: #file, function: #function, line: #line, category: Default.LOG_SECURITY, decorative: false)
         }
     }
 
@@ -100,16 +117,19 @@ public struct IdentitiesManager {
 
 
     public static func profileMatching(identification:Identification, inDocument document:BartlebyDocument)->Profile?{
-        let identities=try? Identities.loadFromKeyChain()
-        if let profiles=identities?.profiles{
-            for profile in profiles{
-                if let user=profile.user{
-                    if IdentitiesManager._matching(user,identification){
-                        return profile
+        if let appGroup=document.metadata.appGroup{
+            let identities=try? Identities.loadFromKeyChain(accessGroup: appGroup)
+            if let profiles=identities?.profiles{
+                for profile in profiles{
+                    if let user=profile.user{
+                        if IdentitiesManager._matching(user,identification){
+                            return profile
+                        }
                     }
                 }
             }
         }
+
         return nil
     }
 
@@ -121,60 +141,64 @@ public struct IdentitiesManager {
     ///
     /// - Parameter document: the current document
     /// - Returns: the suggested profiles (can be used to propose a user account)
-    fileprivate static func _suggestedProfiles(forDocument document:BartlebyDocument)->[Profile]{
+    fileprivate static func _suggestedProfiles(forDocument document:BartlebyDocument)throws-> [Profile]{
         var profiles=[Profile]()
-        do{
-            let identities = try Identities.loadFromKeyChain()
-            /// Try to find the better profile
-
-            // Do we have already profiles with the same currentUser UID
-            for profile in identities.profiles{
-                if profile.user?.UID==document.currentUser.UID{
-                    profiles.append(profile)
-                }
-            }
-            if profiles.count>0{
-                return profiles
-            }
-
-            // Do we have already profiles for this document
-            for profile in identities.profiles{
-                if profile.documentUID==document.UID{
-                    profiles.append(profile)
-                }
-            }
-            if profiles.count>0{
-                return profiles
-            }
-
-            // Do we have already profiles in this dataspace
-            for profile in identities.profiles{
-                if profile.documentSpaceUID==document.spaceUID{
-                    profiles.append(profile)
-                }
-            }
-            if profiles.count>0{
-                return profiles
-            }
-
-            // Do we have already a profiles on this server
-            for profile in identities.profiles{
-                if profile.url==document.baseURL{
-                    profiles.append(profile)
-                }
-            }
-            if profiles.count>0{
-                return profiles
-            }
-
-            // Return all the profiles
-            if identities.profiles.count>0{
-                return identities.profiles
-            }
-
-        }catch{
-            glog("\(error)", file: #file, function: #function, line: #line, category: Default.LOG_SECURITY, decorative: false)
+        guard let appGroup=document.metadata.appGroup else{
+            throw IdentitiesManagerError.appGroupIsMissing
         }
+            do{
+                let identities = try Identities.loadFromKeyChain(accessGroup: appGroup)
+                /// Try to find the better profile
+
+                // Do we have already profiles with the same currentUser UID
+                for profile in identities.profiles{
+                    if profile.user?.UID==document.currentUser.UID{
+                        profiles.append(profile)
+                    }
+                }
+                if profiles.count>0{
+                    return profiles
+                }
+
+                // Do we have already profiles for this document
+                for profile in identities.profiles{
+                    if profile.documentUID==document.UID{
+                        profiles.append(profile)
+                    }
+                }
+                if profiles.count>0{
+                    return profiles
+                }
+
+                // Do we have already profiles in this dataspace
+                for profile in identities.profiles{
+                    if profile.documentSpaceUID==document.spaceUID{
+                        profiles.append(profile)
+                    }
+                }
+                if profiles.count>0{
+                    return profiles
+                }
+
+                // Do we have already a profiles on this server
+                for profile in identities.profiles{
+                    if profile.url==document.baseURL{
+                        profiles.append(profile)
+                    }
+                }
+                if profiles.count>0{
+                    return profiles
+                }
+
+                // Return all the profiles a
+                if identities.profiles.count>0{
+                    return identities.profiles
+                }
+
+            }catch{
+                document.log("\(error)", file: #file, function: #function, line: #line, category: Default.LOG_SECURITY, decorative: false)
+            }
+
         return profiles
     }
 
@@ -182,7 +206,10 @@ public struct IdentitiesManager {
     // MARK: - Syndication
 
     fileprivate static func _syndicateProfiles(_ document:BartlebyDocument) throws{
-        var identities=try Identities.loadFromKeyChain()
+        guard let appGroup=document.metadata.appGroup else{
+            throw IdentitiesManagerError.appGroupIsMissing
+        }
+        var identities=try Identities.loadFromKeyChain(accessGroup: appGroup)
 
         /// Update the Masters users.
         var newUser=true
@@ -241,20 +268,29 @@ public struct IdentitiesManager {
             }
         }
 
-
+        // Save the current profiles and identities
+        try identities.saveToKeyChain(accessGroup: appGroup)
 
         /// Intents to patch the associatied identification with the new password
         /// There is no guarantee it will work as we may refer to various servers.
         for profile in identities.profiles {
             if profile.requiresPatch{
-                // We patch syndicated profiles only the document user has already been Updated.
-                IdentitiesManager._patch(profile, with: currentUserIdentification,from:document)
+                do{
+                    // We patch syndicated profiles only the document user has already been Updated.
+                    try IdentitiesManager._patch(profile, with: currentUserIdentification,from:document)
+                }catch{
+                    document.log("\(error)", file: #file, function: #function, line: #line, category: Default.LOG_SECURITY, decorative: false)
+                }
             }
         }
     }
 
 
-    fileprivate static func _patch(_ profile:Profile, with identification:Identification, from document:BartlebyDocument){
+    fileprivate static func _patch(_ profile:Profile, with identification:Identification, from document:BartlebyDocument)throws{
+        guard let appGroup=document.metadata.appGroup else{
+            throw IdentitiesManagerError.appGroupIsMissing
+        }
+
         var supportsPasswordSyndication=false
         if let user=profile.user{
             supportsPasswordSyndication=user.supportsPasswordSyndication
@@ -272,13 +308,13 @@ public struct IdentitiesManager {
                 profile.user?.externalID=identification.externalID
                 profile.requiresPatch=false
                 do{
-                    var identities=try Identities.loadFromKeyChain()
+                    var identities=try Identities.loadFromKeyChain(accessGroup: appGroup)
                     if let idx=identities.profiles.index(where: { (p) -> Bool in
                         return p.user?.UID == profile.user?.UID
                     }){
                         identities.profiles[idx]=profile
                     }
-                    try identities.saveToKeyChain()
+                    try identities.saveToKeyChain(accessGroup:appGroup)
                 }catch{
                     glog("\(error)", file: #file, function: #function, line: #line, category: Default.LOG_SECURITY, decorative: false)
                 }

@@ -490,8 +490,10 @@
 		E5499AB01C3A7F5100C52A9D /* Bartleby.h in Headers */ = {isa = PBXBuildFile; fileRef = E549996E1C3A7E2A00C52A9D /* Bartleby.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		E55934361DEDD1B7001DE10F /* BartlebyTestCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = E55934351DEDD1B7001DE10F /* BartlebyTestCase.swift */; };
 		E55D61441DE9F79800BF63B6 /* BlocksTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E55D61431DE9F79800BF63B6 /* BlocksTests.swift */; };
-		E55FF97B1E15588C00EE3393 /* Locksmith.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E55FF97A1E15588C00EE3393 /* Locksmith.framework */; };
-		E55FF97D1E1558A300EE3393 /* Locksmith.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E55FF97C1E1558A300EE3393 /* Locksmith.framework */; };
+		E56756B71E34B3C900E299F0 /* KeyChainHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = E56756B61E34B3C900E299F0 /* KeyChainHelper.swift */; };
+		E56756B81E34B3C900E299F0 /* KeyChainHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = E56756B61E34B3C900E299F0 /* KeyChainHelper.swift */; };
+		E56756BA1E34B40F00E299F0 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E56756B91E34B40F00E299F0 /* Security.framework */; };
+		E56756BC1E34B41800E299F0 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E56756BB1E34B41800E299F0 /* Security.framework */; };
 		E57536151E167079008207BA /* Identification.swift in Sources */ = {isa = PBXBuildFile; fileRef = E57536141E167079008207BA /* Identification.swift */; };
 		E57536171E16B276008207BA /* PatchUser.swift in Sources */ = {isa = PBXBuildFile; fileRef = E57536161E16B276008207BA /* PatchUser.swift */; };
 		E57536181E16B276008207BA /* PatchUser.swift in Sources */ = {isa = PBXBuildFile; fileRef = E57536161E16B276008207BA /* PatchUser.swift */; };
@@ -820,8 +822,9 @@
 		E549996F1C3A7E2A00C52A9D /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		E55934351DEDD1B7001DE10F /* BartlebyTestCase.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BartlebyTestCase.swift; sourceTree = "<group>"; };
 		E55D61431DE9F79800BF63B6 /* BlocksTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BlocksTests.swift; sourceTree = "<group>"; };
-		E55FF97A1E15588C00EE3393 /* Locksmith.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Locksmith.framework; path = ../Carthage/Build/Mac/Locksmith.framework; sourceTree = "<group>"; };
-		E55FF97C1E1558A300EE3393 /* Locksmith.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Locksmith.framework; path = ../Carthage/Build/iOS/Locksmith.framework; sourceTree = "<group>"; };
+		E56756B61E34B3C900E299F0 /* KeyChainHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KeyChainHelper.swift; sourceTree = "<group>"; };
+		E56756B91E34B40F00E299F0 /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
+		E56756BB1E34B41800E299F0 /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS10.2.sdk/System/Library/Frameworks/Security.framework; sourceTree = DEVELOPER_DIR; };
 		E56C00461C8ED4A800BB6B19 /* BartlebyKitMacOSTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = BartlebyKitMacOSTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		E56C004A1C8ED4A800BB6B19 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		E56C00531C8ED51D00BB6B19 /* BasicApiTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BasicApiTests.swift; sourceTree = "<group>"; };
@@ -845,7 +848,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				E55FF97B1E15588C00EE3393 /* Locksmith.framework in Frameworks */,
+				E56756BA1E34B40F00E299F0 /* Security.framework in Frameworks */,
 				E50805C11DF6C26F0085E5C3 /* Alamofire.framework in Frameworks */,
 				E50805C21DF6C26F0085E5C3 /* ObjectMapper.framework in Frameworks */,
 			);
@@ -855,7 +858,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				E55FF97D1E1558A300EE3393 /* Locksmith.framework in Frameworks */,
+				E56756BC1E34B41800E299F0 /* Security.framework in Frameworks */,
 				E50805C51DF6C2E00085E5C3 /* Alamofire.framework in Frameworks */,
 				E50805C61DF6C2E00085E5C3 /* ObjectMapper.framework in Frameworks */,
 			);
@@ -1365,6 +1368,7 @@
 				E53ECE101E1585C00084DD6C /* Identities.swift */,
 				E53ED0051E1587490084DD6C /* IdentitiesManager.swift */,
 				E53ECE111E1585C00084DD6C /* Profile.swift */,
+				E56756B61E34B3C900E299F0 /* KeyChainHelper.swift */,
 			);
 			path = keychain;
 			sourceTree = "<group>";
@@ -1372,11 +1376,11 @@
 		E54995081C3A754F00C52A9D /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				E56756BB1E34B41800E299F0 /* Security.framework */,
+				E56756B91E34B40F00E299F0 /* Security.framework */,
 				E50805C81DF6C3CC0085E5C3 /* Alamofire.framework.dSYM */,
 				E50805C91DF6C3CC0085E5C3 /* ObjectMapper.framework.dSYM */,
-				E55FF97C1E1558A300EE3393 /* Locksmith.framework */,
 				E50805C31DF6C2E00085E5C3 /* Alamofire.framework */,
-				E55FF97A1E15588C00EE3393 /* Locksmith.framework */,
 				E50805C41DF6C2E00085E5C3 /* ObjectMapper.framework */,
 				E50805BF1DF6C26F0085E5C3 /* Alamofire.framework */,
 				E50805C01DF6C26F0085E5C3 /* ObjectMapper.framework */,
@@ -1633,6 +1637,7 @@
 				E5135C101E084B7F001E65A0 /* CryptoDelegate.swift in Sources */,
 				E5135C481E084B7F001E65A0 /* UserProtocol.swift in Sources */,
 				E5135B6C1E084B7F001E65A0 /* CryptedKeyValueStorage.swift in Sources */,
+				E56756B71E34B3C900E299F0 /* KeyChainHelper.swift in Sources */,
 				E5135B761E084B7F001E65A0 /* Data+HMAC.swift in Sources */,
 				E5135C021E084B7F001E65A0 /* ChangesInspectable.swift in Sources */,
 				E5135BA81E084B7F001E65A0 /* BartlebyDocument+Reachability.swift in Sources */,
@@ -1999,6 +2004,7 @@
 				E5135B371E084B7F001E65A0 /* UpdateLockers.swift in Sources */,
 				E5135B691E084B7F001E65A0 /* Data+Compression.swift in Sources */,
 				E5135AD51E084B7F001E65A0 /* CreateLockers.swift in Sources */,
+				E56756B81E34B3C900E299F0 /* KeyChainHelper.swift in Sources */,
 				E5135AAB1E084B7F001E65A0 /* KeyedData.swift in Sources */,
 				E5135B871E084B7F001E65A0 /* ManagedModelError.swift in Sources */,
 				E5135B711E084B7F001E65A0 /* CryptedStringTransform.swift in Sources */,

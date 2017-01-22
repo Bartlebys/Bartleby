@@ -39,7 +39,6 @@
 		E53F09851DF95C4E003301DD /* BartlebyKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = BartlebyKit.framework; path = "../../../../../../../../Library/Developer/Xcode/DerivedData/Bartleby-gnbycabytonvqxecnlfitmgmkmiu/Build/Products/Debug/BartlebyKit.framework"; sourceTree = "<group>"; };
 		E53F0B561DF95D80003301DD /* DropView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DropView.swift; sourceTree = "<group>"; };
 		E53F0B631DF95F4A003301DD /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = System/Library/Frameworks/AppKit.framework; sourceTree = SDKROOT; };
-		E55FF9781E15584F00EE3393 /* Locksmith.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Locksmith.framework; path = ../Carthage/Build/Mac/Locksmith.framework; sourceTree = "<group>"; };
 		E55FF9821E155F5900EE3393 /* IdentityWindowController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IdentityWindowController.swift; sourceTree = "<group>"; };
 		E55FF9831E155F5900EE3393 /* IdentityWindowController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = IdentityWindowController.xib; sourceTree = "<group>"; };
 		E55FF9861E155FF300EE3393 /* UpdatePasswordViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UpdatePasswordViewController.swift; sourceTree = "<group>"; };
@@ -83,7 +82,6 @@
 			isa = PBXGroup;
 			children = (
 				E53ECDF51E1575720084DD6C /* Security.framework */,
-				E55FF9781E15584F00EE3393 /* Locksmith.framework */,
 				E53F0B631DF95F4A003301DD /* AppKit.framework */,
 				E53F09851DF95C4E003301DD /* BartlebyKit.framework */,
 			);

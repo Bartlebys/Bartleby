@@ -49,7 +49,7 @@ public protocol BartlebyConfiguration {
     static var BPRINT_API_TRACKED_CALLS: Bool { get set }
 
     // Should we save the password by Default ?
-    static var SAVE_PASSWORD_DEFAULT_VALUE: Bool { get set }
+    static var SAVE_PASSWORD_BY_DEFAULT: Bool { get set }
 
     // If set to JSON for example would be Indented
     static var HUMAN_FORMATTED_SERIALIZATON_FORMAT: Bool { get set }
@@ -71,6 +71,9 @@ public protocol BartlebyConfiguration {
 
     // If set to true the confirmation code will be for example printed in the console...
     static var DEVELOPER_MODE: Bool { get }
+
+    // Supports by default KeyChained password synchronization between multiple local accounts (false is more secured)
+    static var SUPPORTS_PASSWORD_SYNDICATION_BY_DEFAULT: Bool { get }
 }
 
 
@@ -119,7 +122,7 @@ public struct BartlebyDefaultConfiguration: BartlebyConfiguration {
     public static var BPRINT_API_TRACKED_CALLS: Bool=true
 
     // Should we save the password by Default ?
-    public static var SAVE_PASSWORD_DEFAULT_VALUE: Bool=false
+    public static var SAVE_PASSWORD_BY_DEFAULT: Bool=false
 
     // If set to JSON for example would be Indented
     public static var HUMAN_FORMATTED_SERIALIZATON_FORMAT: Bool=false
@@ -134,13 +137,17 @@ public struct BartlebyDefaultConfiguration: BartlebyConfiguration {
     public static var MAX_OPERATIONS_BUNCH_SIZE: Int=10
 
     // E.g : Default.DEFAULT_PASSWORD_CHAR_CART
-    public static var  PASSWORD_CHAR_CART: String=Default.DEFAULT_PASSWORD_CHAR_CART
+    public static var PASSWORD_CHAR_CART: String=Default.DEFAULT_PASSWORD_CHAR_CART
 
     // If set to true the keyed changes are stored in the ManagedModel - When opening the Inspector this default value is remplaced by true
     public static var CHANGES_ARE_INSPECTABLES_BY_DEFAULT: Bool = false
 
     // If set to true the confirmation code will be for example printed in the console...
     public static let DEVELOPER_MODE: Bool = false
+
+    // Supports by default KeyChained password synchronization between multiple local accounts (false is more secured)
+    public static let SUPPORTS_PASSWORD_SYNDICATION_BY_DEFAULT: Bool = false
+
 }
 
 // MARK: - Default values

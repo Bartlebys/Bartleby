@@ -60,7 +60,7 @@ open class TestsConfiguration: BartlebyConfiguration {
 
 
     // Should we save the password by Default ?
-    open static var SAVE_PASSWORD_DEFAULT_VALUE: Bool=false
+    open static var SAVE_PASSWORD_BY_DEFAULT: Bool=false
 
     // If set to JSON for example would be Indented
     open static var HUMAN_FORMATTED_SERIALIZATON_FORMAT: Bool=false
@@ -82,7 +82,10 @@ open class TestsConfiguration: BartlebyConfiguration {
 
     // If set to true the confirmation code will be for example printed in the console...
     open static let DEVELOPER_MODE: Bool = true // Should be turned to false in production
-    
+
+    // Supports by default KeyChained password synchronization between multiple local accounts (false is more secured)
+    public static let SUPPORTS_PASSWORD_SYNDICATION_BY_DEFAULT: Bool = false
+
     //MARK: - Variable base URL
 
     enum Environment {

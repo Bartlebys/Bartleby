@@ -47,13 +47,6 @@
 		E508064D1DF6D4CC0085E5C3 /* TransformType.swift in Sources */ = {isa = PBXBuildFile; fileRef = E50806371DF6D4CC0085E5C3 /* TransformType.swift */; };
 		E508064E1DF6D4CC0085E5C3 /* URLTransform.swift in Sources */ = {isa = PBXBuildFile; fileRef = E50806381DF6D4CC0085E5C3 /* URLTransform.swift */; };
 		E50A3AB81C453A6D004BB7E3 /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = E50A3AB71C453A6D004BB7E3 /* main.swift */; };
-		E53ECE081E15847F0084DD6C /* Dictionary_Initializers.swift in Sources */ = {isa = PBXBuildFile; fileRef = E53ECDFF1E15847F0084DD6C /* Dictionary_Initializers.swift */; };
-		E53ECE091E15847F0084DD6C /* Locksmith.swift in Sources */ = {isa = PBXBuildFile; fileRef = E53ECE021E15847F0084DD6C /* Locksmith.swift */; };
-		E53ECE0A1E15847F0084DD6C /* LocksmithAccessibleOption.swift in Sources */ = {isa = PBXBuildFile; fileRef = E53ECE031E15847F0084DD6C /* LocksmithAccessibleOption.swift */; };
-		E53ECE0B1E15847F0084DD6C /* LocksmithError.swift in Sources */ = {isa = PBXBuildFile; fileRef = E53ECE041E15847F0084DD6C /* LocksmithError.swift */; };
-		E53ECE0C1E15847F0084DD6C /* LocksmithInternetAuthenticationType.swift in Sources */ = {isa = PBXBuildFile; fileRef = E53ECE051E15847F0084DD6C /* LocksmithInternetAuthenticationType.swift */; };
-		E53ECE0D1E15847F0084DD6C /* LocksmithInternetProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = E53ECE061E15847F0084DD6C /* LocksmithInternetProtocol.swift */; };
-		E53ECE0E1E15847F0084DD6C /* LocksmithSecurityClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = E53ECE071E15847F0084DD6C /* LocksmithSecurityClass.swift */; };
 		E548A4851D880577006FF410 /* bartlebyTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E548A4841D880577006FF410 /* bartlebyTests.swift */; };
 		E5CC291F1D846CB300F7C783 /* CommandLine.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5CC28AC1D846CB300F7C783 /* CommandLine.swift */; };
 		E5CC29201D846CB300F7C783 /* Option.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5CC28AE1D846CB300F7C783 /* Option.swift */; };
@@ -356,13 +349,6 @@
 		E50A3AB41C453A6D004BB7E3 /* bartleby */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = bartleby; sourceTree = BUILT_PRODUCTS_DIR; };
 		E50A3AB71C453A6D004BB7E3 /* main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
 		E50A3B091C453BB1004BB7E3 /* Bartleby-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Bartleby-Bridging-Header.h"; sourceTree = "<group>"; };
-		E53ECDFF1E15847F0084DD6C /* Dictionary_Initializers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Dictionary_Initializers.swift; sourceTree = "<group>"; };
-		E53ECE021E15847F0084DD6C /* Locksmith.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Locksmith.swift; sourceTree = "<group>"; };
-		E53ECE031E15847F0084DD6C /* LocksmithAccessibleOption.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LocksmithAccessibleOption.swift; sourceTree = "<group>"; };
-		E53ECE041E15847F0084DD6C /* LocksmithError.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LocksmithError.swift; sourceTree = "<group>"; };
-		E53ECE051E15847F0084DD6C /* LocksmithInternetAuthenticationType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LocksmithInternetAuthenticationType.swift; sourceTree = "<group>"; };
-		E53ECE061E15847F0084DD6C /* LocksmithInternetProtocol.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LocksmithInternetProtocol.swift; sourceTree = "<group>"; };
-		E53ECE071E15847F0084DD6C /* LocksmithSecurityClass.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LocksmithSecurityClass.swift; sourceTree = "<group>"; };
 		E548A4821D880577006FF410 /* bartlebyTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = bartlebyTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		E548A4841D880577006FF410 /* bartlebyTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = bartlebyTests.swift; sourceTree = "<group>"; };
 		E548A4861D880577006FF410 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -727,21 +713,6 @@
 			name = "Embedded-Modules";
 			sourceTree = "<group>";
 		};
-		E53ECDFE1E15847F0084DD6C /* LockerSmith */ = {
-			isa = PBXGroup;
-			children = (
-				E53ECDFF1E15847F0084DD6C /* Dictionary_Initializers.swift */,
-				E53ECE021E15847F0084DD6C /* Locksmith.swift */,
-				E53ECE031E15847F0084DD6C /* LocksmithAccessibleOption.swift */,
-				E53ECE041E15847F0084DD6C /* LocksmithError.swift */,
-				E53ECE051E15847F0084DD6C /* LocksmithInternetAuthenticationType.swift */,
-				E53ECE061E15847F0084DD6C /* LocksmithInternetProtocol.swift */,
-				E53ECE071E15847F0084DD6C /* LocksmithSecurityClass.swift */,
-			);
-			name = LockerSmith;
-			path = ../Carthage/Checkouts/Locksmith/Source;
-			sourceTree = "<group>";
-		};
 		E548A4831D880577006FF410 /* bartlebyTests */ = {
 			isa = PBXGroup;
 			children = (
@@ -761,7 +732,6 @@
 		E5B98E001CC0DC9B00A7ECD1 /* Vendors */ = {
 			isa = PBXGroup;
 			children = (
-				E53ECDFE1E15847F0084DD6C /* LockerSmith */,
 				E50806201DF6D4CC0085E5C3 /* ObjectMapper */,
 				E50805FA1DF6D49C0085E5C3 /* Alamofire */,
 				E5CC28A91D846CB300F7C783 /* CommandLine */,
@@ -1383,7 +1353,6 @@
 				E5EBE2641E1BC00C00354A50 /* NSNotification+Progression.swift in Sources */,
 				E508064E1DF6D4CC0085E5C3 /* URLTransform.swift in Sources */,
 				E5EBE2301E1BC00C00354A50 /* String+HMAC.swift in Sources */,
-				E53ECE0A1E15847F0084DD6C /* LocksmithAccessibleOption.swift in Sources */,
 				E5EBE2451E1BC00C00354A50 /* BartlebyDocument+SecurityScopes.swift in Sources */,
 				E5EBE2931E1BC00D00354A50 /* UniversalType.swift in Sources */,
 				E50806391DF6D4CC0085E5C3 /* CustomDateFormatTransform.swift in Sources */,
@@ -1392,7 +1361,6 @@
 				E508064A1DF6D4CC0085E5C3 /* ToJSON.swift in Sources */,
 				E5EBE2881E1BC00D00354A50 /* Monitoring.swift in Sources */,
 				E5EBE2231E1BC00C00354A50 /* CompressionAlgorithms.swift in Sources */,
-				E53ECE0C1E15847F0084DD6C /* LocksmithInternetAuthenticationType.swift in Sources */,
 				E5EBE2251E1BC00C00354A50 /* Data+Compression.swift in Sources */,
 				E5EBE2A41E1BC00D00354A50 /* RelayActivationCode.swift in Sources */,
 				E5EBE1BD1E1BC00C00354A50 /* BartlebyDocument.swift in Sources */,
@@ -1417,7 +1385,6 @@
 				E50806101DF6D49C0085E5C3 /* Alamofire.swift in Sources */,
 				E5EBE27B1E1BC00C00354A50 /* DocumentDependent.swift in Sources */,
 				E5EBE23B1E1BC00C00354A50 /* BartlebyDocument+Collections.swift in Sources */,
-				E53ECE091E15847F0084DD6C /* Locksmith.swift in Sources */,
 				E5EBE2831E1BC00D00354A50 /* JSONString.swift in Sources */,
 				E5EBE20F1E1BC00C00354A50 /* UpdateTag.swift in Sources */,
 				E5EBE2151E1BC00C00354A50 /* BSFSError.swift in Sources */,
@@ -1447,7 +1414,6 @@
 				E508061B1DF6D49C0085E5C3 /* SessionDelegate.swift in Sources */,
 				E5EBE1C51E1BC00C00354A50 /* Acknowledgment.swift in Sources */,
 				E5EBE1DC1E1BC00C00354A50 /* User.swift in Sources */,
-				E53ECE0D1E15847F0084DD6C /* LocksmithInternetProtocol.swift in Sources */,
 				E50806171DF6D49C0085E5C3 /* Response.swift in Sources */,
 				E5CC291F1D846CB300F7C783 /* CommandLine.swift in Sources */,
 				E508063D1DF6D4CC0085E5C3 /* DictionaryTransform.swift in Sources */,
@@ -1510,7 +1476,6 @@
 				E5EBE2201E1BC00C00354A50 /* UploadBlock.swift in Sources */,
 				E5EBE25E1E1BC00C00354A50 /* ManagedModel+Relational.swift in Sources */,
 				E5EBE1D11E1BC00C00354A50 /* Locker.swift in Sources */,
-				E53ECE081E15847F0084DD6C /* Dictionary_Initializers.swift in Sources */,
 				E5EBE1F81E1BC00C00354A50 /* ReadBoxById.swift in Sources */,
 				E5EBE1C21E1BC00C00354A50 /* ManagedPushOperations.swift in Sources */,
 				E5EBE1D01E1BC00C00354A50 /* KeyedData.swift in Sources */,
@@ -1549,7 +1514,6 @@
 				E5EBE2371E1BC00C00354A50 /* DocumentError.swift in Sources */,
 				E5EBE1FE1E1BC00C00354A50 /* ReadNodeById.swift in Sources */,
 				E5EBE24E1E1BC00C00354A50 /* HTTPContext+Conveniences.swift in Sources */,
-				E53ECE0E1E15847F0084DD6C /* LocksmithSecurityClass.swift in Sources */,
 				E5EBE24A1E1BC00C00354A50 /* Completion+Result.swift in Sources */,
 				E508063F1DF6D4CC0085E5C3 /* EnumTransform.swift in Sources */,
 				E5EBE26A1E1BC00C00354A50 /* ImageTransform.swift in Sources */,
@@ -1626,7 +1590,6 @@
 				E508061C1DF6D49C0085E5C3 /* SessionManager.swift in Sources */,
 				E5EBE2A71E1BC00D00354A50 /* TriggersForIndexes.swift in Sources */,
 				E5EBE2191E1BC00C00354A50 /* DeltaAnalyzer.swift in Sources */,
-				E53ECE0B1E15847F0084DD6C /* LocksmithError.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

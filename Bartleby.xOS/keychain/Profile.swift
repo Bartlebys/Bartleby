@@ -10,7 +10,6 @@ import Foundation
 
 #if !USE_EMBEDDED_MODULES
     import ObjectMapper
-    import Locksmith
 #endif
 
 public struct Profile:Mappable{

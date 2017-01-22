@@ -114,7 +114,7 @@ import Foundation
 	dynamic open var pushOnChanges:Bool = Bartleby.configuration.ONLINE_BY_DEFAULT
 
 	//Save the password or not?
-	dynamic open var saveThePassword:Bool = Bartleby.configuration.SAVE_PASSWORD_DEFAULT_VALUE
+	dynamic open var saveThePassword:Bool = Bartleby.configuration.SAVE_PASSWORD_BY_DEFAULT
 
 	//The sum of all the metrics
 	dynamic open var cumulatedUpMetricsDuration:Double = 0

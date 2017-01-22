@@ -114,7 +114,9 @@ public class IdentityWindowController: NSWindowController,DocumentProvider,Ident
         self._configureControllers()
         self.progressIndicator.isHidden=true
         if Bartleby.configuration.DEVELOPER_MODE{
-            IdentitiesManager.dumpKeyChainedProfiles()
+            if let document=self.getDocument(){
+                IdentitiesManager.dumpKeyChainedProfiles(document)
+            }
         }
     }
 

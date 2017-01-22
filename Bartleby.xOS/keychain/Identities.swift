@@ -9,7 +9,6 @@
 import Foundation
 #if !USE_EMBEDDED_MODULES
     import ObjectMapper
-    import Locksmith
 #endif
 
 public enum IdentitiesError:Error{
@@ -21,41 +20,41 @@ public enum IdentitiesError:Error{
 
 public struct Identities:Mappable {
 
+    static let storageKey="identities.org.bartlebys"
+
     var identifications:[Identification]=[Identification]()
     var profiles:[Profile]=[Profile]()
 
-    public init() {}
+    public init () {}
 
-    public init?(map: Map) {}
+    public init?(map: Map) {
+    }
 
     public mutating func mapping(map: Map) {
         self.identifications <- ( map["identifications"] )
         self.profiles <- ( map["profiles"] )
     }
 
-    func saveToKeyChain()throws->(){
+    func saveToKeyChain(accessGroup:String)throws->(){
         if let json=self.toJSONString(){
+            let keyChainHelper=KeyChainHelper(accessGroup: accessGroup)
             // The identities are crypted in the KeyChain
             let crypted = try Bartleby.cryptoDelegate.encryptString(json,useKey:Bartleby.configuration.KEY)
-            let _ = try? Locksmith.deleteDataForUserAccount(userAccount: "bartleby")
-            try Locksmith.saveData(data: ["data":crypted], forUserAccount:"bartleby")
+            let result=keyChainHelper.set(crypted, forKey: Identities.storageKey)
         }else{
             throw IdentitiesError.serializationFailure
         }
     }
 
-    static func loadFromKeyChain()throws->Identities{
-        if let data=Locksmith.loadDataForUserAccount(userAccount: "bartleby"){
-            if let cryptedJson=data["data"] as? String{
-                // The identities are crypted in the KeyChain
-                let json = try Bartleby.cryptoDelegate.decryptString(cryptedJson,useKey:Bartleby.configuration.KEY)
-                if let instance = Mapper <Identities>().map(JSONString:json){
-                    return instance
-                }else{
-                    throw IdentitiesError.deserializationFailure
-                }
+    public static func loadFromKeyChain(accessGroup:String)throws->Identities{
+        let keyChainHelper=KeyChainHelper(accessGroup: accessGroup)
+        if let cryptedJson=keyChainHelper.get(Identities.storageKey){
+            // The identities are crypted in the KeyChain
+            let json = try Bartleby.cryptoDelegate.decryptString(cryptedJson,useKey:Bartleby.configuration.KEY)
+            if let instance = Mapper <Identities>().map(JSONString:json){
+                return instance
             }else{
-                throw IdentitiesError.missingData
+                throw IdentitiesError.deserializationFailure
             }
         }else{
             // Return a void Identities

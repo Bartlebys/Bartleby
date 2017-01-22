@@ -19,7 +19,7 @@ public struct Identification:Mappable {
     public var phoneNumber:String=""
     public var password:String=""
     public var externalID:String=Default.NO_UID
-    public var supportsPasswordSyndication:Bool=false
+    public var supportsPasswordSyndication:Bool=Bartleby.configuration.SUPPORTS_PASSWORD_SYNDICATION_BY_DEFAULT
 
     public init() {}
 
