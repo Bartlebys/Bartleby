@@ -86,6 +86,13 @@ open class TestsConfiguration: BartlebyConfiguration {
     // Supports by default KeyChained password synchronization between multiple local accounts (false is more secured)
     public static let SUPPORTS_PASSWORD_SYNDICATION_BY_DEFAULT: Bool = false
 
+    // Supports by default the ability to update the password. Recovery procedure for accounts that have allready be saved in the KeyChain (false is more secured)
+    public static var SUPPORTS_PASSWORD_UPDATE_BY_DEFAULT: Bool = false
+
+    // Allows by default users to memorize password (false is more secured)
+    public static var SUPPORTS_PASSWORD_MEMORIZATION_BY_DEFAULT: Bool = false
+
+
     //MARK: - Variable base URL
 
     enum Environment {

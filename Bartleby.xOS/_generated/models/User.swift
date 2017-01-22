@@ -132,7 +132,7 @@ import Foundation
 	dynamic open var loginHasSucceed:Bool = false
 
 	//Can a user memorize her/his password
-	dynamic open var supportsPasswordMemorization:Bool = false  {
+	dynamic open var supportsPasswordMemorization:Bool = Bartleby.configuration.SUPPORTS_PASSWORD_MEMORIZATION_BY_DEFAULT  {
 	    didSet { 
 	       if !self.wantsQuietChanges && supportsPasswordMemorization != oldValue {
 	            self.provisionChanges(forKey: "supportsPasswordMemorization",oldValue: oldValue,newValue: supportsPasswordMemorization)  
@@ -141,7 +141,7 @@ import Foundation
 	}
 
 	//Can a user update her/his  own password
-	dynamic open var supportsPasswordUpdate:Bool = false  {
+	dynamic open var supportsPasswordUpdate:Bool = Bartleby.configuration.SUPPORTS_PASSWORD_UPDATE_BY_DEFAULT  {
 	    didSet { 
 	       if !self.wantsQuietChanges && supportsPasswordUpdate != oldValue {
 	            self.provisionChanges(forKey: "supportsPasswordUpdate",oldValue: oldValue,newValue: supportsPasswordUpdate)  
@@ -150,7 +150,7 @@ import Foundation
 	}
 
 	//If a local user has the same credentials can her/his password be syndicated
-	dynamic open var supportsPasswordSyndication:Bool = false  {
+	dynamic open var supportsPasswordSyndication:Bool = Bartleby.configuration.SUPPORTS_PASSWORD_SYNDICATION_BY_DEFAULT  {
 	    didSet { 
 	       if !self.wantsQuietChanges && supportsPasswordSyndication != oldValue {
 	            self.provisionChanges(forKey: "supportsPasswordSyndication",oldValue: oldValue,newValue: supportsPasswordSyndication)  

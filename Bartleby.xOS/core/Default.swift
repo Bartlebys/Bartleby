@@ -63,7 +63,7 @@ public protocol BartlebyConfiguration {
     // Supervision loop interval (1 second min )
     static var LOOP_TIME_INTERVAL_IN_SECONDS: Double { get set }
 
-     // To guarantee the sequential Execution use 1 (!)
+    // To guarantee the sequential Execution use 1 (!)
     static var MAX_OPERATIONS_BUNCH_SIZE: Int { get set }
 
     // If set to true the keyed changes are stored in the ManagedModel - When opening the Inspector this default value is remplaced by true
@@ -74,14 +74,18 @@ public protocol BartlebyConfiguration {
 
     // Supports by default KeyChained password synchronization between multiple local accounts (false is more secured)
     static var SUPPORTS_PASSWORD_SYNDICATION_BY_DEFAULT: Bool { get }
+
+    // Supports by default the ability to update the password. Recovery procedure for accounts that have allready be saved in the KeyChain (false is more secured)
+    static var SUPPORTS_PASSWORD_UPDATE_BY_DEFAULT: Bool { get }
+
+    // Allows by default users to memorize password (false is more secured)
+    static var SUPPORTS_PASSWORD_MEMORIZATION_BY_DEFAULT: Bool { get }
 }
 
 
 // MARK: - BartlebyDefaultConfiguration
 
 public struct BartlebyDefaultConfiguration: BartlebyConfiguration {
-
-
 
     // The Default base key used to encrypt / decrypt (the metadata)
     // We use a different key for the data (saved during the activation process)
@@ -148,6 +152,12 @@ public struct BartlebyDefaultConfiguration: BartlebyConfiguration {
     // Supports by default KeyChained password synchronization between multiple local accounts (false is more secured)
     public static let SUPPORTS_PASSWORD_SYNDICATION_BY_DEFAULT: Bool = false
 
+    // Supports by default the ability to update the password. Recovery procedure for accounts that have allready be saved in the KeyChain (false is more secured)
+    public static var SUPPORTS_PASSWORD_UPDATE_BY_DEFAULT: Bool = false
+
+    // Allows by default users to memorize password (false is more secured)
+    public static var SUPPORTS_PASSWORD_MEMORIZATION_BY_DEFAULT: Bool = false
+
 }
 
 // MARK: - Default values
@@ -194,8 +204,8 @@ public struct Default {
     static public let CATEGORY_DOWNLOADS = "downloads" // Used on Downloads
     static public let CATEGORY_UPLOADS = "uploads" // Used on Uploads
     static public let CATEGORY_ASSEMBLIES = "assemblies" // Used when mounting a box
-
+    
     // A bunch of char in wich to pick to compose a random password
     static let DEFAULT_PASSWORD_CHAR_CART="123456789ABCDEFGHJKMNPQRSTUVWXYZ"
-
+    
 }
