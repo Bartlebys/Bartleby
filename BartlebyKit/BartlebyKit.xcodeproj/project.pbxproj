@@ -494,6 +494,7 @@
 		E56756B81E34B3C900E299F0 /* KeyChainHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = E56756B61E34B3C900E299F0 /* KeyChainHelper.swift */; };
 		E56756BA1E34B40F00E299F0 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E56756B91E34B40F00E299F0 /* Security.framework */; };
 		E56756BC1E34B41800E299F0 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E56756BB1E34B41800E299F0 /* Security.framework */; };
+		E56756BD1E352AF000E299F0 /* Identification.swift in Sources */ = {isa = PBXBuildFile; fileRef = E57536141E167079008207BA /* Identification.swift */; };
 		E57536151E167079008207BA /* Identification.swift in Sources */ = {isa = PBXBuildFile; fileRef = E57536141E167079008207BA /* Identification.swift */; };
 		E57536171E16B276008207BA /* PatchUser.swift in Sources */ = {isa = PBXBuildFile; fileRef = E57536161E16B276008207BA /* PatchUser.swift */; };
 		E57536181E16B276008207BA /* PatchUser.swift in Sources */ = {isa = PBXBuildFile; fileRef = E57536161E16B276008207BA /* PatchUser.swift */; };
@@ -2079,6 +2080,7 @@
 				E5135A931E084B7F001E65A0 /* Acknowledgment.swift in Sources */,
 				E5135BB51E084B7F001E65A0 /* CollectionMetadatum+Proxy.swift in Sources */,
 				E5135B491E084B7F001E65A0 /* BSFSError.swift in Sources */,
+				E56756BD1E352AF000E299F0 /* Identification.swift in Sources */,
 				E5135C291E084B7F001E65A0 /* LogCategorizable.swift in Sources */,
 				E5135C411E084B7F001E65A0 /* SuperIterable.swift in Sources */,
 				E5135A8F1E084B7F001E65A0 /* ManagedTags.swift in Sources */,
