@@ -97,24 +97,7 @@
 			name = supportFiles;
 			sourceTree = "<group>";
 		};
-		E5FAC5161DF95B1C00398C95 = {
-			isa = PBXGroup;
-			children = (
-				E5FAC5221DF95B1C00398C95 /* BartlebysUI */,
-				E5FAC5211DF95B1C00398C95 /* Products */,
-				E53F09841DF95C4E003301DD /* Frameworks */,
-			);
-			sourceTree = "<group>";
-		};
-		E5FAC5211DF95B1C00398C95 /* Products */ = {
-			isa = PBXGroup;
-			children = (
-				E5FAC5201DF95B1C00398C95 /* BartlebysUI.framework */,
-			);
-			name = Products;
-			sourceTree = "<group>";
-		};
-		E5FAC5221DF95B1C00398C95 /* BartlebysUI */ = {
+		E5DC3C1F1E3602AA004B379A /* IdentityManagement */ = {
 			isa = PBXGroup;
 			children = (
 				E5717E5D1E2F6B7C00850303 /* ConfirmUpdatePasswordActivationCode.swift */,
@@ -138,7 +121,48 @@
 				E59AABA41E1A937F00BE4BF1 /* RevealPasswordViewController.swift */,
 				E59AABA51E1A937F00BE4BF1 /* RevealPasswordViewController.xib */,
 				E59AABA21E1A889B00BE4BF1 /* IdentityStepViewController.swift */,
+			);
+			name = IdentityManagement;
+			sourceTree = "<group>";
+		};
+		E5DC3C201E3602CD004B379A /* Components */ = {
+			isa = PBXGroup;
+			children = (
+				E5DC3C211E360390004B379A /* Views */,
+			);
+			name = Components;
+			sourceTree = "<group>";
+		};
+		E5DC3C211E360390004B379A /* Views */ = {
+			isa = PBXGroup;
+			children = (
 				E53F0B561DF95D80003301DD /* DropView.swift */,
+			);
+			name = Views;
+			sourceTree = "<group>";
+		};
+		E5FAC5161DF95B1C00398C95 = {
+			isa = PBXGroup;
+			children = (
+				E5FAC5221DF95B1C00398C95 /* BartlebysUI */,
+				E5FAC5211DF95B1C00398C95 /* Products */,
+				E53F09841DF95C4E003301DD /* Frameworks */,
+			);
+			sourceTree = "<group>";
+		};
+		E5FAC5211DF95B1C00398C95 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				E5FAC5201DF95B1C00398C95 /* BartlebysUI.framework */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		E5FAC5221DF95B1C00398C95 /* BartlebysUI */ = {
+			isa = PBXGroup;
+			children = (
+				E5DC3C201E3602CD004B379A /* Components */,
+				E5DC3C1F1E3602AA004B379A /* IdentityManagement */,
 				E5717E671E2F6B9500850303 /* Media.xcassets */,
 				E53F0B611DF95EBE003301DD /* supportFiles */,
 			);
