@@ -99,6 +99,11 @@ extension BartlebyDocument:ConcreteConsignee, ConcreteTracker, Consignation, Ada
                     onSelectedIndex(0)
                     return
                 }
+                // Return if NSApp is not available (e.g : call has occured from an XPC service)
+                guard let _ = NSClassFromString("NSApp") else {
+                    onSelectedIndex(0)
+                    return
+                }
 
                 if let window=NSApp.mainWindow {
                     let alert = NSAlert()
@@ -149,6 +154,11 @@ extension BartlebyDocument:ConcreteConsignee, ConcreteTracker, Consignation, Ada
 
                 // Return if this is a unit test
                 if let _ = NSClassFromString("XCTest") {
+                    return
+                }
+
+                // Return if NSApp is not available (e.g : call has occured from an XPC service)
+                guard let _ = NSClassFromString("NSApp") else {
                     return
                 }
 
