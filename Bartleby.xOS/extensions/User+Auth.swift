@@ -25,15 +25,12 @@ extension User {
 
     /// Returns an encrypted hashed version of the password
     open var cryptoPassword:String{
-        if let p=self.password{
-            do{
-                let encrypted=try Bartleby.cryptoDelegate.encryptString(p,useKey:Bartleby.configuration.KEY)
-                return encrypted
-            }catch{
-                return  "CRYPTO_ERROR"
-            }
+        do{
+            let encrypted=try Bartleby.cryptoDelegate.encryptString(self.password,useKey:Bartleby.configuration.KEY)
+            return encrypted
+        }catch{
+            return  "CRYPTO_ERROR"
         }
-        return Default.NO_STRING_ERROR
     }
 
 
@@ -50,15 +47,11 @@ extension User {
     /// Returns the full phone number
     open var fullPhoneNumber:String{
         var prefix=""
-        if let phoneCountryCode=self.phoneCountryCode{
-            if let match = phoneCountryCode.range(of:"(?<=\\()[^()]{1,10}(?=\\))", options: .regularExpression) {
-                prefix=phoneCountryCode.substring(with: match)
-            }
+        if let match = self.phoneCountryCode.range(of:"(?<=\\()[^()]{1,10}(?=\\))", options: .regularExpression) {
+            prefix = self.phoneCountryCode.substring(with: match)
         }
-        if let phoneNumber=self.phoneNumber{
-            return prefix+phoneNumber
-        }
-        return "NO_PHONE_NUMBER"
+        return prefix+self.phoneNumber
+
     }
     
 }

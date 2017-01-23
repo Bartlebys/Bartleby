@@ -37,11 +37,11 @@ public struct Identification:Mappable {
 
     public static func identificationFrom(user:User)->Identification{
         var identification=Identification()
-        identification.email=user.email ?? ""
-        identification.phoneCountryCode=user.phoneCountryCode ?? ""
-        identification.phoneNumber=user.phoneNumber ?? ""
-        identification.password=user.password ?? Default.NO_PASSWORD
-        identification.externalID=user.externalID ?? Default.NO_UID
+        identification.email=user.email
+        identification.phoneCountryCode=user.phoneCountryCode
+        identification.phoneNumber=user.phoneNumber
+        identification.password=user.password
+        identification.externalID=user.externalID
         identification.supportsPasswordSyndication=user.supportsPasswordSyndication
         return identification
     }

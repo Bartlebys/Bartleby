@@ -38,10 +38,7 @@ public extension DocumentMetadata{
 
         // Store the email and Phonenumber into the metadata
         // For user clarity purposes
-
-        if let email=user.email{
-            self.currentUserEmail=email
-        }
+        self.currentUserEmail=user.email
         self.currentUserFullPhoneNumber=user.fullPhoneNumber
     }
 

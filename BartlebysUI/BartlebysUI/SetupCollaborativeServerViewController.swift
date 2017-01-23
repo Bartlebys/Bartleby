@@ -43,15 +43,15 @@ class SetupCollaborativeServerViewController: IdentityStepViewController{
                 self.stepDelegate?.disableActions()
                 Async.main{
                     HTTPManager.apiIsReachable(serverURL, successHandler: {
-                        // We prefer to wait for reachability response before to disable the actions
-
-                        // The server is Reachable
-                        self.messageTextField.stringValue=""
-
-                        // Should we create a USER?
-                        var matchingProfile:Profile?
-                        var userHasBeenFound=false
                         if let identification=identityWindowController.identification{
+                            // We prefer to wait for reachability response before to disable the actions
+                            // The server is Reachable
+                            self.messageTextField.stringValue=""
+
+                            // Should we create a USER?
+                            var matchingProfile:Profile?
+                            var userHasBeenFound=false
+
                             // Check if we should reuse a password or an external ID.
                             matchingProfile=IdentitiesManager.profileMatching(identification: identification, inDocument: document)
                             if let matchingProfile=matchingProfile{
@@ -65,109 +65,114 @@ class SetupCollaborativeServerViewController: IdentityStepViewController{
                                     }
                                 }
                             }
-                        }
 
-                        if userHasBeenFound==false{
-                            // In rare situation we prefer to push manually the entities
-                            // To do so we do not commit the object created by the newObject() factory
-                            var user:User=document.newObject(commit:false)
-                            user.email=identityWindowController.identification?.email
-                            user.phoneCountryCode=identityWindowController.identification?.phoneCountryCode
-                            user.phoneNumber=identityWindowController.identification?.phoneNumber
-                            if let externalID=identityWindowController.identification?.externalID{
+
+                            if userHasBeenFound==false{
+                                // In rare situation we prefer to push manually the entities
+                                // To do so we do not commit the object created by the newObject() factory
+                                var user:User=document.newObject(commit:false)
+
+                                user.email=identification.email
+                                user.phoneCountryCode=identification.phoneCountryCode
+                                user.phoneNumber=identification.phoneNumber
+                                let externalID=identification.externalID
                                 if externalID != Default.NO_UID{
                                     user.externalID=externalID
                                 }
-                            }
-                            user.supportsPasswordSyndication=identityWindowController.identification?.supportsPasswordSyndication ?? false
-                            if let matchingProfile=matchingProfile {
-                                if let matchingUser=matchingProfile.user{
-                                    if user.supportsPasswordSyndication == true{
-                                        user.password=matchingUser.password
-                                        user.externalID=matchingUser.externalID
-                                    }
+                                user.supportsPasswordSyndication=identification.supportsPasswordSyndication
 
-                                }
-                            }
-                            document.metadata.memorizeUser(user)
-                        }
-
-                        func __postCreationPhase(user:User){
-                            // The user has been successfully pushed
-                            // Let's login
-                            user.login(sucessHandler: {
-                                let locker:Locker=document.newObject(commit:false)
-                                locker.startDate=Date()// now
-                                locker.endDate=Date.distantFuture//
-                                locker.doNotCommit {
-                                    locker.gems=document.metadata.sugar
-                                    locker.associatedDocumentUID=document.UID
-                                    locker.subjectUID=document.UID
-                                    locker.userUID=user.UID
-                                    locker.mode = .persistent
-                                    // Store the locker UID
-                                    document.metadata.lockerUID=locker.UID
-
-                                    CreateLocker.execute(locker, in:  document.UID, sucessHandler: { (context) in
-                                        let email=user.email!
-                                        let phoneNumber=user.fullPhoneNumber
-
-                                        if self.relayActivationCode{
-                                            // The Locker has been successfully pushed
-                                            // we need now  to confirm the account
-                                            RelayActivationCode.execute(baseURL: serverURL,
-                                                                        documentUID: document.UID,
-                                                                        toEmail: email,
-                                                                        toPhoneNumber: phoneNumber,
-                                                                        code: locker.code, title: NSLocalizedString("Your activation code", comment: "Your activation code"),
-                                                                        body: NSLocalizedString("Your activation code is: \n$code", comment: "Your activation code is"),
-                                                                        sucessHandler: { (context) in
-                                                                            self.stepDelegate?.didValidateStep( self.stepIndex)
-                                            }, failureHandler: { (context) in
-                                                self.stepDelegate?.enableActions()
-                                                document.log("\(context.responseString)", file: #file, function: #function, line: #line, category: Default.LOG_WARNING, decorative: false)
-                                            })
-                                        }else{
-                                            self.stepDelegate?.didValidateStep( self.stepIndex)
+                                if let matchingProfile=matchingProfile {
+                                    if let matchingUser=matchingProfile.user{
+                                        if user.supportsPasswordSyndication == true{
+                                            user.password=matchingUser.password
+                                            let externalID=matchingUser.externalID
+                                            if externalID != Default.NO_UID{
+                                                user.externalID=externalID
+                                            }
                                         }
-
-                                    }, failureHandler: { (context) in
-                                        self.stepDelegate?.enableActions()
-                                        self.messageTextField.stringValue="\(context.responseString)"
-                                        document.log("\(context.message)", file: #file, function: #function, line: #line, category: Default.LOG_WARNING, decorative: false)
-                                    })
-
+                                    }
                                 }
-                            }, failureHandler: { (context) in
-                                self.stepDelegate?.enableActions()
-                                self.messageTextField.stringValue="\(context.message)"
-                                document.log("\(context.responseString)", file: #file, function: #function, line: #line, category: Default.LOG_WARNING, decorative: false)
-                            })
-                        }
-                        do{
-                            // This will create and save the sugar cryptic key.
-                            try document.metadata.cookThePie()
+                                document.metadata.memorizeUser(user)
+                            }
 
-                            document.metadata.collaborationServerURL=serverURL
-                            let user=document.users[0]
-                            if userHasBeenFound{
-                                __postCreationPhase(user: user)
-                            }else{
-                                CreateUser.execute(user, in: document.UID, sucessHandler: { (context) in
-                                    __postCreationPhase(user: user)
+                            func __postCreationPhase(user:User){
+                                // The user has been successfully pushed
+                                // Let's login
+                                user.login(sucessHandler: {
+                                    let locker:Locker=document.newObject(commit:false)
+                                    locker.startDate=Date()// now
+                                    locker.endDate=Date.distantFuture//
+                                    locker.doNotCommit {
+                                        locker.gems=document.metadata.sugar
+                                        locker.associatedDocumentUID=document.UID
+                                        locker.subjectUID=document.UID
+                                        locker.userUID=user.UID
+                                        locker.mode = .persistent
+                                        // Store the locker UID
+                                        document.metadata.lockerUID=locker.UID
+
+                                        CreateLocker.execute(locker, in:  document.UID, sucessHandler: { (context) in
+                                            let email=user.email
+                                            let phoneNumber=user.fullPhoneNumber
+
+                                            if self.relayActivationCode{
+                                                // The Locker has been successfully pushed
+                                                // we need now  to confirm the account
+                                                RelayActivationCode.execute(baseURL: serverURL,
+                                                                            documentUID: document.UID,
+                                                                            toEmail: email,
+                                                                            toPhoneNumber: phoneNumber,
+                                                                            code: locker.code, title: NSLocalizedString("Your activation code", comment: "Your activation code"),
+                                                                            body: NSLocalizedString("Your activation code is: \n$code", comment: "Your activation code is"),
+                                                                            sucessHandler: { (context) in
+                                                                                self.stepDelegate?.didValidateStep( self.stepIndex)
+                                                }, failureHandler: { (context) in
+                                                    self.stepDelegate?.enableActions()
+                                                    document.log("\(context.responseString)", file: #file, function: #function, line: #line, category: Default.LOG_WARNING, decorative: false)
+                                                })
+                                            }else{
+                                                self.stepDelegate?.didValidateStep( self.stepIndex)
+                                            }
+
+                                        }, failureHandler: { (context) in
+                                            self.stepDelegate?.enableActions()
+                                            self.messageTextField.stringValue="\(context.responseString)"
+                                            document.log("\(context.message)", file: #file, function: #function, line: #line, category: Default.LOG_WARNING, decorative: false)
+                                        })
+
+                                    }
                                 }, failureHandler: { (context) in
                                     self.stepDelegate?.enableActions()
-                                    self.messageTextField.stringValue="\(context.responseString)"
+                                    self.messageTextField.stringValue="\(context.message)"
                                     document.log("\(context.responseString)", file: #file, function: #function, line: #line, category: Default.LOG_WARNING, decorative: false)
                                 })
                             }
+                            do{
+                                // This will create and save the sugar cryptic key.
+                                try document.metadata.cookThePie()
 
-                        }catch{
-                            self.stepDelegate?.enableActions()
-                            self.messageTextField.stringValue="\(error)"
-                            document.log("\(error)", file: #file, function: #function, line: #line, category: Default.LOG_WARNING, decorative: false)
-
+                                document.metadata.collaborationServerURL=serverURL
+                                let user=document.users[0]
+                                if userHasBeenFound{
+                                    __postCreationPhase(user: user)
+                                }else{
+                                    CreateUser.execute(user, in: document.UID, sucessHandler: { (context) in
+                                        __postCreationPhase(user: user)
+                                    }, failureHandler: { (context) in
+                                        self.stepDelegate?.enableActions()
+                                        self.messageTextField.stringValue="\(context.responseString)"
+                                        document.log("\(context.responseString)", file: #file, function: #function, line: #line, category: Default.LOG_WARNING, decorative: false)
+                                    })
+                                }
+                                
+                            }catch{
+                                self.stepDelegate?.enableActions()
+                                self.messageTextField.stringValue="\(error)"
+                                document.log("\(error)", file: #file, function: #function, line: #line, category: Default.LOG_WARNING, decorative: false)
+                                
+                            }
                         }
+
 
                     }, failureHandler: { (context) in
                         self.stepDelegate?.enableActions()

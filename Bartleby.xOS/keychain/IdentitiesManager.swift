@@ -231,11 +231,11 @@ public struct IdentitiesManager {
             identification=identities.identifications[i]
             if IdentitiesManager._matching(currentUser, identification){
                 if identification.supportsPasswordSyndication{
-                    identification.email=currentUser.email ?? ""
-                    identification.phoneCountryCode=currentUser.phoneCountryCode ?? ""
-                    identification.phoneNumber=currentUser.phoneNumber ?? ""
-                    identification.password=currentUser.password ?? Default.NO_PASSWORD
-                    identification.externalID=currentUser.externalID ?? Default.NO_UID
+                    identification.email=currentUser.email
+                    identification.phoneCountryCode=currentUser.phoneCountryCode
+                    identification.phoneNumber=currentUser.phoneNumber
+                    identification.password=currentUser.password
+                    identification.externalID=currentUser.externalID
                 }
                 newUser=false
             }
@@ -372,16 +372,16 @@ public struct IdentitiesManager {
 
 
     fileprivate static func _matching(_ user:User,_ identification:Identification)->Bool{
-        if let email=user.email{
-            if PString.trim(email,characters:" \n-.")==PString.trim(identification.email,characters:" \n-."){
-                return true
-            }
+        let email=user.email
+        if PString.trim(email,characters:" \n-.")==PString.trim(identification.email,characters:" \n-."){
+            return true
         }
-        if let phone=user.phoneNumber{
-            if PString.trim(phone,characters:" \n-.")==PString.trim(identification.phoneNumber,characters:" \n-."){
-                return true
-            }
+
+        let phone=user.phoneNumber
+        if PString.trim(phone,characters:" \n-.")==PString.trim(identification.phoneNumber,characters:" \n-."){
+            return true
         }
+
         return false
     }
 
@@ -389,16 +389,20 @@ public struct IdentitiesManager {
         if user.UID == profile.user?.UID{
             return true
         }
-        if let email=user.email, let profileEmail=profile.user?.email{
+        let email=user.email
+        if let profileEmail=profile.user?.email{
             if PString.trim(email,characters:" \n-.")==PString.trim(profileEmail,characters:" \n-."){
                 return true
             }
         }
-        if let phone=user.phoneNumber,let profilePhoneNumber=profile.user?.email{
+        
+        let phone=user.phoneNumber
+        if let profilePhoneNumber=profile.user?.email{
             if PString.trim(phone,characters:" \n-.")==PString.trim(profilePhoneNumber,characters:" \n-."){
                 return true
             }
         }
+        
         return false
     }
     

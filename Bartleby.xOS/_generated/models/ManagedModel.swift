@@ -22,7 +22,7 @@ import Foundation
     }
 
 	//An external unique identifier
-	dynamic open var externalID:String? {
+	dynamic open var externalID:String = ""{
 	    didSet { 
 	       if !self.wantsQuietChanges && externalID != oldValue {
 	            self.provisionChanges(forKey: "externalID",oldValue: oldValue,newValue: externalID) 
@@ -239,7 +239,7 @@ import Foundation
     required public init?(coder decoder: NSCoder) {
         super.init()
         self.quietChanges {
-			self.externalID=String(describing: decoder.decodeObject(of: NSString.self, forKey:"externalID") as NSString?)
+			self.externalID=String(describing: decoder.decodeObject(of: NSString.self, forKey: "externalID")! as NSString)
 			self.creatorUID=String(describing: decoder.decodeObject(of: NSString.self, forKey: "creatorUID")! as NSString)
 			self.ownedBy=decoder.decodeObject(of: [NSArray.classForCoder(),NSString.self], forKey: "ownedBy")! as! [String]
 			self.freeRelations=decoder.decodeObject(of: [NSArray.classForCoder(),NSString.self], forKey: "freeRelations")! as! [String]
@@ -253,9 +253,7 @@ import Foundation
 
      open func encode(with coder: NSCoder) {
         
-		if let externalID = self.externalID {
-			coder.encode(externalID,forKey:"externalID")
-		}
+		coder.encode(self.externalID,forKey:"externalID")
 		coder.encode(self.creatorUID,forKey:"creatorUID")
 		coder.encode(self.ownedBy,forKey:"ownedBy")
 		coder.encode(self.freeRelations,forKey:"freeRelations")

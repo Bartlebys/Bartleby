@@ -46,10 +46,11 @@ class ConfirmUpdatePasswordActivationCode: IdentityStepViewController {
         if let document = self.documentProvider?.getDocument(){
             let candidatePassword=self.identityWindowController?.passwordCandidate
 
-            if let serverURL = document.metadata.collaborationServerURL,
-                let email =  document.currentUser.email,
-                let phoneNumber =  document.currentUser.phoneNumber{
+            if let serverURL = document.metadata.collaborationServerURL{
                 document.currentUser.login(sucessHandler: {
+                    let email =  document.currentUser.email
+                    let phoneNumber =  document.currentUser.phoneNumber
+
                     // we need now  relay the activation code
                     RelayActivationCode.execute(baseURL: serverURL,
                                                 documentUID: document.UID,

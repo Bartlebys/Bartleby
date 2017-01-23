@@ -55,9 +55,8 @@ class ValidatePasswordViewController: IdentityStepViewController{
             }
             if document.metadata.saveThePassword == true && supportsPasswordMemorization{
                 self.memorizePasswordCheckBox.state=1
-                if let password=document.currentUser.password{
-                    self.passwordTextField.stringValue=password
-                }
+                let password=document.currentUser.password
+                self.passwordTextField.stringValue=password
             }else{
                 self.passwordTextField.stringValue=""
             }

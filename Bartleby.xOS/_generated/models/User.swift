@@ -70,7 +70,7 @@ import Foundation
 	}
 
 	//The user's email. 
-	dynamic open var email:String? {
+	dynamic open var email:String = ""{
 	    didSet { 
 	       if !self.wantsQuietChanges && email != oldValue {
 	            self.provisionChanges(forKey: "email",oldValue: oldValue,newValue: email) 
@@ -79,7 +79,7 @@ import Foundation
 	}
 
 	//The user's phone country code
-	dynamic open var phoneCountryCode:String? {
+	dynamic open var phoneCountryCode:String = ""{
 	    didSet { 
 	       if !self.wantsQuietChanges && phoneCountryCode != oldValue {
 	            self.provisionChanges(forKey: "phoneCountryCode",oldValue: oldValue,newValue: phoneCountryCode) 
@@ -88,7 +88,7 @@ import Foundation
 	}
 
 	//The user's phone number
-	dynamic open var phoneNumber:String? {
+	dynamic open var phoneNumber:String = ""{
 	    didSet { 
 	       if !self.wantsQuietChanges && phoneNumber != oldValue {
 	            self.provisionChanges(forKey: "phoneNumber",oldValue: oldValue,newValue: phoneNumber) 
@@ -97,7 +97,7 @@ import Foundation
 	}
 
 	//The user password
-	dynamic open var password:String? {
+	dynamic open var password:String = ""{
 	    didSet { 
 	       if !self.wantsQuietChanges && password != oldValue {
 	            self.provisionChanges(forKey: "password",oldValue: oldValue,newValue: password) 
@@ -322,10 +322,10 @@ import Foundation
 			self.localAssociationID=String(describing: decoder.decodeObject(of: NSString.self, forKey: "localAssociationID")! as NSString)
 			self.firstname=String(describing: decoder.decodeObject(of: NSString.self, forKey: "firstname")! as NSString)
 			self.lastname=String(describing: decoder.decodeObject(of: NSString.self, forKey: "lastname")! as NSString)
-			self.email=String(describing: decoder.decodeObject(of: NSString.self, forKey:"email") as NSString?)
-			self.phoneCountryCode=String(describing: decoder.decodeObject(of: NSString.self, forKey:"phoneCountryCode") as NSString?)
-			self.phoneNumber=String(describing: decoder.decodeObject(of: NSString.self, forKey:"phoneNumber") as NSString?)
-			self.password=String(describing: decoder.decodeObject(of: NSString.self, forKey:"password") as NSString?)
+			self.email=String(describing: decoder.decodeObject(of: NSString.self, forKey: "email")! as NSString)
+			self.phoneCountryCode=String(describing: decoder.decodeObject(of: NSString.self, forKey: "phoneCountryCode")! as NSString)
+			self.phoneNumber=String(describing: decoder.decodeObject(of: NSString.self, forKey: "phoneNumber")! as NSString)
+			self.password=String(describing: decoder.decodeObject(of: NSString.self, forKey: "password")! as NSString)
 			self.status=User.Status(rawValue:String(describing: decoder.decodeObject(of: NSString.self, forKey: "status")! as NSString))! 
 			self.notes=String(describing: decoder.decodeObject(of: NSString.self, forKey:"notes") as NSString?)
 			self.supportsPasswordMemorization=decoder.decodeBool(forKey:"supportsPasswordMemorization") 
@@ -341,18 +341,10 @@ import Foundation
 		coder.encode(self.localAssociationID,forKey:"localAssociationID")
 		coder.encode(self.firstname,forKey:"firstname")
 		coder.encode(self.lastname,forKey:"lastname")
-		if let email = self.email {
-			coder.encode(email,forKey:"email")
-		}
-		if let phoneCountryCode = self.phoneCountryCode {
-			coder.encode(phoneCountryCode,forKey:"phoneCountryCode")
-		}
-		if let phoneNumber = self.phoneNumber {
-			coder.encode(phoneNumber,forKey:"phoneNumber")
-		}
-		if let password = self.password {
-			coder.encode(password,forKey:"password")
-		}
+		coder.encode(self.email,forKey:"email")
+		coder.encode(self.phoneCountryCode,forKey:"phoneCountryCode")
+		coder.encode(self.phoneNumber,forKey:"phoneNumber")
+		coder.encode(self.password,forKey:"password")
 		coder.encode(self.status.rawValue ,forKey:"status")
 		if let notes = self.notes {
 			coder.encode(notes,forKey:"notes")

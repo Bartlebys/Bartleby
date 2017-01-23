@@ -24,9 +24,8 @@ class RevealPasswordViewController: IdentityStepViewController {
     override func viewWillAppear() {
         super.viewWillAppear()
         if let document=self.documentProvider?.getDocument(){
-            if let password=document.currentUser.password{
-                self.passwordTextField.stringValue=password
-            }
+            let password=document.currentUser.password
+            self.passwordTextField.stringValue=password
         }
     }
 
