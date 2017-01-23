@@ -41,7 +41,7 @@ public struct Identities:Mappable {
             let keyChainHelper=KeyChainHelper(accessGroup: accessGroup)
             // The identities are crypted in the KeyChain
             let crypted = try Bartleby.cryptoDelegate.encryptString(json,useKey:Bartleby.configuration.KEY)
-            let result=keyChainHelper.set(crypted, forKey: Identities.storageKey)
+            let _ = keyChainHelper.set(crypted, forKey: Identities.storageKey)
         }else{
             throw IdentitiesError.serializationFailure
         }
@@ -49,7 +49,6 @@ public struct Identities:Mappable {
 
     public static func loadFromKeyChain(accessGroup:String)throws->Identities{
         let keyChainHelper=KeyChainHelper(accessGroup: accessGroup)
-        let storageKey=Identities.storageKey
         if let cryptedJson=keyChainHelper.get(Identities.storageKey){
             // The identities are crypted in the KeyChain
             let json = try Bartleby.cryptoDelegate.decryptString(cryptedJson,useKey:Bartleby.configuration.KEY)
