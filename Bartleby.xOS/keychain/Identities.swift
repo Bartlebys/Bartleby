@@ -20,7 +20,8 @@ public enum IdentitiesError:Error{
 
 public struct Identities:Mappable {
 
-    static var storageKey="identities.org.bartlebys"
+    // You should set your own storage key during Document initialization
+    public static var storageKey="identities.org.bartlebys"
 
     var identifications:[Identification]=[Identification]()
     var profiles:[Profile]=[Profile]()
@@ -48,6 +49,7 @@ public struct Identities:Mappable {
 
     public static func loadFromKeyChain(accessGroup:String)throws->Identities{
         let keyChainHelper=KeyChainHelper(accessGroup: accessGroup)
+        let storageKey=Identities.storageKey
         if let cryptedJson=keyChainHelper.get(Identities.storageKey){
             // The identities are crypted in the KeyChain
             let json = try Bartleby.cryptoDelegate.decryptString(cryptedJson,useKey:Bartleby.configuration.KEY)
