@@ -74,7 +74,11 @@ class SetupCollaborativeServerViewController: IdentityStepViewController{
                             user.email=identityWindowController.identification?.email
                             user.phoneCountryCode=identityWindowController.identification?.phoneCountryCode
                             user.phoneNumber=identityWindowController.identification?.phoneNumber
-                            user.externalID=identityWindowController.identification?.externalID
+                            if let externalID=identityWindowController.identification?.externalID{
+                                if externalID != Default.NO_UID{
+                                    user.externalID=externalID
+                                }
+                            }
                             user.supportsPasswordSyndication=identityWindowController.identification?.supportsPasswordSyndication ?? false
                             if let matchingProfile=matchingProfile {
                                 if let matchingUser=matchingProfile.user{
