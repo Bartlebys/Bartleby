@@ -9,7 +9,7 @@
 import Foundation
 
 
-extension Box{
+public extension Box{
 
 
     /// The nodes folder path
@@ -22,7 +22,7 @@ extension Box{
     }
 
     /// the currently referenced  nodes
-    var nodes:[Node]{
+    public var nodes:[Node]{
         let ownedNodes:[Node]=self.relations(Relationship.owns)
         return ownedNodes
     }

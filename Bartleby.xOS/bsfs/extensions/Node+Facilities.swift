@@ -10,7 +10,7 @@ import Foundation
 
 
 
-extension Node{
+public extension Node{
 
 
     /// true if the node can be assembled
@@ -33,7 +33,7 @@ extension Node{
     }
 
     /// The parent box
-    var box:Box?{
+    public var box:Box?{
         if let owner:Box = self.firstRelation(Relationship.ownedBy){
             return owner
         }else{
@@ -42,14 +42,14 @@ extension Node{
     }
 
 
-    func addBlock(_ block:Block){
+    public func addBlock(_ block:Block){
         self.declaresOwnership(of: block)
         self.numberOfBlocks += 1
     }
 
 
     /// the currently referenced blocks
-    var blocks:[Block]{
+    public var blocks:[Block]{
         let ownedBlocks:[Block]=self.relations(Relationship.owns)
         return ownedBlocks
     }
@@ -62,7 +62,7 @@ extension Node{
     ///
     /// - Parameter category: the category to be consolidated
     /// - Returns: return the progression state.
-    override func progressionState(for category:String)->Progression?{
+    override public func progressionState(for category:String)->Progression?{
         if category==Default.CATEGORY_DOWNLOADS{
             if downloadInProgress{
                 return self.downloadProgression
@@ -81,7 +81,7 @@ extension Node{
     ///
     /// - Parameter category: the category
     /// - Returns: the array of Progression states
-    override func childrensProgression(for category:String)->[Progression]?{
+    override public func childrensProgression(for category:String)->[Progression]?{
         var progressions=[Progression]()
         for node in self.blocks{
             node.consolidateProgression(for: category)

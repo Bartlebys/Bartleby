@@ -8,7 +8,7 @@
 
 import Foundation
 
-extension Block{
+public extension Block{
 
 
     public var node:Node?{
@@ -20,7 +20,7 @@ extension Block{
     }
 
 
-    var data:Data?{
+    public var data:Data?{
         do{
             return try self.referentDocument?.dataForBlock(identifiedBy: self.digest)
         }catch {
