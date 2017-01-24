@@ -64,8 +64,8 @@ public struct IdentitiesManager {
     public static func dumpKeyChainedProfiles(_ document:BartlebyDocument){
         if Bartleby.configuration.DEVELOPER_MODE{
             do{
-                if let appGroup=document.metadata.appGroup{
-                    let identities=try Identities.loadFromKeyChain(accessGroup: appGroup)
+                if document.metadata.appGroup != ""{
+                    let identities=try Identities.loadFromKeyChain(accessGroup: document.metadata.appGroup)
                     for profile in identities.profiles{
                         document.log("\(profile.toJSONString() ?? "NO PROFILE" )", file: #file, function: #function, line: #line, category: Default.LOG_SECURITY, decorative: false)
                     }
@@ -96,9 +96,9 @@ public struct IdentitiesManager {
     ///   - completed: this closure is called when all the syndicable update has been executed.
     ///
     public static func synchronize(_ document:BartlebyDocument,password:String,completed:@escaping (Completion)->()){
-        if let appGroup=document.metadata.appGroup{
+        if document.metadata.appGroup != ""{
             // We use the app Group has storage key
-            Identities.storageKey="identities."+appGroup
+            Identities.storageKey="identities."+document.metadata.appGroup
         }
         func __updateCurrentUser(){
             UpdateUser.execute(document.currentUser, in: document.UID,
@@ -128,8 +128,8 @@ public struct IdentitiesManager {
 
 
     public static func profileMatching(identification:Identification, inDocument document:BartlebyDocument)->Profile?{
-        if let appGroup=document.metadata.appGroup{
-            let identities=try? Identities.loadFromKeyChain(accessGroup: appGroup)
+        if document.metadata.appGroup != ""{
+            let identities=try? Identities.loadFromKeyChain(accessGroup: document.metadata.appGroup)
             if let profiles=identities?.profiles{
                 for profile in profiles{
                     if let user=profile.user{
@@ -154,11 +154,11 @@ public struct IdentitiesManager {
     /// - Returns: the suggested profiles (can be used to propose a user account)
     fileprivate static func _suggestedProfiles(forDocument document:BartlebyDocument)throws-> [Profile]{
         var profiles=[Profile]()
-        guard let appGroup=document.metadata.appGroup else{
+        guard document.metadata.appGroup != "" else{
             throw IdentitiesManagerError.appGroupIsMissing
         }
         do{
-            let identities = try Identities.loadFromKeyChain(accessGroup: appGroup)
+            let identities = try Identities.loadFromKeyChain(accessGroup: document.metadata.appGroup)
             /// Try to find the better profile
 
             // Do we have already profiles with the same currentUser UID
@@ -217,10 +217,10 @@ public struct IdentitiesManager {
     // MARK: - Syndication
 
     fileprivate static func _syndicateProfiles(_ document:BartlebyDocument) throws{
-        guard let appGroup=document.metadata.appGroup else{
+        guard document.metadata.appGroup != "" else{
             throw IdentitiesManagerError.appGroupIsMissing
         }
-        var identities=try Identities.loadFromKeyChain(accessGroup: appGroup)
+        var identities=try Identities.loadFromKeyChain(accessGroup: document.metadata.appGroup)
 
         /// Update the Masters users.
         var newUser=true
@@ -280,7 +280,7 @@ public struct IdentitiesManager {
         }
 
         // Save the current profiles and identities
-        try identities.saveToKeyChain(accessGroup: appGroup)
+        try identities.saveToKeyChain(accessGroup: document.metadata.appGroup)
 
         /// Intents to patch the associatied identification with the new password
         /// There is no guarantee it will work as we may refer to various servers.
@@ -298,7 +298,7 @@ public struct IdentitiesManager {
 
 
     fileprivate static func _patch(_ profile:Profile, with identification:Identification, from document:BartlebyDocument)throws{
-        guard let appGroup=document.metadata.appGroup else{
+        guard document.metadata.appGroup != "" else{
             throw IdentitiesManagerError.appGroupIsMissing
         }
 
@@ -319,13 +319,13 @@ public struct IdentitiesManager {
                 profile.user?.externalID=identification.externalID
                 profile.requiresPatch=false
                 do{
-                    var identities=try Identities.loadFromKeyChain(accessGroup: appGroup)
+                    var identities=try Identities.loadFromKeyChain(accessGroup: document.metadata.appGroup)
                     if let idx=identities.profiles.index(where: { (p) -> Bool in
                         return p.user?.UID == profile.user?.UID
                     }){
                         identities.profiles[idx]=profile
                     }
-                    try identities.saveToKeyChain(accessGroup:appGroup)
+                    try identities.saveToKeyChain(accessGroup:document.metadata.appGroup)
                 }catch{
                     glog("\(error)", file: #file, function: #function, line: #line, category: Default.LOG_SECURITY, decorative: false)
                 }

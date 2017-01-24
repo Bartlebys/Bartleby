@@ -55,8 +55,8 @@ public extension DocumentMetadata{
     // The sugar path
     fileprivate var _bowlPath:String{
         get{
-            if let appGroup=self.appGroup{
-                if let url=FileManager.default.containerURL(forSecurityApplicationGroupIdentifier: appGroup){
+            if self.appGroup != ""{
+                if let url=FileManager.default.containerURL(forSecurityApplicationGroupIdentifier: self.appGroup){
                     return url.path+"/bowl"
                 }
             }

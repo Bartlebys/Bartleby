@@ -46,7 +46,7 @@ import Foundation
 	open var identificationMethod:IdentificationMethod = .key
 
 	//You can define a shared app group container identifier "group.myDomain.com.groupName")
-	dynamic open var appGroup:String?
+	dynamic open var appGroup:String = ""
 
 	//The current kvid identification value (injected in HTTP headers)
 	dynamic open var identificationValue:String?
@@ -178,7 +178,7 @@ import Foundation
 			self.currentUserFullPhoneNumber=String(describing: decoder.decodeObject(of: NSString.self, forKey: "currentUserFullPhoneNumber")! as NSString)
 			self.lockerUID=String(describing: decoder.decodeObject(of: NSString.self, forKey: "lockerUID")! as NSString)
 			self.identificationMethod=DocumentMetadata.IdentificationMethod(rawValue:String(describing: decoder.decodeObject(of: NSString.self, forKey: "identificationMethod")! as NSString))! 
-			self.appGroup=String(describing: decoder.decodeObject(of: NSString.self, forKey:"appGroup") as NSString?)
+			self.appGroup=String(describing: decoder.decodeObject(of: NSString.self, forKey: "appGroup")! as NSString)
 			self.identificationValue=String(describing: decoder.decodeObject(of: NSString.self, forKey:"identificationValue") as NSString?)
 			self.collaborationServerURL=decoder.decodeObject(of: NSURL.self, forKey:"collaborationServerURL") as URL?
 			self.registred=decoder.decodeBool(forKey:"registred") 
@@ -210,9 +210,7 @@ import Foundation
 		coder.encode(self.currentUserFullPhoneNumber,forKey:"currentUserFullPhoneNumber")
 		coder.encode(self.lockerUID,forKey:"lockerUID")
 		coder.encode(self.identificationMethod.rawValue ,forKey:"identificationMethod")
-		if let appGroup = self.appGroup {
-			coder.encode(appGroup,forKey:"appGroup")
-		}
+		coder.encode(self.appGroup,forKey:"appGroup")
 		if let identificationValue = self.identificationValue {
 			coder.encode(identificationValue,forKey:"identificationValue")
 		}

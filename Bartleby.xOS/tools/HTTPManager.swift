@@ -205,7 +205,6 @@ open class HTTPManager: NSObject {
             metrics.serializationDuration=timeline.serializationDuration
             metrics.totalDuration=timeline.totalDuration
 
-
             // Bartleby consignation
             let context = HTTPContext( code: 1,
                                        caller: "Reachable",
