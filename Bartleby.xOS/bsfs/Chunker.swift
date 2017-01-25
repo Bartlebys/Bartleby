@@ -410,7 +410,12 @@ struct  Chunker {
                                     data = try data.compress(algorithm: .lz4)
                                 }
                                 if encrypt && self.mode == .digestAndProcessing{
-                                    data = try self._cryptoHelper.encryptData(data,useKey: Bartleby.configuration.KEY)
+                                    if self.embeddedInADocument{
+                                        // We use sugar one to be able to share crypted files between multiple sub document
+                                         data = try self._cryptoHelper.encryptData(data,useKey: self.document!.metadata.firstPieceOfSugar)
+                                    }else{
+                                         data = try self._cryptoHelper.encryptData(data,useKey: Bartleby.configuration.KEY)
+                                    }
                                 }
                                 try __writeData(rank:Int(i),size:Int(offset), data: data,to:chunksfolderPath,digest:sha1,position:Int(position),relativePath:relativePath)
                             }
@@ -631,9 +636,16 @@ struct  Chunker {
                                 data = try Data(contentsOf:url)
                             }
 
+
                             if decrypt{
-                                data = try self._cryptoHelper.decryptData(data,useKey: Bartleby.configuration.KEY)
+                                if self.embeddedInADocument{
+                                    // We use sugar one to be able to share crypted files between multiple sub document
+                                    data = try self._cryptoHelper.decryptData(data,useKey: self.document!.metadata.firstPieceOfSugar)
+                                }else{
+                                    data = try self._cryptoHelper.decryptData(data,useKey: Bartleby.configuration.KEY)
+                                }
                             }
+
                             if decompress{
                                 data = try data.decompress(algorithm: .lz4)
                             }

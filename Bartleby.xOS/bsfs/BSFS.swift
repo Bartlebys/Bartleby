@@ -56,8 +56,8 @@ public final class BSFS:TriggerHook{
         self._chunker=Chunker(fileManager: FileManager.default,
                               cryptoKey:Bartleby.configuration.KEY,
                               cryptoSalt:Bartleby.configuration.SHARED_SALT,
-                              mode:.digestAndProcessing
-            ,embeddedIn:document)
+                              mode:.digestAndProcessing,
+                              embeddedIn:document)
         self._boxDelegate=document
     }
 
@@ -621,7 +621,7 @@ public final class BSFS:TriggerHook{
                                                     block=self._document.newObject() as Block
                                                     node.quietChanges {
                                                         block!.quietChanges {
-                                                             node.addBlock(block!)
+                                                            node.addBlock(block!)
                                                         }
                                                     }
                                                 }
@@ -1094,8 +1094,8 @@ public final class BSFS:TriggerHook{
     ///
     ///
     /// - Parameter block: the block or the Block reference
-
-
+    
+    
     ///  Delete a Block its Block, raw file
     ///
     /// - Parameters:
@@ -1105,7 +1105,7 @@ public final class BSFS:TriggerHook{
             node.removeRelation(Relationship.owns, to: block)
             node.numberOfBlocks -= 1
         }else{
-             self._document.log("Block's node not found (block.UID:\(block.UID)", file: #file, function: #function, line: #line, category: Default.LOG_FAULT, decorative: false)
+            self._document.log("Block's node not found (block.UID:\(block.UID)", file: #file, function: #function, line: #line, category: Default.LOG_FAULT, decorative: false)
         }
         self._document.blocks.removeObject(block)
         do{

@@ -15,6 +15,17 @@ public enum SugarError:Error{
 
 public extension DocumentMetadata{
 
+
+    /// Sugar one is Related to the master document (the document that creates sub-documents)
+    /// == Part of The first 512 bytes of the sugar
+    ///
+    public var firstPieceOfSugar:String {
+        get{
+            return PString.substr(self.sugar, 0, 512)
+        }
+    }
+
+
     /// Loads the sugar String and save it to self.sugar
     public func loadSugar()throws{
         // We gonna try to load
@@ -29,8 +40,11 @@ public extension DocumentMetadata{
         }
     }
 
+
     /// Cooks a good pie
-    public func cookThePie()throws{
+    ///
+    /// - Parameter superSugar: the super sugar is equal to firstPieceOfSugar
+    public func cookThePie(superSugar:String="")throws{
         let _ = try FileManager.default.createDirectory(atPath: self._bowlPath, withIntermediateDirectories: true)
         if self.sugar == Default.NO_UID {
             do{
@@ -38,12 +52,32 @@ public extension DocumentMetadata{
             }catch{
                 // Sugar not found or too salted
                 // Let's generate a new one
-                self.sugar=Bartleby.randomStringWithLength(1024)
+                self.sugar=self.sweeten(superSugar)
             }
         }
         let cryptedSugar = try Bartleby.cryptoDelegate.encryptString(self.sugar, useKey: Bartleby.configuration.KEY)
         try cryptedSugar.write(toFile: self._bowlPath+"/"+self.persistentUID, atomically: true, encoding: String.Encoding.utf8)
     }
+
+
+
+    /// Sugar pump
+    ///
+    /// - Parameter superSugar: the super sugar
+    /// - Returns: return the sugar
+    public func sweeten(_ superSugar:String="")->String{
+        // Sugar not found or too salted
+        // Let's generate a new one
+        var sweet=""
+        /// Do we have a super sugar?
+        if sweet.characters.count >= 512{
+           sweet=PString.substr(superSugar, 0, 512)+Bartleby.randomStringWithLength(512)
+        }else{
+        sweet=Bartleby.randomStringWithLength(1024)
+        }
+        return sweet
+    }
+
 
     /// Tries to put the sugar in the Bowl
     public func putSomeSugarInYourBowl() throws{
