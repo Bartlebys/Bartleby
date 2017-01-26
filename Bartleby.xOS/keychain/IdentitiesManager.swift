@@ -105,11 +105,11 @@ public struct IdentitiesManager {
                                sucessHandler: { (context) in
                                 // Mark as committed to prevent from re-upserting
                                 document.currentUser.hasBeenCommitted()
+                                completed(Completion.successStateFromHTTPContext(context))
                                 do{
                                     try IdentitiesManager._syndicateProfiles(document)
-                                    completed(Completion.successStateFromHTTPContext(context))
                                 }catch{
-                                    completed(Completion.failureStateFromError(error))
+                                    document.log("\(error)", file: #file, function: #function, line: #line, category: Default.LOG_DEFAULT, decorative: false)
                                 }
             }, failureHandler: { (context) in
                 completed(Completion.failureStateFromHTTPContext(context))
