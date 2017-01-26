@@ -47,16 +47,16 @@ extension BartlebyDocument{
 
     // To Read content
     open override func load(fromContents contents: Any, ofType typeName: String?) throws {
-    if let fileWrapper = contents as? FileWrapper{
-    try self._read(from:fileWrapper)
-    }else{
-    throw DocumentError.fileWrapperNotFound(message:"on load")
-    }
+        if let fileWrapper = contents as? FileWrapper{
+            try self._read(from:fileWrapper)
+        }else{
+            throw DocumentError.fileWrapperNotFound(message:"on load")
+        }
     }
 
     // To Write content
     override open func contents(forType typeName: String) throws -> Any {
-    return try self._updatedFileWrappers()
+        return try self._updatedFileWrappers()
     }
 
     #endif
