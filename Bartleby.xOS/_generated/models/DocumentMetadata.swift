@@ -33,7 +33,7 @@ import Foundation
 	dynamic open var currentUserFullPhoneNumber:String = "\(Default.VOID_STRING)"
 
 	//The sugar (not serialized but loaded from the Bowl)
-	dynamic open var sugar:String = "\(Default.NO_UID)"
+	dynamic open var sugar:String = "\(Default.VOID_STRING)"
 
 	//The locker UID to be used by the user to obtain the sugar from the locker
 	dynamic open var lockerUID:String = "\(Default.NO_UID)"

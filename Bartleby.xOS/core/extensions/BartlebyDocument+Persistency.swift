@@ -176,11 +176,9 @@ extension BartlebyDocument{
 
 
 
-
-
     private func _updatedFileWrappers()throws ->FileWrapper{
         self.documentWillSave()
-        if self.metadata.sugar == Default.NO_UID{
+        if self.metadata.sugar == Default.VOID_STRING{
             self.log("Sugar is undefined", file: #file, function: #function, line: #line, category: Default.LOG_DEFAULT, decorative: false)
         }
         if var fileWrappers=self.documentFileWrapper.fileWrappers {

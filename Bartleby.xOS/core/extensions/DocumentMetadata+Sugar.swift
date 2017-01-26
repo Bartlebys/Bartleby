@@ -46,7 +46,7 @@ public extension DocumentMetadata{
     /// - Parameter superSugar: the super sugar is equal to firstPieceOfSugar
     public func cookThePie(superSugar:String="")throws{
         let _ = try FileManager.default.createDirectory(atPath: self._bowlPath, withIntermediateDirectories: true)
-        if self.sugar == Default.NO_UID {
+        if self.sugar == Default.VOID_STRING {
             do{
                 try loadSugar()
             }catch{
