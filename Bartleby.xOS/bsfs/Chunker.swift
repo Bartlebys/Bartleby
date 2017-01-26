@@ -28,7 +28,6 @@ struct  Chunker {
     var document:BartlebyDocument?
     var embeddedInADocument:Bool { return (self.document != nil) }
 
-
     // When using `.real` mode the file are chunked, when using `.digestOnly` we compute their digest only
     // Simulated can be 5X faster than real mode and do not require Disk room.
     var mode:Chunker.Mode
@@ -42,14 +41,11 @@ struct  Chunker {
     ///
     /// - Parameters:
     ///   - fileManager: the file manager instance (should be only used on the Utility Queue)
-    ///   - cryptoKey: the key used for crypto 32 char min.
-    ///   - cryptoSalt: the salt
     ///   - keySize: the key size
     ///   - mode:  When using `.real` mode the file are chunked, when using `.digestOnly` we compute their digest only
     ///   - destroyChunksFolder: if set to true the chunks destination folder will be cleanup before writing the chunks (.real mode only)
+    ///   - embeddedIn: defines the document crypto context
     init(fileManager:FileManager,
-         cryptoKey:String,
-         cryptoSalt:String,
          keySize:KeySize = .s128bits,
          mode:Chunker.Mode = .digestAndProcessing,
          destroyChunksFolder:Bool=false,
@@ -58,7 +54,7 @@ struct  Chunker {
         self.mode=mode
         self.destroyChunksFolder=destroyChunksFolder
         self.document=embeddedIn
-        self._cryptoHelper=CryptoHelper(salt: cryptoSalt,keySize:keySize)
+        self._cryptoHelper=CryptoHelper(salt: Bartleby.configuration.SHARED_SALT,keySize:keySize)
     }
 
 
@@ -588,7 +584,7 @@ struct  Chunker {
     /// - closures are called on the Main thread
     ///
     /// - Parameters:
-    ///   - chunksPaths: the chunks absolute paths (or the sha1 when using document encapsulated chunks)
+    ///   - chunksPaths: the chunks absolute paths (or the sha1 when using document encapsulated chunks)  the order matters.
     ///   - destinationFilePath: the joined file destination
     ///   - decompress: should we decompress using LZ4
     ///   - decrypt: should we decrypt usign AES256

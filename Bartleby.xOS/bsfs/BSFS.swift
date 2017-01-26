@@ -54,8 +54,6 @@ public final class BSFS:TriggerHook{
     required public init(in document:BartlebyDocument){
         self._document=document
         self._chunker=Chunker(fileManager: FileManager.default,
-                              cryptoKey:Bartleby.configuration.KEY,
-                              cryptoSalt:Bartleby.configuration.SHARED_SALT,
                               mode:.digestAndProcessing,
                               embeddedIn:document)
         self._boxDelegate=document
@@ -289,7 +287,10 @@ public final class BSFS:TriggerHook{
                 delegate.nodeIsReady(node: node, proceed: {
 
                     let path=self._assemblyPath(for: node)
-                    let blocks=node.blocks
+
+                    let blocks=node.blocks.sorted(by: { (rblock, lblock) -> Bool in
+                        return rblock.rank < lblock.rank
+                    })
 
                     if node.nature == .file || node.nature == .flock {
 
@@ -401,9 +402,6 @@ public final class BSFS:TriggerHook{
                      deleteOriginal:Bool=false,
                      progressed:@escaping (Progression)->(),
                      completed:@escaping (Completion)->()){
-
-
-
 
         if self._fileManager.fileExists(atPath: reference.absolutePath){
 
@@ -572,7 +570,7 @@ public final class BSFS:TriggerHook{
                     }else{
 
                         if let box=node.box{
-                            let analyzer=DeltaAnalyzer(cryptoKey:Bartleby.configuration.KEY,cryptoSalt:Bartleby.configuration.SHARED_SALT)
+                            let analyzer=DeltaAnalyzer(embeddedIn: self._document)
 
                             //////////////////////////////
                             // #1 We first compute the `deltaChunks` to determine if some Blocks can be preserved
