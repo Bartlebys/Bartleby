@@ -58,7 +58,7 @@ struct  Chunker {
         self.mode=mode
         self.destroyChunksFolder=destroyChunksFolder
         self.document=embeddedIn
-        self._cryptoHelper=CryptoHelper(key: cryptoKey, salt: cryptoSalt,keySize:keySize)
+        self._cryptoHelper=CryptoHelper(salt: cryptoSalt,keySize:keySize)
     }
 
 

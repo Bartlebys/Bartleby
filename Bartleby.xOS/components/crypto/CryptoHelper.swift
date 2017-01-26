@@ -22,15 +22,11 @@ import Foundation
     - 'encryptString' / 'decryptString' if you need for example to copy and paste the sample
     - 'encryptStringToData' / 'decryptStringFromData' for example for faster serialization
 
-
  */
 open class CryptoHelper: NSObject, CryptoDelegate {
 
     /// The salt is used in conjunction with the key (for initialization vector...)
     let salt: String
-
-    // The key
-    var key: String
 
     // Options
     var options: CCOptions=UInt32(kCCOptionPKCS7Padding)
@@ -43,8 +39,7 @@ open class CryptoHelper: NSObject, CryptoDelegate {
     /// - Parameters:
     ///   - key: the key to use
     ///   - salt: the salf
-    public init(key: String, salt: String="ea1f-56cb-41cf-59bf-6b09-87e8-2aca-5dfz",keySize:KeySize = .s128bits) {
-        self.key=key
+    public init(salt: String="ea1f-56cb-41cf-59bf-6b09-87e8-2aca-5dfz",keySize:KeySize = .s128bits) {
         self.salt=salt
         switch keySize {
         case .s128bits:
@@ -56,8 +51,6 @@ open class CryptoHelper: NSObject, CryptoDelegate {
         }
     }
 
-    // We use a hash of the _salt+key as initialization vector
-    lazy var initializationVector: Data?=CryptoHelper.hashString(self.salt + self.key).data(using: Default.STRING_ENCODING, allowLossyConversion:false)
 
 
     /// The CryptoErrors
@@ -73,13 +66,6 @@ open class CryptoHelper: NSObject, CryptoDelegate {
         case decryptBase64Failure
     }
 
-
-
-    /// A debug facility
-    open func dumpDebug() {
-        print("hash of key is \(CryptoHelper.hashString(key))")
-        print("hash of salt is \(CryptoHelper.hashString(salt))")
-    }
 
 
     // MARK: - Encryption + Base64 encoding / decoding
@@ -198,8 +184,7 @@ open class CryptoHelper: NSObject, CryptoDelegate {
 
 
     fileprivate func _proceedTo(_ operation: CCOperation, on data: Data,useKey:String) throws ->Data {
-        self.key=useKey
-        if let d=self.key.data(using: Default.STRING_ENCODING, allowLossyConversion:false) {
+        if let d=useKey.data(using: Default.STRING_ENCODING, allowLossyConversion:false) {
             let data = try self._cryptOperation(data, keyData: d, operation: operation)
             return data
         } else {
@@ -222,16 +207,15 @@ open class CryptoHelper: NSObject, CryptoDelegate {
         let outData: NSMutableData! = NSMutableData(length: Int(dataLength) + kCCBlockSizeAES128)
         let cryptPointer = UnsafeMutableRawPointer(outData.mutableBytes)
         let cryptLength  = size_t(outData.length)
-        let keyLength              = size_t(_keySize)
+        let keyLength    = size_t(_keySize)
         let algoritm: CCAlgorithm = UInt32(kCCAlgorithmAES)
-        let ivBuffer = (initializationVector! as NSData).bytes.bindMemory(to: Void.self, capacity: initializationVector!.count)
         var numBytesProcessed: size_t = 0
         let cryptStatus = CCCrypt(operation,
             algoritm,
             options,
             keyBytes,
             keyLength,
-            ivBuffer,
+            nil, // We donnot use an initialization vector
             dataBytes,
             dataLength,
             cryptPointer,

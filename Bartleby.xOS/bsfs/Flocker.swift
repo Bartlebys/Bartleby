@@ -47,7 +47,7 @@ struct Flocker{
     ///   - keySize: the key size
     init(fileManager:FileManager,cryptoKey:String,cryptoSalt:String,keySize:KeySize = .s128bits) {
         self._fileManager=fileManager
-        self._cryptoHelper=CryptoHelper(key: cryptoKey, salt: cryptoSalt,keySize:keySize)
+        self._cryptoHelper=CryptoHelper(salt: cryptoSalt,keySize:keySize)
     }
 
 

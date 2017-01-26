@@ -12,7 +12,7 @@ import BartlebyKit
 
 class CryptoHelperTests: TestCase {
 
-    fileprivate static let _cryptoHelper = CryptoHelper(key:TestsConfiguration.KEY, salt:TestsConfiguration.SHARED_SALT)
+    fileprivate static let _cryptoHelper = CryptoHelper(salt:TestsConfiguration.SHARED_SALT)
 
     func testEncryptDataDecryptData() {
         var bytes=[UInt8]()

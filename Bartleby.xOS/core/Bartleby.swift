@@ -76,7 +76,7 @@ open class Bartleby:NSObject {
             Bartleby.cryptoDelegate=NoCrypto()
         } else {
             //Initialize the crypto delegate with the valid KEY & SALT
-            Bartleby.cryptoDelegate=CryptoHelper(key: configuration.KEY, salt: configuration.SHARED_SALT,keySize:configuration.KEY_SIZE)
+            Bartleby.cryptoDelegate=CryptoHelper(salt: configuration.SHARED_SALT,keySize:configuration.KEY_SIZE)
         }
 
         // Store the configuration
