@@ -52,7 +52,7 @@ public extension DocumentMetadata{
             }catch{
                 // Sugar not found or too salted
                 // Let's generate a new one
-                self.sugar=self.sweeten(superSugar)
+                self.sugar=self._sweeten(superSugar)
             }
         }
         let cryptedSugar = try Bartleby.cryptoDelegate.encryptString(self.sugar, useKey: Bartleby.configuration.KEY)
@@ -65,15 +65,15 @@ public extension DocumentMetadata{
     ///
     /// - Parameter superSugar: the super sugar
     /// - Returns: return the sugar
-    public func sweeten(_ superSugar:String="")->String{
+    fileprivate func _sweeten(_ superSugar:String="")->String{
         // Sugar not found or too salted
         // Let's generate a new one
         var sweet=""
         /// Do we have a super sugar?
         if sweet.characters.count >= 512{
-           sweet=PString.substr(superSugar, 0, 512)+Bartleby.randomStringWithLength(512)
+            sweet=PString.substr(superSugar, 0, 512)+Bartleby.randomStringWithLength(512)
         }else{
-        sweet=Bartleby.randomStringWithLength(1024)
+            sweet=Bartleby.randomStringWithLength(1024)
         }
         return sweet
     }
