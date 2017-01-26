@@ -34,6 +34,8 @@ struct Flocker{
     /// The file manager is used on the utility queue
     fileprivate let _fileManager:FileManager
 
+    fileprivate var _key:String=""
+
 
     // The Crypto Helper
     fileprivate let _cryptoHelper:CryptoHelper
@@ -47,6 +49,7 @@ struct Flocker{
     ///   - keySize: the key size
     init(fileManager:FileManager,cryptoKey:String,cryptoSalt:String,keySize:KeySize = .s128bits) {
         self._fileManager=fileManager
+        self._key=cryptoKey
         self._cryptoHelper=CryptoHelper(salt: cryptoSalt,keySize:keySize)
     }
 
@@ -347,7 +350,7 @@ struct Flocker{
                                             data = try data.compress(algorithm: .lz4)
                                         }
                                         if encrypt{
-                                            data = try self._cryptoHelper.encryptData(data,useKey: Bartleby.configuration.KEY)
+                                            data = try self._cryptoHelper.encryptData(data,useKey:self._key)
                                         }
 
                                         // Store the current write position before adding the new data
@@ -431,7 +434,7 @@ struct Flocker{
             let jsonDictionary=container.toJSON()
             var data = try JSONSerialization.data(withJSONObject: jsonDictionary)
             data = try data.compress(algorithm: .lz4)
-            data = try self._cryptoHelper.encryptData(data,useKey:Bartleby.configuration.KEY)
+            data = try self._cryptoHelper.encryptData(data,useKey:self._key)
             var cryptedSize:UInt64=UInt64(data.count)
             let intSize=MemoryLayout<UInt64>.size
             // Write the serialized container
@@ -581,7 +584,7 @@ struct Flocker{
                     let footerPosition=UInt64(l)-(UInt64(intSize)+footerSize)
                     fileHandle.seek(toFileOffset:footerPosition)
                     var data=fileHandle.readData(ofLength: Int(footerSize))
-                    data = try self._cryptoHelper.decryptData(data,useKey: Bartleby.configuration.KEY)
+                    data = try self._cryptoHelper.decryptData(data,useKey: self._key)
                     data = try data.decompress(algorithm: .lz4)
                     if let jsonString=String.init(data: data, encoding: String.Encoding.utf8){
                          container = Mapper<Container>().map(JSONString: jsonString)
@@ -703,7 +706,7 @@ struct Flocker{
                                 flockFileHandle.seek(toFileOffset: startsAt)
                                 var data = flockFileHandle.readData(ofLength: size)
                                 if decrypt{
-                                    data = try self._cryptoHelper.decryptData(data,useKey: Bartleby.configuration.KEY)
+                                    data = try self._cryptoHelper.decryptData(data,useKey: self._key)
                                 }
                                 if decompress{
                                     data = try data.decompress(algorithm: .lz4)
