@@ -143,7 +143,7 @@ open class HTTPManager: NSObject {
                     headers[HTTPManager.KVID_KEY]=Default.VOID_STRING
                 }
             }
-            if oUID==Default.NO_UID{
+            if oUID == Default.NO_UID{
                 // We add the document observationUID
                 headers[HTTPManager.OBSERVATION_UID_KEY]=document.UID
             }else{
