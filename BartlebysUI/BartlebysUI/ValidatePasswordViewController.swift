@@ -74,7 +74,7 @@ class ValidatePasswordViewController: IdentityStepViewController{
             /// If there is a valid Sugar we can validate
             /// Else we should recover the sugar (using second security factor)
 
-            if documentSugar != Default.NO_UID {
+            if documentSugar != Default.VOID_STRING {
                 let currentPassword=PString.trim(self.passwordTextField.stringValue)
                 let documentPassword=PString.trim(document.currentUser.password ?? "")
                 if currentPassword == document.currentUser.password{
