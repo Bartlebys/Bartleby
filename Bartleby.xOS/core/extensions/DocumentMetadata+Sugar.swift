@@ -81,6 +81,9 @@ public extension DocumentMetadata{
 
     /// Tries to put the sugar in the Bowl
     public func putSomeSugarInYourBowl() throws{
+        // Create the bowl if necessary.
+        let _ = try? FileManager.default.createDirectory(atPath: self._bowlPath, withIntermediateDirectories: true)
+        // Before to put the sugar in your bowl
         let cryptedSugar = try Bartleby.cryptoDelegate.encryptString(self.sugar, useKey: Bartleby.configuration.KEY)
         try cryptedSugar.write(toFile: self._bowlPath+"/"+self.persistentUID, atomically: true, encoding: String.Encoding.utf8)
     }
