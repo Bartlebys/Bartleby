@@ -109,7 +109,7 @@ extension BartlebyDocument{
     fileprivate func _loadCollectionData(from fileWrappers: [String : FileWrapper])throws{
 
         // We load the data if the sugar is defined
-        if self.metadata.sugar != Default.NO_UID{
+        if self.metadata.sugar != Default.VOID_STRING{
 
             // ##############
             // # BSFS DATA
