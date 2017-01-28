@@ -39,7 +39,9 @@ public extension DocumentMetadata{
         // Store the email and Phonenumber into the metadata
         // For user clarity purposes
         self.currentUserEmail=user.email
-        self.currentUserFullPhoneNumber=user.fullPhoneNumber
+        if user.fullPhoneNumber.characters.count > 3 {
+            self.currentUserFullPhoneNumber=user.fullPhoneNumber
+        }
     }
 
 }

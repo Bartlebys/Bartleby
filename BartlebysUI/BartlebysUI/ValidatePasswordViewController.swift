@@ -33,9 +33,17 @@ class ValidatePasswordViewController: IdentityStepViewController{
 
     override func viewWillAppear() {
         super.viewWillAppear()
-        if let document=self.documentProvider?.getDocument(){
-            self.emailTextField.stringValue=document.metadata.currentUserEmail
-            self.phoneNumberTextField.stringValue=document.metadata.currentUserFullPhoneNumber
+        if let document = self.documentProvider?.getDocument(){
+            self.emailTextField.stringValue = document.metadata.currentUserEmail
+            if document.metadata.currentUserFullPhoneNumber.characters.count > 3{
+                self.phoneNumberTextField.stringValue = document.metadata.currentUserFullPhoneNumber
+            }else{
+                let p = document.currentUser.fullPhoneNumber
+                if p.characters.count > 3 {
+                    self.phoneNumberTextField.stringValue = p
+                }
+            }
+
             var supportsPasswordUpdate=false
             var supportsPasswordMemorization=false
             if let user = document.metadata.currentUser{
