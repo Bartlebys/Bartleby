@@ -13,19 +13,19 @@ import Foundation
 public class FileReference:NSObject{
 
     /// The absolutePath
-    var absolutePath:String
+    public var absolutePath:String
     /// the User UIDS or "*" if public no authorization by Default
-    var authorized:[String]=[String]()
+    public var authorized:[String]=[String]()
     /// Should we compress using LZ4
-    var compressed:Bool=true
+    public var compressed:Bool=true
     /// Should we crypt using AES256
-    var crypted:Bool=true
+    public var crypted:Bool=true
     ///  priority: synchronization priority (higher == will be synchronized before the other nodes)
-    var priority:Int=0
+    public var priority:Int=0
     /// The chunks or blocks max size
-    var chunkMaxSize:Int=10*MB
+    public var chunkMaxSize:Int=10*MB
     /// You can set a password.
-    var password:String=Default.NO_PASSWORD
+    public var password:String=Default.NO_PASSWORD
 
     /// The nature of the reference
     /// We support file and Flock only
