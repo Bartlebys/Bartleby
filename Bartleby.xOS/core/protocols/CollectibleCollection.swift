@@ -117,7 +117,7 @@ public protocol CollectibleCollection: Collectible,ProvisionChanges {
     ///
     /// - Parameter isIncluded: the filtering closure
     /// - Returns: the filtered Collection
-    func filter(_ isIncluded: (Collectible)-> Bool)-> CollectibleCollection
+    func filteredCopy(_ isIncluded: (Collectible)-> Bool)-> CollectibleCollection
 
 
 }

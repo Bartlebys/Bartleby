@@ -440,7 +440,7 @@ public extension Notification.Name {
     ///
     /// - Parameter isIncluded: the filtering closure
     /// - Returns: the filtered Collection
-    open func filter(_ isIncluded: (Collectible)-> Bool) -> CollectibleCollection{
+    open func filteredCopy(_ isIncluded: (Collectible)-> Bool) -> CollectibleCollection{
         let filteredCollection=ManagedPushOperations()
         for item in self._items{
             if isIncluded(item){
