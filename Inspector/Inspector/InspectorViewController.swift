@@ -9,7 +9,13 @@
 import Cocoa
 import BartlebyKit
 
-class InspectorViewController: NSViewController,DocumentDependent,NSWindowDelegate{
+
+protocol FilterPredicateDelegate {
+    func filterSelectedIndex()->Int
+    func filterExpression()->String
+}
+
+class InspectorViewController: NSViewController,DocumentDependent,NSWindowDelegate,FilterPredicateDelegate{
 
     override var nibName : String { return "InspectorViewController" }
 
@@ -30,6 +36,10 @@ class InspectorViewController: NSViewController,DocumentDependent,NSWindowDelega
     @IBOutlet var metadataViewController: MetadataDetails!
 
     @IBOutlet var contextualMenu: NSMenu!
+
+    @IBOutlet weak var filterPopUp: NSPopUpButton!
+
+    @IBOutlet weak var filterField: NSSearchField!
 
     override func validateMenuItem(_ menuItem: NSMenuItem) -> Bool {
         return true
@@ -118,7 +128,7 @@ class InspectorViewController: NSViewController,DocumentDependent,NSWindowDelega
     internal var documentProvider: DocumentProvider?{
         didSet{
             if let documentReference=self.documentProvider?.getDocument(){
-                self._collectionListDelegate=CollectionListDelegate(documentReference:documentReference,outlineView:self.listOutlineView,onSelection: {(selected) in
+                self._collectionListDelegate=CollectionListDelegate(documentReference:documentReference,filterDelegate:self,outlineView:self.listOutlineView,onSelection: {(selected) in
                     self.updateRepresentedObject(selected)
                 })
 
@@ -212,11 +222,44 @@ class InspectorViewController: NSViewController,DocumentDependent,NSWindowDelega
         }
     }
 
+    // MARK - Filtering
+
+
+    @IBAction func firstPartOfPredicateDidChange(_ sender: Any) {
+        let idx=self.filterPopUp.indexOfSelectedItem
+        if idx==0{
+            self.filterField.isEnabled=false
+        }else{
+            self.filterField.isEnabled=true
+        }
+        self._collectionListDelegate?.updateFilter()
+    }
+
+
+    @IBAction func filterOperandDidChange(_ sender: Any) {
+        self._collectionListDelegate?.updateFilter()
+    }
+
+
+
+    // MARK - FilterPredicateDelegate
+
+    public func filterSelectedIndex()->Int{
+        return self.filterPopUp.indexOfSelectedItem
+    }
+
+    public func filterExpression()->String{
+        return PString.trim(self.filterField.stringValue)
+    }
+
+
 }
 
 // MARK: - CollectionListDelegate
 
 class CollectionListDelegate:NSObject,NSOutlineViewDelegate,NSOutlineViewDataSource,Identifiable{
+
+    fileprivate var _filterPredicateDelegate:FilterPredicateDelegate
 
     fileprivate var _documentReference:BartlebyDocument
 
@@ -227,13 +270,17 @@ class CollectionListDelegate:NSObject,NSOutlineViewDelegate,NSOutlineViewDataSou
 
     fileprivate var _collections:[BartlebyCollection]=[BartlebyCollection]()
 
+    fileprivate var _filteredCollections:[BartlebyCollection]=[BartlebyCollection]()
+
+
 
     var UID: String = Bartleby.createUID()
 
-    required init(documentReference:BartlebyDocument,outlineView:NSOutlineView,onSelection:@escaping ((_ selected:Any)->())) {
+    required init(documentReference:BartlebyDocument,filterDelegate:FilterPredicateDelegate,outlineView:NSOutlineView,onSelection:@escaping ((_ selected:Any)->())) {
         self._documentReference=documentReference
         self._outlineView=outlineView
         self._selectionHandler=onSelection
+        self._filterPredicateDelegate=filterDelegate
         super.init()
         self._documentReference.iterateOnCollections { (collection) in
             self._collections.append(collection)
@@ -241,8 +288,45 @@ class CollectionListDelegate:NSObject,NSOutlineViewDelegate,NSOutlineViewDataSou
                 self.reloadData()
             })
         }
+        // No Filter by default
+        self._filteredCollections=self._collections
     }
 
+
+    public func updateFilter(){
+        let idx=self._filterPredicateDelegate.filterSelectedIndex()
+        let expression=self._filterPredicateDelegate.filterExpression()
+        if idx == 0 || expression==""{
+            self._filteredCollections=self._collections
+        }else{
+            self._filteredCollections=[BartlebyCollection]()
+            for collection  in self._collections {
+                let filteredCollection=collection.filteredCopy({ (instance) -> Bool in
+                    if let o=instance as? ManagedModel{
+                        if idx==1{
+                            // UID contains
+                            return o.UID.contains(expression, compareOptions: NSString.CompareOptions.caseInsensitive)
+                        }else if idx==2{
+                            // UID contains
+                            return o.externalID.contains(expression, compareOptions: NSString.CompareOptions.caseInsensitive)
+                        }else if idx==3{
+                            return o.ownedBy.contains(expression)
+                        }else if idx==4{
+                            return o.freeRelations.contains(expression)
+                        }
+                    }
+                    return false
+                })
+                if filteredCollection.count>0{
+                    if let casted=filteredCollection as? BartlebyCollection{
+                        self._filteredCollections.append(casted)
+                    }
+                }
+            }
+        }
+        let list=[String]()
+        self.reloadData()
+    }
 
     func reloadData(){
         Async.main {
@@ -259,7 +343,7 @@ class CollectionListDelegate:NSObject,NSOutlineViewDelegate,NSOutlineViewDataSou
 
     func outlineView(_ outlineView: NSOutlineView, numberOfChildrenOfItem item: Any?) -> Int {
         if item==nil{
-            return self._collections.count + 1
+            return self._filteredCollections.count + 1
         }
 
         if let object=item as? ManagedModel{
@@ -279,7 +363,7 @@ class CollectionListDelegate:NSObject,NSOutlineViewDelegate,NSOutlineViewDataSou
                 return self._documentReference.metadata
             }else{
                 // Return the collections with a shifted index
-                return self._collections[index-1]
+                return self._filteredCollections[index-1]
             }
         }
 
@@ -430,5 +514,5 @@ class CollectionListDelegate:NSObject,NSOutlineViewDelegate,NSOutlineViewDataSou
             }
         }
     }
-    
+
 }
