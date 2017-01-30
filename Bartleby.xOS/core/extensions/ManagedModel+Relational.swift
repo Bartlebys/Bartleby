@@ -27,7 +27,7 @@ import Foundation
 // N -> N
 
 
-extension ManagedModel:Relational{
+extension ManagedModel{
  
 
     // MARK: - Relationships Declaration

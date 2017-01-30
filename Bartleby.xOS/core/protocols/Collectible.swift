@@ -9,13 +9,16 @@
 import Foundation
 
 // Collectible items are identifiable and serializable
-public protocol Collectible:  Identifiable,Referenced, Serializable,DataUpdatable,DictionaryRepresentation, Supervisable,Committable,ChangesInspectable, UniversalType,Exposed,Mergeable, JSONString {
+public protocol Collectible:  Identifiable,Referenced, Serializable,DataUpdatable,DictionaryRepresentation, Supervisable,Committable,ChangesInspectable, UniversalType,Exposed,Mergeable, JSONString,Relational {
 
     // The collection of the item
     var collection:CollectibleCollection? { get set }
 
     // The creator UID
     var creatorUID: String { get set }
+
+    // You can associate and external ID
+    var externalID:String { get set }
 
     // A summary that can be used for example by ExternalReferences to describe the instance
     var summary: String? { get set }

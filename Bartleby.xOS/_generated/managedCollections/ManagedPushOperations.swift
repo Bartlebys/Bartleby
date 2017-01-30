@@ -434,6 +434,23 @@ public extension Notification.Name {
         }
     }
 
+    // MARK: Filter
+
+    /// Create a filtered copy of a collectible collection
+    ///
+    /// - Parameter isIncluded: the filtering closure
+    /// - Returns: the filtered Collection
+    open func filter(_ isIncluded: (Collectible)-> Bool) -> CollectibleCollection{
+        let filteredCollection=ManagedPushOperations()
+        for item in self._items{
+            if isIncluded(item){
+                filteredCollection._UIDS.append(UID)
+                filteredCollection._storage[UID]=item
+                filteredCollection._items.append(item)
+            }
+        }
+        return filteredCollection
+    }
 
     // MARK: - Selection management Facilities
 

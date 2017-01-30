@@ -113,4 +113,11 @@ public protocol CollectibleCollection: Collectible,ProvisionChanges {
     var count:Int { get }
 
 
+    /// Create a filtered copy of a collectible collection
+    ///
+    /// - Parameter isIncluded: the filtering closure
+    /// - Returns: the filtered Collection
+    func filter(_ isIncluded: (Collectible)-> Bool)-> CollectibleCollection
+
+
 }
