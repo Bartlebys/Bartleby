@@ -341,7 +341,7 @@ class CollectionListDelegate:NSObject,NSOutlineViewDelegate,NSOutlineViewDataSou
             }else if  let casted=object as? User {
                 let view = outlineView.make(withIdentifier: "UserCell", owner: self) as! NSTableCellView
                 if let textField = view.textField {
-                    if casted.creatorUID==casted.UID{
+                    if casted.UID==self._documentReference.currentUser.UID{
                         textField.stringValue = "Current User"
                     }else{
                         textField.stringValue = casted.UID
