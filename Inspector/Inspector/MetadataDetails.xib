@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="11762" systemVersion="16C67" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" customObjectInstantitationMethod="direct">
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="11762" systemVersion="16D32" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" customObjectInstantitationMethod="direct">
     <dependencies>
         <deployment identifier="macosx"/>
         <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="11762"/>
@@ -28,7 +28,6 @@
                     <rect key="frame" x="13" y="10" width="925" height="416"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="400" id="7vf-f1-TlA"/>
-                        <constraint firstAttribute="trailing" secondItem="RYd-n7-Paa" secondAttribute="trailing" constant="759" id="kqK-Kq-9bV"/>
                     </constraints>
                     <font key="font" metaFont="system"/>
                     <tabViewItems>
@@ -458,7 +457,7 @@
                                         <rect key="frame" x="20" y="10" width="865" height="350"/>
                                         <clipView key="contentView" id="r9g-Zk-zQE">
                                             <rect key="frame" x="1" y="1" width="848" height="348"/>
-                                            <autoresizingMask key="autoresizingMask"/>
+                                            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                             <subviews>
                                                 <textView importsGraphics="NO" richText="NO" findStyle="panel" incrementalSearchingEnabled="YES" allowsUndo="YES" spellingCorrection="YES" id="pST-KF-jSX">
                                                     <rect key="frame" x="0.0" y="0.0" width="848" height="348"/>
@@ -1231,7 +1230,7 @@
                                         <rect key="frame" x="20" y="10" width="865" height="350"/>
                                         <clipView key="contentView" id="sd3-mQ-zXQ">
                                             <rect key="frame" x="1" y="1" width="848" height="348"/>
-                                            <autoresizingMask key="autoresizingMask"/>
+                                            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                             <subviews>
                                                 <textView importsGraphics="NO" richText="NO" findStyle="panel" incrementalSearchingEnabled="YES" allowsUndo="YES" spellingCorrection="YES" id="2yx-SA-hf6">
                                                     <rect key="frame" x="0.0" y="0.0" width="848" height="348"/>
