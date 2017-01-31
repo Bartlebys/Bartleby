@@ -27,8 +27,8 @@
             <rect key="frame" x="0.0" y="0.0" width="1070" height="963"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
             <subviews>
-                <customView id="1uN-ZJ-dZH">
-                    <rect key="frame" x="0.0" y="0.0" width="320" height="963"/>
+                <customView misplaced="YES" id="1uN-ZJ-dZH">
+                    <rect key="frame" x="0.0" y="0.0" width="200" height="963"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                     <subviews>
                         <scrollView autohidesScrollers="YES" horizontalLineScroll="19" horizontalPageScroll="10" verticalLineScroll="19" verticalPageScroll="10" usesPredominantAxisScrolling="NO" translatesAutoresizingMaskIntoConstraints="NO" id="YnQ-Jj-gwX">
@@ -222,10 +222,10 @@
                                         <menuItem title="No Filter" state="on" id="xfX-oh-qLv">
                                             <modifierMask key="keyEquivalentModifierMask"/>
                                         </menuItem>
-                                        <menuItem title="UID contains" id="bPQ-Ff-uGU"/>
-                                        <menuItem title="ExternalId contains" id="bgq-Tw-nd0"/>
-                                        <menuItem title="Is Owned By" id="XSc-jz-uQZ"/>
-                                        <menuItem title="Is Related to" id="cT3-TN-46h"/>
+                                        <menuItem title="&lt;UID&gt; contains" id="bPQ-Ff-uGU"/>
+                                        <menuItem title="&lt;ExternalId&gt; contains" id="bgq-Tw-nd0"/>
+                                        <menuItem title="Is Owned By &lt;UID&gt;" id="XSc-jz-uQZ"/>
+                                        <menuItem title="Is Related to  &lt;UID&gt;" id="cT3-TN-46h"/>
                                     </items>
                                 </menu>
                                 <connections>
@@ -258,8 +258,8 @@
                         <constraint firstItem="3Ro-cz-W9b" firstAttribute="leading" secondItem="1uN-ZJ-dZH" secondAttribute="leading" constant="6" id="ynP-kf-q0U"/>
                     </constraints>
                 </customView>
-                <customView id="gLV-HE-TI2">
-                    <rect key="frame" x="321" y="0.0" width="749" height="963"/>
+                <customView misplaced="YES" id="gLV-HE-TI2">
+                    <rect key="frame" x="201" y="0.0" width="869" height="963"/>
                     <autoresizingMask key="autoresizingMask"/>
                     <subviews>
                         <splitView arrangesAllSubviews="NO" dividerStyle="paneSplitter" translatesAutoresizingMaskIntoConstraints="NO" id="8gB-cF-KPk">

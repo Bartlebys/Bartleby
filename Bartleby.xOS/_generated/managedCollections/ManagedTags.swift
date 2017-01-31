@@ -497,8 +497,8 @@ public extension Notification.Name {
         let filteredCollection=ManagedTags()
         for item in self._items{
             if isIncluded(item){
-                filteredCollection._UIDS.append(UID)
-                filteredCollection._storage[UID]=item
+                filteredCollection._UIDS.append(item.UID)
+                filteredCollection._storage[item.UID]=item
                 filteredCollection._items.append(item)
             }
         }

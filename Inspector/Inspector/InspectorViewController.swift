@@ -307,11 +307,13 @@ class CollectionListDelegate:NSObject,NSOutlineViewDelegate,NSOutlineViewDataSou
                             // UID contains
                             return o.UID.contains(expression, compareOptions: NSString.CompareOptions.caseInsensitive)
                         }else if idx==2{
-                            // UID contains
+                            // ExternalId contains
                             return o.externalID.contains(expression, compareOptions: NSString.CompareOptions.caseInsensitive)
                         }else if idx==3{
+                            // Is owned by <UID>
                             return o.ownedBy.contains(expression)
                         }else if idx==4{
+                             // Is related to <UID>
                             return o.freeRelations.contains(expression)
                         }
                     }
@@ -324,7 +326,6 @@ class CollectionListDelegate:NSObject,NSOutlineViewDelegate,NSOutlineViewDataSou
                 }
             }
         }
-        let list=[String]()
         self.reloadData()
     }
 
