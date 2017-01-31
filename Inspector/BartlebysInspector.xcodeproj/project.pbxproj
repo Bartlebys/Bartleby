@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		E50CD6511E40A1DF009B5981 /* BSFSViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E50CD64F1E40A1DF009B5981 /* BSFSViewController.swift */; };
+		E50CD6521E40A1DF009B5981 /* BSFSViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = E50CD6501E40A1DF009B5981 /* BSFSViewController.xib */; };
 		E53F0B7D1DF96319003301DD /* BartlebysInspector.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E53F0B731DF96319003301DD /* BartlebysInspector.framework */; };
 		E53F0B821DF96319003301DD /* InspectorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E53F0B811DF96319003301DD /* InspectorTests.swift */; };
 		E53F0B841DF96319003301DD /* Inspector.h in Headers */ = {isa = PBXBuildFile; fileRef = E53F0B761DF96319003301DD /* Inspector.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -55,6 +57,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		E50CD64F1E40A1DF009B5981 /* BSFSViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BSFSViewController.swift; sourceTree = "<group>"; };
+		E50CD6501E40A1DF009B5981 /* BSFSViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = BSFSViewController.xib; sourceTree = "<group>"; };
 		E53F0B731DF96319003301DD /* BartlebysInspector.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = BartlebysInspector.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		E53F0B761DF96319003301DD /* Inspector.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Inspector.h; sourceTree = "<group>"; };
 		E53F0B771DF96319003301DD /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -151,6 +155,8 @@
 				E53F0BA01DF9639C003301DD /* DocumentInspector.xib */,
 				E53F0BA11DF9639C003301DD /* InspectorViewController.swift */,
 				E53F0BA21DF9639C003301DD /* InspectorViewController.xib */,
+				E50CD64F1E40A1DF009B5981 /* BSFSViewController.swift */,
+				E50CD6501E40A1DF009B5981 /* BSFSViewController.xib */,
 				E53F0BA31DF9639C003301DD /* LogsViewController.swift */,
 				E53F0BA41DF9639C003301DD /* LogsViewController.xib */,
 				E53F0BA61DF9639C003301DD /* MetadataDetails.swift */,
@@ -309,6 +315,7 @@
 				E53F0BB61DF9639C003301DD /* ChangesViewController.xib in Resources */,
 				E53F0BBF1DF9639C003301DD /* InspectorViewController.xib in Resources */,
 				E53F0BD01DF9639C003301DD /* WebStack.xib in Resources */,
+				E50CD6521E40A1DF009B5981 /* BSFSViewController.xib in Resources */,
 				E53F0BC11DF9639C003301DD /* LogsViewController.xib in Resources */,
 				E53F0BCE1DF9639C003301DD /* SourceEditor.xib in Resources */,
 			);
@@ -328,6 +335,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E50CD6511E40A1DF009B5981 /* BSFSViewController.swift in Sources */,
 				E53F0BC71DF9639C003301DD /* OperationViewController.swift in Sources */,
 				E53F0BB51DF9639C003301DD /* ChangesViewController.swift in Sources */,
 				E53F0BBB1DF9639C003301DD /* DecryptView.swift in Sources */,

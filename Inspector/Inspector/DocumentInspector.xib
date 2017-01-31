@@ -1,13 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="11542" systemVersion="16B2555" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" customObjectInstantitationMethod="direct">
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="11762" systemVersion="16D32" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" customObjectInstantitationMethod="direct">
     <dependencies>
         <deployment identifier="macosx"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="11542"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="11762"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
         <customObject id="-2" userLabel="File's Owner" customClass="DocumentInspector" customModule="BartlebyKit">
             <connections>
+                <outlet property="bsfsViewController" destination="Cj0-vz-30S" id="Muy-RM-hQE"/>
                 <outlet property="chronologyViewController" destination="EcV-gs-G5P" id="1oK-8X-ln9"/>
                 <outlet property="globalTabView" destination="2rc-pm-P9A" id="nWj-YL-uLb"/>
                 <outlet property="inspectorViewController" destination="Rkd-eV-IwX" id="dFf-Al-Hkx"/>
@@ -23,7 +24,7 @@
             <windowStyleMask key="styleMask" titled="YES" closable="YES" miniaturizable="YES" resizable="YES"/>
             <windowPositionMask key="initialPositionMask" leftStrut="YES" rightStrut="YES" topStrut="YES" bottomStrut="YES"/>
             <rect key="contentRect" x="196" y="240" width="1024" height="768"/>
-            <rect key="screenRect" x="0.0" y="0.0" width="2560" height="1578"/>
+            <rect key="screenRect" x="0.0" y="0.0" width="3440" height="1418"/>
             <view key="contentView" id="EiT-Mj-1SZ">
                 <rect key="frame" x="0.0" y="0.0" width="1024" height="768"/>
                 <autoresizingMask key="autoresizingMask"/>
@@ -67,9 +68,9 @@
                     <toolbarItem implicitItemIdentifier="ED72EB41-7D0A-4E56-91F3-A8709651442E" label="" paletteLabel="" id="Nl4-0i-Klz">
                         <nil key="toolTip"/>
                         <size key="minSize" width="200" height="24"/>
-                        <size key="maxSize" width="317" height="28"/>
+                        <size key="maxSize" width="366" height="28"/>
                         <segmentedControl key="view" verticalHuggingPriority="750" id="blX-Ao-gTK">
-                            <rect key="frame" x="0.0" y="14" width="317" height="28"/>
+                            <rect key="frame" x="0.0" y="14" width="366" height="28"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                             <segmentedCell key="cell" borderStyle="border" alignment="left" style="texturedSquare" trackingMode="selectOne" id="j6S-ES-j9y">
                                 <font key="font" metaFont="system"/>
@@ -78,6 +79,7 @@
                                     <segment label="Logs" tag="1"/>
                                     <segment label=" Web Stack"/>
                                     <segment label="Chronology"/>
+                                    <segment label="Files"/>
                                 </segments>
                             </segmentedCell>
                             <connections>
@@ -110,14 +112,14 @@
                         </connections>
                     </toolbarItem>
                     <toolbarItem implicitItemIdentifier="NSToolbarSpaceItem" id="RBs-x9-De4"/>
-                    <toolbarItem implicitItemIdentifier="CE18548F-78E9-4133-B8CD-61026652B61D" label="Pushes Changes Immediately" paletteLabel="Pushes Changes Immediately" image="A608ABE8-6A45-46CE-B05C-E51D01E2B45C" id="EoO-Ox-zgh">
+                    <toolbarItem implicitItemIdentifier="CE18548F-78E9-4133-B8CD-61026652B61D" label="Pushes Changes Immediately" paletteLabel="Pushes Changes Immediately" image="B60EB06F-510B-4822-ABB6-3FDE48BACCFD" id="EoO-Ox-zgh">
                         <nil key="toolTip"/>
                         <size key="minSize" width="61" height="18"/>
                         <size key="maxSize" width="120" height="18"/>
                         <button key="view" id="CIM-nd-mnd">
                             <rect key="frame" x="33" y="14" width="96" height="18"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                            <buttonCell key="cell" type="bevel" title=" Automatic" bezelStyle="regularSquare" image="A608ABE8-6A45-46CE-B05C-E51D01E2B45C" imagePosition="left" state="on" inset="2" id="GQ5-eZ-Yks">
+                            <buttonCell key="cell" type="bevel" title=" Automatic" bezelStyle="regularSquare" image="B60EB06F-510B-4822-ABB6-3FDE48BACCFD" imagePosition="left" state="on" inset="2" id="GQ5-eZ-Yks">
                                 <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
                                 <font key="font" metaFont="system"/>
                             </buttonCell>
@@ -138,14 +140,15 @@
             </toolbar>
             <point key="canvasLocation" x="421" y="238"/>
         </window>
-        <viewController id="Rkd-eV-IwX" customClass="InspectorViewController" customModule="BartlebyKit" customModuleProvider="target"/>
-        <viewController id="nOf-ae-T3T" customClass="LogsViewController" customModule="BartlebyKit" customModuleProvider="target"/>
-        <viewController id="BrD-bp-d8H" customClass="WebStack" customModule="BartlebyKit" customModuleProvider="target"/>
-        <viewController id="EcV-gs-G5P" customClass="ChronologyViewController" customModule="BartlebyKit" customModuleProvider="target"/>
+        <viewController id="Rkd-eV-IwX" customClass="InspectorViewController" customModule="BartlebysInspector" customModuleProvider="target"/>
+        <viewController id="nOf-ae-T3T" customClass="LogsViewController" customModule="BartlebysInspector" customModuleProvider="target"/>
+        <viewController id="BrD-bp-d8H" customClass="WebStack" customModule="BartlebysInspector" customModuleProvider="target"/>
+        <viewController id="EcV-gs-G5P" customClass="ChronologyViewController" customModule="BartlebysInspector" customModuleProvider="target"/>
+        <viewController title="Crypted File System" identifier="BSFSvc" id="Cj0-vz-30S" customClass="BSFSViewController" customModule="BartlebysInspector" customModuleProvider="target"/>
     </objects>
     <resources>
         <image name="760-refresh-3-toolbar" width="22" height="22"/>
-        <image name="A608ABE8-6A45-46CE-B05C-E51D01E2B45C" width="18" height="18">
+        <image name="B60EB06F-510B-4822-ABB6-3FDE48BACCFD" width="18" height="18">
             <mutableData key="keyedArchiveRepresentation">
 YnBsaXN0MDDUAQIDBAUGZWZYJHZlcnNpb25YJG9iamVjdHNZJGFyY2hpdmVyVCR0b3ASAAGGoK8QGQcI
 ERYbHCo3ODk6Ozw9PkVGR0tPVFdaX2JVJG51bGzUCQoLDA0ODxBWJGNsYXNzXE5TSW1hZ2VGbGFnc1ZO

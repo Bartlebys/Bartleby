@@ -36,6 +36,8 @@ open class DocumentInspector: NSWindowController,DocumentProvider,DocumentDepend
 
     @IBOutlet weak var chronologyViewController: ChronologyViewController!
 
+    @IBOutlet var bsfsViewController: BSFSViewController!
+
     // We bind this index on the scopeSegmentedControl
     open dynamic var selectedIndex:Int = -1{
         didSet{
@@ -92,6 +94,9 @@ open class DocumentInspector: NSWindowController,DocumentProvider,DocumentDepend
                 self.globalTabView.addTabViewItem(chronologyTabViewItem)
                 self.chronologyViewController.documentProvider=self
 
+                let bsfsTabViewItem=NSTabViewItem(viewController:self.bsfsViewController)
+                self.globalTabView.addTabViewItem(bsfsTabViewItem)
+                self.bsfsViewController.documentProvider=self
             }
         }
     }
