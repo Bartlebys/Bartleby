@@ -14,7 +14,7 @@ class BSFSViewController: NSViewController,DocumentDependent,NSOutlineViewDelega
     override var nibName : String { return "BSFSViewController" }
 
     fileprivate var _document:BartlebyDocument?
-    
+
     // MARK: - DocumentDependent
 
     internal var documentProvider: DocumentProvider?{
@@ -51,48 +51,64 @@ class BSFSViewController: NSViewController,DocumentDependent,NSOutlineViewDelega
 
     public func outlineView(_ outlineView: NSOutlineView, viewFor tableColumn: NSTableColumn?, item: Any) -> NSView?{
         if let document = self._document{
-        if let object = item as? ManagedModel{
-            if let casted=object as? Box{
-                let view = outlineView.make(withIdentifier: "BoxCell", owner: self) as! NSTableCellView
-                if let textField = view.textField {
-                    textField.stringValue = "Box \(casted.UID) | Mounted:\(casted.isMounted)"
-                }
-                self._configureInlineButton(view, object: casted)
-                return view
-            }else if let casted=object as? Node{
-                let view = outlineView.make(withIdentifier: "NodeCell", owner: self) as! NSTableCellView
-                if let textField = view.textField {
-                    textField.stringValue = "Node \(casted.UID) | \(casted.relativePath) | \(casted.size/1024)kB"
-                }
-                self._configureInlineButton(view, object: casted)
-                return view
-            }else if let casted=object as? Block{
-                let view = outlineView.make(withIdentifier: "BlockCell", owner: self) as! NSTableCellView
-                if let textField = view.textField {
-                    if let exists = document.blocksWrapper?.fileWrappers?.keys.contains(casted.digest){
+            if let object = item as? ManagedModel{
+                if let casted=object as? Box{
+                    let view = outlineView.make(withIdentifier: "BoxCell", owner: self) as! NSTableCellView
+                    if let textField = view.textField {
+                        textField.stringValue = "Box \(casted.UID) | Mounted:\(casted.isMounted)"
+                    }
+                    self._configureInlineButton(view, object: casted)
+                    return view
+                }else if let casted=object as? Node{
+                    let view = outlineView.make(withIdentifier: "NodeCell", owner: self) as! NSTableCellView
+
+
+                    if let textField = view.textField {
+                        textField.stringValue = "Node \(casted.UID) | \(casted.relativePath) | \(casted.size/1024)kB"
+
+                        var exists=true
+                        for block in casted.blocks{
+                            if !document.blocksWrapper!.fileWrappers!.keys.contains(block.digest){
+                                exists=false
+                                break
+                            }
+                        }
                         if exists{
                             textField.alphaValue = 1
                         }else{
                             textField.alphaValue = 0.3
                         }
+
                     }
-                    textField.stringValue = "Block \(casted.UID) | \(casted.digest)"
-                }
-                self._configureInlineButton(view, object: casted)
-                return view
-            }else{
-                let view = outlineView.make(withIdentifier: "ObjectCell", owner: self) as! NSTableCellView
-                if let textField = view.textField {
-                    if let s=item as? String{
-                        textField.stringValue = s
-                    }else{
-                        textField.stringValue = "Anomaly"
+                    self._configureInlineButton(view, object: casted)
+                    return view
+                }else if let casted=object as? Block{
+                    let view = outlineView.make(withIdentifier: "BlockCell", owner: self) as! NSTableCellView
+                    if let textField = view.textField {
+                        if let exists = document.blocksWrapper?.fileWrappers?.keys.contains(casted.digest){
+                            if exists{
+                                textField.alphaValue = 1
+                            }else{
+                                textField.alphaValue = 0.3
+                            }
+                        }
+                        textField.stringValue = "Block \(casted.UID) | \(casted.digest)"
                     }
+                    self._configureInlineButton(view, object: casted)
+                    return view
+                }else{
+                    let view = outlineView.make(withIdentifier: "ObjectCell", owner: self) as! NSTableCellView
+                    if let textField = view.textField {
+                        if let s=item as? String{
+                            textField.stringValue = s
+                        }else{
+                            textField.stringValue = "Anomaly"
+                        }
+                    }
+                    self._configureInlineButton(view, object: item)
+                    return view
                 }
-                self._configureInlineButton(view, object: item)
-                return view
             }
-        }
         }
         return nil
     }
@@ -100,17 +116,17 @@ class BSFSViewController: NSViewController,DocumentDependent,NSOutlineViewDelega
 
     fileprivate func _configureInlineButton(_ view:NSView,object:Any){
         if let inlineButton = view.viewWithTag(2) as? NSButton{
-                if let casted=object as? Box {
-                    let counter = casted.nodes.count
-                    inlineButton.isHidden = (counter==0)
-                    inlineButton.title="\(counter)"
-                    return
-                }else if let casted = object as? Node{
-                    let counter = casted.blocks.count
-                    inlineButton.isHidden = (counter==0)
-                    inlineButton.title="\(counter)"
-                    return
-                }
+            if let casted=object as? Box {
+                let counter = casted.nodes.count
+                inlineButton.isHidden = (counter==0)
+                inlineButton.title="\(counter)"
+                return
+            }else if let casted = object as? Node{
+                let counter = casted.blocks.count
+                inlineButton.isHidden = (counter==0)
+                inlineButton.title="\(counter)"
+                return
+            }
 
             inlineButton.isHidden=true
         }
@@ -128,7 +144,7 @@ class BSFSViewController: NSViewController,DocumentDependent,NSOutlineViewDelega
             } else if let box=item as? Box{
                 return box.nodes.count
             } else if let node=item as? Node{
-                 return node.blocks.count
+                return node.blocks.count
             }
         }
         return 0
@@ -137,7 +153,7 @@ class BSFSViewController: NSViewController,DocumentDependent,NSOutlineViewDelega
 
     public func outlineView(_ outlineView: NSOutlineView, child index: Int, ofItem item: Any?) -> Any{
         if item == nil{
-             if let document = self._document{
+            if let document = self._document{
                 return document.boxes[index]
             }
         } else if let box=item as? Box{
@@ -147,8 +163,8 @@ class BSFSViewController: NSViewController,DocumentDependent,NSOutlineViewDelega
         }
         return "ERROR #\(index)"
     }
-
-
+    
+    
     public func outlineView(_ outlineView: NSOutlineView, isItemExpandable item: Any) -> Bool{
         if let _=item as? Block{
             return false
