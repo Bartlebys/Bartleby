@@ -90,7 +90,7 @@
                                                     <imageView fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="di7-fg-8SS">
                                                         <rect key="frame" x="3" y="0.0" width="17" height="17"/>
                                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                                                        <imageCell key="cell" refusesFirstResponder="YES" imageScaling="proportionallyDown" image="1062-layers-2" id="Fjp-Qa-hjG"/>
+                                                        <imageCell key="cell" refusesFirstResponder="YES" imageScaling="proportionallyDown" image="1012-sticky-note" id="Fjp-Qa-hjG"/>
                                                     </imageView>
                                                     <textField horizontalHuggingPriority="249" verticalHuggingPriority="750" tag="1" translatesAutoresizingMaskIntoConstraints="NO" id="xOy-GT-p7O">
                                                         <rect key="frame" x="26" y="1" width="947" height="14"/>
@@ -129,7 +129,7 @@
                                                     <imageView fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="pUG-0d-oLs">
                                                         <rect key="frame" x="3" y="0.0" width="17" height="17"/>
                                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                                                        <imageCell key="cell" refusesFirstResponder="YES" imageScaling="proportionallyDown" image="1012-sticky-note" id="9Pr-qe-K8A"/>
+                                                        <imageCell key="cell" refusesFirstResponder="YES" imageScaling="proportionallyDown" image="868-atom-toolbar" id="9Pr-qe-K8A"/>
                                                     </imageView>
                                                     <textField horizontalHuggingPriority="249" verticalHuggingPriority="750" tag="1" translatesAutoresizingMaskIntoConstraints="NO" id="SuP-xe-6Xd">
                                                         <rect key="frame" x="26" y="1" width="947" height="14"/>
@@ -193,6 +193,6 @@
     <resources>
         <image name="1012-sticky-note" width="28" height="28"/>
         <image name="1039-files-box" width="28" height="26"/>
-        <image name="1062-layers-2" width="28" height="24"/>
+        <image name="868-atom-toolbar" width="20" height="22"/>
     </resources>
 </document>
