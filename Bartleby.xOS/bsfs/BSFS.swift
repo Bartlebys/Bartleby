@@ -141,7 +141,7 @@ public final class BSFS:TriggerHook{
             // Let's try to assemble as much nodes as we can.
             let nodes=box.nodes
             for node in nodes{
-                let isNotAssembled = !self._isAssembled(node)
+                let isNotAssembled = !self.isAssembled(node)
                 let isAssemblable = node.isAssemblable
                 if node.isAssemblable && isNotAssembled{
                     concernedNodes.append(node)
@@ -206,7 +206,7 @@ public final class BSFS:TriggerHook{
                         accessor.willBecomeUnusable(node: node)
                     }
                 }
-                let assembledPath=self._assemblyPath(for:node)
+                let assembledPath=self.assemblyPath(for:node)
                 try self._fileManager.removeItem(atPath: assembledPath)
             }
             box.isMounted=false
@@ -220,7 +220,7 @@ public final class BSFS:TriggerHook{
     ///
     /// - Parameter node: the node
     /// - Returns: the assembled path (created if there no
-    fileprivate func _assemblyPath(for node:Node)->String{
+    public func assemblyPath(for node:Node)->String{
         if let box=node.box{
             return self.assemblyPath(for: box)+node.relativePath
         }
@@ -238,8 +238,7 @@ public final class BSFS:TriggerHook{
     ///
     /// - Parameter node: the node
     /// - Returns: true if the file is available and the node not marked assemblyInProgress
-    fileprivate func _isAssembled(_ node:Node)->Bool{
-
+    public func isAssembled(_ node:Node)->Bool{
         if node.assemblyInProgress {
             // Return false if the assembly is in progress
             return false
@@ -247,7 +246,7 @@ public final class BSFS:TriggerHook{
         let group=AsyncGroup()
         var isAssembled=false
         group.utility{
-            let path=self._assemblyPath(for: node)
+            let path=self.assemblyPath(for: node)
             isAssembled=self._fileManager.fileExists(atPath: path)
             if isAssembled{
                 if let attributes = try? self._fileManager.attributesOfItem(atPath: path){
@@ -286,7 +285,7 @@ public final class BSFS:TriggerHook{
             if let delegate = self._boxDelegate{
                 delegate.nodeIsReady(node: node, proceed: {
 
-                    let path=self._assemblyPath(for: node)
+                    let path=self.assemblyPath(for: node)
 
                     let blocks=node.blocks.sorted(by: { (rblock, lblock) -> Bool in
                         return rblock.rank < lblock.rank
@@ -336,7 +335,7 @@ public final class BSFS:TriggerHook{
                             do{
                                 if let rNodeUID=node.referentNodeUID{
                                     if let rNode = try? Bartleby.registredObjectByUID(rNodeUID) as Node{
-                                        let destination=self._assemblyPath(for: rNode)
+                                        let destination=self.assemblyPath(for: rNode)
                                         try self._fileManager.createSymbolicLink(atPath: path, withDestinationPath:destination)
                                         let completionState=Completion.successState()
                                         completionState.setExternalReferenceResult(from:node)
@@ -715,7 +714,7 @@ public final class BSFS:TriggerHook{
             if !self._accessors[node.UID]!.contains(where: {$0.UID==accessor.UID}){
                 self._accessors[node.UID]!.append(accessor)
             }
-            if self._isAssembled(node){
+            if self.isAssembled(node){
                 self._grantAccess(to: node, accessor: accessor)
             }
         }else{
@@ -743,7 +742,7 @@ public final class BSFS:TriggerHook{
     ///   - node: to the node
     ///   - accessor: for an Accessor
     fileprivate func _grantAccess(to node:Node,accessor:NodeAccessor){
-        accessor.fileIsAvailable(for:node, at: self._assemblyPath(for:node))
+        accessor.fileIsAvailable(for:node, at: self.assemblyPath(for:node))
     }
 
 
@@ -766,7 +765,7 @@ public final class BSFS:TriggerHook{
                 if let box=node.box{
                     Async.utility{
                         do{
-                            try self._fileManager.copyItem(atPath: self._assemblyPath(for: node), toPath:box.nodesFolderPath+relativePath)
+                            try self._fileManager.copyItem(atPath: self.assemblyPath(for: node), toPath:box.nodesFolderPath+relativePath)
 
                             // Create the copiedNode
                             let copiedNode=self._document.newObject() as Node

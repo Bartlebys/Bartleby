@@ -12,6 +12,19 @@ import Foundation
 
 public extension Node{
 
+    public var filePath:String{
+        if let document=self.referentDocument{
+            return document.bsfs.assemblyPath(for: self)
+        }
+        return Default.NO_PATH
+    }
+
+    public var isAssembled:Bool{
+        if let document=self.referentDocument{
+            return document.bsfs.isAssembled(self)
+        }
+        return false
+    }
 
     /// true if the node can be assembled
     public var isAssemblable:Bool{
