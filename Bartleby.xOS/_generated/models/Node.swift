@@ -21,6 +21,15 @@ import Foundation
         return "Node"
     }
 
+	//The type of node is a classifier equivalent to a file extension.
+	dynamic open var type:String = ""{
+	    didSet { 
+	       if !self.wantsQuietChanges && type != oldValue {
+	            self.provisionChanges(forKey: "type",oldValue: oldValue,newValue: type) 
+	       } 
+	    }
+	}
+
 	//The relative path inside the box
 	dynamic open var relativePath:String = "\(Default.NO_PATH)"
 
@@ -95,7 +104,7 @@ import Foundation
     /// Return all the exposed instance variables keys. (Exposed == public and modifiable).
     override open var exposedKeys:[String] {
         var exposed=super.exposedKeys
-        exposed.append(contentsOf:["relativePath","proxyPath","blocksMaxSize","numberOfBlocks","priority","nature","modificationDate","creationDate","referentNodeUID","authorized","size","digest","compressedBlocks","cryptedBlocks","uploadProgression","downloadProgression","uploadInProgress","downloadInProgress","assemblyInProgress"])
+        exposed.append(contentsOf:["type","relativePath","proxyPath","blocksMaxSize","numberOfBlocks","priority","nature","modificationDate","creationDate","referentNodeUID","authorized","size","digest","compressedBlocks","cryptedBlocks","uploadProgression","downloadProgression","uploadInProgress","downloadInProgress","assemblyInProgress"])
         return exposed
     }
 
@@ -108,6 +117,10 @@ import Foundation
     /// - throws: throws an Exception when the key is not exposed
     override open func setExposedValue(_ value:Any?, forKey key: String) throws {
         switch key {
+            case "type":
+                if let casted=value as? String{
+                    self.type=casted
+                }
             case "relativePath":
                 if let casted=value as? String{
                     self.relativePath=casted
@@ -199,6 +212,8 @@ import Foundation
     /// - returns: returns the value
     override open func getExposedValueForKey(_ key:String) throws -> Any?{
         switch key {
+            case "type":
+               return self.type
             case "relativePath":
                return self.relativePath
             case "proxyPath":
@@ -250,6 +265,7 @@ import Foundation
     override open func mapping(map: Map) {
         super.mapping(map: map)
         self.quietChanges {
+			self.type <- ( map["type"] )
 			self.relativePath <- ( map["relativePath"] )
 			self.proxyPath <- ( map["proxyPath"] )
 			self.blocksMaxSize <- ( map["blocksMaxSize"] )
@@ -273,6 +289,7 @@ import Foundation
     required public init?(coder decoder: NSCoder) {
         super.init(coder: decoder)
         self.quietChanges {
+			self.type=String(describing: decoder.decodeObject(of: NSString.self, forKey: "type")! as NSString)
 			self.relativePath=String(describing: decoder.decodeObject(of: NSString.self, forKey: "relativePath")! as NSString)
 			self.proxyPath=String(describing: decoder.decodeObject(of: NSString.self, forKey:"proxyPath") as NSString?)
 			self.blocksMaxSize=decoder.decodeInteger(forKey:"blocksMaxSize") 
@@ -292,6 +309,7 @@ import Foundation
 
     override open func encode(with coder: NSCoder) {
         super.encode(with:coder)
+		coder.encode(self.type,forKey:"type")
 		coder.encode(self.relativePath,forKey:"relativePath")
 		if let proxyPath = self.proxyPath {
 			coder.encode(proxyPath,forKey:"proxyPath")
