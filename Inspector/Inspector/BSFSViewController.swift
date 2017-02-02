@@ -64,7 +64,7 @@ class BSFSViewController: NSViewController,DocumentDependent,NSOutlineViewDelega
 
 
                     if let textField = view.textField {
-                        textField.stringValue = "Node \(casted.UID) | \(casted.relativePath) | \(casted.size/1024)kB"
+                        textField.stringValue = "\"\(casted.type)\" node \(casted.UID) | \(casted.relativePath) | \(casted.size/1024)kB"
 
                         var exists=true
                         for block in casted.blocks{
@@ -92,7 +92,7 @@ class BSFSViewController: NSViewController,DocumentDependent,NSOutlineViewDelega
                                 textField.alphaValue = 0.3
                             }
                         }
-                        textField.stringValue = "Block \(casted.UID) | \(casted.digest)"
+                        textField.stringValue = "Block \(casted.UID) | \(casted.digest) | \(casted.size/1024)kB"
                     }
                     self._configureInlineButton(view, object: casted)
                     return view
