@@ -183,7 +183,7 @@ public class IdentityWindowController: NSWindowController,DocumentProvider,Ident
             }else{
                 if currentStep==3 && self.creationMode==true{
                     if let document=self.getDocument(){
-                        document.currentUserHasBeenCreated()
+                        document.notifyCurrentUserHasBeenCreated()
                     }
                 }
                 self.identificationDelegate?.userWantsToCloseIndentityController()
