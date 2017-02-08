@@ -9,6 +9,11 @@
 			<key>orderHint</key>
 			<integer>9</integer>
 		</dict>
+		<key>BartlebysUI iOS.xcscheme</key>
+		<dict>
+			<key>orderHint</key>
+			<integer>6</integer>
+		</dict>
 		<key>BartlebysUI.xcscheme_^#shared#^_</key>
 		<dict>
 			<key>orderHint</key>
@@ -23,6 +28,16 @@
 			<true/>
 		</dict>
 		<key>E53093A31E4B27E80068D7EC</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>E530946D1E4B50300068D7EC</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>E53094751E4B50300068D7EC</key>
 		<dict>
 			<key>primary</key>
 			<true/>
