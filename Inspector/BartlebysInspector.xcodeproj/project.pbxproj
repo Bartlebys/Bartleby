@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		E50CD6511E40A1DF009B5981 /* BSFSViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E50CD64F1E40A1DF009B5981 /* BSFSViewController.swift */; };
 		E50CD6521E40A1DF009B5981 /* BSFSViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = E50CD6501E40A1DF009B5981 /* BSFSViewController.xib */; };
+		E53094891E4B5A1E0068D7EC /* BartlebysUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E53094881E4B5A1E0068D7EC /* BartlebysUI.framework */; };
 		E53F0B7D1DF96319003301DD /* BartlebysInspector.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E53F0B731DF96319003301DD /* BartlebysInspector.framework */; };
 		E53F0B821DF96319003301DD /* InspectorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E53F0B811DF96319003301DD /* InspectorTests.swift */; };
 		E53F0B841DF96319003301DD /* Inspector.h in Headers */ = {isa = PBXBuildFile; fileRef = E53F0B761DF96319003301DD /* Inspector.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -59,6 +60,7 @@
 /* Begin PBXFileReference section */
 		E50CD64F1E40A1DF009B5981 /* BSFSViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BSFSViewController.swift; sourceTree = "<group>"; };
 		E50CD6501E40A1DF009B5981 /* BSFSViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = BSFSViewController.xib; sourceTree = "<group>"; };
+		E53094881E4B5A1E0068D7EC /* BartlebysUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = BartlebysUI.framework; path = "../../../../../../../../Library/Developer/Xcode/DerivedData/YouDub-aodsguokyrtmojgwlsnefsibaroc/Build/Products/Debug/BartlebysUI.framework"; sourceTree = "<group>"; };
 		E53F0B731DF96319003301DD /* BartlebysInspector.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = BartlebysInspector.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		E53F0B761DF96319003301DD /* Inspector.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Inspector.h; sourceTree = "<group>"; };
 		E53F0B771DF96319003301DD /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -104,6 +106,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E53094891E4B5A1E0068D7EC /* BartlebysUI.framework in Frameworks */,
 				E53F0BD61DF964D2003301DD /* Alamofire.framework in Frameworks */,
 				E53F0BD71DF964D2003301DD /* ObjectMapper.framework in Frameworks */,
 				E53F0BD31DF963C0003301DD /* BartlebyKit.framework in Frameworks */,
@@ -200,6 +203,7 @@
 		E53F0BD11DF963C0003301DD /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				E53094881E4B5A1E0068D7EC /* BartlebysUI.framework */,
 				E53F0BD41DF964D2003301DD /* Alamofire.framework */,
 				E53F0BD51DF964D2003301DD /* ObjectMapper.framework */,
 				E53F0BD21DF963C0003301DD /* BartlebyKit.framework */,

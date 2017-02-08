@@ -8,6 +8,8 @@
 
 import Cocoa
 import BartlebyKit
+import BartlebysUI
+
 
 class ChronologyViewController: NSViewController ,DocumentDependent,NSTableViewDelegate{
 

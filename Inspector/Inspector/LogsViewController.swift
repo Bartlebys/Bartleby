@@ -8,6 +8,7 @@
 
 import Cocoa
 import BartlebyKit
+import BartlebysUI
 
 class LogsViewController: NSViewController,DocumentDependent{
 
