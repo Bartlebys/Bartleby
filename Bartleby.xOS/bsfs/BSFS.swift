@@ -251,8 +251,8 @@ public final class BSFS:TriggerHook{
             if isAssembled{
                 if let attributes = try? self._fileManager.attributesOfItem(atPath: path){
                     if let size:Int=attributes[FileAttributeKey.size] as? Int{
-                        self._document.log("Divergent size node Size:\(node.size) fs.size: \(size) ", file: #file, function: #function, line: #line, category: Default.LOG_DEFAULT, decorative: false)
                         if size != node.size{
+                            self._document.log("Divergent size node Size:\(node.size) fs.size: \(size) ", file: #file, function: #function, line: #line, category: Default.LOG_DEFAULT, decorative: false)
                             isAssembled=false
                         }
                     }
