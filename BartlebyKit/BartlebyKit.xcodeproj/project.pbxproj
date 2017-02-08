@@ -477,6 +477,8 @@
 		E5135C6B1E084B7F001E65A0 /* Pluralization.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5135A7E1E084B7F001E65A0 /* Pluralization.swift */; };
 		E5135C6C1E084B7F001E65A0 /* PString.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5135A7F1E084B7F001E65A0 /* PString.swift */; };
 		E5135C6D1E084B7F001E65A0 /* PString.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5135A7F1E084B7F001E65A0 /* PString.swift */; };
+		E53093951E4B1DC20068D7EC /* BartlebyDocument+LifeCycle.swift in Sources */ = {isa = PBXBuildFile; fileRef = E53093941E4B1DC20068D7EC /* BartlebyDocument+LifeCycle.swift */; };
+		E53093961E4B1DC20068D7EC /* BartlebyDocument+LifeCycle.swift in Sources */ = {isa = PBXBuildFile; fileRef = E53093941E4B1DC20068D7EC /* BartlebyDocument+LifeCycle.swift */; };
 		E53E2C3C1DD358920040E32B /* PStringTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E53E2C3B1DD358920040E32B /* PStringTests.swift */; };
 		E53ECE121E1585C00084DD6C /* Identities.swift in Sources */ = {isa = PBXBuildFile; fileRef = E53ECE101E1585C00084DD6C /* Identities.swift */; };
 		E53ECE131E1585C00084DD6C /* Identities.swift in Sources */ = {isa = PBXBuildFile; fileRef = E53ECE101E1585C00084DD6C /* Identities.swift */; };
@@ -811,6 +813,7 @@
 		E5135A7F1E084B7F001E65A0 /* PString.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PString.swift; sourceTree = "<group>"; };
 		E52F94881D01C23A005BDA2D /* TestCase.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TestCase.swift; sourceTree = "<group>"; };
 		E52F94891D01C23A005BDA2D /* TestsConfiguration.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TestsConfiguration.swift; sourceTree = "<group>"; };
+		E53093941E4B1DC20068D7EC /* BartlebyDocument+LifeCycle.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "BartlebyDocument+LifeCycle.swift"; sourceTree = "<group>"; };
 		E5361CFC1CD8DD9E005855DC /* HandlersTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HandlersTests.swift; sourceTree = "<group>"; };
 		E53E2C3B1DD358920040E32B /* PStringTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PStringTests.swift; sourceTree = "<group>"; };
 		E53ECE101E1585C00084DD6C /* Identities.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Identities.swift; sourceTree = "<group>"; };
@@ -1189,6 +1192,7 @@
 				E5135A0E1E084B7F001E65A0 /* BartlebyDocument+Collections.swift */,
 				E5135A0F1E084B7F001E65A0 /* BartlebyDocument+ComputedProperties.swift */,
 				E5135A101E084B7F001E65A0 /* BartlebyDocument+DotBart.swift */,
+				E53093941E4B1DC20068D7EC /* BartlebyDocument+LifeCycle.swift */,
 				E5135A111E084B7F001E65A0 /* BartlebyDocument+LocalUpsertAndDelete.swift */,
 				E5135A121E084B7F001E65A0 /* BartlebyDocument+Logs.swift */,
 				E5135A131E084B7F001E65A0 /* BartlebyDocument+Metrics.swift */,
@@ -1709,6 +1713,7 @@
 				E5135A9C1E084B7F001E65A0 /* Completion.swift in Sources */,
 				E5135BFA1E084B7F001E65A0 /* ObjectExpositionError.swift in Sources */,
 				E5135B521E084B7F001E65A0 /* Block+Facilities.swift in Sources */,
+				E53093951E4B1DC20068D7EC /* BartlebyDocument+LifeCycle.swift in Sources */,
 				E5135C361E084B7F001E65A0 /* Referenced.swift in Sources */,
 				E5135B0E1E084B7F001E65A0 /* ReadBoxesByQuery.swift in Sources */,
 				E5135B801E084B7F001E65A0 /* Async.swift in Sources */,
@@ -2047,6 +2052,7 @@
 				E5135C1B1E084B7F001E65A0 /* DocumentProvider.swift in Sources */,
 				E5135A8B1E084B7F001E65A0 /* ManagedNodes.swift in Sources */,
 				E5135AF91E084B7F001E65A0 /* DeleteTags.swift in Sources */,
+				E53093961E4B1DC20068D7EC /* BartlebyDocument+LifeCycle.swift in Sources */,
 				E5135BD71E084B7F001E65A0 /* ManagedModel+NSCopying.swift in Sources */,
 				E5135C591E084B7F001E65A0 /* User+Auth.swift in Sources */,
 				E5135ADF1E084B7F001E65A0 /* CreateUser.swift in Sources */,
