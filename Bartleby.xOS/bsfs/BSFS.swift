@@ -190,6 +190,12 @@ public final class BSFS:TriggerHook{
     }
 
 
+    public func unMountAllBoxes(){
+        self._document.boxes.forEach { (box) in
+            self.unMount(boxUID: box.UID, completed: { (completion) in
+            })
+        }
+    }
 
     /// Un mounts the Box == deletes all the assembled files
     ///
