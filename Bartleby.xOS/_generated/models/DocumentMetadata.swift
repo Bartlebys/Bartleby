@@ -60,6 +60,9 @@ import Foundation
 	//If the changes are inspectable all the changes are stored in KeyChanges objects
 	dynamic open var changesAreInspectables:Bool = Bartleby.configuration.CHANGES_ARE_INSPECTABLES_BY_DEFAULT
 
+	//If set to true the boxes will be deleted when closing the document (Better security) 
+	dynamic open var cleanupBoxesWhenClosingDocument:Bool = true
+
 	//A collection of CollectionMetadatum
 	dynamic open var collectionsMetadata:[CollectionMetadatum] = [CollectionMetadatum]()
 

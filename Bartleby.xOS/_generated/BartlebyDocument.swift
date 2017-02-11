@@ -54,7 +54,9 @@ import Foundation
 
     // Perform cleanUp when closing a document
     public func cleanUp(){
-        self.bsfs.unMountAllBoxes()
+        if self.metadata.cleanupBoxesWhenClosingDocument{
+            self.bsfs.unMountAllBoxes()
+        }
         self.releaseAllSecurizedURLS()
         self.online=false
     }
