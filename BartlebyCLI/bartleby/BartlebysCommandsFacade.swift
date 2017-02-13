@@ -26,7 +26,8 @@ struct BartlebysCommandFacade {
         case "testChunkerDigest"?:
             let startTime=CFAbsoluteTimeGetCurrent()
             // Chunk trials
-            let chunker=Chunker(fileManager: FileManager.default,cryptoKey:Bartleby.configuration.KEY,cryptoSalt:Bartleby.configuration.SHARED_SALT,mode:.digestOnly)
+
+            let chunker=Chunker(fileManager: FileManager.default, keySize: KeySize.s256bits,cryptoKey:Bartleby.configuration.KEY,cryptoSalt:Bartleby.configuration.SHARED_SALT,mode:.digestOnly)
             // let folder=Bartleby.getSearchPath(FileManager.SearchPathDirectory.desktopDirectory)!
             // let folder="/Users/bpds/Documents/Entrepot/Autoformation/Videos"
             let folder="/Users/bpds/Documents/Entrepot/Autoformation/Videos"
