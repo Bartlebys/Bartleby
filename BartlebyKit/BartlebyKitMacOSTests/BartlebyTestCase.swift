@@ -27,6 +27,7 @@ public class BartlebyTestCase: XCTestCase {
     public static func newDocument()->BartlebyDocument{
         let document=BartlebyDocument()
         document.configureSchema()
+        document.metadata.sugar=Bartleby.randomStringWithLength(1024)
         Bartleby.sharedInstance.declare(document)
         let group=AsyncGroup()
         group.enter()
