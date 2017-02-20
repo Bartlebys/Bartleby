@@ -350,6 +350,12 @@ open class Bartleby:NSObject {
 
 
 
+    
+
+
+
+
+
     /**
      Returns the instance by its UID
 

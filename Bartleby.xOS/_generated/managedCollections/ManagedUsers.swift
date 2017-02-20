@@ -200,11 +200,13 @@ public extension Notification.Name {
     /// Commit all the staged changes and planned deletions.
     open func commitChanges(){
         if self._staged.count>0{
-            let changedItems=self._staged.map({ (UID) -> User in
-                let user:User = try! Bartleby.registredObjectByUID(UID)
-                return user
-            })
-            for changed in changedItems{
+            var changedUsers=[User]()
+            for itemUID in self._staged{
+                if let o:User = try? Bartleby.registredObjectByUID(itemUID){
+                    changedUsers.append(o)
+                }
+            }
+            for changed in changedUsers{
 				if changed.commitCounter > 0 {
 				    UpdateUser.commit(changed, in:self.referentDocument!)
 				}else{
@@ -217,8 +219,13 @@ public extension Notification.Name {
         }
      
         if self._deleted.count > 0 {
-            for UID in self._deleted{
-                let user:User = try! Bartleby.registredObjectByUID(UID)
+            var toBeDeletedItems=[User]()
+            for itemUID in self._deleted{
+                if let o:User = try? Bartleby.registredObjectByUID(itemUID){
+                    toBeDeletedItems.append(o)
+                }
+            }
+            for user in toBeDeletedItems{
                 DeleteUser.commit(user, from: self.referentDocument!)
                 Bartleby.unRegister(user)
             }

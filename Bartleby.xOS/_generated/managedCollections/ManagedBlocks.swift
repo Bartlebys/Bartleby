@@ -200,12 +200,14 @@ public extension Notification.Name {
     /// Commit all the staged changes and planned deletions.
     open func commitChanges(){
         if self._staged.count>0{
-            let changedItems=self._staged.map({ (UID) -> Block in
-                let block:Block = try! Bartleby.registredObjectByUID(UID)
-                return block
-            })
-			let tobeUpdated = changedItems.filter { $0.commitCounter > 0  }
-			let toBeCreated = changedItems.filter { $0.commitCounter == 0 }
+            var changedBlocks=[Block]()
+            for itemUID in self._staged{
+                if let o:Block = try? Bartleby.registredObjectByUID(itemUID){
+                    changedBlocks.append(o)
+                }
+            }
+			let tobeUpdated = changedBlocks.filter { $0.commitCounter > 0  }
+			let toBeCreated = changedBlocks.filter { $0.commitCounter == 0 }
 			if toBeCreated.count > 0 {
 			    CreateBlocks.commit(toBeCreated, in:self.referentDocument!)
 			}
@@ -218,9 +220,16 @@ public extension Notification.Name {
         }
      
         if self._deleted.count > 0 {
-            let blocks:[Block] = try! Bartleby.registredObjectsByUIDs(self._deleted)
-            DeleteBlocks.commit(blocks, from: self.referentDocument!)
-            Bartleby.unRegister(blocks)
+            var toBeDeletedBlocks=[Block]()
+            for itemUID in self._deleted{
+                if let o:Block = try? Bartleby.registredObjectByUID(itemUID){
+                    toBeDeletedBlocks.append(o)
+                }
+            }
+            if toBeDeletedBlocks.count > 0 {
+                DeleteBlocks.commit(toBeDeletedBlocks, from: self.referentDocument!)
+                Bartleby.unRegister(toBeDeletedBlocks)
+            }
             self._deleted.removeAll()
         }
     }

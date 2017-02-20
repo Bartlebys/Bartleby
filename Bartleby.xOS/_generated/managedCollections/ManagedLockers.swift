@@ -200,12 +200,14 @@ public extension Notification.Name {
     /// Commit all the staged changes and planned deletions.
     open func commitChanges(){
         if self._staged.count>0{
-            let changedItems=self._staged.map({ (UID) -> Locker in
-                let locker:Locker = try! Bartleby.registredObjectByUID(UID)
-                return locker
-            })
-			let tobeUpdated = changedItems.filter { $0.commitCounter > 0  }
-			let toBeCreated = changedItems.filter { $0.commitCounter == 0 }
+            var changedLockers=[Locker]()
+            for itemUID in self._staged{
+                if let o:Locker = try? Bartleby.registredObjectByUID(itemUID){
+                    changedLockers.append(o)
+                }
+            }
+			let tobeUpdated = changedLockers.filter { $0.commitCounter > 0  }
+			let toBeCreated = changedLockers.filter { $0.commitCounter == 0 }
 			if toBeCreated.count > 0 {
 			    CreateLockers.commit(toBeCreated, in:self.referentDocument!)
 			}
@@ -218,9 +220,16 @@ public extension Notification.Name {
         }
      
         if self._deleted.count > 0 {
-            let lockers:[Locker] = try! Bartleby.registredObjectsByUIDs(self._deleted)
-            DeleteLockers.commit(lockers, from: self.referentDocument!)
-            Bartleby.unRegister(lockers)
+            var toBeDeletedLockers=[Locker]()
+            for itemUID in self._deleted{
+                if let o:Locker = try? Bartleby.registredObjectByUID(itemUID){
+                    toBeDeletedLockers.append(o)
+                }
+            }
+            if toBeDeletedLockers.count > 0 {
+                DeleteLockers.commit(toBeDeletedLockers, from: self.referentDocument!)
+                Bartleby.unRegister(toBeDeletedLockers)
+            }
             self._deleted.removeAll()
         }
     }
