@@ -265,17 +265,23 @@ open class Bartleby:NSObject {
 
         // Check if some deferred Ownership has been recorded
         if let owneesUIDS = self._deferredOwnerships[instance.UID] {
-            /// This situation is rare
-            /// It requires that an Ownee is loaded before its owner.
-            /// E.g the ownee has been triggered or the deserialization of the ownee preceeds the owner
+            /// This situation occurs for example
+            /// when the ownee has been triggered but not the owner 
+            // or the deserialization of the ownee preceeds the owner
             if let o=instance as? ManagedModel{
                 for owneeUID in  owneesUIDS{
                     if let _ = Bartleby.registredManagedModelByUID(owneeUID){
                         // Add the owns entry
                         if !o.owns.contains(owneeUID){
                             o.owns.append(owneeUID)
+                            let i = Bartleby.registredManagedModelByUID(owneeUID)
+                            let cn = i?.className ?? "No Class"
+                            print("*** \(o.className) appends \(owneeUID) \(cn)")
+                        }else{
+                            print("### !")
                         }
                     }else{
+                         print("----")
                          glog("Deferred ownership has failed to found \(owneeUID) for \(o.UID)", file: #file, function: #function, line: #line, category: Default.LOG_WARNING, decorative: false)
                     }
                 }
@@ -290,7 +296,7 @@ open class Bartleby:NSObject {
 
      - parameter instance: the collectible instance
      */
-    open static func unRegister<T: Collectible>(_ instance: T) {
+    open static func unRegister(_ instance: Collectible) {
         self._instancesByUID.removeValue(forKey: instance.UID)
     }
 
@@ -299,12 +305,14 @@ open class Bartleby:NSObject {
 
      - parameter instance: the collectible instance
      */
-    open static func unRegister<T: Collectible>(_ instances: [T]) {
+    open static func unRegister(_ instances: [Collectible]) {
         for instance in instances{
             self._instancesByUID.removeValue(forKey: instance.UID)
         }
-
     }
+
+    
+
 
     /**
      Returns the registred instance of by its UID
@@ -347,12 +355,6 @@ open class Bartleby:NSObject {
         }
         return items
     }
-
-
-
-    
-
-
 
 
 
