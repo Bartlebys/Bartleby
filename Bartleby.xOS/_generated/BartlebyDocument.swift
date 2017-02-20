@@ -52,14 +52,29 @@ import Foundation
 
     #endif
 
+
     // Perform cleanUp when closing a document
     public func cleanUp(){
+
+        // Transition off line
+        self.online=false
+
+        // Boxes
         if self.metadata.cleanupBoxesWhenClosingDocument{
             self.bsfs.unMountAllBoxes()
         }
+
+        // Security scoped urls
         self.releaseAllSecurizedURLS()
-        self.online=false
+
+        // Unregister the instances.
+        for (_ , collection) in self._collections{
+            collection.superIterate({ o in
+                Bartleby.unRegister(o)
+            })
+        }
     }
+
 
     // The document shared Serializer
     open lazy var serializer:Serializer=JSerializer(document: self)
