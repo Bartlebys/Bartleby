@@ -119,7 +119,7 @@ public extension Notification.Name {
                     }
                 }else{
                     // If the owner is not already available defer the homologous ownership registration.
-                    Bartleby.appendDeferredOwnerships(item, ownerUID: ownerUID)
+                    Bartleby.appendToDeferredOwnershipsList(item, ownerUID: ownerUID)
                 }
             })
         }

@@ -51,7 +51,7 @@ import Foundation
 	    }
 	}
 
-	//The UIDS of the owned entities (Neither supervised nor serialized)
+	//The UIDS of the owned entities (Neither supervised nor serialized check appendToDeferredOwnershipsList for explanations)
 	dynamic open var owns:[String] = [String]()
 
 	//A human readable model summary. If you want to disclose more information you can adopt the Descriptible protocol.

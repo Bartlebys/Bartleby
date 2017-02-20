@@ -259,12 +259,15 @@ open class Bartleby:NSObject {
      - parameter instance: the Identifiable instance
      */
     open static func register<T: Collectible>(_ instance: T) {
+
+        // Store the instance by its UID
         self._instancesByUID[instance.UID]=instance
-        // Check the deferred Ownership
+
+        // Check if some deferred Ownership has been recorded
         if let owneesUIDS = self._deferredOwnerships[instance.UID] {
             /// This situation is rare
             /// It requires that an Ownee is loaded before its owner.
-            /// E.g the ownee has been triggered.
+            /// E.g the ownee has been triggered or the deserialization of the ownee preceeds the owner
             if let o=instance as? ManagedModel{
                 for owneeUID in  owneesUIDS{
                     if let _ = Bartleby.registredManagedModelByUID(owneeUID){
@@ -272,6 +275,8 @@ open class Bartleby:NSObject {
                         if !o.owns.contains(owneeUID){
                             o.owns.append(owneeUID)
                         }
+                    }else{
+                         glog("Deferred ownership has failed to found \(owneeUID) for \(o.UID)", file: #file, function: #function, line: #line, category: Default.LOG_WARNING, decorative: false)
                     }
                 }
             }
@@ -367,12 +372,14 @@ open class Bartleby:NSObject {
 
 
 
-    /// Store the ownee
+    /// Stores the ownee when the owner is not already available
+    /// This situation may occur on collection deserialization
+    /// when the owner is deserialized before the ownee.
     ///
     /// - Parameters:
     ///   - ownee: the ownee
     ///   - ownerUID: the currently unavailable owner UID
-    open static func appendDeferredOwnerships(_ ownee:Collectible,ownerUID:String){
+    open static func appendToDeferredOwnershipsList(_ ownee:Collectible,ownerUID:String){
         if self._deferredOwnerships.keys.contains(ownerUID) {
             self._deferredOwnerships[ownerUID]!.append(ownee.UID)
         }else{
