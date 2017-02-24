@@ -34,6 +34,25 @@ public protocol DropDelegate {
 // You should setup dropDelegate,supportedUTTypes, and optionaly dropZoneIdentifier/Users/bpds/Desktop/Un gros insecte.mov
 open class DropView:NSView{
 
+    // MARK: Properties
+
+    @IBInspectable
+    open var backgroundColor: NSColor? {
+        didSet {
+            self.needsDisplay = true
+        }
+    }
+
+    // MARK: Drawings
+
+    open override func draw(_ dirtyRect: NSRect) {
+        super.draw(dirtyRect)
+        guard let color = self.backgroundColor else {return}
+        color.setFill()
+        NSRectFill(self.bounds)
+    }
+
+
     // You can specify a zone identifier
     public var dropZoneIdentifier:String=""
 
@@ -75,9 +94,6 @@ open class DropView:NSView{
     }
 
 
-    override open func draw(_ dirtyRect: NSRect) {
-        super.draw(dirtyRect)
-    }
 
     internal var _fileTypeAreOk = false
 
@@ -179,5 +195,6 @@ open class DropView:NSView{
         }
         return false
     }
-    
+
+
 }
