@@ -193,7 +193,7 @@ public class IdentityWindowController: NSWindowController,DocumentProvider,Ident
         }
     }
 
-    fileprivate func _userHasBeenControlled{
+    fileprivate func _userHasBeenControlled(){
         // This Does not mean the user is valid.
         if let document=self.getDocument(){
             document.metadata.userHasBeenControlled = true
