@@ -181,13 +181,22 @@ public class IdentityWindowController: NSWindowController,DocumentProvider,Ident
             if self.tabView.tabViewItems.count > currentStep && currentStep >= 0{
                 self.tabView.selectTabViewItem(at: currentStep)
             }else{
+
                 if currentStep==3 && self.creationMode==true{
                     if let document=self.getDocument(){
                         document.notifyCurrentUserHasBeenCreated()
                     }
                 }
+                self._userHasBeenControlled()
                 self.identificationDelegate?.userWantsToCloseIndentityController()
             }
+        }
+    }
+
+    fileprivate func _userHasBeenControlled{
+        // This Does not mean the user is valid.
+        if let document=self.getDocument(){
+            document.metadata.userHasBeenControlled = true
         }
     }
 
@@ -203,6 +212,7 @@ public class IdentityWindowController: NSWindowController,DocumentProvider,Ident
     // MARK: - Actions
 
     @IBAction func leftAction(_ sender: Any) {
+        self._userHasBeenControlled()
         self.identificationDelegate?.userWantsToCloseIndentityController()
     }
 
@@ -224,7 +234,7 @@ public class IdentityWindowController: NSWindowController,DocumentProvider,Ident
                     document.currentUser.doNotCommit {
                         // We want to update the user status
                         // And then we will move online
-                        // It permits to use PERMISSION_BY_IDENTIFICATION_AND_ACTIVATION 
+                        // It permits to use PERMISSION_BY_IDENTIFICATION_AND_ACTIVATION
                         // for the majority of the CRUD/URD calls
                         document.currentUser.status = .actived
                         IdentitiesManager.synchronize(document,password:document.currentUser.password, completed: { (completion) in
@@ -256,7 +266,7 @@ public class IdentityWindowController: NSWindowController,DocumentProvider,Ident
             }
         }
     }
-    
+
     public func disableActions(){
         self.enableProgressIndicator()
         self.leftButton.isEnabled=false
@@ -280,7 +290,7 @@ public class IdentityWindowController: NSWindowController,DocumentProvider,Ident
     }
 
 
-    /// MARK: Activation 
+    /// MARK: Activation
 
     public func recoverTheKey(){
         self.append(viewController: self.recoverSugar, selectImmediately: true)
@@ -304,5 +314,5 @@ public class IdentityWindowController: NSWindowController,DocumentProvider,Ident
         self.tabView.removeTabViewItem(c)
         self.enableActions()
     }
-
+    
 }

@@ -38,6 +38,9 @@ import Foundation
 	//The locker UID to be used by the user to obtain the sugar from the locker
 	dynamic open var lockerUID:String = "\(Default.NO_UID)"
 
+	//Has the current user been controlled
+	dynamic open var userHasBeenControlled:Bool = false
+
 	//The identification method (By cookie or by Key - kvid)
 	public enum IdentificationMethod:String{
 		case key = "key"
