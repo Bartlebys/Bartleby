@@ -46,7 +46,7 @@ public class AppHelper:NSObject,NSSharingServiceDelegate {
         presenter.presentViewController( metricsViewController,
                                          asPopoverRelativeTo: frame,
                                          of: sender,
-                                         preferredEdge:NSRectEdge(rawValue: 2)!,
+                                         preferredEdge:NSRectEdge(rawValue: 1)!,
                                          behavior: NSPopoverBehavior.transient)
 
     }
