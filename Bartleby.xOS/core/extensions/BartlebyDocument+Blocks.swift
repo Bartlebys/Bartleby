@@ -48,9 +48,8 @@ extension BartlebyDocument{
     /// Add a file into the package
     ///
     /// - Parameters:
-    ///   - url: the original content URL
+    ///   - data: the data
     ///   - digest: the identifier of the block (use the block digests)
-    ///   - isABlock: defines if the file must be considerate as a block (bsfs)
     public func put(data:Data,identifiedBy digest:String)throws->(){
         if let directoryFileWrapper = self.blocksWrapper {
             Async.main{
@@ -59,7 +58,6 @@ extension BartlebyDocument{
                     directoryFileWrapper.removeFileWrapper(w)
                 }
                 let f = FileWrapper(regularFileWithContents: data)
-
                 f.preferredFilename=digest
                 directoryFileWrapper.addFileWrapper(f)
             }

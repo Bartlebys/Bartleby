@@ -40,8 +40,9 @@ extension BartlebyDocument{
 
     open override func write(to url: URL, ofType typeName: String) throws {
         let fileWrapper = try self._updatedFileWrappers()
-        try fileWrapper.write(to: url, options: FileWrapper.WritingOptions.atomic, originalContentsURL: nil)
+        try fileWrapper.write(to: url, options: [FileWrapper.WritingOptions.atomic,FileWrapper.WritingOptions.withNameUpdating], originalContentsURL: url)
     }
+
 
     #else
 
@@ -254,7 +255,6 @@ extension BartlebyDocument{
                                     // Reinitialize the flag
                                     collection.shouldBeSaved=false
                                 }
-
                             } else {
                                 // NO COLLECTION
                             }
@@ -270,6 +270,8 @@ extension BartlebyDocument{
                     blocksFileWrapper.preferredFilename=self.blocksDirectoryWrapperName
                     self.documentFileWrapper.addFileWrapper(blocksFileWrapper)
                 }
+
+
             }
         }
         
