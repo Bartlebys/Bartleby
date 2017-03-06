@@ -33,9 +33,6 @@ import Foundation
 	//The rank of the Block in the node
 	dynamic open var rank:Int = 0
 
-	//A bookmark Data (Can be used to transmit a bookmark to an XPC service - note that it should not be security scoped -)
-	dynamic open var bookmarkData:Data?
-
 	//The starting bytes of the block in the Node (== the position of the block in the file)
 	dynamic open var startsAt:Int = 0
 
@@ -68,7 +65,7 @@ import Foundation
     /// Return all the exposed instance variables keys. (Exposed == public and modifiable).
     override open var exposedKeys:[String] {
         var exposed=super.exposedKeys
-        exposed.append(contentsOf:["digest","rank","bookmarkData","startsAt","size","priority","compressed","crypted","uploadProgression","downloadProgression","uploadInProgress","downloadInProgress"])
+        exposed.append(contentsOf:["digest","rank","startsAt","size","priority","compressed","crypted","uploadProgression","downloadProgression","uploadInProgress","downloadInProgress"])
         return exposed
     }
 
@@ -88,10 +85,6 @@ import Foundation
             case "rank":
                 if let casted=value as? Int{
                     self.rank=casted
-                }
-            case "bookmarkData":
-                if let casted=value as? Data{
-                    self.bookmarkData=casted
                 }
             case "startsAt":
                 if let casted=value as? Int{
@@ -148,8 +141,6 @@ import Foundation
                return self.digest
             case "rank":
                return self.rank
-            case "bookmarkData":
-               return self.bookmarkData
             case "startsAt":
                return self.startsAt
             case "size":
@@ -183,7 +174,6 @@ import Foundation
         self.quietChanges {
 			self.digest <- ( map["digest"] )
 			self.rank <- ( map["rank"] )
-			self.bookmarkData <- ( map["bookmarkData"], DataTransform() )
 			self.startsAt <- ( map["startsAt"] )
 			self.size <- ( map["size"] )
 			self.priority <- ( map["priority"] )
@@ -200,7 +190,6 @@ import Foundation
         self.quietChanges {
 			self.digest=String(describing: decoder.decodeObject(of: NSString.self, forKey: "digest")! as NSString)
 			self.rank=decoder.decodeInteger(forKey:"rank") 
-			self.bookmarkData=decoder.decodeObject(of: NSData.self, forKey:"bookmarkData") as Data?
 			self.startsAt=decoder.decodeInteger(forKey:"startsAt") 
 			self.size=decoder.decodeInteger(forKey:"size") 
 			self.priority=decoder.decodeInteger(forKey:"priority") 
@@ -213,9 +202,6 @@ import Foundation
         super.encode(with:coder)
 		coder.encode(self.digest,forKey:"digest")
 		coder.encode(self.rank,forKey:"rank")
-		if let bookmarkData = self.bookmarkData {
-			coder.encode(bookmarkData,forKey:"bookmarkData")
-		}
 		coder.encode(self.startsAt,forKey:"startsAt")
 		coder.encode(self.size,forKey:"size")
 		coder.encode(self.priority,forKey:"priority")
