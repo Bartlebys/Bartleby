@@ -36,6 +36,7 @@
 		E59AABA31E1A889B00BE4BF1 /* IdentityStepViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E59AABA21E1A889B00BE4BF1 /* IdentityStepViewController.swift */; };
 		E59AABA61E1A937F00BE4BF1 /* RevealPasswordViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E59AABA41E1A937F00BE4BF1 /* RevealPasswordViewController.swift */; };
 		E59AABA71E1A937F00BE4BF1 /* RevealPasswordViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = E59AABA51E1A937F00BE4BF1 /* RevealPasswordViewController.xib */; };
+		E5CC509F1E6EC561009FB014 /* BXWindowController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5CC509E1E6EC561009FB014 /* BXWindowController.swift */; };
 		E5DB87EE1E32615400E54244 /* SendMessageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5DB87EC1E32615400E54244 /* SendMessageViewController.swift */; };
 		E5DB87EF1E32615400E54244 /* SendMessageViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = E5DB87ED1E32615400E54244 /* SendMessageViewController.xib */; };
 		E5F620C01E6EA911007E60D5 /* IdentificationStates.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5F620BF1E6EA911007E60D5 /* IdentificationStates.swift */; };
@@ -74,6 +75,7 @@
 		E59AABA21E1A889B00BE4BF1 /* IdentityStepViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IdentityStepViewController.swift; sourceTree = "<group>"; };
 		E59AABA41E1A937F00BE4BF1 /* RevealPasswordViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RevealPasswordViewController.swift; sourceTree = "<group>"; };
 		E59AABA51E1A937F00BE4BF1 /* RevealPasswordViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = RevealPasswordViewController.xib; sourceTree = "<group>"; };
+		E5CC509E1E6EC561009FB014 /* BXWindowController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BXWindowController.swift; sourceTree = "<group>"; };
 		E5DB87EC1E32615400E54244 /* SendMessageViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SendMessageViewController.swift; sourceTree = "<group>"; };
 		E5DB87ED1E32615400E54244 /* SendMessageViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SendMessageViewController.xib; sourceTree = "<group>"; };
 		E5F620BF1E6EA911007E60D5 /* IdentificationStates.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IdentificationStates.swift; sourceTree = "<group>"; };
@@ -104,9 +106,8 @@
 		E53094611E4B4FBA0068D7EC /* BartlebysUI.xOS */ = {
 			isa = PBXGroup;
 			children = (
-				E53094621E4B4FBA0068D7EC /* BXTableView.swift */,
-				E53094631E4B4FBA0068D7EC /* BXView.swift */,
-				E53094641E4B4FBA0068D7EC /* BXViewController.swift */,
+				E5CC50A11E6EC6C2009FB014 /* Views */,
+				E5CC50A21E6EC6D1009FB014 /* Controllers */,
 			);
 			path = BartlebysUI.xOS;
 			sourceTree = "<group>";
@@ -146,6 +147,31 @@
 			name = supportFiles;
 			sourceTree = "<group>";
 		};
+		E5CC50A01E6EC6A6009FB014 /* Controllers */ = {
+			isa = PBXGroup;
+			children = (
+				E5CC509E1E6EC561009FB014 /* BXWindowController.swift */,
+			);
+			name = Controllers;
+			sourceTree = "<group>";
+		};
+		E5CC50A11E6EC6C2009FB014 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				E53094621E4B4FBA0068D7EC /* BXTableView.swift */,
+				E53094631E4B4FBA0068D7EC /* BXView.swift */,
+			);
+			name = Views;
+			sourceTree = "<group>";
+		};
+		E5CC50A21E6EC6D1009FB014 /* Controllers */ = {
+			isa = PBXGroup;
+			children = (
+				E53094641E4B4FBA0068D7EC /* BXViewController.swift */,
+			);
+			name = Controllers;
+			sourceTree = "<group>";
+		};
 		E5DC3C1F1E3602AA004B379A /* IdentityManagement */ = {
 			isa = PBXGroup;
 			children = (
@@ -173,14 +199,6 @@
 				E59AABA21E1A889B00BE4BF1 /* IdentityStepViewController.swift */,
 			);
 			name = IdentityManagement;
-			sourceTree = "<group>";
-		};
-		E5DC3C201E3602CD004B379A /* Components */ = {
-			isa = PBXGroup;
-			children = (
-				E5DC3C211E360390004B379A /* Views */,
-			);
-			name = Components;
 			sourceTree = "<group>";
 		};
 		E5DC3C211E360390004B379A /* Views */ = {
@@ -215,7 +233,8 @@
 		E5FAC5221DF95B1C00398C95 /* BartlebysUI */ = {
 			isa = PBXGroup;
 			children = (
-				E5DC3C201E3602CD004B379A /* Components */,
+				E5DC3C211E360390004B379A /* Views */,
+				E5CC50A01E6EC6A6009FB014 /* Controllers */,
 				E5DC3C1F1E3602AA004B379A /* IdentityManagement */,
 				E5717E671E2F6B9500850303 /* Media.xcassets */,
 				E53F0B611DF95EBE003301DD /* supportFiles */,
@@ -369,6 +388,7 @@
 				E5717E621E2F6B7C00850303 /* ConfirmUpdatePasswordActivationCode.swift in Sources */,
 				E59AABA31E1A889B00BE4BF1 /* IdentityStepViewController.swift in Sources */,
 				E5F620C01E6EA911007E60D5 /* IdentificationStates.swift in Sources */,
+				E5CC509F1E6EC561009FB014 /* BXWindowController.swift in Sources */,
 				E53094651E4B4FBA0068D7EC /* BXTableView.swift in Sources */,
 				E59AABA61E1A937F00BE4BF1 /* RevealPasswordViewController.swift in Sources */,
 				E55FF98C1E1562E000EE3393 /* PrepareUserCreationViewController.swift in Sources */,

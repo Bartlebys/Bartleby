@@ -226,37 +226,31 @@ import Foundation
         return false // Return false by default
     }
 
-    // MARK: - Listeners
+    // MARK: - Document Messages Listeners
 
-    fileprivate var _messageListeners=[String:[MessageListener]]()
+    fileprivate var _messageListeners=[MessageListener]()
 
     open func send<T:StateMessage>(_ message:T){
-        let key = "\(message.hashValue)"
-        if let listeners = self._messageListeners[key]{
-            for listener in listeners{
+        Async.main{
+            for listener in self._messageListeners{
                 listener.handle(message: message)
             }
         }
     }
 
-    open func addMessageListener<T:StateMessage>(_ listener:MessageListener,listenTo message:T){
-        let key = "\(message.hashValue)"
-        if !self._messageListeners.keys.contains(key){
-            self._messageListeners[key]=[MessageListener]()
-        }
-        if !self._messageListeners[key]!.contains(where: { (l) -> Bool in
-            return listener.UID == l.UID
+    open func addDocumentMessagesListener(_ listener:MessageListener){
+        if !self._messageListeners.contains(where: { (l) -> Bool in
+             return listener.UID == l.UID
         }){
-            self._messageListeners[key]!.append(listener)
+            self._messageListeners.append(listener)
         }
     }
 
-    open func removeMessageListener<T:StateMessage>(_ listener:MessageListener,for message:T){
-        let key = "\(message.hashValue)"
-        if let idx = self._messageListeners[key]?.index(where: { (l) -> Bool in
+    open func removeDocumentMessagesListener(_ listener:MessageListener){
+        if let idx = self._messageListeners.index(where: { (l) -> Bool in
             return listener.UID == l.UID
         }){
-            self._messageListeners[key]?.remove(at: idx)
+            self._messageListeners.remove(at: idx)
         }
     }
 
