@@ -44,7 +44,7 @@ class ConfirmActivationViewController: IdentityStepViewController{
         self.stepDelegate?.disableActions()
         if let locker=self.locker{
             if codeTextField.stringValue == locker.code{
-                self.documentProvider?.getDocument().send(IdentificationStates.accountHasBeenConfirmed)
+                self.documentProvider?.getDocument()?.send(IdentificationStates.accountHasBeenConfirmed)
                 self.stepDelegate?.didValidateStep(self.stepIndex)
             }else{
                 self.messageTextField.stringValue=NSLocalizedString("The activation code is not correct!", comment: "The activation code is not correct!")
