@@ -159,7 +159,7 @@ public class IdentityWindowController: NSWindowController,DocumentProvider,Ident
     /// - Parameter viewController: the view controller to remove
     public func remove(viewController:IdentityStepViewController){
         let nb=self.tabView.tabViewItems.count
-        for i in 0..<self.tabView.tabViewItems.count{
+        for i in 0..<nb{
             let item=self.tabView.tabViewItems[i]
             if item.viewController==viewController{
                 self.tabView.removeTabViewItem(item)
@@ -184,7 +184,7 @@ public class IdentityWindowController: NSWindowController,DocumentProvider,Ident
 
                 if currentStep==3 && self.creationMode==true{
                     if let document=self.getDocument(){
-                        document.notifyCurrentUserHasBeenCreated()
+                        document.send(IdentificationStates.userHasBeenCreated)
                     }
                 }
                 self._userHasBeenControlled()
@@ -307,6 +307,7 @@ public class IdentityWindowController: NSWindowController,DocumentProvider,Ident
 
     /// Called by ConfirmUpdatePasswordActivationCode
     public func passwordHasBeenChanged(){
+        self.getDocument()?.send(IdentificationStates.passwordHasBeenUpdated)
         self.currentStep=0
         let u=self.tabView.tabViewItem(at: 1)
         let c=self.tabView.tabViewItem(at: 2)

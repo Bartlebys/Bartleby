@@ -34,6 +34,7 @@ class ValidatePasswordViewController: IdentityStepViewController{
     override func viewWillAppear() {
         super.viewWillAppear()
         if let document = self.documentProvider?.getDocument(){
+            document.send(IdentificationStates.validatePassword)
             self.emailTextField.stringValue = document.metadata.currentUserEmail
             if document.metadata.currentUserFullPhoneNumber.characters.count > 3{
                 self.phoneNumberTextField.stringValue = document.metadata.currentUserFullPhoneNumber
@@ -86,6 +87,7 @@ class ValidatePasswordViewController: IdentityStepViewController{
                 let currentPassword=PString.trim(self.passwordTextField.stringValue)
                 let documentPassword=PString.trim(document.currentUser.password ?? "")
                 if currentPassword == document.currentUser.password{
+                    document.send(IdentificationStates.passwordsAreMatching)
                     document.metadata.saveThePassword=(self.memorizePasswordCheckBox.state==1)
                     self.identityWindowController?.identificationIsValid=true
                     document.online=true

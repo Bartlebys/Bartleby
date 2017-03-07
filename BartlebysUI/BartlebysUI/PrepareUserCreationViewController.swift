@@ -40,6 +40,7 @@ class PrepareUserCreationViewController: IdentityStepViewController{
 
     override func viewWillAppear() {
         super.viewWillAppear()
+        self.documentProvider?.getDocument()?.send(IdentificationStates.prepareUserCreation)
         self.allowPasswordSyndicationCheckBox.state = Bartleby.configuration.SUPPORTS_PASSWORD_SYNDICATION_BY_DEFAULT ? 1 : 0
         self.messageTextField.stringValue=""
         self.explanationsTextField.stringValue=NSLocalizedString("We need a valid email and a valid phone number. You can reuse previous identifications or create a new one for this document.", comment: "We need a valid email and a valid phone number. You can reuse previous identifications or create a new one for this document.")
@@ -129,6 +130,7 @@ class PrepareUserCreationViewController: IdentityStepViewController{
                     id.supportsPasswordSyndication=(self.allowPasswordSyndicationCheckBox.state==1)
                     // We store the prepared identification
                     self.identityWindowController?.identification=id
+                    self.documentProvider?.getDocument()?.send(IdentificationStates.userCreationHasBeenPrepared)
                     self.stepDelegate?.didValidateStep(self.stepIndex)
                 }else{
                     self.messageTextField.stringValue=NSLocalizedString("Invalid phone number!", comment: "Invalid phone number!")

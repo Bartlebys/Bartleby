@@ -34,6 +34,7 @@ class ConfirmUpdatePasswordActivationCode: IdentityStepViewController {
             self.consignsLabel.stringValue=NSLocalizedString("We have sent a confirmation code to: ", comment: "We have sent a confirmation code to: ")+document.currentUser.fullPhoneNumber
         }
         self.messageTextField.stringValue=""
+
         self.codeTextField.stringValue=""
         if Bartleby.configuration.DEVELOPER_MODE{
             print(self.code)
@@ -44,8 +45,6 @@ class ConfirmUpdatePasswordActivationCode: IdentityStepViewController {
         super.viewDidAppear()
         self.stepDelegate?.disableActions()
         if let document = self.documentProvider?.getDocument(){
-            let candidatePassword=self.identityWindowController?.passwordCandidate
-
             if let serverURL = document.metadata.collaborationServerURL{
                 document.currentUser.login(sucessHandler: {
                     let email =  document.currentUser.email

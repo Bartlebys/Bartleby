@@ -26,6 +26,7 @@ class SetupCollaborativeServerViewController: IdentityStepViewController{
 
     override func viewWillAppear() {
         super.viewWillAppear()
+        self.documentProvider?.getDocument()?.send(IdentificationStates.selectTheServer)
         self.explanationsTextField.stringValue=NSLocalizedString("Select or register a Collaborative Server  API URL.", comment: "Select the Collaborative Server API URL")
         if let document=self.documentProvider?.getDocument(){
             var servers=Bartleby.configuration.defaultBaseURLList
@@ -43,6 +44,7 @@ class SetupCollaborativeServerViewController: IdentityStepViewController{
                 self.stepDelegate?.disableActions()
                 Async.main{
                     HTTPManager.apiIsReachable(serverURL, successHandler: {
+                        self.documentProvider?.getDocument()?.send(IdentificationStates.serverHasBeenSelected)
                         if let identification=identityWindowController.identification{
                             // We prefer to wait for reachability response before to disable the actions
                             // The server is Reachable
@@ -150,13 +152,14 @@ class SetupCollaborativeServerViewController: IdentityStepViewController{
                             do{
                                 // This will create and save the sugar cryptic key.
                                 try document.metadata.cookThePie()
-
                                 document.metadata.collaborationServerURL=serverURL
                                 let user=document.users[0]
                                 if userHasBeenFound{
                                     __postCreationPhase(user: user)
                                 }else{
+                                    self.documentProvider?.getDocument()?.send(IdentificationStates.createTheUser)
                                     CreateUser.execute(user, in: document.UID, sucessHandler: { (context) in
+                                         self.documentProvider?.getDocument()?.send(IdentificationStates.userHasBeenCreated)
                                         __postCreationPhase(user: user)
                                     }, failureHandler: { (context) in
                                         self.stepDelegate?.enableActions()

@@ -38,6 +38,8 @@
 		E59AABA71E1A937F00BE4BF1 /* RevealPasswordViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = E59AABA51E1A937F00BE4BF1 /* RevealPasswordViewController.xib */; };
 		E5DB87EE1E32615400E54244 /* SendMessageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5DB87EC1E32615400E54244 /* SendMessageViewController.swift */; };
 		E5DB87EF1E32615400E54244 /* SendMessageViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = E5DB87ED1E32615400E54244 /* SendMessageViewController.xib */; };
+		E5F620C01E6EA911007E60D5 /* IdentificationStates.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5F620BF1E6EA911007E60D5 /* IdentificationStates.swift */; };
+		E5F620C11E6EA911007E60D5 /* IdentificationStates.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5F620BF1E6EA911007E60D5 /* IdentificationStates.swift */; };
 		E5FAC5311DF95B1D00398C95 /* BartlebysUI.h in Headers */ = {isa = PBXBuildFile; fileRef = E5FAC5231DF95B1C00398C95 /* BartlebysUI.h */; settings = {ATTRIBUTES = (Public, ); }; };
 /* End PBXBuildFile section */
 
@@ -74,6 +76,7 @@
 		E59AABA51E1A937F00BE4BF1 /* RevealPasswordViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = RevealPasswordViewController.xib; sourceTree = "<group>"; };
 		E5DB87EC1E32615400E54244 /* SendMessageViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SendMessageViewController.swift; sourceTree = "<group>"; };
 		E5DB87ED1E32615400E54244 /* SendMessageViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SendMessageViewController.xib; sourceTree = "<group>"; };
+		E5F620BF1E6EA911007E60D5 /* IdentificationStates.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IdentificationStates.swift; sourceTree = "<group>"; };
 		E5FAC5201DF95B1C00398C95 /* BartlebysUI.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = BartlebysUI.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		E5FAC5231DF95B1C00398C95 /* BartlebysUI.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BartlebysUI.h; sourceTree = "<group>"; };
 		E5FAC5241DF95B1C00398C95 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -146,6 +149,7 @@
 		E5DC3C1F1E3602AA004B379A /* IdentityManagement */ = {
 			isa = PBXGroup;
 			children = (
+				E5F620BF1E6EA911007E60D5 /* IdentificationStates.swift */,
 				E5717E5D1E2F6B7C00850303 /* ConfirmUpdatePasswordActivationCode.swift */,
 				E5717E5E1E2F6B7C00850303 /* ConfirmUpdatePasswordActivationCode.xib */,
 				E5717E601E2F6B7C00850303 /* RecoverSugarViewController.swift */,
@@ -353,6 +357,7 @@
 			files = (
 				E53094861E4B50490068D7EC /* BXView.swift in Sources */,
 				E53094851E4B50490068D7EC /* BXTableView.swift in Sources */,
+				E5F620C11E6EA911007E60D5 /* IdentificationStates.swift in Sources */,
 				E53094871E4B50490068D7EC /* BXViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -363,6 +368,7 @@
 			files = (
 				E5717E621E2F6B7C00850303 /* ConfirmUpdatePasswordActivationCode.swift in Sources */,
 				E59AABA31E1A889B00BE4BF1 /* IdentityStepViewController.swift in Sources */,
+				E5F620C01E6EA911007E60D5 /* IdentificationStates.swift in Sources */,
 				E53094651E4B4FBA0068D7EC /* BXTableView.swift in Sources */,
 				E59AABA61E1A937F00BE4BF1 /* RevealPasswordViewController.swift in Sources */,
 				E55FF98C1E1562E000EE3393 /* PrepareUserCreationViewController.swift in Sources */,

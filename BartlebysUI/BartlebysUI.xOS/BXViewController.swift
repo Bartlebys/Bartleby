@@ -13,8 +13,11 @@ import BartlebyKit
 
     import AppKit
 
-    open class BXViewController:NSViewController,Identifiable{
+    open class BXViewController:NSViewController,MessageListener{
+
         open let UID=Bartleby.createUID()
+
+        open func handle<T:StateMessage>(message:T){}
     }
 
 
@@ -23,8 +26,11 @@ import BartlebyKit
 
     import UIKit
 
-    open class BXViewController:UIViewController,Identifiable{
-        public let UID=Bartleby.createUID()
+    open class BXViewController:UIViewController,MessageListener{
+
+        open let UID=Bartleby.createUID()
+
+        open func handle<T:StateMessage>(message:T){}
     }
 
 #elseif os(watchOS)

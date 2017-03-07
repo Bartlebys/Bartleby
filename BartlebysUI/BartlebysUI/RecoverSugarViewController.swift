@@ -27,6 +27,7 @@ class RecoverSugarViewController: IdentityStepViewController {
     override func viewWillAppear() {
         super.viewWillAppear()
         if let document=self.documentProvider?.getDocument(){
+            document.send(IdentificationStates.recoverSugar)
             let phoneNumber=document.metadata.currentUserFullPhoneNumber
             self.consignsLabel.stringValue=NSLocalizedString("We have sent an activation code to: ", comment: "We have sent a activation code to: ")+phoneNumber
             self.codeTextField.stringValue=""
@@ -50,8 +51,9 @@ class RecoverSugarViewController: IdentityStepViewController {
                                         document.currentUser.status = .actived
                                         do{
                                             /// When the locker is verifyed use the sugar to retrieve the Collections and blocks data
-                                            try document.reload()
+                                            try document.reloadCollectionData()
                                             try document.metadata.putSomeSugarInYourBowl() // Save the key
+                                            document.send(IdentificationStates.sugarHasBeenRecovered)
                                             self.identityWindowController?.identificationIsValid=true
                                             self.stepDelegate?.didValidateStep( self.stepIndex)
                                         }catch{

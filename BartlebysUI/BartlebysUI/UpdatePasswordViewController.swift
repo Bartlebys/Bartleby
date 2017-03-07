@@ -34,6 +34,7 @@ class UpdatePasswordViewController: IdentityStepViewController{
 
     override func proceedToValidation(){
         super.proceedToValidation()
+        self.documentProvider?.getDocument()?.send(IdentificationStates.updatePassword)
         self.identityWindowController?.passwordCandidate=self.passwordTextField.stringValue
         self.stepDelegate?.didValidateStep( self.stepIndex)
     }
