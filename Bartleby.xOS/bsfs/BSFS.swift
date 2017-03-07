@@ -218,6 +218,7 @@ public final class BSFS:TriggerHook{
                 try self._fileManager.removeItem(atPath: assembledPath)
             }
             box.isMounted=false
+            box.assemblyInProgress=false
             completed(Completion.successState())
         }catch{
             completed(Completion.failureStateFromError(error))
