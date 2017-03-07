@@ -276,7 +276,6 @@ open class Bartleby:NSObject {
                             o.owns.append(owneeUID)
                             let i = Bartleby.registredManagedModelByUID(owneeUID)
                             let cn = i?.className ?? "No Class"
-                            print("*** \(o.className) appends \(owneeUID) \(cn)")
                         }else{
                             print("### !")
                         }
