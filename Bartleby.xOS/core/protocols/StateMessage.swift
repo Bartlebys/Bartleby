@@ -10,6 +10,6 @@ import Foundation
 
 // StateMessages are relayed to listeners by the document
 
-public protocol StateMessage:RawRepresentable,Hashable{
+public protocol StateMessage{
 
 }

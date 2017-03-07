@@ -129,7 +129,7 @@ public final class BSFS:TriggerHook{
         do {
 
             let box = try Bartleby.registredObjectByUID(boxUID) as Box
-
+            self._document.send(BoxStates.isMounting(box: box))
             if box.assemblyInProgress || box.isMounted {
                 throw BSFSError.attemptToMountBoxMultipleTime(boxUID: boxUID)
             }
@@ -179,6 +179,7 @@ public final class BSFS:TriggerHook{
                     let completionState=Completion.successState()
                     completionState.setExternalReferenceResult(from:box)
                     completed(completionState)
+                    self._document.send(BoxStates.hasBeenMounted(box: box))
                 }
             }
             // Call the first pop.
@@ -186,6 +187,7 @@ public final class BSFS:TriggerHook{
 
         } catch {
             completed(Completion.failureStateFromError(error))
+            self._document.send(BoxStates.mountingHasFailed(boxUID:boxUID,message: error.localizedDescription))
         }
     }
 
@@ -726,7 +728,6 @@ public final class BSFS:TriggerHook{
         }else{
             accessor.accessRefused(to:node, explanations: NSLocalizedString("Authorization failed", tableName:"system", comment: "Authorization failed"))
         }
-
     }
 
 

@@ -24,6 +24,9 @@ import Foundation
 	//Turned to true when the box is mounted (not serializable, not supervisable)
 	dynamic open var isMounted:Bool = false
 
+	//Turned to true if there is an Assembly in progress (used for progress consolidation optimization)
+	dynamic open var assemblyInProgress:Bool = false
+
 	//A volatile box is unmounted automatically
 	dynamic open var volatile:Bool = true
 
@@ -42,15 +45,12 @@ import Foundation
 	//Turned to true if there is an upload in progress (used for progress consolidation optimization)
 	dynamic open var downloadInProgress:Bool = false
 
-	//Turned to true if there is an Assembly in progress (used for progress consolidation optimization)
-	dynamic open var assemblyInProgress:Bool = false
-
     // MARK: - Exposed (Bartleby's KVC like generative implementation)
 
     /// Return all the exposed instance variables keys. (Exposed == public and modifiable).
     override open var exposedKeys:[String] {
         var exposed=super.exposedKeys
-        exposed.append(contentsOf:["isMounted","volatile","uploadProgression","downloadProgression","assemblyProgression","uploadInProgress","downloadInProgress","assemblyInProgress"])
+        exposed.append(contentsOf:["isMounted","assemblyInProgress","volatile","uploadProgression","downloadProgression","assemblyProgression","uploadInProgress","downloadInProgress"])
         return exposed
     }
 
@@ -66,6 +66,10 @@ import Foundation
             case "isMounted":
                 if let casted=value as? Bool{
                     self.isMounted=casted
+                }
+            case "assemblyInProgress":
+                if let casted=value as? Bool{
+                    self.assemblyInProgress=casted
                 }
             case "volatile":
                 if let casted=value as? Bool{
@@ -91,10 +95,6 @@ import Foundation
                 if let casted=value as? Bool{
                     self.downloadInProgress=casted
                 }
-            case "assemblyInProgress":
-                if let casted=value as? Bool{
-                    self.assemblyInProgress=casted
-                }
             default:
                 return try super.setExposedValue(value, forKey: key)
         }
@@ -112,6 +112,8 @@ import Foundation
         switch key {
             case "isMounted":
                return self.isMounted
+            case "assemblyInProgress":
+               return self.assemblyInProgress
             case "volatile":
                return self.volatile
             case "uploadProgression":
@@ -124,8 +126,6 @@ import Foundation
                return self.uploadInProgress
             case "downloadInProgress":
                return self.downloadInProgress
-            case "assemblyInProgress":
-               return self.assemblyInProgress
             default:
                 return try super.getExposedValueForKey(key)
         }
