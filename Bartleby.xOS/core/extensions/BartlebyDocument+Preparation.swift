@@ -70,18 +70,4 @@ extension BartlebyDocument{
         #endif
     }
 
-    /**
-     BartlebyDocument did load
-     */
-    open func documentDidLoad() {
-        self.hasBeenLoaded=true
-    }
-
-    /**
-     BartlebyDocument will save
-     */
-    open func documentWillSave() {
-        
-    }
-
 }

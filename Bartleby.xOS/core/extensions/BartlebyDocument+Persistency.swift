@@ -29,6 +29,8 @@ import Foundation
     import ObjectMapper
 #endif
 
+
+
 extension BartlebyDocument{
 
     #if os(OSX)
@@ -92,7 +94,7 @@ extension BartlebyDocument{
             try self._loadCollectionData(from:fileWrappers)
 
             Async.main{
-                self.documentDidLoad()
+                self.send(PersistencyStates.collectionsDataHasBeenDecrypted)
             }
         }
         // Store the reference
@@ -100,7 +102,8 @@ extension BartlebyDocument{
     }
 
 
-    open func reload()throws{
+    // This method is used when the sugar has been recovered to try to reload the collection data
+    open func reloadCollectionData()throws{
         if let fileWrappers=self.documentFileWrapper.fileWrappers {
             try self._loadCollectionData(from: fileWrappers)
         }
@@ -178,7 +181,7 @@ extension BartlebyDocument{
 
 
     private func _updatedFileWrappers()throws ->FileWrapper{
-        self.documentWillSave()
+        self.send(PersistencyStates.documentWillSave)
         if self.metadata.sugar == Default.VOID_STRING{
             self.log("Sugar is undefined", file: #file, function: #function, line: #line, category: Default.LOG_DEFAULT, decorative: false)
         }
@@ -274,7 +277,7 @@ extension BartlebyDocument{
 
             }
         }
-        
+        self.send(PersistencyStates.documentDidSave)
         return self.documentFileWrapper
     }
     

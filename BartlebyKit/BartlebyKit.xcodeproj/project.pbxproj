@@ -475,8 +475,6 @@
 		E5135C6B1E084B7F001E65A0 /* Pluralization.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5135A7E1E084B7F001E65A0 /* Pluralization.swift */; };
 		E5135C6C1E084B7F001E65A0 /* PString.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5135A7F1E084B7F001E65A0 /* PString.swift */; };
 		E5135C6D1E084B7F001E65A0 /* PString.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5135A7F1E084B7F001E65A0 /* PString.swift */; };
-		E53093951E4B1DC20068D7EC /* BartlebyDocument+LifeCycle.swift in Sources */ = {isa = PBXBuildFile; fileRef = E53093941E4B1DC20068D7EC /* BartlebyDocument+LifeCycle.swift */; };
-		E53093961E4B1DC20068D7EC /* BartlebyDocument+LifeCycle.swift in Sources */ = {isa = PBXBuildFile; fileRef = E53093941E4B1DC20068D7EC /* BartlebyDocument+LifeCycle.swift */; };
 		E53093C01E4B2C540068D7EC /* BXDocument.swift in Sources */ = {isa = PBXBuildFile; fileRef = E53093BF1E4B2C540068D7EC /* BXDocument.swift */; };
 		E53093C11E4B2C540068D7EC /* BXDocument.swift in Sources */ = {isa = PBXBuildFile; fileRef = E53093BF1E4B2C540068D7EC /* BXDocument.swift */; };
 		E53E2C3C1DD358920040E32B /* PStringTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E53E2C3B1DD358920040E32B /* PStringTests.swift */; };
@@ -521,7 +519,15 @@
 		E5B129041D1C317300D61261 /* TestsConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = E52F94891D01C23A005BDA2D /* TestsConfiguration.swift */; };
 		E5D205371E0A806800D60628 /* ManagedModel+Erasure.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5D205361E0A806800D60628 /* ManagedModel+Erasure.swift */; };
 		E5D205381E0A806800D60628 /* ManagedModel+Erasure.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5D205361E0A806800D60628 /* ManagedModel+Erasure.swift */; };
+		E5ED180B1E6DC5B800E7427E /* MessageListener.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5ED180A1E6DC5B800E7427E /* MessageListener.swift */; };
+		E5ED180C1E6DC93F00E7427E /* MessageListener.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5ED180A1E6DC5B800E7427E /* MessageListener.swift */; };
+		E5ED18111E6DCC8E00E7427E /* StateMessage.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5ED18101E6DCC8E00E7427E /* StateMessage.swift */; };
+		E5ED18121E6DCC8E00E7427E /* StateMessage.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5ED18101E6DCC8E00E7427E /* StateMessage.swift */; };
+		E5ED18171E6DDC8100E7427E /* CollectibleStateMessage.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5ED18161E6DDC8100E7427E /* CollectibleStateMessage.swift */; };
+		E5ED18181E6DDC8100E7427E /* CollectibleStateMessage.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5ED18161E6DDC8100E7427E /* CollectibleStateMessage.swift */; };
 		E5F5384B1DEAE4EA008DEBF7 /* MultiDocumentsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5F5384A1DEAE4EA008DEBF7 /* MultiDocumentsTests.swift */; };
+		E5F620C31E6EAF9B007E60D5 /* PersistencyStates.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5F620C21E6EAF9B007E60D5 /* PersistencyStates.swift */; };
+		E5F620C41E6EAFC8007E60D5 /* PersistencyStates.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5F620C21E6EAF9B007E60D5 /* PersistencyStates.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -812,7 +818,6 @@
 		E5135A7F1E084B7F001E65A0 /* PString.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PString.swift; sourceTree = "<group>"; };
 		E52F94881D01C23A005BDA2D /* TestCase.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TestCase.swift; sourceTree = "<group>"; };
 		E52F94891D01C23A005BDA2D /* TestsConfiguration.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TestsConfiguration.swift; sourceTree = "<group>"; };
-		E53093941E4B1DC20068D7EC /* BartlebyDocument+LifeCycle.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "BartlebyDocument+LifeCycle.swift"; sourceTree = "<group>"; };
 		E53093BF1E4B2C540068D7EC /* BXDocument.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BXDocument.swift; sourceTree = "<group>"; };
 		E5361CFC1CD8DD9E005855DC /* HandlersTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HandlersTests.swift; sourceTree = "<group>"; };
 		E53E2C3B1DD358920040E32B /* PStringTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PStringTests.swift; sourceTree = "<group>"; };
@@ -844,7 +849,11 @@
 		E5AA490C1E112575009FB51B /* RelationShip.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RelationShip.swift; sourceTree = "<group>"; };
 		E5CEFB511C3BFCBB00C36CBA /* BartlebyKit-Bridging-Header.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "BartlebyKit-Bridging-Header.h"; sourceTree = "<group>"; };
 		E5D205361E0A806800D60628 /* ManagedModel+Erasure.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "ManagedModel+Erasure.swift"; sourceTree = "<group>"; };
+		E5ED180A1E6DC5B800E7427E /* MessageListener.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MessageListener.swift; sourceTree = "<group>"; };
+		E5ED18101E6DCC8E00E7427E /* StateMessage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StateMessage.swift; sourceTree = "<group>"; };
+		E5ED18161E6DDC8100E7427E /* CollectibleStateMessage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CollectibleStateMessage.swift; sourceTree = "<group>"; };
 		E5F5384A1DEAE4EA008DEBF7 /* MultiDocumentsTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MultiDocumentsTests.swift; sourceTree = "<group>"; };
+		E5F620C21E6EAF9B007E60D5 /* PersistencyStates.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PersistencyStates.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -1156,6 +1165,8 @@
 				E5135A071E084B7F001E65A0 /* Context.swift */,
 				E5135A081E084B7F001E65A0 /* Default.swift */,
 				E5135A091E084B7F001E65A0 /* DocumentError.swift */,
+				E5ED18161E6DDC8100E7427E /* CollectibleStateMessage.swift */,
+				E5F620C21E6EAF9B007E60D5 /* PersistencyStates.swift */,
 				E5135A0A1E084B7F001E65A0 /* ErasingError.swift */,
 				E5135A0B1E084B7F001E65A0 /* extensions */,
 				E5135A3B1E084B7F001E65A0 /* Global.swift */,
@@ -1183,7 +1194,6 @@
 				E5135A0E1E084B7F001E65A0 /* BartlebyDocument+Collections.swift */,
 				E5135A0F1E084B7F001E65A0 /* BartlebyDocument+ComputedProperties.swift */,
 				E5135A101E084B7F001E65A0 /* BartlebyDocument+DotBart.swift */,
-				E53093941E4B1DC20068D7EC /* BartlebyDocument+LifeCycle.swift */,
 				E5135A111E084B7F001E65A0 /* BartlebyDocument+LocalUpsertAndDelete.swift */,
 				E5135A121E084B7F001E65A0 /* BartlebyDocument+Logs.swift */,
 				E5135A131E084B7F001E65A0 /* BartlebyDocument+Metrics.swift */,
@@ -1289,6 +1299,8 @@
 				E5135A681E084B7F001E65A0 /* TriggerHook.swift */,
 				E5135A691E084B7F001E65A0 /* UniversalType.swift */,
 				E5135A6A1E084B7F001E65A0 /* UserProtocol.swift */,
+				E5ED18101E6DCC8E00E7427E /* StateMessage.swift */,
+				E5ED180A1E6DC5B800E7427E /* MessageListener.swift */,
 			);
 			path = protocols;
 			sourceTree = "<group>";
@@ -1632,6 +1644,7 @@
 				E5135C541E084B7F001E65A0 /* NSUndomanager+RegisterUndo.swift in Sources */,
 				E5135C101E084B7F001E65A0 /* CryptoDelegate.swift in Sources */,
 				E5135C481E084B7F001E65A0 /* UserProtocol.swift in Sources */,
+				E5F620C31E6EAF9B007E60D5 /* PersistencyStates.swift in Sources */,
 				E5135B6C1E084B7F001E65A0 /* CryptedKeyValueStorage.swift in Sources */,
 				E56756B71E34B3C900E299F0 /* KeyChainHelper.swift in Sources */,
 				E5135B761E084B7F001E65A0 /* Data+HMAC.swift in Sources */,
@@ -1676,6 +1689,7 @@
 				E5135AB21E084B7F001E65A0 /* Metrics.swift in Sources */,
 				E5135B1E1E084B7F001E65A0 /* ReadTagsByIds.swift in Sources */,
 				E5135BEE1E084B7F001E65A0 /* PushOperation+Conveniences.swift in Sources */,
+				E5ED180B1E6DC5B800E7427E /* MessageListener.swift in Sources */,
 				E5135B1C1E084B7F001E65A0 /* ReadTagById.swift in Sources */,
 				E5135B1A1E084B7F001E65A0 /* ReadNodesByQuery.swift in Sources */,
 				E5135B3E1E084B7F001E65A0 /* UpdateTags.swift in Sources */,
@@ -1704,7 +1718,6 @@
 				E5135A9C1E084B7F001E65A0 /* Completion.swift in Sources */,
 				E5135BFA1E084B7F001E65A0 /* ObjectExpositionError.swift in Sources */,
 				E5135B521E084B7F001E65A0 /* Block+Facilities.swift in Sources */,
-				E53093951E4B1DC20068D7EC /* BartlebyDocument+LifeCycle.swift in Sources */,
 				E5135C361E084B7F001E65A0 /* Referenced.swift in Sources */,
 				E5135B0E1E084B7F001E65A0 /* ReadBoxesByQuery.swift in Sources */,
 				E5135B801E084B7F001E65A0 /* Async.swift in Sources */,
@@ -1730,6 +1743,7 @@
 				E5135BDE1E084B7F001E65A0 /* ManagedModel+RelationsResolution.swift in Sources */,
 				E5135B541E084B7F001E65A0 /* Box+Facilities.swift in Sources */,
 				E5135BA61E084B7F001E65A0 /* BartlebyDocument+Preparation.swift in Sources */,
+				E5ED18111E6DCC8E00E7427E /* StateMessage.swift in Sources */,
 				E5135C0E1E084B7F001E65A0 /* ConsolidableProgression.swift in Sources */,
 				E5135AFC1E084B7F001E65A0 /* DeleteUsers.swift in Sources */,
 				E5135C6A1E084B7F001E65A0 /* Pluralization.swift in Sources */,
@@ -1834,6 +1848,7 @@
 				E5135A8E1E084B7F001E65A0 /* ManagedTags.swift in Sources */,
 				E5135AA61E084B7F001E65A0 /* HTTPRequest.swift in Sources */,
 				E5135A8C1E084B7F001E65A0 /* ManagedPushOperations.swift in Sources */,
+				E5ED18171E6DDC8100E7427E /* CollectibleStateMessage.swift in Sources */,
 				E5135B9C1E084B7F001E65A0 /* BartlebyDocument+LocalUpsertAndDelete.swift in Sources */,
 				E5135C5E1E084B7F001E65A0 /* TriggersAfterIndex.swift in Sources */,
 				E5135AE61E084B7F001E65A0 /* DeleteBlock.swift in Sources */,
@@ -1889,6 +1904,7 @@
 				E5135BA91E084B7F001E65A0 /* BartlebyDocument+Reachability.swift in Sources */,
 				E5135BEB1E084B7F001E65A0 /* NSNotification+Progression.swift in Sources */,
 				E5135BCB1E084B7F001E65A0 /* ManagedModel+DictionaryRepresentation.swift in Sources */,
+				E5ED180C1E6DC93F00E7427E /* MessageListener.swift in Sources */,
 				E5135C0D1E084B7F001E65A0 /* Committable.swift in Sources */,
 				E5135C4B1E084B7F001E65A0 /* Reaction.swift in Sources */,
 				E53ED0071E1587490084DD6C /* IdentitiesManager.swift in Sources */,
@@ -1919,6 +1935,7 @@
 				E5135A9B1E084B7F001E65A0 /* CollectionMetadatum.swift in Sources */,
 				E5135BFF1E084B7F001E65A0 /* BartlebyFileIO.swift in Sources */,
 				E5135B391E084B7F001E65A0 /* UpdateNode.swift in Sources */,
+				E5ED18181E6DDC8100E7427E /* CollectibleStateMessage.swift in Sources */,
 				E5135BCF1E084B7F001E65A0 /* ManagedModel+Extended.swift in Sources */,
 				E5135C451E084B7F001E65A0 /* TriggerHook.swift in Sources */,
 				E5135AB31E084B7F001E65A0 /* Metrics.swift in Sources */,
@@ -2043,7 +2060,6 @@
 				E5135C1B1E084B7F001E65A0 /* DocumentProvider.swift in Sources */,
 				E5135A8B1E084B7F001E65A0 /* ManagedNodes.swift in Sources */,
 				E5135AF91E084B7F001E65A0 /* DeleteTags.swift in Sources */,
-				E53093961E4B1DC20068D7EC /* BartlebyDocument+LifeCycle.swift in Sources */,
 				E5135BD71E084B7F001E65A0 /* ManagedModel+NSCopying.swift in Sources */,
 				E5135C591E084B7F001E65A0 /* User+Auth.swift in Sources */,
 				E5135ADF1E084B7F001E65A0 /* CreateUser.swift in Sources */,
@@ -2080,6 +2096,7 @@
 				E56756BD1E352AF000E299F0 /* Identification.swift in Sources */,
 				E5135C291E084B7F001E65A0 /* LogCategorizable.swift in Sources */,
 				E5135C411E084B7F001E65A0 /* SuperIterable.swift in Sources */,
+				E5ED18121E6DCC8E00E7427E /* StateMessage.swift in Sources */,
 				E5135A8F1E084B7F001E65A0 /* ManagedTags.swift in Sources */,
 				E5135AA71E084B7F001E65A0 /* HTTPRequest.swift in Sources */,
 				E5135A8D1E084B7F001E65A0 /* ManagedPushOperations.swift in Sources */,
@@ -2104,6 +2121,7 @@
 				E5135B8B1E084B7F001E65A0 /* Context.swift in Sources */,
 				E5135AC51E084B7F001E65A0 /* User.swift in Sources */,
 				E5135BFD1E084B7F001E65A0 /* BartlebyCollection.swift in Sources */,
+				E5F620C41E6EAFC8007E60D5 /* PersistencyStates.swift in Sources */,
 				E5135AE91E084B7F001E65A0 /* DeleteBlocks.swift in Sources */,
 				E5135B171E084B7F001E65A0 /* ReadNodeById.swift in Sources */,
 				E5135C0B1E084B7F001E65A0 /* CollectionMetadatumProtocol.swift in Sources */,

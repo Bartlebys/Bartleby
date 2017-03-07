@@ -101,9 +101,6 @@ import Foundation
     // Triggered Data is used to store data before data integration
     internal var _triggeredDataBuffer:[Trigger]=[Trigger]()
 
-    // Set to true when the data has been loaded once or more.
-    open var hasBeenLoaded: Bool=false
-
     // An in memory flag to distinguish dotBart import case
     open var dotBart=false
 
@@ -227,6 +224,40 @@ import Foundation
     /// - Returns: true if allowed
     open func allowReplaceContent(of node:Node, withContentAt path:String, by accessor:NodeAccessor)->Bool{
         return false // Return false by default
+    }
+
+    // MARK: - Listeners
+
+    fileprivate var _messageListeners=[String:[MessageListener]]()
+
+    open func send<T:StateMessage>(_ message:T){
+        let key = "\(message.hashValue)"
+        if let listeners = self._messageListeners[key]{
+            for listener in listeners{
+                listener.handle(message: message)
+            }
+        }
+    }
+
+    open func addMessageListener<T:StateMessage>(_ listener:MessageListener,listenTo message:T){
+        let key = "\(message.hashValue)"
+        if !self._messageListeners.keys.contains(key){
+            self._messageListeners[key]=[MessageListener]()
+        }
+        if !self._messageListeners[key]!.contains(where: { (l) -> Bool in
+            return listener.UID == l.UID
+        }){
+            self._messageListeners[key]!.append(listener)
+        }
+    }
+
+    open func removeMessageListener<T:StateMessage>(_ listener:MessageListener,for message:T){
+        let key = "\(message.hashValue)"
+        if let idx = self._messageListeners[key]?.index(where: { (l) -> Bool in
+            return listener.UID == l.UID
+        }){
+            self._messageListeners[key]?.remove(at: idx)
+        }
     }
 
     // MARK: - Collection Controllers
