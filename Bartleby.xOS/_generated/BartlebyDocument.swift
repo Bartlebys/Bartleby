@@ -55,12 +55,10 @@ import Foundation
 
     // Perform cleanUp when closing a document
     public func cleanUp(){
-
         for listener in self._messageListeners{
             // Ask for listeners to release all ressources
             listener.handle(message: DocumentStates.cleanUp)
         }
-
         Async.main{
 
             // Transition off line
@@ -81,9 +79,7 @@ import Foundation
                 })
             }
         }
-
     }
-
 
     // The document shared Serializer
     open lazy var serializer:Serializer=JSerializer(document: self)

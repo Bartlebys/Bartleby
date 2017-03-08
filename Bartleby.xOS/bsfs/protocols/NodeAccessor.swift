@@ -15,7 +15,7 @@ public protocol NodeAccessor:Identifiable{
 
     /// Called when:
     /// - the current node assembled file will become temporaly unusable (for example on external update)
-    /// - the Box has been unmounted
+    /// - the Box has been unMounted
     /// - the file will be deleted
     //  - or if the access to the file has been blocked (ACL)
     ///
