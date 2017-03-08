@@ -193,10 +193,10 @@ public final class BSFS:TriggerHook{
 
 
     public func unMountAllBoxes(){
-        print("\n---")
         self._document.boxes.forEach { (box) in
             try? self.unmount(box: box)
         }
+        try? self._fileManager.removeItem(atPath: self.boxesFolderPath)
     }
 
     /// Un mounts the Box == deletes all the assembled files
@@ -211,7 +211,6 @@ public final class BSFS:TriggerHook{
             try self.unmount(box: box)
             completed(Completion.successState())
         }catch{
-            print("\(#file) \(error)")
             completed(Completion.failureStateFromError(error))
         }
     }
@@ -228,13 +227,11 @@ public final class BSFS:TriggerHook{
             do{
                 try self._fileManager.removeItem(atPath: assembledPath)
             }catch{
-                print("\(#file)\(error)")
             }
         }
         do{
             try self._fileManager.removeItem(atPath: box.nodesFolderPath)
         }catch{
-            print("\(#file)\(error)")
         }
         box.isMounted=false
         box.assemblyInProgress=false
