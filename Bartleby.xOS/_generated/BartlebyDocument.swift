@@ -56,23 +56,32 @@ import Foundation
     // Perform cleanUp when closing a document
     public func cleanUp(){
 
-        // Transition off line
-        self.online=false
-
-        // Boxes
-        if self.metadata.cleanupBoxesWhenClosingDocument{
-            self.bsfs.unMountAllBoxes()
+        for listener in self._messageListeners{
+            // Ask for listeners to release all ressources
+            listener.handle(message: DocumentStates.cleanUp)
         }
 
-        // Security scoped urls
-        self.releaseAllSecurizedURLS()
+        Async.main{
 
-        // Unregister the instances.
-        for (_ , collection) in self._collections{
-            collection.superIterate({ o in
-                Bartleby.unRegister(o)
-            })
+            // Transition off line
+            self.online=false
+
+            // Boxes
+            if self.metadata.cleanupBoxesWhenClosingDocument{
+                self.bsfs.unMountAllBoxes()
+            }
+
+            // Security scoped urls
+            self.releaseAllSecurizedURLS()
+
+            // Unregister the instances.
+            for (_ , collection) in self._collections{
+                collection.superIterate({ o in
+                    Bartleby.unRegister(o)
+                })
+            }
         }
+
     }
 
 

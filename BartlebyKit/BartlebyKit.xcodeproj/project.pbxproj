@@ -526,8 +526,8 @@
 		E5ED18111E6DCC8E00E7427E /* StateMessage.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5ED18101E6DCC8E00E7427E /* StateMessage.swift */; };
 		E5ED18121E6DCC8E00E7427E /* StateMessage.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5ED18101E6DCC8E00E7427E /* StateMessage.swift */; };
 		E5F5384B1DEAE4EA008DEBF7 /* MultiDocumentsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5F5384A1DEAE4EA008DEBF7 /* MultiDocumentsTests.swift */; };
-		E5F620C31E6EAF9B007E60D5 /* PersistencyStates.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5F620C21E6EAF9B007E60D5 /* PersistencyStates.swift */; };
-		E5F620C41E6EAFC8007E60D5 /* PersistencyStates.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5F620C21E6EAF9B007E60D5 /* PersistencyStates.swift */; };
+		E5F620C31E6EAF9B007E60D5 /* DocumentStates.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5F620C21E6EAF9B007E60D5 /* DocumentStates.swift */; };
+		E5F620C41E6EAFC8007E60D5 /* DocumentStates.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5F620C21E6EAF9B007E60D5 /* DocumentStates.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -853,7 +853,7 @@
 		E5ED180A1E6DC5B800E7427E /* MessageListener.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MessageListener.swift; sourceTree = "<group>"; };
 		E5ED18101E6DCC8E00E7427E /* StateMessage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StateMessage.swift; sourceTree = "<group>"; };
 		E5F5384A1DEAE4EA008DEBF7 /* MultiDocumentsTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MultiDocumentsTests.swift; sourceTree = "<group>"; };
-		E5F620C21E6EAF9B007E60D5 /* PersistencyStates.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PersistencyStates.swift; sourceTree = "<group>"; };
+		E5F620C21E6EAF9B007E60D5 /* DocumentStates.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DocumentStates.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -1166,7 +1166,7 @@
 				E5135A071E084B7F001E65A0 /* Context.swift */,
 				E5135A081E084B7F001E65A0 /* Default.swift */,
 				E5135A091E084B7F001E65A0 /* DocumentError.swift */,
-				E5F620C21E6EAF9B007E60D5 /* PersistencyStates.swift */,
+				E5F620C21E6EAF9B007E60D5 /* DocumentStates.swift */,
 				E5135A0A1E084B7F001E65A0 /* ErasingError.swift */,
 				E5135A0B1E084B7F001E65A0 /* extensions */,
 				E5135A3B1E084B7F001E65A0 /* Global.swift */,
@@ -1207,9 +1207,9 @@
 				E5135A1D1E084B7F001E65A0 /* CollectionMetadatum+Proxy.swift */,
 				E5135A1E1E084B7F001E65A0 /* Completion+Conveniences.swift */,
 				E5135A1F1E084B7F001E65A0 /* Completion+Result.swift */,
+				E5135A211E084B7F001E65A0 /* DocumentMetadata+Protocol.swift */,
 				E5135A201E084B7F001E65A0 /* DocumentMetadata+Facilities.swift */,
 				E53F02371E1BAAFA0045B1CB /* DocumentMetadata+Sugar.swift */,
-				E5135A211E084B7F001E65A0 /* DocumentMetadata+Protocol.swift */,
 				E5135A221E084B7F001E65A0 /* HTTPContext+Conveniences.swift */,
 				E5135A231E084B7F001E65A0 /* HTTPRequest+URLRequest.swift */,
 				E5135A241E084B7F001E65A0 /* KeyedData+Conveniences.swift */,
@@ -1644,7 +1644,7 @@
 				E5135C541E084B7F001E65A0 /* NSUndomanager+RegisterUndo.swift in Sources */,
 				E5135C101E084B7F001E65A0 /* CryptoDelegate.swift in Sources */,
 				E5135C481E084B7F001E65A0 /* UserProtocol.swift in Sources */,
-				E5F620C31E6EAF9B007E60D5 /* PersistencyStates.swift in Sources */,
+				E5F620C31E6EAF9B007E60D5 /* DocumentStates.swift in Sources */,
 				E5135B6C1E084B7F001E65A0 /* CryptedKeyValueStorage.swift in Sources */,
 				E56756B71E34B3C900E299F0 /* KeyChainHelper.swift in Sources */,
 				E5135B761E084B7F001E65A0 /* Data+HMAC.swift in Sources */,
@@ -2121,7 +2121,7 @@
 				E5135B8B1E084B7F001E65A0 /* Context.swift in Sources */,
 				E5135AC51E084B7F001E65A0 /* User.swift in Sources */,
 				E5135BFD1E084B7F001E65A0 /* BartlebyCollection.swift in Sources */,
-				E5F620C41E6EAFC8007E60D5 /* PersistencyStates.swift in Sources */,
+				E5F620C41E6EAFC8007E60D5 /* DocumentStates.swift in Sources */,
 				E5135AE91E084B7F001E65A0 /* DeleteBlocks.swift in Sources */,
 				E5135B171E084B7F001E65A0 /* ReadNodeById.swift in Sources */,
 				E5135C0B1E084B7F001E65A0 /* CollectionMetadatumProtocol.swift in Sources */,

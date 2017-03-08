@@ -193,9 +193,9 @@ public final class BSFS:TriggerHook{
 
 
     public func unMountAllBoxes(){
+        print("\n---")
         self._document.boxes.forEach { (box) in
-            self.unMount(boxUID: box.UID, completed: { (completion) in
-            })
+            try? self.unmount(box: box)
         }
     }
 
@@ -208,23 +208,37 @@ public final class BSFS:TriggerHook{
                          completed:@escaping (Completion)->()){
         do {
             let box = try Bartleby.registredObjectByUID(boxUID) as Box
-            for node in box.nodes{
-                if let accessors=self._accessors[node.UID]{
-                    for accessor in accessors{
-                        accessor.willBecomeUnusable(node: node)
-                    }
-                }
-                let assembledPath=self.assemblyPath(for:node)
-                try self._fileManager.removeItem(atPath: assembledPath)
-            }
-            box.isMounted=false
-            box.assemblyInProgress=false
+            try self.unmount(box: box)
             completed(Completion.successState())
         }catch{
+            print("\(#file) \(error)")
             completed(Completion.failureStateFromError(error))
         }
     }
 
+
+    public func unmount(box:Box)->(){
+        for node in box.nodes{
+            if let accessors=self._accessors[node.UID]{
+                for accessor in accessors{
+                    accessor.willBecomeUnusable(node: node)
+                }
+            }
+            let assembledPath=self.assemblyPath(for:node)
+            do{
+                try self._fileManager.removeItem(atPath: assembledPath)
+            }catch{
+                print("\(#file)\(error)")
+            }
+        }
+        do{
+            try self._fileManager.removeItem(atPath: box.nodesFolderPath)
+        }catch{
+            print("\(#file)\(error)")
+        }
+        box.isMounted=false
+        box.assemblyInProgress=false
+    }
 
     ///
     /// - Parameter node: the node

@@ -94,7 +94,7 @@ extension BartlebyDocument{
             try self._loadCollectionData(from:fileWrappers)
 
             Async.main{
-                self.send(PersistencyStates.collectionsDataHasBeenDecrypted)
+                self.send(DocumentStates.collectionsDataHasBeenDecrypted)
             }
         }
         // Store the reference
@@ -181,7 +181,7 @@ extension BartlebyDocument{
 
 
     private func _updatedFileWrappers()throws ->FileWrapper{
-        self.send(PersistencyStates.documentWillSave)
+        self.send(DocumentStates.documentWillSave)
         if self.metadata.sugar == Default.VOID_STRING{
             self.log("Sugar is undefined", file: #file, function: #function, line: #line, category: Default.LOG_DEFAULT, decorative: false)
         }
@@ -277,7 +277,7 @@ extension BartlebyDocument{
 
             }
         }
-        self.send(PersistencyStates.documentDidSave)
+        self.send(DocumentStates.documentDidSave)
         return self.documentFileWrapper
     }
     
