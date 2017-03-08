@@ -44,6 +44,6 @@ public enum IdentificationStates:StateMessage{
 
     // RecoverSugarViewController
     case recoverSugar
-    case sugarHasBeenRecovered // just after PersistencyStates.collectionsDataHasBeenDecrypted
+    case sugarHasBeenRecovered // just after DocumentStates.collectionsDataHasBeenDecrypted
     
 }
