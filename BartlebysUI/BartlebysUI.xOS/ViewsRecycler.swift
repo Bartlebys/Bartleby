@@ -23,8 +23,10 @@ open class ViewsRecycler {
     // You can for performance tuning determine a min distance to determine what should be considerated as recyclable
     var minOffScreenDistance:CGFloat = 100
 
+    public init() {}
+
     /// Purges all the views (e.g on view controller deinit)
-    func purgeViews(){
+    open func purgeViews(){
         while let vs = self._viewsStatus.popLast(){
             vs.view.removeFromSuperview()
         }
