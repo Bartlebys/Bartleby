@@ -12,6 +12,7 @@ open class ViewsRecycler {
 
     struct ViewStatus {
         var view:BXView
+        var classifier:String
         var available:Bool
     }
     // Classifyed recyclable views
@@ -41,22 +42,25 @@ open class ViewsRecycler {
                     vs.view.frame.origin.x > superview.frame.origin.x + superview.frame.width + self.minOffScreenDistance ||
                     vs.view.frame.origin.y + vs.view.frame.height + self.minOffScreenDistance < superview.frame.origin.y ||
                     vs.view.frame.origin.y > superview.frame.origin.y + superview.frame.height + self.minOffScreenDistance {
-                    self._recycleView(view: vs.view)
+                    self._recycleView(view: vs.view, classifiedBy:vs.classifier)
                 }
             }
         }
     }
 
-    /// Returns a Recyclable view
-    ///
-    /// - Parameter viewFactory: the factory method to create a new view
-    /// - Returns: the view
-    open func getARecyclableView<T:BXView>(viewFactory:()->(T))->T{
-        if let view = self._recyclableViews[T.className()]?.popLast() as? T{
+
+    /// Returns a recyclable view.
+    /// If necessary the view is created by the factory closure
+    /// - Parameters:
+    ///   - identifiedBy: and identifier shared between a group of views
+    ///   - viewFactory:  the factory method to create a new view
+    /// - Returns: a recyclable view
+    open func getARecyclableView(identifiedBy:String,viewFactory:()->(BXView))->BXView{
+        if let view = self._recyclableViews[identifiedBy]?.popLast(){
             return view
         }
         let view = viewFactory()
-        let vs = ViewStatus(view: view, available: false)
+        let vs = ViewStatus(view: view, classifier:identifiedBy, available: false)
         self._viewsStatus.append(vs)
         return view
     }
@@ -68,17 +72,16 @@ open class ViewsRecycler {
     /// - Parameters:
     ///   - view: the view to recycle
     ///   - groupedBy: its group
-    fileprivate func _recycleView(view:BXView){
+    fileprivate func _recycleView(view:BXView,classifiedBy:String){
         var group:[BXView]!
-        if let existingGroup=_recyclableViews[view.className] {
+        if let existingGroup=_recyclableViews[classifiedBy] {
             group = existingGroup
         }else{
             group = [BXView]()
         }
         group.append(view)
         view.removeFromSuperview()
-        self._recyclableViews[view.className]=group
-
+        self._recyclableViews[classifiedBy]=group
         // Update the view status
         if var vs = self._viewsStatus.first(where: { (viewStatus) -> Bool in
             return viewStatus.view == view
