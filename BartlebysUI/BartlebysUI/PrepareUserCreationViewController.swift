@@ -113,7 +113,7 @@ class PrepareUserCreationViewController: IdentityStepViewController{
     override func proceedToValidation(){
         super.proceedToValidation()
         self.messageTextField.stringValue=""
-        if let document=self.documentProvider?.getDocument(){
+        if let _ = self.documentProvider?.getDocument(){
             let email=self.emailComboBox.stringValue
 
             var prefix=""

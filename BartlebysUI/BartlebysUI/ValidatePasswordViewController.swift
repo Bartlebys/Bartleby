@@ -78,15 +78,14 @@ class ValidatePasswordViewController: IdentityStepViewController{
         if let document=self.documentProvider?.getDocument(){
 
             let documentSugar = document.metadata.sugar
-            let creationMode = self.identityWindowController?.creationMode
 
             /// If there is a valid Sugar we can validate
             /// Else we should recover the sugar (using second security factor)
 
             if documentSugar != Default.VOID_STRING {
                 let currentPassword=PString.trim(self.passwordTextField.stringValue)
-                let documentPassword=PString.trim(document.currentUser.password ?? "")
-                if currentPassword == document.currentUser.password{
+                let documentPassword=PString.trim(document.currentUser.password)
+                if currentPassword == documentPassword{
                     document.send(IdentificationStates.passwordsAreMatching)
                     document.metadata.saveThePassword=(self.memorizePasswordCheckBox.state==1)
                     self.identityWindowController?.identificationIsValid=true
@@ -111,7 +110,7 @@ class ValidatePasswordViewController: IdentityStepViewController{
                             ];
 
                         let serializable = try document.serializer.deserializeFromDictionary(dictionary)
-                        if var user:User = serializable as? User{
+                        if let user:User = serializable as? User{
                             user.creatorUID=user.UID
                             user.referentDocument=document
                             document.metadata.memorizeUser(user)  // Will be replaced by deserialized occurence after decrypting

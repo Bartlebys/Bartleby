@@ -1,16 +1,14 @@
 //
 //  ViewsRecycler.swift
-//  YouDubRobot
+//  BartlebysUI
 //
 //  Created by Benoit Pereira da silva on 14/03/2017.
 //  Copyright © 2017 Lylo Media Group SA. All rights reserved.
 //
 
 import Foundation
-import BartlebyKit
-import BartlebysUI
 
-class ViewsRecycler {
+open class ViewsRecycler {
 
     struct ViewStatus {
         var view:BXView
@@ -34,13 +32,13 @@ class ViewsRecycler {
     }
 
     /// You must call this method regularly to recycle off screen views.
-    func recycleRecyclableViews(){
+    open func recycleRecyclableViews(){
         for vs in self._viewsStatus{
             if let superview = vs.view.superview{
-                if  vs.view.frame.x + vs.view.frame.width + self.minOffScreenDistance < superview.frame.x ||
-                    vs.view.frame.x > superview.frame.x + superview.frame.width + self.minOffScreenDistance ||
-                    vs.view.frame.y + vs.view.frame.height + self.minOffScreenDistance < superview.frame.y ||
-                    vs.view.frame.y > superview.frame.y + superview.frame.height + self.minOffScreenDistance {
+                if  vs.view.frame.origin.x + vs.view.frame.width + self.minOffScreenDistance < superview.frame.origin.x ||
+                    vs.view.frame.origin.x > superview.frame.origin.x + superview.frame.width + self.minOffScreenDistance ||
+                    vs.view.frame.origin.y + vs.view.frame.height + self.minOffScreenDistance < superview.frame.origin.y ||
+                    vs.view.frame.origin.y > superview.frame.origin.y + superview.frame.height + self.minOffScreenDistance {
                     self._recycleView(view: vs.view)
                 }
             }
@@ -51,7 +49,7 @@ class ViewsRecycler {
     ///
     /// - Parameter viewFactory: the factory method to create a new view
     /// - Returns: the view
-    func getARecyclableView<T:BXView>(viewFactory:()->(T))->T{
+    open func getARecyclableView<T:BXView>(viewFactory:()->(T))->T{
         if let view = self._recyclableViews[T.className()]?.popLast() as? T{
             return view
         }
@@ -62,8 +60,6 @@ class ViewsRecycler {
     }
 
     // MARK: - Private implementation
-
-
 
     /// Recycles a view
     ///
@@ -88,9 +84,5 @@ class ViewsRecycler {
             vs.available = true
         }
     }
-    
-    
-    
-    
-    
+
 }

@@ -28,7 +28,7 @@ class SetupCollaborativeServerViewController: IdentityStepViewController{
         super.viewWillAppear()
         self.documentProvider?.getDocument()?.send(IdentificationStates.selectTheServer)
         self.explanationsTextField.stringValue=NSLocalizedString("Select or register a Collaborative Server  API URL.", comment: "Select the Collaborative Server API URL")
-        if let document=self.documentProvider?.getDocument(){
+        if let _ = self.documentProvider?.getDocument(){
             var servers=Bartleby.configuration.defaultBaseURLList
             servers.append(NSLocalizedString("Add a Server", comment: "Add a Server"))
             self.serverComboBox.addItems(withObjectValues:servers)

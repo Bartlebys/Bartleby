@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		E5037F251E78338D00ECEEB1 /* ViewsRecycler.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5037F241E78338D00ECEEB1 /* ViewsRecycler.swift */; };
+		E5037F261E78338D00ECEEB1 /* ViewsRecycler.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5037F241E78338D00ECEEB1 /* ViewsRecycler.swift */; };
 		E53094651E4B4FBA0068D7EC /* BXTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E53094621E4B4FBA0068D7EC /* BXTableView.swift */; };
 		E53094661E4B4FBA0068D7EC /* BXView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E53094631E4B4FBA0068D7EC /* BXView.swift */; };
 		E53094671E4B4FBA0068D7EC /* BXViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E53094641E4B4FBA0068D7EC /* BXViewController.swift */; };
@@ -45,6 +47,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		E5037F241E78338D00ECEEB1 /* ViewsRecycler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ViewsRecycler.swift; sourceTree = "<group>"; };
 		E53094621E4B4FBA0068D7EC /* BXTableView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BXTableView.swift; sourceTree = "<group>"; };
 		E53094631E4B4FBA0068D7EC /* BXView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BXView.swift; sourceTree = "<group>"; };
 		E53094641E4B4FBA0068D7EC /* BXViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BXViewController.swift; sourceTree = "<group>"; };
@@ -106,6 +109,7 @@
 		E53094611E4B4FBA0068D7EC /* BartlebysUI.xOS */ = {
 			isa = PBXGroup;
 			children = (
+				E5037F241E78338D00ECEEB1 /* ViewsRecycler.swift */,
 				E5CC50A11E6EC6C2009FB014 /* Views */,
 				E5CC50A21E6EC6D1009FB014 /* Controllers */,
 			);
@@ -378,6 +382,7 @@
 				E53094851E4B50490068D7EC /* BXTableView.swift in Sources */,
 				E5F620C11E6EA911007E60D5 /* IdentificationStates.swift in Sources */,
 				E53094871E4B50490068D7EC /* BXViewController.swift in Sources */,
+				E5037F261E78338D00ECEEB1 /* ViewsRecycler.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -390,6 +395,7 @@
 				E5F620C01E6EA911007E60D5 /* IdentificationStates.swift in Sources */,
 				E5CC509F1E6EC561009FB014 /* BXWindowController.swift in Sources */,
 				E53094651E4B4FBA0068D7EC /* BXTableView.swift in Sources */,
+				E5037F251E78338D00ECEEB1 /* ViewsRecycler.swift in Sources */,
 				E59AABA61E1A937F00BE4BF1 /* RevealPasswordViewController.swift in Sources */,
 				E55FF98C1E1562E000EE3393 /* PrepareUserCreationViewController.swift in Sources */,
 				E5DB87EE1E32615400E54244 /* SendMessageViewController.swift in Sources */,

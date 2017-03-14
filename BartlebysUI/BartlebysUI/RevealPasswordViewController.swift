@@ -32,7 +32,7 @@ class RevealPasswordViewController: IdentityStepViewController {
 
     override func proceedToValidation(){
         super.proceedToValidation()
-        if let document=self.documentProvider?.getDocument(){
+        if let _ = self.documentProvider?.getDocument(){
             self.stepDelegate?.didValidateStep( self.stepIndex)
         }
     }
