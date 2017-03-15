@@ -44,6 +44,9 @@ open class ViewsRecycler {
                     vs.view.frame.origin.y > superview.frame.origin.y + superview.frame.height + self.minOffScreenDistance {
                     self._recycleView(view: vs.view, classifiedBy:vs.classifier)
                 }
+            }else if vs.available == false{
+                // The clients may remove the view from the superview to force the recycling
+                self._recycleView(view: vs.view, classifiedBy:vs.classifier)
             }
         }
     }
