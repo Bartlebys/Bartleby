@@ -25,7 +25,6 @@ open class ViewsRecycler {
     }
 
 
-
     // We keep a reference on all views.
     var _viewsReferers=[ViewReferer]()
 
@@ -42,6 +41,21 @@ open class ViewsRecycler {
         }
     }
 
+
+    /// Call this method if you consider there is possibly to much recyclable views
+    open func purgeAvailableViews(){
+        let r = self._viewsReferers.enumerated().reversed()
+        for (i,referer) in  r{
+            if referer.available && referer.view.superview == nil{
+                self._viewsReferers.remove(at: i)
+            }
+        }
+    }
+
+
+    /// Returns the current recycler stats
+    ///
+    /// - Returns: the stats
     open func stats()->(total:Int,used:Int, available:Int){
         let total = self._viewsReferers.count
         var used = 0
@@ -56,22 +70,33 @@ open class ViewsRecycler {
         return (total,used,available)
     }
 
+    /// The stats formatted in a String
+    open var stringStats:String{
+        let stats = self.stats()
+        return "Total:\(stats.total) used:\(stats.used) available:\(stats.available)"
+    }
+
+
     /// You must call this method regularly to recycle off screen views.
     open func recycleRecyclableViews(){
-        for vs in self._viewsReferers{
-            if let superview = vs.view.superview{
-                if  vs.view.frame.origin.x + vs.view.frame.width + self.minOffScreenDistance < superview.frame.origin.x ||
-                    vs.view.frame.origin.x > superview.frame.origin.x + superview.frame.width + self.minOffScreenDistance ||
-                    vs.view.frame.origin.y + vs.view.frame.height + self.minOffScreenDistance < superview.frame.origin.y ||
-                    vs.view.frame.origin.y > superview.frame.origin.y + superview.frame.height + self.minOffScreenDistance {
-                    let _ = self.recycleView(view: vs.view)
+        for referer in self._viewsReferers{
+            if let superview = referer.view.superview{
+                if  referer.view.frame.origin.x + referer.view.frame.width + self.minOffScreenDistance < superview.frame.origin.x ||
+                    referer.view.frame.origin.x > superview.frame.origin.x + superview.frame.width + self.minOffScreenDistance ||
+                    referer.view.frame.origin.y + referer.view.frame.height + self.minOffScreenDistance < superview.frame.origin.y ||
+                    referer.view.frame.origin.y > superview.frame.origin.y + superview.frame.height + self.minOffScreenDistance {
+                    referer.view.removeFromSuperview()
+                    referer.available = true
                 }
-            }else if vs.available == false{
+            }else if referer.available == false{
                 // The clients may remove the view from the superview to force the recycling
-                self.recycleView(view: vs.view)
+                referer.view.removeFromSuperview()
+                referer.available = true
             }
         }
     }
+
+
 
 
     /// Recycles explicitely a view
@@ -80,8 +105,8 @@ open class ViewsRecycler {
     ///   - view: the view to recycle
     open func recycleView(view:BXView)->Bool{
         // Update the view status
-        if let vs = self._viewsReferers.first(where: { (viewStatus) -> Bool in
-            return viewStatus.view == view
+        if let vs = self._viewsReferers.first(where: { (referer) -> Bool in
+            return referer.view.UID == view.UID
         }){
             view.removeFromSuperview()
             vs.available = true
@@ -124,7 +149,5 @@ open class ViewsRecycler {
             }
         })
     }
-
-
 
 }
