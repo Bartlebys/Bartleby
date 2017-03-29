@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		E5037F251E78338D00ECEEB1 /* ViewsRecycler.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5037F241E78338D00ECEEB1 /* ViewsRecycler.swift */; };
 		E5037F261E78338D00ECEEB1 /* ViewsRecycler.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5037F241E78338D00ECEEB1 /* ViewsRecycler.swift */; };
+		E5124F5C1E8BAA2800797254 /* BartlebyKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E5124F5B1E8BAA2800797254 /* BartlebyKit.framework */; };
 		E53094651E4B4FBA0068D7EC /* BXTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E53094621E4B4FBA0068D7EC /* BXTableView.swift */; };
 		E53094661E4B4FBA0068D7EC /* BXView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E53094631E4B4FBA0068D7EC /* BXView.swift */; };
 		E53094671E4B4FBA0068D7EC /* BXViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E53094641E4B4FBA0068D7EC /* BXViewController.swift */; };
@@ -48,10 +49,11 @@
 
 /* Begin PBXFileReference section */
 		E5037F241E78338D00ECEEB1 /* ViewsRecycler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ViewsRecycler.swift; sourceTree = "<group>"; };
+		E5124F5B1E8BAA2800797254 /* BartlebyKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = BartlebyKit.framework; path = "../../../../../../../../Library/Developer/Xcode/DerivedData/YouDub-aodsguokyrtmojgwlsnefsibaroc/Build/Products/Debug-iphonesimulator/BartlebyKit.framework"; sourceTree = "<group>"; };
 		E53094621E4B4FBA0068D7EC /* BXTableView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BXTableView.swift; sourceTree = "<group>"; };
 		E53094631E4B4FBA0068D7EC /* BXView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BXView.swift; sourceTree = "<group>"; };
 		E53094641E4B4FBA0068D7EC /* BXViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BXViewController.swift; sourceTree = "<group>"; };
-		E530946E1E4B50300068D7EC /* BartlebysUI iOS.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = "BartlebysUI iOS.framework"; sourceTree = BUILT_PRODUCTS_DIR; };
+		E530946E1E4B50300068D7EC /* BartlebysUI_iOS.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = BartlebysUI_iOS.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		E53094701E4B50300068D7EC /* BartlebysUI iOS.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "BartlebysUI iOS.h"; sourceTree = "<group>"; };
 		E53094711E4B50300068D7EC /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		E53ECDF51E1575720084DD6C /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
@@ -92,6 +94,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E5124F5C1E8BAA2800797254 /* BartlebyKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -135,6 +138,7 @@
 		E53F09841DF95C4E003301DD /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				E5124F5B1E8BAA2800797254 /* BartlebyKit.framework */,
 				E53ECDF51E1575720084DD6C /* Security.framework */,
 				E53F0B631DF95F4A003301DD /* AppKit.framework */,
 				E53F09851DF95C4E003301DD /* BartlebyKit.framework */,
@@ -229,7 +233,7 @@
 			isa = PBXGroup;
 			children = (
 				E5FAC5201DF95B1C00398C95 /* BartlebysUI.framework */,
-				E530946E1E4B50300068D7EC /* BartlebysUI iOS.framework */,
+				E530946E1E4B50300068D7EC /* BartlebysUI_iOS.framework */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -268,9 +272,9 @@
 /* End PBXHeadersBuildPhase section */
 
 /* Begin PBXNativeTarget section */
-		E530946D1E4B50300068D7EC /* BartlebysUI iOS */ = {
+		E530946D1E4B50300068D7EC /* BartlebysUI_iOS */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = E530947F1E4B50300068D7EC /* Build configuration list for PBXNativeTarget "BartlebysUI iOS" */;
+			buildConfigurationList = E530947F1E4B50300068D7EC /* Build configuration list for PBXNativeTarget "BartlebysUI_iOS" */;
 			buildPhases = (
 				E53094691E4B50300068D7EC /* Sources */,
 				E530946A1E4B50300068D7EC /* Frameworks */,
@@ -281,9 +285,9 @@
 			);
 			dependencies = (
 			);
-			name = "BartlebysUI iOS";
+			name = BartlebysUI_iOS;
 			productName = "BartlebysUI iOS";
-			productReference = E530946E1E4B50300068D7EC /* BartlebysUI iOS.framework */;
+			productReference = E530946E1E4B50300068D7EC /* BartlebysUI_iOS.framework */;
 			productType = "com.apple.product-type.framework";
 		};
 		E5FAC51F1DF95B1C00398C95 /* BartlebysUI */ = {
@@ -311,7 +315,7 @@
 			isa = PBXProject;
 			attributes = {
 				LastSwiftUpdateCheck = 0820;
-				LastUpgradeCheck = 0820;
+				LastUpgradeCheck = 0830;
 				ORGANIZATIONNAME = "Chaosmos SAS";
 				TargetAttributes = {
 					E530946D1E4B50300068D7EC = {
@@ -340,7 +344,7 @@
 			projectRoot = "";
 			targets = (
 				E5FAC51F1DF95B1C00398C95 /* BartlebysUI */,
-				E530946D1E4B50300068D7EC /* BartlebysUI iOS */,
+				E530946D1E4B50300068D7EC /* BartlebysUI_iOS */,
 			);
 		};
 /* End PBXProject section */
@@ -418,7 +422,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CODE_SIGN_IDENTITY = "";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = 984ZD3F8L6;
 				DYLIB_COMPATIBILITY_VERSION = 1;
@@ -441,7 +445,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CODE_SIGN_IDENTITY = "";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "";
 				DEFINES_MODULE = YES;
 				DEVELOPMENT_TEAM = 984ZD3F8L6;
 				DYLIB_COMPATIBILITY_VERSION = 1;
@@ -613,7 +617,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		E530947F1E4B50300068D7EC /* Build configuration list for PBXNativeTarget "BartlebysUI iOS" */ = {
+		E530947F1E4B50300068D7EC /* Build configuration list for PBXNativeTarget "BartlebysUI_iOS" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				E53094801E4B50300068D7EC /* Debug */,

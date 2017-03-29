@@ -237,7 +237,7 @@ extension BartlebyDocument{
                         // MONOLITHIC STORAGE
                         if metadatum.storage == CollectionMetadatum.Storage.monolithicFileStorage {
 
-                            if var collection = self.collectionByName(metadatum.collectionName) as? CollectibleCollection {
+                            if var collection = self.collectionByName(metadatum.collectionName) {
 
                                 if collection.shouldBeSaved{
 

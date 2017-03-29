@@ -65,7 +65,7 @@ class UserStatusTests: XCTestCase {
                             expectation.fulfill()
         }) { (context) -> () in
             expectation.fulfill()
-            XCTFail("\(context.responseString)")
+            XCTFail("\(String(describing: context.responseString))")
         }
 
         waitForExpectations(timeout: TestsConfiguration.TIME_OUT_DURATION, handler: nil)
@@ -89,7 +89,7 @@ class UserStatusTests: XCTestCase {
                             expectation.fulfill()
         }) { (context) -> () in
             expectation.fulfill()
-            XCTFail("\(context.responseString)")
+            XCTFail("\(String(describing: context.responseString))")
         }
 
         waitForExpectations(timeout: TestsConfiguration.TIME_OUT_DURATION, handler: nil)

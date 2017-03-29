@@ -78,7 +78,7 @@ open class TriggersAfterIndex {
                                     context: context,
                                     title: NSLocalizedString("Deserialization issue",
                                                              comment: "Deserialization issue"),
-                                    body:"\(result.value)\n\(#file)\n\(#function)\nhttp Status code: (\(statusCode))",
+                                    body:"\(String(describing: result.value))\n\(#file)\n\(#function)\nhttp Status code: (\(statusCode))",
                                     transmit:{ (selectedIndex) -> () in
                                 })
                                 reactions.append(failureReaction)
@@ -89,7 +89,7 @@ open class TriggersAfterIndex {
                                 context: context,
                                 title: NSLocalizedString("No String Deserialization issue",
                                                          comment: "No String Deserialization issue"),
-                                body: "\(result.value)\n\(#file)\n\(#function)\nhttp Status code: (\(statusCode))",
+                                body: "\(String(describing: result.value))\n\(#file)\n\(#function)\nhttp Status code: (\(statusCode))",
                                 transmit: { (selectedIndex) -> () in
                             })
                             reactions.append(failureReaction)
@@ -102,7 +102,7 @@ open class TriggersAfterIndex {
                         let failureReaction =  Reaction.dispatchAdaptiveMessage(
                             context: context,
                             title: NSLocalizedString("Unsuccessfull attempt",comment: "Unsuccessfull attempt"),
-                            body:"\(result.value)\n\(#file)\n\(#function)\nhttp Status code: (\(statusCode))",
+                            body:"\(String(describing: result.value))\n\(#file)\n\(#function)\nhttp Status code: (\(statusCode))",
                             transmit:{ (selectedIndex) -> () in
                         })
                         reactions.append(failureReaction)

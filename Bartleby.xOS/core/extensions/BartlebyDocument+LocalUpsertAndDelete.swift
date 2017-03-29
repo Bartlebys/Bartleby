@@ -23,7 +23,7 @@ public extension BartlebyDocument {
      - parameter instance: the instance
      */
     public func upsert(_ instance: Collectible){
-        if let collection=self.collectionByName(instance.d_collectionName) as? CollectibleCollection {
+        if let collection=self.collectionByName(instance.d_collectionName) {
             collection.upsert(instance, commit:false)
         }
         self.hasChanged()

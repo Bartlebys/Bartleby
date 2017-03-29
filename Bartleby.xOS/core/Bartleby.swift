@@ -274,8 +274,6 @@ open class Bartleby:NSObject {
                         // Add the owns entry
                         if !o.owns.contains(owneeUID){
                             o.owns.append(owneeUID)
-                            let i = Bartleby.registredManagedModelByUID(owneeUID)
-                            let cn = i?.className ?? "No Class"
                         }else{
                             print("### !")
                         }

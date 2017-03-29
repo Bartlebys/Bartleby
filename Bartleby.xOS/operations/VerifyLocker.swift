@@ -151,7 +151,7 @@ open class VerifyLocker {
                             context: context,
                             title: NSLocalizedString("Unsuccessfull attempt result.isFailure is true",
                                                      comment: "Unsuccessfull attempt"),
-                            body:"\(m) httpStatus code = \(statusCode) | \(result.value)" ,
+                            body:"\(m) httpStatus code = \(statusCode) | \(String(describing: result.value))" ,
                             transmit: { (selectedIndex) -> () in
                         })
                         reactions.append(failureReaction)
@@ -193,7 +193,7 @@ open class VerifyLocker {
                                 context: context,
                                 title: NSLocalizedString("Unsuccessfull attempt",
                                                          comment: "Unsuccessfull attempt"),
-                                body:"\(m) httpStatus code = \(statusCode) | \(result.value)" ,
+                                body:"\(m) httpStatus code = \(statusCode) | \(String(describing: result.value))" ,
                                 transmit: { (selectedIndex) -> () in
                             })
                             reactions.append(failureReaction)

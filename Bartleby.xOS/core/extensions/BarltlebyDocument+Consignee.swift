@@ -74,7 +74,7 @@ extension BartlebyDocument:ConcreteConsignee, ConcreteTracker, Consignation, Ada
 
     open func dumpStack() {
         for (result, context) in trackingStack {
-            Swift.print("\n\(context):\n\(result)\n")
+            Swift.print("\n\(context):\n\(String(describing:result))\n")
         }
     }
 

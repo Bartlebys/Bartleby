@@ -21,7 +21,7 @@ extension ManagedModel:NSCopying{
                     return copied as AnyObject
                 }
             }catch{
-                self.log("ERROR with Copy with zone on \(self._runTimeTypeName) \(self.UID) \(error)" as AnyObject, file:#file, function:#function, line:#line,category:Default.LOG_DEFAULT)
+                self.log("ERROR with Copy with zone on \(String(describing: self._runTimeTypeName)) \(self.UID) \(error)" as AnyObject, file:#file, function:#function, line:#line,category:Default.LOG_DEFAULT)
             }
             return self as AnyObject
         }

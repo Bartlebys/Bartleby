@@ -62,7 +62,7 @@ class ConfirmUpdatePasswordActivationCode: IdentityStepViewController {
                                                     self.stepDelegate?.enableActions()
                     }, failureHandler: { (context) in
                          self._confirmationIsImpossible()
-                        document.log("\(context.responseString)", file: #file, function: #function, line: #line, category: Default.LOG_WARNING, decorative: false)
+                        document.log("\(String(describing: context.responseString))", file: #file, function: #function, line: #line, category: Default.LOG_WARNING, decorative: false)
                     })
 
                 }, failureHandler: { (context) in

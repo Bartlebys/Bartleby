@@ -65,7 +65,7 @@ open class LogoutUser{
                                 title: NSLocalizedString("Unsuccessfull attempt",
                                                          comment: "Unsuccessfull attempt"),
                                 body: NSLocalizedString("authentication logout",
-                                                        comment: "authentication logout failure description")+" | \(result.value)",
+                                                        comment: "authentication logout failure description")+" | \(String(describing: result.value))",
                                 transmit: { (selectedIndex) -> () in
                             })
                             reactions.append(failureReaction)
@@ -86,7 +86,7 @@ open class LogoutUser{
                                     title: NSLocalizedString("Unsuccessfull attempt",
                                                              comment: "Unsuccessfull attempt"),
                                     body: NSLocalizedString("termination of session",
-                                                            comment: "termination of session failure description | \(result.value)"),
+                                                            comment: "termination of session failure description | \(String(describing: result.value))"),
                                     transmit: { (selectedIndex) -> () in
                                 })
                                 reactions.append(failureReaction)

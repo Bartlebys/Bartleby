@@ -428,7 +428,7 @@ extension BartlebyDocument {
                     }
                     
                 }catch{
-                    self.log("Exception \(error) on \(id) \(event) \(data)",file:#file,function:#function,line:#line,category: "SSE")
+                    self.log("Exception \(error) on \(String(describing: id)) \(String(describing: event)) \(String(describing: data))",file:#file,function:#function,line:#line,category: "SSE")
                 }
             }
             

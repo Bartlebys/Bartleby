@@ -7,7 +7,7 @@
 //
 
 import XCTest
-@testable import Inspector
+@testable import BartlebysInspector
 
 class InspectorTests: XCTestCase {
     

@@ -194,7 +194,7 @@ public final class BSFS:TriggerHook{
 
     public func unMountAllBoxes(){
         self._document.boxes.forEach { (box) in
-            try? self.unMount(box: box)
+            self.unMount(box: box)
         }
         try? self._fileManager.removeItem(atPath: self.boxesFolderPath)
     }
@@ -208,7 +208,7 @@ public final class BSFS:TriggerHook{
                          completed:@escaping (Completion)->()){
         do {
             let box = try Bartleby.registredObjectByUID(boxUID) as Box
-            try self.unMount(box: box)
+            self.unMount(box: box)
             completed(Completion.successState())
         }catch{
             completed(Completion.failureStateFromError(error))

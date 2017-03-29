@@ -95,7 +95,7 @@ extension BartlebyDocument {
                                 if let dictionary=result.value as? [String:Any]{
                                     if let collections=dictionary["collections"] as? [String:Any] {
                                         for (collectionName,collectionData) in collections{
-                                            if let proxy=self.collectionByName(collectionName) as? CollectibleCollection,
+                                            if let proxy=self.collectionByName(collectionName),
                                                 let collectionDictionary=collectionData as? [Any]{
                                                 for itemRep in collectionDictionary{
                                                     if let itemRepDictionary = itemRep as? [String:Any]{

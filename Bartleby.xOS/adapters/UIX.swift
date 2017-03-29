@@ -25,11 +25,6 @@
         open let UID=Bartleby.createUID()
     }
 
-    // BXDocument is the base type for Documents.
-    // Registry implements Identifiable
-    open class BXDocument:NSDocument{
-    }
-
 
 
 #elseif os(iOS)
@@ -45,11 +40,6 @@
 
     open class BXTableView:UITableView,Identifiable{
         public let UID=Bartleby.createUID()
-    }
-
-    // BXDocument is the base type of Documents
-    // Registry implements Identifiable
-    open class BXDocument:UIDocument{
     }
 
 

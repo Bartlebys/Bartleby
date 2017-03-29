@@ -191,7 +191,7 @@ public extension Notification.Name {
     */
     open func superIterate(_ on:@escaping(_ element: Collectible)->()){
         for UID in self._UIDS {
-            let item=self._storage[UID] as! Collectible
+            let item=self._storage[UID]!
             on(item)
         }
     }

@@ -130,7 +130,7 @@ class SetupCollaborativeServerViewController: IdentityStepViewController{
                                                                                 self.stepDelegate?.didValidateStep( self.stepIndex)
                                                 }, failureHandler: { (context) in
                                                     self.stepDelegate?.enableActions()
-                                                    document.log("\(context.responseString)", file: #file, function: #function, line: #line, category: Default.LOG_WARNING, decorative: false)
+                                                    document.log("\(String(describing: context.responseString))", file: #file, function: #function, line: #line, category: Default.LOG_WARNING, decorative: false)
                                                 })
                                             }else{
                                                 self.stepDelegate?.didValidateStep( self.stepIndex)
@@ -138,15 +138,15 @@ class SetupCollaborativeServerViewController: IdentityStepViewController{
 
                                         }, failureHandler: { (context) in
                                             self.stepDelegate?.enableActions()
-                                            self.messageTextField.stringValue="\(context.responseString)"
-                                            document.log("\(context.message)", file: #file, function: #function, line: #line, category: Default.LOG_WARNING, decorative: false)
+                                            self.messageTextField.stringValue="\(String(describing: context.responseString))"
+                                            document.log("\(String(describing: context.message))", file: #file, function: #function, line: #line, category: Default.LOG_WARNING, decorative: false)
                                         })
 
                                     }
                                 }, failureHandler: { (context) in
                                     self.stepDelegate?.enableActions()
-                                    self.messageTextField.stringValue="\(context.message)"
-                                    document.log("\(context.responseString)", file: #file, function: #function, line: #line, category: Default.LOG_WARNING, decorative: false)
+                                    self.messageTextField.stringValue="\(String(describing: context.message))"
+                                    document.log("\(String(describing: context.responseString))", file: #file, function: #function, line: #line, category: Default.LOG_WARNING, decorative: false)
                                 })
                             }
                             do{
@@ -163,8 +163,8 @@ class SetupCollaborativeServerViewController: IdentityStepViewController{
                                         __postCreationPhase(user: user)
                                     }, failureHandler: { (context) in
                                         self.stepDelegate?.enableActions()
-                                        self.messageTextField.stringValue="\(context.responseString)"
-                                        document.log("\(context.responseString)", file: #file, function: #function, line: #line, category: Default.LOG_WARNING, decorative: false)
+                                        self.messageTextField.stringValue="\(String(describing: context.responseString))"
+                                        document.log("\(String(describing: context.responseString))", file: #file, function: #function, line: #line, category: Default.LOG_WARNING, decorative: false)
                                     })
                                 }
                                 
