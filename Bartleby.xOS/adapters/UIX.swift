@@ -17,14 +17,26 @@
         open let UID=Bartleby.createUID()
     }
 
-    open class BXViewController:NSViewController,Identifiable{
+    open class BXViewController:NSViewController,Identifiable,MessageListener{
+
         open let UID=Bartleby.createUID()
+
+        open func handle<T:StateMessage>(message:T){}
+    }
+
+
+
+    open class BXWindowController: NSWindowController,MessageListener {
+
+        open let UID=Bartleby.createUID()
+
+        open func handle<T:StateMessage>(message:T){}
+        
     }
 
     open class BXTableView:NSTableView,Identifiable{
         open let UID=Bartleby.createUID()
     }
-
 
 
 #elseif os(iOS)
@@ -34,8 +46,11 @@
         public let UID=Bartleby.createUID()
     }
 
-    open class BXViewController:UIViewController,Identifiable{
+    open class BXViewController:UIViewController,Identifiable,MessageListener{
+
         public let UID=Bartleby.createUID()
+
+        open func handle<T:StateMessage>(message:T){}
     }
 
     open class BXTableView:UITableView,Identifiable{
