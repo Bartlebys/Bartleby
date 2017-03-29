@@ -106,10 +106,10 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				E53F0BD31DF963C0003301DD /* BartlebyKit.framework in Frameworks */,
 				E53094891E4B5A1E0068D7EC /* BartlebysUI.framework in Frameworks */,
 				E53F0BD61DF964D2003301DD /* Alamofire.framework in Frameworks */,
 				E53F0BD71DF964D2003301DD /* ObjectMapper.framework in Frameworks */,
-				E53F0BD31DF963C0003301DD /* BartlebyKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

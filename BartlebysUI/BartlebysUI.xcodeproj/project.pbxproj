@@ -10,12 +10,8 @@
 		E5037F251E78338D00ECEEB1 /* ViewsRecycler.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5037F241E78338D00ECEEB1 /* ViewsRecycler.swift */; };
 		E5037F261E78338D00ECEEB1 /* ViewsRecycler.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5037F241E78338D00ECEEB1 /* ViewsRecycler.swift */; };
 		E5124F5C1E8BAA2800797254 /* BartlebyKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E5124F5B1E8BAA2800797254 /* BartlebyKit.framework */; };
-		E53094651E4B4FBA0068D7EC /* BXTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E53094621E4B4FBA0068D7EC /* BXTableView.swift */; };
-		E53094661E4B4FBA0068D7EC /* BXView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E53094631E4B4FBA0068D7EC /* BXView.swift */; };
 		E53094671E4B4FBA0068D7EC /* BXViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E53094641E4B4FBA0068D7EC /* BXViewController.swift */; };
 		E530947E1E4B50300068D7EC /* BartlebysUI iOS.h in Headers */ = {isa = PBXBuildFile; fileRef = E53094701E4B50300068D7EC /* BartlebysUI iOS.h */; settings = {ATTRIBUTES = (Public, ); }; };
-		E53094851E4B50490068D7EC /* BXTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E53094621E4B4FBA0068D7EC /* BXTableView.swift */; };
-		E53094861E4B50490068D7EC /* BXView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E53094631E4B4FBA0068D7EC /* BXView.swift */; };
 		E53094871E4B50490068D7EC /* BXViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E53094641E4B4FBA0068D7EC /* BXViewController.swift */; };
 		E53F09861DF95C4E003301DD /* BartlebyKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E53F09851DF95C4E003301DD /* BartlebyKit.framework */; };
 		E53F0B571DF95D80003301DD /* DropView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E53F0B561DF95D80003301DD /* DropView.swift */; };
@@ -50,8 +46,6 @@
 /* Begin PBXFileReference section */
 		E5037F241E78338D00ECEEB1 /* ViewsRecycler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ViewsRecycler.swift; sourceTree = "<group>"; };
 		E5124F5B1E8BAA2800797254 /* BartlebyKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = BartlebyKit.framework; path = "../../../../../../../../Library/Developer/Xcode/DerivedData/YouDub-aodsguokyrtmojgwlsnefsibaroc/Build/Products/Debug-iphonesimulator/BartlebyKit.framework"; sourceTree = "<group>"; };
-		E53094621E4B4FBA0068D7EC /* BXTableView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BXTableView.swift; sourceTree = "<group>"; };
-		E53094631E4B4FBA0068D7EC /* BXView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BXView.swift; sourceTree = "<group>"; };
 		E53094641E4B4FBA0068D7EC /* BXViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BXViewController.swift; sourceTree = "<group>"; };
 		E530946E1E4B50300068D7EC /* BartlebysUI_iOS.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = BartlebysUI_iOS.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		E53094701E4B50300068D7EC /* BartlebysUI iOS.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "BartlebysUI iOS.h"; sourceTree = "<group>"; };
@@ -166,8 +160,6 @@
 		E5CC50A11E6EC6C2009FB014 /* Views */ = {
 			isa = PBXGroup;
 			children = (
-				E53094621E4B4FBA0068D7EC /* BXTableView.swift */,
-				E53094631E4B4FBA0068D7EC /* BXView.swift */,
 			);
 			name = Views;
 			sourceTree = "<group>";
@@ -382,8 +374,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				E53094861E4B50490068D7EC /* BXView.swift in Sources */,
-				E53094851E4B50490068D7EC /* BXTableView.swift in Sources */,
 				E5F620C11E6EA911007E60D5 /* IdentificationStates.swift in Sources */,
 				E53094871E4B50490068D7EC /* BXViewController.swift in Sources */,
 				E5037F261E78338D00ECEEB1 /* ViewsRecycler.swift in Sources */,
@@ -398,7 +388,6 @@
 				E59AABA31E1A889B00BE4BF1 /* IdentityStepViewController.swift in Sources */,
 				E5F620C01E6EA911007E60D5 /* IdentificationStates.swift in Sources */,
 				E5CC509F1E6EC561009FB014 /* BXWindowController.swift in Sources */,
-				E53094651E4B4FBA0068D7EC /* BXTableView.swift in Sources */,
 				E5037F251E78338D00ECEEB1 /* ViewsRecycler.swift in Sources */,
 				E59AABA61E1A937F00BE4BF1 /* RevealPasswordViewController.swift in Sources */,
 				E55FF98C1E1562E000EE3393 /* PrepareUserCreationViewController.swift in Sources */,
@@ -410,7 +399,6 @@
 				E55FF9841E155F5900EE3393 /* IdentityWindowController.swift in Sources */,
 				E55FF9901E15637F00EE3393 /* ValidatePasswordViewController.swift in Sources */,
 				E55FF9881E155FF300EE3393 /* UpdatePasswordViewController.swift in Sources */,
-				E53094661E4B4FBA0068D7EC /* BXView.swift in Sources */,
 				E5717E651E2F6B7C00850303 /* RecoverSugarViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
