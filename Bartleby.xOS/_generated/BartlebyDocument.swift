@@ -390,10 +390,10 @@ import Foundation
 
     /// Model Factory
     /// Usage:
-    /// let user=document.newObject() a
+    /// let user=document.newManagedModel() a
     /// - Parameter commit: should we commit the entity
     /// - Returns: a Collectible Model
-    open func newObject<T:Collectible>(commit:Bool=true)->T{
+    open func newManagedModel<T:Collectible>(commit:Bool=true)->T{
         // User as a special factory Method
         if T.typeName()=="User"{
             return self._newUser(commit:commit) as! T

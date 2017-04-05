@@ -45,7 +45,7 @@ class LockerTests: XCTestCase {
         let document=LockerTests._document
         Bartleby.sharedInstance.declare(document)
         LockerTests._spaceUID = document.spaceUID
-        LockerTests._creatorUser = document.newObject() as User
+        LockerTests._creatorUser = document.newManagedModel() as User
         if let user =  LockerTests._creatorUser {
             document.metadata.memorizeUser(user)
         }
@@ -78,7 +78,7 @@ class LockerTests: XCTestCase {
 
     func test102_CreateUser_Consumer() {
         let expectation = self.expectation(description: "CreateUser should respond")
-        let consumer = LockerTests._document.newObject() as User
+        let consumer = LockerTests._document.newManagedModel() as User
         consumer.creatorUID = LockerTests._creatorUserID
         consumer.spaceUID = LockerTests._spaceUID
         consumer.phoneNumber = LockerTests._consumerPhone
@@ -116,7 +116,7 @@ class LockerTests: XCTestCase {
 
     func test104_CreateLocker() {
         let expectation = self.expectation(description: "CreateLocker should respond")
-        let locker = LockerTests._document.newObject() as Locker
+        let locker = LockerTests._document.newManagedModel() as Locker
         locker.associatedDocumentUID = LockerTests._document.UID
         locker.creatorUID = LockerTests._creatorUserID
         locker.userUID = LockerTests._consumerUserID

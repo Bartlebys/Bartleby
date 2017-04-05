@@ -50,7 +50,7 @@ class UserStatusTests: XCTestCase {
     func test101_createUser_Creator() {
         let expectation = self.expectation(description: "CreateUser should respond")
 
-        let user=UserStatusTests.document.newObject() as User
+        let user=UserStatusTests.document.newManagedModel() as User
         user.creatorUID=user.UID // (!) Auto creation in this context (Check ACL)
         user.email=UserStatusTests._creatorUserEmail
         user.password=UserStatusTests._creatorUserPassword
@@ -74,7 +74,7 @@ class UserStatusTests: XCTestCase {
     func test102_createUser_UserThatWillBeSuspendedLater() {
         let expectation = self.expectation(description: "CreateUser should respond")
 
-        let user = UserStatusTests.document.newObject() as User
+        let user = UserStatusTests.document.newManagedModel() as User
         user.creatorUID = UserStatusTests._creatorUserID
         user.email = UserStatusTests._suspendedUserEmail
         user.password = UserStatusTests._suspendedUserPassword

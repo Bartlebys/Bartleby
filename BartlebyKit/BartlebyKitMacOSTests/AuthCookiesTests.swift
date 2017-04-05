@@ -40,7 +40,7 @@ class AuthCookiesTests: XCTestCase {
 
     func test001_createUser() {
         let expectation = self.expectation(description: "CreateUser should respond")
-        let user=AuthCookiesTests.document.newObject() as User
+        let user=AuthCookiesTests.document.newManagedModel() as User
         user.email=AuthCookiesTests._email
         user.verificationMethod = .byEmail
         user.creatorUID=user.UID // (!) Auto creation in this context (Check ACL)

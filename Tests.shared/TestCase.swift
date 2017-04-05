@@ -180,7 +180,7 @@ class TestCase: XCTestCase {
      - returns: A User instance
      */
     func createUser(_ spaceUID: String, creator: User? = nil, email: String? = nil, autologin: Bool = false, handlers: Handlers) -> User {
-        let user = TestCase.document.newObject() as User
+        let user = TestCase.document.newManagedModel() as User
         user.spaceUID = spaceUID
         if let creator = creator {
             user.creatorUID = creator.UID

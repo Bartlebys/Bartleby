@@ -436,7 +436,7 @@ public final class BSFS:TriggerHook{
                 for (nodeRelativePath,groupOfChunks) in groupedChunks{
                     // Create the new node.
                     // And add its blocks
-                    let node=self._document.newObject() as Node
+                    let node=self._document.newManagedModel() as Node
                     if firstNode==nil{
                         firstNode=node
                     }
@@ -456,7 +456,7 @@ public final class BSFS:TriggerHook{
 
                         // Let's add the blocks
                         for chunk in groupOfChunks{
-                            let block=self._document.newObject() as Block
+                            let block=self._document.newManagedModel() as Block
                             block.quietChanges{
                                 block.rank=chunk.rank
                                 block.digest=chunk.sha1
@@ -635,7 +635,7 @@ public final class BSFS:TriggerHook{
                                                     block=b
                                                     block?.needsToBeCommitted()
                                                 }else{
-                                                    block=self._document.newObject() as Block
+                                                    block=self._document.newManagedModel() as Block
                                                     node.quietChanges {
                                                         block!.quietChanges {
                                                             node.addBlock(block!)
@@ -787,7 +787,7 @@ public final class BSFS:TriggerHook{
                             try self._fileManager.copyItem(atPath: self.assemblyPath(for: node), toPath:box.nodesFolderPath+relativePath)
 
                             // Create the copiedNode
-                            let copiedNode=self._document.newObject() as Node
+                            let copiedNode=self._document.newManagedModel() as Node
 
                             copiedNode.quietChanges{
                                 box.declaresOwnership(of: copiedNode)

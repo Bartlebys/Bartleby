@@ -71,8 +71,8 @@ class SetupCollaborativeServerViewController: IdentityStepViewController{
 
                             if userHasBeenFound==false{
                                 // In rare situation we prefer to push manually the entities
-                                // To do so we do not commit the object created by the newObject() factory
-                                var user:User=document.newObject(commit:false)
+                                // To do so we do not commit the object created by the newManagedModel() factory
+                                var user:User=document.newManagedModel(commit:false)
 
                                 user.email=identification.email
                                 user.phoneCountryCode=identification.phoneCountryCode
@@ -101,7 +101,7 @@ class SetupCollaborativeServerViewController: IdentityStepViewController{
                                 // The user has been successfully pushed
                                 // Let's login
                                 user.login(sucessHandler: {
-                                    let locker:Locker=document.newObject(commit:false)
+                                    let locker:Locker=document.newManagedModel(commit:false)
                                     locker.startDate=Date()// now
                                     locker.endDate=Date.distantFuture//
                                     locker.doNotCommit {
