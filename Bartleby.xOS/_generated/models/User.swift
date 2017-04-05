@@ -158,12 +158,21 @@ import Foundation
 	    }
 	}
 
+	//A JFIF base 64 encoded picture of the user
+	dynamic open var base64Image:String? {
+	    didSet { 
+	       if !self.wantsQuietChanges && base64Image != oldValue {
+	            self.provisionChanges(forKey: "base64Image",oldValue: oldValue,newValue: base64Image) 
+	       } 
+	    }
+	}
+
     // MARK: - Exposed (Bartleby's KVC like generative implementation)
 
     /// Return all the exposed instance variables keys. (Exposed == public and modifiable).
     override open var exposedKeys:[String] {
         var exposed=super.exposedKeys
-        exposed.append(contentsOf:["spaceUID","verificationMethod","localAssociationID","firstname","lastname","email","phoneCountryCode","phoneNumber","password","status","notes","loginHasSucceed","supportsPasswordMemorization","supportsPasswordUpdate","supportsPasswordSyndication"])
+        exposed.append(contentsOf:["spaceUID","verificationMethod","localAssociationID","firstname","lastname","email","phoneCountryCode","phoneNumber","password","status","notes","loginHasSucceed","supportsPasswordMemorization","supportsPasswordUpdate","supportsPasswordSyndication","base64Image"])
         return exposed
     }
 
@@ -236,6 +245,10 @@ import Foundation
                 if let casted=value as? Bool{
                     self.supportsPasswordSyndication=casted
                 }
+            case "base64Image":
+                if let casted=value as? String{
+                    self.base64Image=casted
+                }
             default:
                 return try super.setExposedValue(value, forKey: key)
         }
@@ -281,6 +294,8 @@ import Foundation
                return self.supportsPasswordUpdate
             case "supportsPasswordSyndication":
                return self.supportsPasswordSyndication
+            case "base64Image":
+               return self.base64Image
             default:
                 return try super.getExposedValueForKey(key)
         }
@@ -308,6 +323,7 @@ import Foundation
 			self.supportsPasswordMemorization <- ( map["supportsPasswordMemorization"] )
 			self.supportsPasswordUpdate <- ( map["supportsPasswordUpdate"] )
 			self.supportsPasswordSyndication <- ( map["supportsPasswordSyndication"] )
+			self.base64Image <- ( map["base64Image"] )
         }
     }
 
@@ -331,6 +347,7 @@ import Foundation
 			self.supportsPasswordMemorization=decoder.decodeBool(forKey:"supportsPasswordMemorization") 
 			self.supportsPasswordUpdate=decoder.decodeBool(forKey:"supportsPasswordUpdate") 
 			self.supportsPasswordSyndication=decoder.decodeBool(forKey:"supportsPasswordSyndication") 
+			self.base64Image=String(describing: decoder.decodeObject(of: NSString.self, forKey:"base64Image") as NSString?)
         }
     }
 
@@ -352,6 +369,9 @@ import Foundation
 		coder.encode(self.supportsPasswordMemorization,forKey:"supportsPasswordMemorization")
 		coder.encode(self.supportsPasswordUpdate,forKey:"supportsPasswordUpdate")
 		coder.encode(self.supportsPasswordSyndication,forKey:"supportsPasswordSyndication")
+		if let base64Image = self.base64Image {
+			coder.encode(base64Image,forKey:"base64Image")
+		}
     }
 
     override open class var supportsSecureCoding:Bool{
