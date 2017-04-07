@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="11762" systemVersion="16D32" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" customObjectInstantitationMethod="direct">
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="12118" systemVersion="16E195" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" customObjectInstantitationMethod="direct">
     <dependencies>
         <deployment identifier="macosx"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="11762"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="12118"/>
         <capability name="box content view" minToolsVersion="7.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -27,8 +27,8 @@
             <rect key="frame" x="0.0" y="0.0" width="1070" height="963"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
             <subviews>
-                <customView id="1uN-ZJ-dZH">
-                    <rect key="frame" x="0.0" y="0.0" width="320" height="963"/>
+                <customView misplaced="YES" id="1uN-ZJ-dZH">
+                    <rect key="frame" x="0.0" y="0.0" width="201" height="963"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                     <subviews>
                         <scrollView autohidesScrollers="YES" horizontalLineScroll="19" horizontalPageScroll="10" verticalLineScroll="19" verticalPageScroll="10" usesPredominantAxisScrolling="NO" translatesAutoresizingMaskIntoConstraints="NO" id="YnQ-Jj-gwX">
@@ -61,7 +61,7 @@
                                                         <rect key="frame" x="1" y="1" width="315" height="17"/>
                                                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                         <subviews>
-                                                            <textField verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="yGy-Tt-mO1">
+                                                            <textField verticalHuggingPriority="750" fixedFrame="YES" allowsCharacterPickerTouchBarItem="YES" translatesAutoresizingMaskIntoConstraints="NO" id="yGy-Tt-mO1">
                                                                 <rect key="frame" x="0.0" y="1" width="145" height="14"/>
                                                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                                                 <textFieldCell key="cell" lineBreakMode="truncatingTail" sendsActionOnEndEditing="YES" title="HEADER CELL" id="03F-m3-5wv">
@@ -84,7 +84,7 @@
                                                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                                                 <imageCell key="cell" refusesFirstResponder="YES" imageScaling="proportionallyDown" image="1052-database" id="EgU-yX-OqQ"/>
                                                             </imageView>
-                                                            <textField horizontalHuggingPriority="249" verticalHuggingPriority="750" tag="1" translatesAutoresizingMaskIntoConstraints="NO" id="dy3-GW-dXI">
+                                                            <textField horizontalHuggingPriority="249" verticalHuggingPriority="750" tag="1" allowsCharacterPickerTouchBarItem="YES" translatesAutoresizingMaskIntoConstraints="NO" id="dy3-GW-dXI">
                                                                 <rect key="frame" x="26" y="1" width="262" height="14"/>
                                                                 <textFieldCell key="cell" lineBreakMode="truncatingTail" sendsActionOnEndEditing="YES" title="Table View Cell" id="bRe-qR-wkJ">
                                                                     <font key="font" metaFont="smallSystem"/>
@@ -123,7 +123,7 @@
                                                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                                                 <imageCell key="cell" refusesFirstResponder="YES" imageScaling="proportionallyDown" image="973-user" id="hEs-fg-IUG"/>
                                                             </imageView>
-                                                            <textField horizontalHuggingPriority="249" verticalHuggingPriority="750" tag="1" translatesAutoresizingMaskIntoConstraints="NO" id="PqG-gq-8zZ">
+                                                            <textField horizontalHuggingPriority="249" verticalHuggingPriority="750" tag="1" allowsCharacterPickerTouchBarItem="YES" translatesAutoresizingMaskIntoConstraints="NO" id="PqG-gq-8zZ">
                                                                 <rect key="frame" x="26" y="1" width="262" height="14"/>
                                                                 <textFieldCell key="cell" lineBreakMode="truncatingTail" sendsActionOnEndEditing="YES" title="Table View Cell" id="wIJ-a2-hRm">
                                                                     <font key="font" metaFont="smallSystem"/>
@@ -162,7 +162,7 @@
                                                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                                                 <imageCell key="cell" refusesFirstResponder="YES" imageScaling="proportionallyDown" image="916-planet" id="x4g-Rg-hHU"/>
                                                             </imageView>
-                                                            <textField horizontalHuggingPriority="249" verticalHuggingPriority="750" tag="1" translatesAutoresizingMaskIntoConstraints="NO" id="cmq-b7-nUr">
+                                                            <textField horizontalHuggingPriority="249" verticalHuggingPriority="750" tag="1" allowsCharacterPickerTouchBarItem="YES" translatesAutoresizingMaskIntoConstraints="NO" id="cmq-b7-nUr">
                                                                 <rect key="frame" x="26" y="1" width="262" height="14"/>
                                                                 <textFieldCell key="cell" lineBreakMode="truncatingTail" sendsActionOnEndEditing="YES" title="Table View Cell" id="kAp-gp-57f">
                                                                     <font key="font" metaFont="smallSystem"/>
@@ -258,8 +258,8 @@
                         <constraint firstItem="3Ro-cz-W9b" firstAttribute="leading" secondItem="1uN-ZJ-dZH" secondAttribute="leading" constant="6" id="ynP-kf-q0U"/>
                     </constraints>
                 </customView>
-                <customView id="gLV-HE-TI2">
-                    <rect key="frame" x="321" y="0.0" width="749" height="963"/>
+                <customView misplaced="YES" id="gLV-HE-TI2">
+                    <rect key="frame" x="202" y="0.0" width="868" height="963"/>
                     <autoresizingMask key="autoresizingMask"/>
                     <subviews>
                         <splitView arrangesAllSubviews="NO" dividerStyle="paneSplitter" translatesAutoresizingMaskIntoConstraints="NO" id="8gB-cF-KPk">
@@ -345,6 +345,13 @@
                     <modifierMask key="keyEquivalentModifierMask"/>
                     <menu key="submenu" title="Destructive Actions" id="oti-Ly-LKz">
                         <items>
+                            <menuItem title="Delete Selected Entity" id="WQ1-c3-Gcd">
+                                <modifierMask key="keyEquivalentModifierMask"/>
+                                <connections>
+                                    <action selector="deleteSelectedEntity:" target="-2" id="U5y-PZ-mJ4"/>
+                                </connections>
+                            </menuItem>
+                            <menuItem isSeparatorItem="YES" id="maF-JZ-UFV"/>
                             <menuItem title="Force Data Integration" id="bg9-lR-knh">
                                 <modifierMask key="keyEquivalentModifierMask"/>
                                 <connections>
@@ -361,6 +368,13 @@
                                 <modifierMask key="keyEquivalentModifierMask"/>
                                 <connections>
                                     <action selector="cleanupOperationQuarantine:" target="-2" id="8EZ-WU-qMN"/>
+                                </connections>
+                            </menuItem>
+                            <menuItem isSeparatorItem="YES" id="PON-Yu-Yp4"/>
+                            <menuItem title="Delete BSFS Orpheans" id="8yr-qw-O5n">
+                                <modifierMask key="keyEquivalentModifierMask"/>
+                                <connections>
+                                    <action selector="deleteBSFSOrpheans:" target="-2" id="xJ5-Wo-IUP"/>
                                 </connections>
                             </menuItem>
                         </items>

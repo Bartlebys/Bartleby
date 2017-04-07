@@ -119,6 +119,33 @@ class InspectorViewController: NSViewController,DocumentDependent,NSWindowDelega
     }
 
 
+    @IBAction func deleteBSFSOrpheans(_ sender: NSMenuItem) {
+        if let document=self.documentProvider?.getDocument(){
+            document.blocks.reversed().forEach({ (block) in
+                if block.ownedBy.count == 0{
+                    try? block.erase()
+                }
+            })
+            document.nodes.reversed().forEach({ (node) in
+                if node.ownedBy.count == 0{
+                    try? node.erase()
+                }
+            })
+            document.boxes.reversed().forEach({ (box) in
+                if box.ownedBy.count == 0{
+                    try? box.erase()
+                }
+            })
+        }
+    }
+
+    @IBAction func deleteSelectedEntity(_ sender: NSMenuItem) {
+        if let item = self.listOutlineView.item(atRow: self.listOutlineView.selectedRow) as? ManagedModel{
+            try? item.erase()
+        }
+    }
+
+
     //MARK:-  Collections
 
     fileprivate var _collectionListDelegate:CollectionListDelegate?
