@@ -72,6 +72,9 @@ public protocol BartlebyConfiguration {
     // If set to true the confirmation code will be for example printed in the console...
     static var DEVELOPER_MODE: Bool { get }
 
+    // If set to true identification will not required second auth factor.
+    static var REDUCED_SECURITY_MODE:Bool { get }
+
     // Supports by default KeyChained password synchronization between multiple local accounts (false is more secured)
     static var SUPPORTS_PASSWORD_SYNDICATION_BY_DEFAULT: Bool { get }
 
@@ -148,6 +151,9 @@ public struct BartlebyDefaultConfiguration: BartlebyConfiguration {
 
     // If set to true the confirmation code will be for example printed in the console...
     public static let DEVELOPER_MODE: Bool = false
+
+    // If set to true identification will not required second auth factor.
+    public static var REDUCED_SECURITY_MODE:Bool = false
 
     // Supports by default KeyChained password synchronization between multiple local accounts (false is more secured)
     public static let SUPPORTS_PASSWORD_SYNDICATION_BY_DEFAULT: Bool = false

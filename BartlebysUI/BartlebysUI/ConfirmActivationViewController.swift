@@ -30,8 +30,11 @@ class ConfirmActivationViewController: IdentityStepViewController{
                 self.locker=locker
                 self.confirmLabel.stringValue=NSLocalizedString("We have sent a confirmation code to: ", comment: "We have sent a confirmation code to: ")+document.currentUser.fullPhoneNumber
                 self.codeTextField.stringValue=""
-                if Bartleby.configuration.DEVELOPER_MODE{
-                    print("\(locker.code) \(#file)")
+                if Bartleby.configuration.REDUCED_SECURITY_MODE{
+                    // Proceed to automatic validation
+                    self.codeTextField.stringValue = locker.code
+                    self.documentProvider?.getDocument()?.send(IdentificationStates.accountHasBeenConfirmed)
+                    self.stepDelegate?.didValidateStep(self.stepIndex)
                 }
             }else{
                 self.confirmLabel.stringValue=NSLocalizedString("Locker not found", comment: "Locker not found")
