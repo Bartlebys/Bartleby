@@ -13,8 +13,7 @@ import Foundation
 
 // Models can be :
 // - ManagedModel ( fully managed models)
-// - ValueObject ( json & secure Coding serialization support)
-// - RelationalValueObject ( ValueObject + relationShip )
+// - ValueObject ( json & secure Coding serialization support no supervision, no change provisionning )
 
 @objc(ValueObject) open class ValueObject: NSObject, Mappable, NSSecureCoding {
 

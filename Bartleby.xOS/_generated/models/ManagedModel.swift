@@ -98,7 +98,7 @@ import Foundation
                 // And register to Bartleby
                 Bartleby.register(self)
             }else{
-                glog("Referent document is not set on \(collection?.runTimeTypeName())", file: #file, function: #function, line: #line, category: Default.LOG_FAULT, decorative: false)
+                glog("Referent document is not set on \(String(describing: collection?.runTimeTypeName()))", file: #file, function: #function, line: #line, category: Default.LOG_FAULT, decorative: false)
             }
         }
     }
