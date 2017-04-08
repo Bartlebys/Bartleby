@@ -74,6 +74,19 @@ import Foundation
 	    }
 	}
 
+	//the locker Security If set to .skipSecondaryAuthFactor mode the GetActivationCode will return the Locker (it skips second auth factor)
+	public enum Security:String{
+		case skipSecondaryAuthFactor = "skipSecondaryAuthFactor"
+		case secondaryAuthFactorRequired = "secondaryAuthFactorRequired"
+	}
+	open var security:Security = .secondaryAuthFactorRequired  {
+	    didSet { 
+	       if !self.wantsQuietChanges && security != oldValue {
+	            self.provisionChanges(forKey: "security",oldValue: oldValue.rawValue,newValue: security.rawValue)  
+	       } 
+	    }
+	}
+
 	//This code should be cryptable / decryptable
 	dynamic open var code:String = "\(Bartleby.randomStringWithLength(6,signs:"0123456789ABCDEFGHJKMNPQRZTUVW"))"{
 	    didSet { 
@@ -122,7 +135,7 @@ import Foundation
     /// Return all the exposed instance variables keys. (Exposed == public and modifiable).
     override open var exposedKeys:[String] {
         var exposed=super.exposedKeys
-        exposed.append(contentsOf:["associatedDocumentUID","subjectUID","userUID","mode","verificationMethod","code","numberOfAttempt","startDate","endDate","gems"])
+        exposed.append(contentsOf:["associatedDocumentUID","subjectUID","userUID","mode","verificationMethod","security","code","numberOfAttempt","startDate","endDate","gems"])
         return exposed
     }
 
@@ -154,6 +167,10 @@ import Foundation
             case "verificationMethod":
                 if let casted=value as? Locker.VerificationMethod{
                     self.verificationMethod=casted
+                }
+            case "security":
+                if let casted=value as? Locker.Security{
+                    self.security=casted
                 }
             case "code":
                 if let casted=value as? String{
@@ -200,6 +217,8 @@ import Foundation
                return self.mode
             case "verificationMethod":
                return self.verificationMethod
+            case "security":
+               return self.security
             case "code":
                return self.code
             case "numberOfAttempt":
@@ -228,6 +247,7 @@ import Foundation
 			self.userUID <- ( map["userUID"] )
 			self.mode <- ( map["mode"] )
 			self.verificationMethod <- ( map["verificationMethod"] )
+			self.security <- ( map["security"] )
 			self.code <- ( map["code"] )
 			self.numberOfAttempt <- ( map["numberOfAttempt"] )
 			self.startDate <- ( map["startDate"], ISO8601DateTransform() )
@@ -247,6 +267,7 @@ import Foundation
 			self.userUID=String(describing: decoder.decodeObject(of: NSString.self, forKey: "userUID")! as NSString)
 			self.mode=Locker.Mode(rawValue:String(describing: decoder.decodeObject(of: NSString.self, forKey: "mode")! as NSString))! 
 			self.verificationMethod=Locker.VerificationMethod(rawValue:String(describing: decoder.decodeObject(of: NSString.self, forKey: "verificationMethod")! as NSString))! 
+			self.security=Locker.Security(rawValue:String(describing: decoder.decodeObject(of: NSString.self, forKey: "security")! as NSString))! 
 			self.code=String(describing: decoder.decodeObject(of: NSString.self, forKey: "code")! as NSString)
 			self.numberOfAttempt=decoder.decodeInteger(forKey:"numberOfAttempt") 
 			self.startDate=decoder.decodeObject(of: NSDate.self , forKey: "startDate")! as Date
@@ -264,6 +285,7 @@ import Foundation
 		coder.encode(self.userUID,forKey:"userUID")
 		coder.encode(self.mode.rawValue ,forKey:"mode")
 		coder.encode(self.verificationMethod.rawValue ,forKey:"verificationMethod")
+		coder.encode(self.security.rawValue ,forKey:"security")
 		coder.encode(self.code,forKey:"code")
 		coder.encode(self.numberOfAttempt,forKey:"numberOfAttempt")
 		coder.encode(self.startDate,forKey:"startDate")

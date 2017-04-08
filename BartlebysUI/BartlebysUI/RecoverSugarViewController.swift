@@ -31,6 +31,14 @@ class RecoverSugarViewController: IdentityStepViewController {
             let phoneNumber=document.metadata.currentUserFullPhoneNumber
             self.consignsLabel.stringValue=NSLocalizedString("We have sent an activation code to: ", comment: "We have sent a activation code to: ")+phoneNumber
             self.codeTextField.stringValue=""
+            /// IMPORTANT
+            if !document.metadata.secondaryAuthFactorRequired{
+                if let locker:Locker = try? Bartleby.registredObjectByUID(document.metadata.lockerUID){
+                    self.codeTextField.stringValue = locker.code
+                    self.proceedToValidation()
+                }
+            }
+
         }else{
             self.messageTextField.stringValue=NSLocalizedString("Identification not found", comment: "Identification not found")
         }
@@ -41,7 +49,14 @@ class RecoverSugarViewController: IdentityStepViewController {
         let code = PString.trim(self.codeTextField.stringValue)
         if code.characters.count > 3 {
             if let document=self.documentProvider?.getDocument(){
-                // Verify the Locker
+                ////
+                /// Verifies the Locker
+                /// In case of success the Locker is returned with its gems.
+                /// We will use the gems to extract the sugar and decrypt the data
+                ///
+                /// IMPORTANT !
+                /// This logic can be bypassed when using document.metadata.secondaryAuthFactorRequired == false
+                /// THe ValidatePasswordViewController implement an equivalent logic
                 VerifyLocker.execute(document.metadata.lockerUID,
                                      inDocumentWithUID: document.UID,
                                      code: code,

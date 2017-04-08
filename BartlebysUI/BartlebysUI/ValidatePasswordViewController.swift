@@ -8,6 +8,7 @@
 
 import Cocoa
 import BartlebyKit
+import ObjectMapper
 
 class ValidatePasswordViewController: IdentityStepViewController{
 
@@ -131,7 +132,35 @@ class ValidatePasswordViewController: IdentityStepViewController{
                                                           title: "",
                                                           body: NSLocalizedString("Your activation code is: \n$code", comment: "Your activation code is"),
                                                           sucessHandler: { (context) in
-                                                            self.identityWindowController?.activationMode=true
+                                                            if !document.metadata.secondaryAuthFactorRequired{
+                                                                // IMPORTANT :
+                                                                // Normally we should recover the sugar by calling VerifyLocker
+                                                                // This approach bypasses the RecoverSugarViewController
+                                                                // and implements the same logic as RecoverSugarViewController.proceedToValidation
+                                                                if let string=context.responseString{
+                                                                        if let locker = Mapper <Locker>().map(JSONString:string){
+                                                                            // We have the locker
+                                                                            let sugarCandidate=locker.gems
+                                                                            document.metadata.sugar=sugarCandidate
+                                                                            document.currentUser.status = .actived
+                                                                            do{
+                                                                                /// When the locker is verifyed use the sugar to retrieve the Collections and blocks data
+                                                                                try document.reloadCollectionData()
+                                                                                try document.metadata.putSomeSugarInYourBowl() // Save the key
+                                                                                document.send(IdentificationStates.sugarHasBeenRecovered)
+                                                                                self.identityWindowController?.identificationIsValid=true
+                                                                                self.stepDelegate?.didValidateStep( self.stepIndex)
+                                                                            }catch{
+                                                                                self.identityWindowController?.activationMode=true
+                                                                            }
+
+                                                                        }
+                                                                }
+                                                            }else{
+                                                                self.identityWindowController?.activationMode=true
+                                                            }
+
+
                                 }, failureHandler: { (context) in
                                     self.messageTextField.stringValue=NSLocalizedString("We are unable to activate this account", comment: "We are unable to activate this account")
 

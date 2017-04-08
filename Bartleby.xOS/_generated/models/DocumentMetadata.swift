@@ -41,6 +41,9 @@ import Foundation
 	//Has the current user been controlled
 	dynamic open var userHasBeenControlled:Bool = false
 
+	//If set to false the identification chain will by pass the second authentication factor
+	dynamic open var secondaryAuthFactorRequired:Bool = Bartleby.configuration.REDUCED_SECURITY_MODE
+
 	//The identification method (By cookie or by Key - kvid)
 	public enum IdentificationMethod:String{
 		case key = "key"
@@ -147,6 +150,7 @@ import Foundation
 			self.currentUserEmail <- ( map["currentUserEmail"] )
 			self.currentUserFullPhoneNumber <- ( map["currentUserFullPhoneNumber"] )
 			self.lockerUID <- ( map["lockerUID"] )
+			self.secondaryAuthFactorRequired <- ( map["secondaryAuthFactorRequired"] )
 			self.identificationMethod <- ( map["identificationMethod"] )
 			self.appGroup <- ( map["appGroup"] )
 			self.identificationValue <- ( map["identificationValue"] )
@@ -183,6 +187,7 @@ import Foundation
 			self.currentUserEmail=String(describing: decoder.decodeObject(of: NSString.self, forKey: "currentUserEmail")! as NSString)
 			self.currentUserFullPhoneNumber=String(describing: decoder.decodeObject(of: NSString.self, forKey: "currentUserFullPhoneNumber")! as NSString)
 			self.lockerUID=String(describing: decoder.decodeObject(of: NSString.self, forKey: "lockerUID")! as NSString)
+			self.secondaryAuthFactorRequired=decoder.decodeBool(forKey:"secondaryAuthFactorRequired") 
 			self.identificationMethod=DocumentMetadata.IdentificationMethod(rawValue:String(describing: decoder.decodeObject(of: NSString.self, forKey: "identificationMethod")! as NSString))! 
 			self.appGroup=String(describing: decoder.decodeObject(of: NSString.self, forKey: "appGroup")! as NSString)
 			self.identificationValue=String(describing: decoder.decodeObject(of: NSString.self, forKey:"identificationValue") as NSString?)
@@ -215,6 +220,7 @@ import Foundation
 		coder.encode(self.currentUserEmail,forKey:"currentUserEmail")
 		coder.encode(self.currentUserFullPhoneNumber,forKey:"currentUserFullPhoneNumber")
 		coder.encode(self.lockerUID,forKey:"lockerUID")
+		coder.encode(self.secondaryAuthFactorRequired,forKey:"secondaryAuthFactorRequired")
 		coder.encode(self.identificationMethod.rawValue ,forKey:"identificationMethod")
 		coder.encode(self.appGroup,forKey:"appGroup")
 		if let identificationValue = self.identificationValue {

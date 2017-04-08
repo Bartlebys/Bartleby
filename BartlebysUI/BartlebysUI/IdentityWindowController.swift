@@ -181,7 +181,6 @@ public class IdentityWindowController: NSWindowController,DocumentProvider,Ident
             if self.tabView.tabViewItems.count > currentStep && currentStep >= 0{
                 self.tabView.selectTabViewItem(at: currentStep)
             }else{
-
                 if currentStep==3 && self.creationMode==true{
                     if let document=self.getDocument(){
                         document.send(IdentificationStates.userHasBeenCreated)
