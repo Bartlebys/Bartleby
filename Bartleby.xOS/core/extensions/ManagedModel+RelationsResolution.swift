@@ -130,8 +130,10 @@ extension ManagedModel:RelationsResolution{
         if objectsUID.count>0{
             for objectUID in objectsUID{
                 if let candidate = try? Bartleby.registredObjectByUID(objectUID) as ManagedModel{
-                    if  included(candidate) == true {
-                        return candidate as! T
+                    if let castedCandidate = candidate as? T {
+                        if  included(castedCandidate) == true {
+                            return castedCandidate
+                        }
                     }
                 }
             }
