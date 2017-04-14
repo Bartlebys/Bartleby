@@ -29,6 +29,27 @@ extension ManagedModel:RelationsResolution{
     }
 
 
+    /// Resolve the filtered Related Objects
+    ///
+    /// - Parameters:
+    ///   - relationship: the searched relationship
+    ///   - included: the filtering closure
+    /// - Returns: return the related Objects
+    open func filteredRelations<T:Relational>(_ relationship:Relationship,included:(T)->(Bool))->[T]{
+        var related=[T]()
+        for object in self.getContractedRelations(relationship){
+            if let candidate = try? Bartleby.registredObjectByUID(object) as ManagedModel{
+                if let casted = candidate as? T{
+                    if  included(casted) == true {
+                        related.append(casted)
+                    }
+                }
+            }
+        }
+        return related
+    }
+
+
     /// Resolve the Related Objects
     ///
     /// - Parameters:
@@ -51,6 +72,32 @@ extension ManagedModel:RelationsResolution{
     }
 
 
+    /// Resolve the filtered Related Objects
+    ///
+    /// - Parameters:
+    ///   - relationship: the searched relationships
+    ///   - included: the filtering closure
+    /// - Returns: return the related Objects
+    open func filteredRelationsInSet<T:Relational>(_ relationships:Set<Relationship>,included:(T)->(Bool))->[T]{
+        var related=[T]()
+        var objectsUID=[String]()
+        for relationShip in relationships{
+            objectsUID.append(contentsOf:self.getContractedRelations(relationShip))
+        }
+        for objectUID in objectsUID{
+            if let candidate = try? Bartleby.registredObjectByUID(objectUID) as ManagedModel{
+                if let casted = candidate as? T{
+                    if  included(casted) == true {
+                        related.append(casted)
+                    }
+                }
+            }
+        }
+        return related
+    }
+
+
+
     /// Resolve the Related Object and returns the first one
     ///
     /// - Parameters:
@@ -63,6 +110,28 @@ extension ManagedModel:RelationsResolution{
                 if let candidate = try? Bartleby.registredObjectByUID(objectUID) as ManagedModel{
                     if let casted = candidate as? T{
                         return casted
+                    }
+                }
+            }
+        }
+        return nil
+    }
+
+
+    /// Resolve the Related Object and returns the first one
+    ///
+    /// - Parameters:
+    ///   - relationship: the searched relationships
+    ///   - included: the filtering closure
+    // - Returns: return the related Object
+    open func filteredFirstRelation<T:Relational>(_ relationship:Relationship,included:(T)->(Bool))->T?{
+        // Internal relations.
+        let objectsUID=self.getContractedRelations(relationship)
+        if objectsUID.count>0{
+            for objectUID in objectsUID{
+                if let candidate = try? Bartleby.registredObjectByUID(objectUID) as ManagedModel{
+                    if  included(candidate) == true {
+                        return candidate as! T
                     }
                 }
             }
