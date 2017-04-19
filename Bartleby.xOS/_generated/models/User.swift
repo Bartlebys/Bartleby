@@ -78,6 +78,15 @@ import Foundation
 	    }
 	}
 
+	//The user's pseudo
+	dynamic open var pseudo:String = ""{
+	    didSet { 
+	       if !self.wantsQuietChanges && pseudo != oldValue {
+	            self.provisionChanges(forKey: "pseudo",oldValue: oldValue,newValue: pseudo) 
+	       } 
+	    }
+	}
+
 	//The user's phone country code
 	dynamic open var phoneCountryCode:String = ""{
 	    didSet { 
@@ -172,7 +181,7 @@ import Foundation
     /// Return all the exposed instance variables keys. (Exposed == public and modifiable).
     override open var exposedKeys:[String] {
         var exposed=super.exposedKeys
-        exposed.append(contentsOf:["spaceUID","verificationMethod","localAssociationID","firstname","lastname","email","phoneCountryCode","phoneNumber","password","status","notes","loginHasSucceed","supportsPasswordMemorization","supportsPasswordUpdate","supportsPasswordSyndication","base64Image"])
+        exposed.append(contentsOf:["spaceUID","verificationMethod","localAssociationID","firstname","lastname","email","pseudo","phoneCountryCode","phoneNumber","password","status","notes","loginHasSucceed","supportsPasswordMemorization","supportsPasswordUpdate","supportsPasswordSyndication","base64Image"])
         return exposed
     }
 
@@ -208,6 +217,10 @@ import Foundation
             case "email":
                 if let casted=value as? String{
                     self.email=casted
+                }
+            case "pseudo":
+                if let casted=value as? String{
+                    self.pseudo=casted
                 }
             case "phoneCountryCode":
                 if let casted=value as? String{
@@ -276,6 +289,8 @@ import Foundation
                return self.lastname
             case "email":
                return self.email
+            case "pseudo":
+               return self.pseudo
             case "phoneCountryCode":
                return self.phoneCountryCode
             case "phoneNumber":
@@ -315,6 +330,7 @@ import Foundation
 			self.firstname <- ( map["firstname"] )
 			self.lastname <- ( map["lastname"] )
 			self.email <- ( map["email"] )
+			self.pseudo <- ( map["pseudo"] )
 			self.phoneCountryCode <- ( map["phoneCountryCode"] )
 			self.phoneNumber <- ( map["phoneNumber"] )
 			self.password <- ( map["password"], CryptedStringTransform() )
@@ -339,6 +355,7 @@ import Foundation
 			self.firstname=String(describing: decoder.decodeObject(of: NSString.self, forKey: "firstname")! as NSString)
 			self.lastname=String(describing: decoder.decodeObject(of: NSString.self, forKey: "lastname")! as NSString)
 			self.email=String(describing: decoder.decodeObject(of: NSString.self, forKey: "email")! as NSString)
+			self.pseudo=String(describing: decoder.decodeObject(of: NSString.self, forKey: "pseudo")! as NSString)
 			self.phoneCountryCode=String(describing: decoder.decodeObject(of: NSString.self, forKey: "phoneCountryCode")! as NSString)
 			self.phoneNumber=String(describing: decoder.decodeObject(of: NSString.self, forKey: "phoneNumber")! as NSString)
 			self.password=String(describing: decoder.decodeObject(of: NSString.self, forKey: "password")! as NSString)
@@ -359,6 +376,7 @@ import Foundation
 		coder.encode(self.firstname,forKey:"firstname")
 		coder.encode(self.lastname,forKey:"lastname")
 		coder.encode(self.email,forKey:"email")
+		coder.encode(self.pseudo,forKey:"pseudo")
 		coder.encode(self.phoneCountryCode,forKey:"phoneCountryCode")
 		coder.encode(self.phoneNumber,forKey:"phoneNumber")
 		coder.encode(self.password,forKey:"password")
