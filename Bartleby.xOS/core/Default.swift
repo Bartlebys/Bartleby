@@ -212,6 +212,6 @@ public struct Default {
     static public let CATEGORY_ASSEMBLIES = "assemblies" // Used when mounting a box
     
     // A bunch of char in wich to pick to compose a random password
-    static let DEFAULT_PASSWORD_CHAR_CART="123456789ABCDEFGHJKMNPQRSTUVWXYZ"
-    
+    static public let DEFAULT_PASSWORD_CHAR_CART="123456789ABCDEFGHJKMNPQRSTUVWXYZ"
+
 }
