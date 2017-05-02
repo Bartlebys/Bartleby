@@ -150,4 +150,20 @@ open class ViewsRecycler {
         })
     }
 
+
+
+    /// Return all the views grouped by groupname (active or not)
+    ///
+    /// - Parameter groupName: the array of group names
+    /// - Returns: the collection of actives views
+    open func getAllViews(groupedBy groupNames:[String])->[BXView]{
+        return self._viewsReferers.flatMap({ (referer) -> BXView? in
+            if  groupNames.contains(referer.groupName){
+                return referer.view
+            }else{
+                return nil
+            }
+        })
+    }
+
 }
