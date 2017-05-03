@@ -22,7 +22,7 @@ extension ManagedModel{
      - parameter category: a categorizer string
      - parameter decorative: if set to true only the message will be displayed.
      */
-    open func log(_ message: Any, file: String, function: String, line: Int, category: String,decorative:Bool=false) {
+    open func log(_ message: Any, file: String = #file, function: String = #function, line: Int = #line, category: String = Default.LOG_DEFAULT,decorative:Bool = false) {
         self.referentDocument?.log(message, file: file, function: function, line: line, category: category, decorative: decorative)
     }
 }

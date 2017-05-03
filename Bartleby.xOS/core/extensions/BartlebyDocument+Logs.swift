@@ -20,7 +20,7 @@ extension BartlebyDocument:Logger{
      - parameter category: a categorizer string
      - parameter decorative: if set to true only the message will be displayed.
      */
-    open func log(_ message: Any, file: String, function: String, line: Int, category: String=Default.LOG_DEFAULT,decorative:Bool=false) {
+    open func log(_ message: Any, file: String=#file, function: String=#function, line: Int=#line, category: String=Default.LOG_DEFAULT,decorative:Bool=false) {
         if(self.enableLog) {
             let elapsed=Bartleby.elapsedTime
             let entry=LogEntry(counter: self.logs.count+1, message: "\(message)", file: file, function: function, line: line, category: category,elapsed:elapsed,decorative:decorative)
