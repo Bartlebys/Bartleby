@@ -581,8 +581,11 @@ public extension Notification.Name {
                     return tags.index(where:{ return $0.UID == tag.UID })!
                 })
                 self.referentDocument?.metadata.stateDictionary[selectedTagsIndexesKey]=indexes
-                NotificationCenter.default.post(name:NSNotification.Name.Tags.selectionChanged, object: nil)
+            }else{
+                self.referentDocument?.metadata.stateDictionary[selectedTagsIndexesKey]=[Int]()
+
             }
+            NotificationCenter.default.post(name:NSNotification.Name.Tags.selectionChanged, object: nil)
         }
     }
 

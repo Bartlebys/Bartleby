@@ -581,8 +581,11 @@ public extension Notification.Name {
                     return lockers.index(where:{ return $0.UID == locker.UID })!
                 })
                 self.referentDocument?.metadata.stateDictionary[selectedLockersIndexesKey]=indexes
-                NotificationCenter.default.post(name:NSNotification.Name.Lockers.selectionChanged, object: nil)
+            }else{
+                self.referentDocument?.metadata.stateDictionary[selectedLockersIndexesKey]=[Int]()
+
             }
+            NotificationCenter.default.post(name:NSNotification.Name.Lockers.selectionChanged, object: nil)
         }
     }
 
