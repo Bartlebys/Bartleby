@@ -26,18 +26,14 @@
 //	IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
 //	CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-
 import Foundation
 
 // MARK: - DSL for GCD queues
-
 /**
  `GCD` is a convenience enum with cases to get `DispatchQueue` of different quality of service classes, as provided by `DispatchQueue.global` or `DispatchQueue` for main thread or a specific custom queue.
-
  let mainQueue = GCD.main
  let utilityQueue = GCD.utility
  let customQueue = GCD.custom(queue: aDispatchQueue)
-
  - SeeAlso: Grand Central Dispatch
  */
 private enum GCD {
@@ -58,62 +54,48 @@ private enum GCD {
 
 
 // MARK: - Async – Struct
-
 /**
-The **Async** struct is the main part of the Async.framework. Handles an internally `@convention(block) () -> Swift.Void`.
-
-Chainable dispatch blocks with GCD:
-
-    Async.background {
-    // Run on background queue
-    }.main {
-    // Run on main queue, after the previous block
-    }
-
-All moderns queue classes:
-
-    Async.main {}
-    Async.userInteractive {}
-    Async.userInitiated {}
-    Async.utility {}
-    Async.background {}
-
-Custom queues:
-
-    let customQueue = dispatch_queue_create("Label", DISPATCH_QUEUE_CONCURRENT)
-    Async.customQueue(customQueue) {}
-
-Dispatch block after delay:
-
-    let seconds = 0.5
-    Async.main(after: seconds) {}
-
-Cancel blocks not yet dispatched
-
-    let block1 = Async.background {
-        // Some work
-    }
-    let block2 = block1.background {
-        // Some other work
-    }
-    Async.main {
-        // Cancel async to allow block1 to begin
-        block1.cancel() // First block is NOT cancelled
-        block2.cancel() // Second block IS cancelled
-    }
-
-Wait for block to finish:
-
-    let block = Async.background {
-        // Do stuff
-    }
-    // Do other stuff
-    // Wait for "Do stuff" to finish
-    block.wait()
-    // Do rest of stuff
-
-- SeeAlso: Grand Central Dispatch
-*/
+ The **Async** struct is the main part of the Async.framework. Handles an internally `@convention(block) () -> Swift.Void`.
+ Chainable dispatch blocks with GCD:
+ Async.background {
+ // Run on background queue
+ }.main {
+ // Run on main queue, after the previous block
+ }
+ All moderns queue classes:
+ Async.main {}
+ Async.userInteractive {}
+ Async.userInitiated {}
+ Async.utility {}
+ Async.background {}
+ Custom queues:
+ let customQueue = dispatch_queue_create("Label", DISPATCH_QUEUE_CONCURRENT)
+ Async.customQueue(customQueue) {}
+ Dispatch block after delay:
+ let seconds = 0.5
+ Async.main(after: seconds) {}
+ Cancel blocks not yet dispatched
+ let block1 = Async.background {
+ // Some work
+ }
+ let block2 = block1.background {
+ // Some other work
+ }
+ Async.main {
+ // Cancel async to allow block1 to begin
+ block1.cancel() // First block is NOT cancelled
+ block2.cancel() // Second block IS cancelled
+ }
+ Wait for block to finish:
+ let block = Async.background {
+ // Do stuff
+ }
+ // Do other stuff
+ // Wait for "Do stuff" to finish
+ block.wait()
+ // Do rest of stuff
+ - SeeAlso: Grand Central Dispatch
+ */
 
 private class Reference<T> {
     var value: T?
@@ -125,10 +107,9 @@ public struct AsyncBlock<In, Out> {
 
 
     // MARK: - Private properties and init
-
     /**
      Private property to hold internally on to a `@convention(block) () -> Swift.Void`
-    */
+     */
     private let block: DispatchWorkItem
 
     private let input: Reference<In>?
@@ -148,18 +129,14 @@ public struct AsyncBlock<In, Out> {
 
 
     // MARK: - Static methods
-
     /**
-    Sends the a block to be run asynchronously on the main thread.
-
-    - parameters:
-        - after: After how many seconds the block should be run.
-        - block: The block that is to be passed to be run on the main queue
-
-    - returns: An `Async` struct
-
-    - SeeAlso: Has parity with non-static method
-    */
+     Sends the a block to be run asynchronously on the main thread.
+     - parameters:
+     - after: After how many seconds the block should be run.
+     - block: The block that is to be passed to be run on the main queue
+     - returns: An `Async` struct
+     - SeeAlso: Has parity with non-static method
+     */
     @discardableResult
     public static func main<O>(after seconds: Double? = nil, _ block: @escaping (Void) -> O) -> AsyncBlock<Void, O> {
         return AsyncBlock.async(after: seconds, block: block, queue: .main)
@@ -167,13 +144,10 @@ public struct AsyncBlock<In, Out> {
 
     /**
      Sends the a block to be run asynchronously on a queue with a quality of service of QOS_CLASS_USER_INTERACTIVE.
-
      - parameters:
-        - after: After how many seconds the block should be run.
-        - block: The block that is to be passed to be run on the queue
-
+     - after: After how many seconds the block should be run.
+     - block: The block that is to be passed to be run on the queue
      - returns: An `Async` struct
-
      - SeeAlso: Has parity with non-static method
      */
     @discardableResult
@@ -183,13 +157,10 @@ public struct AsyncBlock<In, Out> {
 
     /**
      Sends the a block to be run asynchronously on a queue with a quality of service of QOS_CLASS_USER_INITIATED.
-
      - parameters:
-        - after: After how many seconds the block should be run.
-        - block: The block that is to be passed to be run on the queue
-
+     - after: After how many seconds the block should be run.
+     - block: The block that is to be passed to be run on the queue
      - returns: An `Async` struct
-
      - SeeAlso: Has parity with non-static method
      */
     @discardableResult
@@ -199,13 +170,10 @@ public struct AsyncBlock<In, Out> {
 
     /**
      Sends the a block to be run asynchronously on a queue with a quality of service of QOS_CLASS_UTILITY.
-
      - parameters:
-        - after: After how many seconds the block should be run.
-        - block: The block that is to be passed to be run on queue
-
+     - after: After how many seconds the block should be run.
+     - block: The block that is to be passed to be run on queue
      - returns: An `Async` struct
-
      - SeeAlso: Has parity with non-static method
      */
     @discardableResult
@@ -215,13 +183,10 @@ public struct AsyncBlock<In, Out> {
 
     /**
      Sends the a block to be run asynchronously on a queue with a quality of service of QOS_CLASS_BACKGROUND.
-
      - parameters:
-        - after: After how many seconds the block should be run.
-        - block: The block that is to be passed to be run on the queue
-
+     - after: After how many seconds the block should be run.
+     - block: The block that is to be passed to be run on the queue
      - returns: An `Async` struct
-
      - SeeAlso: Has parity with non-static method
      */
     @discardableResult
@@ -231,13 +196,10 @@ public struct AsyncBlock<In, Out> {
 
     /**
      Sends the a block to be run asynchronously on a custom queue.
-
      - parameters:
-        - after: After how many seconds the block should be run.
-        - block: The block that is to be passed to be run on the queue
-
+     - after: After how many seconds the block should be run.
+     - block: The block that is to be passed to be run on the queue
      - returns: An `Async` struct
-
      - SeeAlso: Has parity with non-static method
      */
     @discardableResult
@@ -247,14 +209,11 @@ public struct AsyncBlock<In, Out> {
 
 
     // MARK: - Private static methods
-
     /**
      Convenience for dispatch_async(). Encapsulates the block in a "true" GCD block using DISPATCH_BLOCK_INHERIT_QOS_CLASS.
-
      - parameters:
-         - block: The block that is to be passed to be run on the `queue`
-         - queue: The queue on which the `block` is run.
-
+     - block: The block that is to be passed to be run on the `queue`
+     - queue: The queue on which the `block` is run.
      - returns: An `Async` struct which encapsulates the `@convention(block) () -> Swift.Void`
      */
 
@@ -277,18 +236,14 @@ public struct AsyncBlock<In, Out> {
 
 
     // MARK: - Instance methods (matches static ones)
-
     /**
-    Sends the a block to be run asynchronously on the main thread, after the current block has finished.
-
-    - parameters:
-        - after: After how many seconds the block should be run.
-        - block: The block that is to be passed to be run on the main queue
-
-    - returns: An `Async` struct
-
-    - SeeAlso: Has parity with static method
-    */
+     Sends the a block to be run asynchronously on the main thread, after the current block has finished.
+     - parameters:
+     - after: After how many seconds the block should be run.
+     - block: The block that is to be passed to be run on the main queue
+     - returns: An `Async` struct
+     - SeeAlso: Has parity with static method
+     */
     @discardableResult
     public func main<O>(after seconds: Double? = nil, _ chainingBlock: @escaping (Out) -> O) -> AsyncBlock<Out, O> {
         return chain(after: seconds, block: chainingBlock, queue: .main)
@@ -296,13 +251,10 @@ public struct AsyncBlock<In, Out> {
 
     /**
      Sends the a block to be run asynchronously on a queue with a quality of service of QOS_CLASS_USER_INTERACTIVE, after the current block has finished.
-
      - parameters:
-         - after: After how many seconds the block should be run.
-         - block: The block that is to be passed to be run on the queue
-
+     - after: After how many seconds the block should be run.
+     - block: The block that is to be passed to be run on the queue
      - returns: An `Async` struct
-
      - SeeAlso: Has parity with static method
      */
     @discardableResult
@@ -312,13 +264,10 @@ public struct AsyncBlock<In, Out> {
 
     /**
      Sends the a block to be run asynchronously on a queue with a quality of service of QOS_CLASS_USER_INITIATED, after the current block has finished.
-
      - parameters:
-         - after: After how many seconds the block should be run.
-         - block: The block that is to be passed to be run on the queue
-
+     - after: After how many seconds the block should be run.
+     - block: The block that is to be passed to be run on the queue
      - returns: An `Async` struct
-
      - SeeAlso: Has parity with static method
      */
     @discardableResult
@@ -328,13 +277,10 @@ public struct AsyncBlock<In, Out> {
 
     /**
      Sends the a block to be run asynchronously on a queue with a quality of service of QOS_CLASS_UTILITY, after the current block has finished.
-
      - parameters:
-         - after: After how many seconds the block should be run.
-         - block: The block that is to be passed to be run on the queue
-
+     - after: After how many seconds the block should be run.
+     - block: The block that is to be passed to be run on the queue
      - returns: An `Async` struct
-
      - SeeAlso: Has parity with static method
      */
     @discardableResult
@@ -344,13 +290,10 @@ public struct AsyncBlock<In, Out> {
 
     /**
      Sends the a block to be run asynchronously on a queue with a quality of service of QOS_CLASS_BACKGROUND, after the current block has finished.
-
      - parameters:
-         - after: After how many seconds the block should be run.
-         - block: The block that is to be passed to be run on the queue
-
+     - after: After how many seconds the block should be run.
+     - block: The block that is to be passed to be run on the queue
      - returns: An `Async` struct
-
      - SeeAlso: Has parity with static method
      */
     @discardableResult
@@ -360,13 +303,10 @@ public struct AsyncBlock<In, Out> {
 
     /**
      Sends the a block to be run asynchronously on a custom queue, after the current block has finished.
-
      - parameters:
-         - after: After how many seconds the block should be run.
-         - block: The block that is to be passed to be run on the queue
-
+     - after: After how many seconds the block should be run.
+     - block: The block that is to be passed to be run on the queue
      - returns: An `Async` struct
-
      - SeeAlso: Has parity with static method
      */
     @discardableResult
@@ -375,26 +315,22 @@ public struct AsyncBlock<In, Out> {
     }
 
     // MARK: - Instance methods
-
     /**
-    Convenience function to call `dispatch_block_cancel()` on the encapsulated block.
-    Cancels the current block, if it hasn't already begun running to GCD.
-
-    Usage:
-
-        let block1 = Async.background {
-            // Some work
-        }
-        let block2 = block1.background {
-            // Some other work
-        }
-        Async.main {
-            // Cancel async to allow block1 to begin
-            block1.cancel() // First block is NOT cancelled
-            block2.cancel() // Second block IS cancelled
-        }
-
-    */
+     Convenience function to call `dispatch_block_cancel()` on the encapsulated block.
+     Cancels the current block, if it hasn't already begun running to GCD.
+     Usage:
+     let block1 = Async.background {
+     // Some work
+     }
+     let block2 = block1.background {
+     // Some other work
+     }
+     Async.main {
+     // Cancel async to allow block1 to begin
+     block1.cancel() // First block is NOT cancelled
+     block2.cancel() // Second block IS cancelled
+     }
+     */
     public func cancel() {
         block.cancel()
     }
@@ -403,10 +339,8 @@ public struct AsyncBlock<In, Out> {
     /**
      Convenience function to call `dispatch_block_wait()` on the encapsulated block.
      Waits for the current block to finish, on any given thread.
-
      - parameters:
-        - seconds: Max seconds to wait for block to finish. If value is 0.0, it uses DISPATCH_TIME_FOREVER. Default value is 0.
-
+     - seconds: Max seconds to wait for block to finish. If value is 0.0, it uses DISPATCH_TIME_FOREVER. Default value is 0.
      - SeeAlso: dispatch_block_wait, DISPATCH_TIME_FOREVER
      */
     @discardableResult
@@ -419,16 +353,12 @@ public struct AsyncBlock<In, Out> {
 
 
     // MARK: Private instance methods
-
     /**
      Convenience for `dispatch_block_notify()` to
-
      - parameters:
-         - block: The block that is to be passed to be run on the `queue`
-         - queue: The queue on which the `block` is run.
-
+     - block: The block that is to be passed to be run on the `queue`
+     - queue: The queue on which the `block` is run.
      - returns: An `Async` struct which encapsulates the `@convention(block) () -> Swift.Void`, which is called when the current block has finished.
-
      - SeeAlso: dispatch_block_notify, dispatch_block_create
      */
 
@@ -455,32 +385,26 @@ public struct AsyncBlock<In, Out> {
 
 
 // MARK: - Apply - DSL for `dispatch_apply`
-
 /**
-`Apply` is an empty struct with convenience static functions to parallelize a for-loop, as provided by `dispatch_apply`.
-
-    Apply.background(100) { i in
-        // Calls blocks in parallel
-    }
-
-`Apply` runs a block multiple times, before returning. If you want run the block asynchronously from the current thread, wrap it in an `Async` block:
-
-    Async.background {
-        Apply.background(100) { i in
-            // Calls blocks in parallel asynchronously
-        }
-    }
-
-- SeeAlso: Grand Central Dispatch, dispatch_apply
-*/
+ `Apply` is an empty struct with convenience static functions to parallelize a for-loop, as provided by `dispatch_apply`.
+ Apply.background(100) { i in
+ // Calls blocks in parallel
+ }
+ `Apply` runs a block multiple times, before returning. If you want run the block asynchronously from the current thread, wrap it in an `Async` block:
+ Async.background {
+ Apply.background(100) { i in
+ // Calls blocks in parallel asynchronously
+ }
+ }
+ - SeeAlso: Grand Central Dispatch, dispatch_apply
+ */
 public struct Apply {
 
     /**
      Block is run any given amount of times on a queue with a quality of service of QOS_CLASS_USER_INTERACTIVE. The block is being passed an index parameter.
-
      - parameters:
-         - iterations: How many times the block should be run. Index provided to block goes from `0..<iterations`
-         - block: The block that is to be passed to be run on a .
+     - iterations: How many times the block should be run. Index provided to block goes from `0..<iterations`
+     - block: The block that is to be passed to be run on a .
      */
     public static func userInteractive(_ iterations: Int, block: @escaping (Int) -> ()) {
         GCD.userInteractive.queue.async {
@@ -490,10 +414,9 @@ public struct Apply {
 
     /**
      Block is run any given amount of times on a queue with a quality of service of QOS_CLASS_USER_INITIATED. The block is being passed an index parameter.
-
      - parameters:
-         - iterations: How many times the block should be run. Index provided to block goes from `0..<iterations`
-         - block: The block that is to be passed to be run on a .
+     - iterations: How many times the block should be run. Index provided to block goes from `0..<iterations`
+     - block: The block that is to be passed to be run on a .
      */
     public static func userInitiated(_ iterations: Int, block: @escaping (Int) -> ()) {
         GCD.userInitiated.queue.async {
@@ -503,10 +426,9 @@ public struct Apply {
 
     /**
      Block is run any given amount of times on a queue with a quality of service of QOS_CLASS_UTILITY. The block is being passed an index parameter.
-
      - parameters:
-         - iterations: How many times the block should be run. Index provided to block goes from `0..<iterations`
-         - block: The block that is to be passed to be run on a .
+     - iterations: How many times the block should be run. Index provided to block goes from `0..<iterations`
+     - block: The block that is to be passed to be run on a .
      */
     public static func utility(_ iterations: Int, block: @escaping (Int) -> ()) {
         GCD.utility.queue.async {
@@ -516,10 +438,9 @@ public struct Apply {
 
     /**
      Block is run any given amount of times on a queue with a quality of service of QOS_CLASS_BACKGROUND. The block is being passed an index parameter.
-
      - parameters:
-         - iterations: How many times the block should be run. Index provided to block goes from `0..<iterations`
-         - block: The block that is to be passed to be run on a .
+     - iterations: How many times the block should be run. Index provided to block goes from `0..<iterations`
+     - block: The block that is to be passed to be run on a .
      */
     public static func background(_ iterations: Int, block: @escaping (Int) -> ()) {
         GCD.background.queue.async {
@@ -529,10 +450,9 @@ public struct Apply {
 
     /**
      Block is run any given amount of times on a custom queue. The block is being passed an index parameter.
-
      - parameters:
-         - iterations: How many times the block should be run. Index provided to block goes from `0..<iterations`
-         - block: The block that is to be passed to be run on a .
+     - iterations: How many times the block should be run. Index provided to block goes from `0..<iterations`
+     - block: The block that is to be passed to be run on a .
      */
     public static func custom(queue: DispatchQueue, iterations: Int, block: @escaping (Int) -> ()) {
         queue.async {
@@ -543,56 +463,45 @@ public struct Apply {
 
 
 // MARK: - AsyncGroup – Struct
-
 /**
-The **AsyncGroup** struct facilitates working with groups of asynchronous blocks. Handles a internally `dispatch_group_t`.
-
-Multiple dispatch blocks with GCD:
-
-    let group = AsyncGroup()
-    group.background {
-        // Run on background queue
-    }
-    group.utility {
-        // Run on untility queue, after the previous block
-    }
-    group.wait()
-
-All moderns queue classes:
-
-    group.main {}
-    group.userInteractive {}
-    group.userInitiated {}
-    group.utility {}
-    group.background {}
-
-Custom queues:
-
-    let customQueue = dispatch_queue_create("Label", DISPATCH_QUEUE_CONCURRENT)
-    group.customQueue(customQueue) {}
-
-Wait for group to finish:
-
-    let group = AsyncGroup()
-    group.background {
-        // Do stuff
-    }
-    group.background {
-        // Do other stuff in parallel
-    }
-    // Wait for both to finish
-    group.wait()
-    // Do rest of stuff
-
-- SeeAlso: Grand Central Dispatch
-*/
+ The **AsyncGroup** struct facilitates working with groups of asynchronous blocks. Handles a internally `dispatch_group_t`.
+ Multiple dispatch blocks with GCD:
+ let group = AsyncGroup()
+ group.background {
+ // Run on background queue
+ }
+ group.utility {
+ // Run on untility queue, after the previous block
+ }
+ group.wait()
+ All moderns queue classes:
+ group.main {}
+ group.userInteractive {}
+ group.userInitiated {}
+ group.utility {}
+ group.background {}
+ Custom queues:
+ let customQueue = dispatch_queue_create("Label", DISPATCH_QUEUE_CONCURRENT)
+ group.customQueue(customQueue) {}
+ Wait for group to finish:
+ let group = AsyncGroup()
+ group.background {
+ // Do stuff
+ }
+ group.background {
+ // Do other stuff in parallel
+ }
+ // Wait for both to finish
+ group.wait()
+ // Do rest of stuff
+ - SeeAlso: Grand Central Dispatch
+ */
 public struct AsyncGroup {
 
     // MARK: - Private properties and init
-
     /**
      Private property to internally on to a `dispatch_group_t`
-    */
+     */
     private var group: DispatchGroup
 
     /**
@@ -605,11 +514,9 @@ public struct AsyncGroup {
 
     /**
      Convenience for `dispatch_group_async()`
-
      - parameters:
-         - block: The block that is to be passed to be run on the `queue`
-         - queue: The queue on which the `block` is run.
-
+     - block: The block that is to be passed to be run on the `queue`
+     - queue: The queue on which the `block` is run.
      - SeeAlso: dispatch_group_async, dispatch_group_create
      */
     private func async(block: @escaping @convention(block) () -> Swift.Void, queue: GCD) {
@@ -618,7 +525,6 @@ public struct AsyncGroup {
 
     /**
      Convenience for `dispatch_group_enter()`. Used to add custom blocks to the current group.
-
      - SeeAlso: dispatch_group_enter, dispatch_group_leave
      */
     public func enter() {
@@ -627,7 +533,6 @@ public struct AsyncGroup {
 
     /**
      Convenience for `dispatch_group_leave()`. Used to flag a custom added block is complete.
-
      - SeeAlso: dispatch_group_enter, dispatch_group_leave
      */
     public func leave() {
@@ -636,22 +541,19 @@ public struct AsyncGroup {
 
 
     // MARK: - Instance methods
-
     /**
-    Sends the a block to be run asynchronously on the main thread, in the current group.
-
-    - parameters:
-        - block: The block that is to be passed to be run on the main queue
-    */
+     Sends the a block to be run asynchronously on the main thread, in the current group.
+     - parameters:
+     - block: The block that is to be passed to be run on the main queue
+     */
     public func main(_ block: @escaping @convention(block) () -> Swift.Void) {
         async(block: block, queue: .main)
     }
 
     /**
      Sends the a block to be run asynchronously on a queue with a quality of service of QOS_CLASS_USER_INTERACTIVE, in the current group.
-
      - parameters:
-        - block: The block that is to be passed to be run on the queue
+     - block: The block that is to be passed to be run on the queue
      */
     public func userInteractive(_ block: @escaping @convention(block) () -> Swift.Void) {
         async(block: block, queue: .userInteractive)
@@ -659,20 +561,18 @@ public struct AsyncGroup {
 
     /**
      Sends the a block to be run asynchronously on a queue with a quality of service of QOS_CLASS_USER_INITIATED, in the current group.
-
      - parameters:
-        - block: The block that is to be passed to be run on the queue
+     - block: The block that is to be passed to be run on the queue
      */
     public func userInitiated(_ block: @escaping @convention(block) () -> Swift.Void) {
         async(block: block, queue: .userInitiated)
     }
 
     /**
-     Sends the a block to be run asynchronously on a queue with a quality of service of 
-        QOS_CLASS_UTILITY, in the current block.
-
+     Sends the a block to be run asynchronously on a queue with a quality of service of
+     QOS_CLASS_UTILITY, in the current block.
      - parameters:
-        - block: The block that is to be passed to be run on the queue
+     - block: The block that is to be passed to be run on the queue
      */
     public func utility(_ block: @escaping @convention(block) () -> Swift.Void) {
         async(block: block, queue: .utility)
@@ -680,9 +580,8 @@ public struct AsyncGroup {
 
     /**
      Sends the a block to be run asynchronously on a queue with a quality of service of QOS_CLASS_BACKGROUND, in the current block.
-
      - parameters:
-         - block: The block that is to be passed to be run on the queue
+     - block: The block that is to be passed to be run on the queue
      */
     public func background(_ block: @escaping @convention(block) () -> Swift.Void) {
         async(block: block, queue: .background)
@@ -690,10 +589,9 @@ public struct AsyncGroup {
 
     /**
      Sends the a block to be run asynchronously on a custom queue, in the current group.
-
      - parameters:
-         - queue: Custom queue where the block will be run.
-         - block: The block that is to be passed to be run on the queue
+     - queue: Custom queue where the block will be run.
+     - block: The block that is to be passed to be run on the queue
      */
     public func custom(queue: DispatchQueue, block: @escaping @convention(block) () -> Swift.Void) {
         async(block: block, queue: .custom(queue: queue))
@@ -702,10 +600,8 @@ public struct AsyncGroup {
     /**
      Convenience function to call `dispatch_group_wait()` on the encapsulated block.
      Waits for the current group to finish, on any given thread.
-
      - parameters:
-         - seconds: Max seconds to wait for block to finish. If value is nil, it uses DISPATCH_TIME_FOREVER. Default value is nil.
-
+     - seconds: Max seconds to wait for block to finish. If value is nil, it uses DISPATCH_TIME_FOREVER. Default value is nil.
      - SeeAlso: dispatch_group_wait, DISPATCH_TIME_FOREVER
      */
     @discardableResult
@@ -719,10 +615,9 @@ public struct AsyncGroup {
 
 
 // MARK: - Extension for `qos_class_t`
-
 /**
-Extension to add description string for each quality of service class.
-*/
+ Extension to add description string for each quality of service class.
+ */
 public extension qos_class_t {
 
     /**
@@ -746,7 +641,6 @@ public extension qos_class_t {
 
 
 // MARK: - Extension for `DispatchQueue.GlobalAttributes`
-
 /**
  Extension to add description string for each quality of service class.
  */

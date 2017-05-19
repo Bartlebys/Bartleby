@@ -236,10 +236,8 @@ import Foundation
     fileprivate var _messageListeners=[MessageListener]()
 
     open func send<T:StateMessage>(_ message:T){
-        Async.main{
-            for listener in self._messageListeners{
-                listener.handle(message: message)
-            }
+        for listener in self._messageListeners{
+            listener.handle(message: message)
         }
     }
 
