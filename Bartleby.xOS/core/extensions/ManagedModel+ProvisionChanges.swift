@@ -118,4 +118,9 @@ extension ManagedModel:ProvisionChanges{
         kChanges.changes=changes
         self.changedKeys.append(kChanges)
     }
+
+
+    open func stage(){
+        self.collection?.stage(self)
+    }
 }
