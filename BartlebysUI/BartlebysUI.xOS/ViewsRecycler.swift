@@ -166,4 +166,14 @@ open class ViewsRecycler {
         })
     }
 
+
+    /// Returns all the recycler views
+    ///
+    /// - Returns: the collection of views
+    open func getAllViews()->[BXView]{
+        return self._viewsReferers.flatMap({ (referer) -> BXView? in
+                return referer.view
+        })
+    }
+
 }
