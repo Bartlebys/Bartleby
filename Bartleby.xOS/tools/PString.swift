@@ -218,7 +218,7 @@ public struct PString {
 
 public extension String {
 
-    public func contains(_ string: String) -> Bool {
+    public func contains(string: String) -> Bool {
         return (self.range(of: string) != nil)
     }
 
