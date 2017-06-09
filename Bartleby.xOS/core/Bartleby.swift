@@ -147,7 +147,7 @@ open class Bartleby:NSObject {
     }
 
     /**
-     Replaces the UID of a proxy Document 
+     Replaces the UID of a proxy Document
      The proxy document is an instance that is created before to deserialize asynchronously the document Data
      Should be exclusively used when re-openning an existing document.
 
@@ -266,7 +266,7 @@ open class Bartleby:NSObject {
         // Check if some deferred Ownership has been recorded
         if let owneesUIDS = self._deferredOwnerships[instance.UID] {
             /// This situation occurs for example
-            /// when the ownee has been triggered but not the owner 
+            /// when the ownee has been triggered but not the owner
             // or the deserialization of the ownee preceeds the owner
             if let o=instance as? ManagedModel{
                 for owneeUID in  owneesUIDS{
@@ -278,8 +278,8 @@ open class Bartleby:NSObject {
                             print("### !")
                         }
                     }else{
-                         print("----")
-                         glog("Deferred ownership has failed to found \(owneeUID) for \(o.UID)", file: #file, function: #function, line: #line, category: Default.LOG_WARNING, decorative: false)
+                        print("----")
+                        glog("Deferred ownership has failed to found \(owneeUID) for \(o.UID)", file: #file, function: #function, line: #line, category: Default.LOG_WARNING, decorative: false)
                     }
                 }
             }
@@ -308,7 +308,7 @@ open class Bartleby:NSObject {
         }
     }
 
-    
+
 
 
     /**
@@ -422,4 +422,34 @@ open class Bartleby:NSObject {
         }
     }
 
+
+    // MARK : - Sync
+
+
+    /// synchronously but thread-safely invoke passed-in block on main thread avoiding deadlock
+    open static func syncOnMain(execute block: () -> Void) {
+
+        if Thread.isMainThread {
+            block()
+
+        } else {
+            DispatchQueue.main.sync(execute: block)
+        }
+    }
+    
+    
+    /// synchronously but thread-safely invoke passed-in block on main thread avoiding deadlock
+    open static func syncOnMain<T>(execute work: () throws -> T) rethrows -> T {
+        
+        if Thread.isMainThread {
+            return try work()
+            
+        } else {
+            return try DispatchQueue.main.sync(execute: work)
+        }
+    }
+    
+    
+    
+    
 }
