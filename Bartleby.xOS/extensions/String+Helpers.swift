@@ -71,8 +71,12 @@ public extension String {
         return self
     }
 
+    public func fullNSRange()->NSRange{
+        return self.nsRange(from: self.fullCharactersRange())
+    }
 
     public func nsRange(from range: Range<String.Index>) -> NSRange {
+        let utf16 = self.utf16
         let from = range.lowerBound.samePosition(in: utf16)
         let to = range.upperBound.samePosition(in: utf16)
         return NSRange(location: utf16.distance(from: utf16.startIndex, to: from),
@@ -81,6 +85,7 @@ public extension String {
 
 
     public func range(from nsRange: NSRange) -> Range<String.Index>? {
+        let utf16 = self.utf16
         guard
             let from16 = utf16.index(utf16.startIndex, offsetBy: nsRange.location, limitedBy: utf16.endIndex),
             let to16 = utf16.index(utf16.startIndex, offsetBy: nsRange.location + nsRange.length, limitedBy: utf16.endIndex),
