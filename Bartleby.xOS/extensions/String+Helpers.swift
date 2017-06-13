@@ -94,5 +94,20 @@ public extension String {
             else { return nil }
         return from ..< to
     }
+
+
+    /// Removes the characters in the sub NSRange.
+    /// The method ignores the invalid ranges.
+    ///
+    /// - Parameter range: the range of char to remove
+    public mutating func removeSubNSRange(_ range:NSRange){
+        let rangeEndLocation = range.location + range.length
+        let charCount = self.characters.count
+        let prefixed =  range.location > 0 ? PString.substr(self, 0, range.location) : ""
+        let postFixed = rangeEndLocation < charCount ? PString.substr(self, rangeEndLocation) : ""
+        self = prefixed + postFixed
+    }
+
+
     
 }
