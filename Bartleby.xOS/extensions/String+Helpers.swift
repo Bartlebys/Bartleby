@@ -72,7 +72,7 @@ public extension String {
     }
 
     public func fullNSRange()->NSRange{
-        return self.nsRange(from: self.fullCharactersRange())
+        return NSRange(location: 0, length: self.characters.count)
     }
 
     public func nsRange(from range: Range<String.Index>) -> NSRange {
