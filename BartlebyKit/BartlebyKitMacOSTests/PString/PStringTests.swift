@@ -135,37 +135,37 @@ class PStringTests: XCTestCase {
     // MARK: - substr_replace
 
     /*
-
      <?php
-     echo substr_replace("Hello World","Bob",6);//    Hello Bob
-     echo ("\n");
-     echo substr_replace("Hello World","Bob",20);//    Hello WorldBob
-     echo ("\n");
-     echo substr_replace("Hello World","Bob",6,3);//    Hello Bobld
-     echo ("\n");
-     echo substr_replace("Hello World","Hummingbird",6,2);//    Hello Hummingbirdrld
-     echo ("\n");
-     echo substr_replace("Hello World","Dolly",6,0);//    Hello DollyWorld
-     echo ("\n");
-     echo substr_replace("Hello World","Dolly",6,-1);//    Hello Dollyd
-     echo ("\n");
-     echo substr_replace("Hello World","Dolly",6,-3);//    Hello Dollyrld
-     echo ("\n");
-     echo (strlen("c'est le petit nom de New-York")."\n");// 30
-     echo (strlen("c'est le petit nom de Paris")."\n");// 27
-     echo (strlen("c'est le petit nom de Notre Dame des Neiges")."\n");//43
-     echo substr_replace("\"Grosse Pomme\", c'est le petit nom de New-York !","",16,30);//    "Grosse Pomme",  !
-     echo ("\n");
-     echo substr_replace("\"Grosse Pomme\", c'est le petit nom de New-York !","c'est le petit nom de Paris",16,30);//   "Grosse Pomme", c'est le petit nom de Paris !
-     echo ("\n");
-     echo substr_replace("\"Grosse Pomme\",  !","c'est le petit nom de New-York",16,0);//    "Grosse Pomme", c'est le petit nom de New-York !
-     echo ("\n");
-     echo substr_replace("\"Grosse Pomme\",  !","c'est le petit nom de Paris",16,0);//    "Grosse Pomme", c'est le petit nom de Paris !
-     echo ("\n");
-     echo substr_replace("\"Grosse Pomme\",  !","c'est le petit nom de Notre Dame des Neiges",16,0);//   "Grosse Pomme", c'est le petit nom de Notre Dame des Neiges !
-     echo ("\n");
+         echo substr_replace("Hello World","Bob",6);//    Hello Bob
+         echo ("\n");
+         echo substr_replace("Hello World","Bob",20);//    Hello WorldBob
+         echo ("\n");
+         echo substr_replace("Hello World","Bob",6,3);//    Hello Bobld
+         echo ("\n");
+         echo substr_replace("Hello World","Hummingbird",6,2);//    Hello Hummingbirdrld
+         echo ("\n");
+         echo substr_replace("Hello World","Dolly",6,0);//    Hello DollyWorld
+         echo ("\n");
+         echo substr_replace("Hello World","Dolly",6,-1);//    Hello Dollyd
+         echo ("\n");
+         echo substr_replace("Hello World","Dolly",6,-3);//    Hello Dollyrld
+         echo ("\n");
+         echo (strlen("c'est le petit nom de New-York")."\n");// 30
+         echo (strlen("c'est le petit nom de Paris")."\n");// 27
+         echo (strlen("c'est le petit nom de Notre Dame des Neiges")."\n");//43
+         echo substr_replace("\"Grosse Pomme\", c'est le petit nom de New-York !","",16,30);//    "Grosse Pomme",  !
+         echo ("\n");
+         echo substr_replace("\"Grosse Pomme\", c'est le petit nom de New-York !","c'est le petit nom de Paris",16,30);//   "Grosse Pomme", c'est le petit nom de Paris !
+         echo ("\n");
+         echo substr_replace("\"Grosse Pomme\", c'est le petit nom de New-York !","c'est le petit nom de Notre Dame des Neiges",16,30);//   "Grosse Pomme", c'est le petit nom de Notre Dame des Neiges !
+         echo ("\n");
+         echo substr_replace("\"Grosse Pomme\",  !","c'est le petit nom de New-York",16,0);//    "Grosse Pomme", c'est le petit nom de New-York !
+         echo ("\n");
+         echo substr_replace("\"Grosse Pomme\",  !","c'est le petit nom de Paris",16,0);//    "Grosse Pomme", c'est le petit nom de Paris !
+         echo ("\n");
+         echo substr_replace("\"Grosse Pomme\",  !","c'est le petit nom de Notre Dame des Neiges",16,0);//   "Grosse Pomme", c'est le petit nom de Notre Dame des Neiges !
+         echo ("\n");
      ?>
-
      */
     func test16_substr_replace(){
         let s=PString.substr_replace(helloWorld, replacement: "Bob", start: 6)
@@ -212,17 +212,25 @@ class PStringTests: XCTestCase {
         XCTAssert(s=="\"Grosse Pomme\", c'est le petit nom de Paris !","\(s)")
     }
 
+
     func test25_substr_replace(){
+        let s=PString.substr_replace("\"Grosse Pomme\", c'est le petit nom de New-York !", replacement: "c'est le petit nom de Notre Dame des Neiges", start: 16,length:30)
+        XCTAssert(s=="\"Grosse Pomme\", c'est le petit nom de Notre Dame des Neiges !","\(s)")
+    }
+
+
+
+    func test26_substr_replace(){
         let s=PString.substr_replace("\"Grosse Pomme\",  !", replacement: "c'est le petit nom de New-York", start: 16,length:0)
         XCTAssert(s=="\"Grosse Pomme\", c'est le petit nom de New-York !","\(s)")
     }
 
-    func test26_substr_replace(){
+    func test27_substr_replace(){
         let s=PString.substr_replace("\"Grosse Pomme\",  !", replacement: "c'est le petit nom de Paris", start: 16,length:0)
         XCTAssert(s=="\"Grosse Pomme\", c'est le petit nom de Paris !","\(s)")
     }
 
-    func test27_substr_replace(){
+    func test28_substr_replace(){
         let s=PString.substr_replace("\"Grosse Pomme\",  !", replacement: "c'est le petit nom de Notre Dame des Neiges", start: 16,length:0)
         XCTAssert(s=="\"Grosse Pomme\", c'est le petit nom de Notre Dame des Neiges !","\(s)")
     }
