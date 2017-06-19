@@ -12,7 +12,7 @@ import BartlebyKit
 
 class PStringTests: XCTestCase {
 
-    // MARK: - PHP substring compliances tests
+    // MARK: - substring
 
     /*
 
@@ -131,5 +131,62 @@ class PStringTests: XCTestCase {
         XCTAssert(s=="A,B,C")
     }
 
+
+    // MARK: - substr_replace
+
+    /*
+
+     <?php
+     echo substr_replace("Hello World","Bob",6);//    Hello Bob
+     echo ("\n");
+     echo substr_replace("Hello World","Bob",20);//    Hello WorldBob
+     echo ("\n");
+     echo substr_replace("Hello World","Bob",6,3);//    Hello Bobld
+     echo ("\n");
+     echo substr_replace("Hello World","Hummingbird",6,2);//    Hello Hummingbirdrld
+     echo ("\n");
+     echo substr_replace("Hello World","Dolly",6,0);//    Hello DollyWorld
+     echo ("\n");
+     echo substr_replace("Hello World","Dolly",6,-1);//    Hello Dollyd
+     echo ("\n");
+     echo substr_replace("Hello World","Dolly",6,-3);//    Hello Dollyrld
+     echo ("\n");
+     ?>
+
+     */
+    func test16_substr_replace(){
+        let s=PString.substr_replace(helloWorld, replacement: "Bob", start: 6)
+        XCTAssert(s=="Hello Bob","\(s)")
+    }
+
+    func test17_substr_replace(){
+        let s=PString.substr_replace(helloWorld, replacement: "Bob", start: 20)
+        XCTAssert(s=="Hello WorldBob","\(s)")
+    }
+
+    func test18_substr_replace(){
+        let s=PString.substr_replace(helloWorld, replacement: "Bob", start: 6,length:3)
+        XCTAssert(s=="Hello Bobld","\(s)")
+    }
+
+    func test19_substr_replace(){
+        let s=PString.substr_replace(helloWorld, replacement: "Hummingbird", start: 6,length:2)
+        XCTAssert(s=="Hello Hummingbirdrld","\(s)")
+    }
+
+    func test20_substr_replace(){
+        let s=PString.substr_replace(helloWorld, replacement: "Dolly", start: 6,length:0)
+        XCTAssert(s=="Hello DollyWorld","\(s)")
+    }
+
+    func test21_substr_replace(){
+        let s=PString.substr_replace(helloWorld, replacement: "Dolly", start: 6,length:-1)
+        XCTAssert(s=="Hello Dollyd","\(s)")
+    }
+
+    func test22_substr_replace(){
+        let s=PString.substr_replace(helloWorld, replacement: "Dolly", start: 6,length:-3)
+        XCTAssert(s=="Hello Dollyrld","\(s)")
+    }
 
 }

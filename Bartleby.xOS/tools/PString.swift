@@ -8,18 +8,12 @@
 
 import Foundation
 
-#if os(OSX)
-    import AppKit
-#else
-    import UIKit
-#endif
-
-
 
 // The goal of PString is to facilitate PHP to SWIFT port
 // It focuses on translating litteraly the PHP style string processing.
 // For example Flexions' Pluralization.php has been ported to swift in a few minutes
 // You can compare Pluralization.swift & Pluralization.php
+// We use static func to distinguish from Swift String System
 
 // MARK: - global PHP Style String functions
 
@@ -155,6 +149,10 @@ public struct PString {
         leftPos =  min(strLength,leftPos)
         rightPos = min(strLength,rightPos)
 
+        if leftPos > rightPos{
+            swap(&leftPos, &rightPos)
+        }
+
         let startIndex = (leftPos==0) ? string.startIndex : string.index(string.startIndex, offsetBy: leftPos)
         let endIndex = (rightPos==0) ? string.startIndex : string.index(string.startIndex, offsetBy: rightPos)
 
@@ -162,8 +160,37 @@ public struct PString {
     }
 
 
+    /// Equivalent to substr_replace
+    /// Replaces text within a portion of a string
+    // substr_replace() replaces a string delimited by the start and (optionally) length parameters with the string given in replacement.
+    /// - Parameters:
+    ///   - string: the string
+    ///   - replacement: the remplacement string
+    ///   - start: the start replacement index
+    ///   - length: the optional length of the range to replace
+    /// - Returns: the resulting string
+    public static func substr_replace(_ string:String, replacement:String,start:Int,length:Int?)->String{
+        var result = substr(string, 0, start)
+        result += replacement
+        if let length = length{
+            if length >= 0 {
+                result += substr(string, start+length)
+            }else{
+                let strLen = PString.strlen(string)
+                result += substr(string, strLen, length)
+            }
+        }
+        return result
+    }
+
+
+    public static func substr_replace(_ string:String, replacement:String,start:Int)->String{
+       return substr_replace(string, replacement: replacement, start: start, length: nil)
+    }
+
+
     public static func strlen(_ string: String) -> Int {
-        return string.characters.count
+        return Int(string.characters.count)
     }
 
     public static func lcfirst(_ string: String) -> String {
@@ -211,9 +238,3 @@ public struct PString {
         return r
     }
 }
-
-
-
-
-
-
