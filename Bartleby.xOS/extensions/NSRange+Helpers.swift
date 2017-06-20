@@ -38,39 +38,28 @@ extension NSRange:CustomStringConvertible{
 
 extension NSRange{
 
-
-    /// A constructor that takes the start and end locations
-    ///
-    /// - Parameters:
-    ///   - startLocation: the start location index
-    ///   - endLocation: the end location index
-    public init(startLocation:Int,endLocation:Int) {
-        self.location = startLocation
-        self.length = endLocation - startLocation
-    }
-
     /// Consistant name for clear code
-    public var startLocation:Int { return self.location }
+    public var firstLocation:Int { return self.location }
 
     // Correspond to the last valid index
-    // Can be equal to startLocation if the length <= 0
-    public var endLocation: Int { return self.length==0 ? self.location : self.location + (self.length - 1) }
+    // Can be equal to firstLocation if the length <= 0
+    public var lastLocation: Int { return self.length==0 ? self.location : self.location + (self.length - 1) }
 
     // The Centered location
-    public var centeredLocation: Int { return max(startLocation,(self.endLocation + self.startLocation)/2) }
+    public var centeredLocation: Int { return max(firstLocation,(self.lastLocation + self.firstLocation)/2) }
 
     public func intersects(_ range:NSRange)->Bool{
         return NSIntersectionRange(range, self).length > 0
     }
 
     public func containsLocation(_ location:Int)->Bool{
-       return location >= self.startLocation && location <= self.endLocation
+       return location >= self.firstLocation && location <= self.lastLocation
     }
 
     // This method works with ranges with length of 0 
     // You can use intersects ranges with length > 0
     public func containsAtLeastOneLocationFromRange( _ range:NSRange)->Bool{
-        for location in range.startLocation ... range.endLocation{
+        for location in range.firstLocation ... range.lastLocation{
             if self.containsLocation(location){
                 return true
             }
@@ -79,7 +68,7 @@ extension NSRange{
     }
 
     public func containsRange(_ range:NSRange)->Bool{
-        let r = range.startLocation >= self.startLocation && range.endLocation <= self.endLocation
+        let r = range.firstLocation >= self.firstLocation && range.lastLocation <= self.lastLocation
         return r
     }
 
