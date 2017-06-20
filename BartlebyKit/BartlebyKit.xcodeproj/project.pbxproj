@@ -17,6 +17,8 @@
 		E50805CB1DF6C3CC0085E5C3 /* ObjectMapper.framework.dSYM in CopyFiles */ = {isa = PBXBuildFile; fileRef = E50805C91DF6C3CC0085E5C3 /* ObjectMapper.framework.dSYM */; };
 		E50805CC1DF6C92D0085E5C3 /* Alamofire.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E50805BF1DF6C26F0085E5C3 /* Alamofire.framework */; };
 		E50805CD1DF6C92D0085E5C3 /* ObjectMapper.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E50805C01DF6C26F0085E5C3 /* ObjectMapper.framework */; };
+		E511D8DF1EF9609900E59CC3 /* NSRange+Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = E511D8DE1EF9609900E59CC3 /* NSRange+Helpers.swift */; };
+		E511D8E01EF9609900E59CC3 /* NSRange+Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = E511D8DE1EF9609900E59CC3 /* NSRange+Helpers.swift */; };
 		E51252751E8BAD7F00797254 /* BartlebyDocument.swift in Sources */ = {isa = PBXBuildFile; fileRef = E51251671E8BAD7F00797254 /* BartlebyDocument.swift */; };
 		E51252761E8BAD7F00797254 /* BartlebyDocument.swift in Sources */ = {isa = PBXBuildFile; fileRef = E51251671E8BAD7F00797254 /* BartlebyDocument.swift */; };
 		E51252771E8BAD7F00797254 /* ManagedBlocks.swift in Sources */ = {isa = PBXBuildFile; fileRef = E51251691E8BAD7F00797254 /* ManagedBlocks.swift */; };
@@ -593,6 +595,7 @@
 		E50805C81DF6C3CC0085E5C3 /* Alamofire.framework.dSYM */ = {isa = PBXFileReference; lastKnownFileType = wrapper.dsym; name = Alamofire.framework.dSYM; path = ../Carthage/Build/Mac/Alamofire.framework.dSYM; sourceTree = "<group>"; };
 		E50805C91DF6C3CC0085E5C3 /* ObjectMapper.framework.dSYM */ = {isa = PBXFileReference; lastKnownFileType = wrapper.dsym; name = ObjectMapper.framework.dSYM; path = ../Carthage/Build/Mac/ObjectMapper.framework.dSYM; sourceTree = "<group>"; };
 		E51029171CB68FC50040FC2C /* BaseObjectTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BaseObjectTests.swift; sourceTree = "<group>"; };
+		E511D8DE1EF9609900E59CC3 /* NSRange+Helpers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSRange+Helpers.swift"; sourceTree = "<group>"; };
 		E51251671E8BAD7F00797254 /* BartlebyDocument.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BartlebyDocument.swift; sourceTree = "<group>"; };
 		E51251691E8BAD7F00797254 /* ManagedBlocks.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ManagedBlocks.swift; sourceTree = "<group>"; };
 		E512516A1E8BAD7F00797254 /* ManagedBoxes.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ManagedBoxes.swift; sourceTree = "<group>"; };
@@ -1327,6 +1330,7 @@
 				E512525E1E8BAD7F00797254 /* URL+Utilities.swift */,
 				E512525F1E8BAD7F00797254 /* User+Auth.swift */,
 				E5EF6CFA1EE9B1B700990C48 /* String+Helpers.swift */,
+				E511D8DE1EF9609900E59CC3 /* NSRange+Helpers.swift */,
 			);
 			path = extensions;
 			sourceTree = "<group>";
@@ -1796,6 +1800,7 @@
 				E51254411E8BAD7F00797254 /* Identities.swift in Sources */,
 				E51254291E8BAD7F00797254 /* TriggerHook.swift in Sources */,
 				E512544D1E8BAD7F00797254 /* LogoutUser.swift in Sources */,
+				E511D8DF1EF9609900E59CC3 /* NSRange+Helpers.swift in Sources */,
 				E512527D1E8BAD7F00797254 /* ManagedNodes.swift in Sources */,
 				E51254131E8BAD7F00797254 /* Monitoring.swift in Sources */,
 				E51254331E8BAD7F00797254 /* ServerErrorCodes.swift in Sources */,
@@ -2052,6 +2057,7 @@
 				E51254421E8BAD7F00797254 /* Identities.swift in Sources */,
 				E512542A1E8BAD7F00797254 /* TriggerHook.swift in Sources */,
 				E512544E1E8BAD7F00797254 /* LogoutUser.swift in Sources */,
+				E511D8E01EF9609900E59CC3 /* NSRange+Helpers.swift in Sources */,
 				E512527E1E8BAD7F00797254 /* ManagedNodes.swift in Sources */,
 				E51254141E8BAD7F00797254 /* Monitoring.swift in Sources */,
 				E51254341E8BAD7F00797254 /* ServerErrorCodes.swift in Sources */,
