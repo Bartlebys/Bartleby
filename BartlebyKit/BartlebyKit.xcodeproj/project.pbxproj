@@ -516,6 +516,7 @@
 		E53E2C3C1DD358920040E32B /* PStringTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E53E2C3B1DD358920040E32B /* PStringTests.swift */; };
 		E54999701C3A7E2A00C52A9D /* Bartleby.h in Headers */ = {isa = PBXBuildFile; fileRef = E549996E1C3A7E2A00C52A9D /* Bartleby.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		E5499AB01C3A7F5100C52A9D /* Bartleby.h in Headers */ = {isa = PBXBuildFile; fileRef = E549996E1C3A7E2A00C52A9D /* Bartleby.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		E54BAEB51EF96BFB006204C8 /* RangeAndStringTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E54BAEB41EF96BFB006204C8 /* RangeAndStringTests.swift */; };
 		E55934361DEDD1B7001DE10F /* BartlebyTestCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = E55934351DEDD1B7001DE10F /* BartlebyTestCase.swift */; };
 		E55D61441DE9F79800BF63B6 /* BlocksTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E55D61431DE9F79800BF63B6 /* BlocksTests.swift */; };
 		E56756BA1E34B40F00E299F0 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E56756B91E34B40F00E299F0 /* Security.framework */; };
@@ -851,6 +852,7 @@
 		E54999651C3A7D1B00C52A9D /* BartlebyKit.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = BartlebyKit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		E549996E1C3A7E2A00C52A9D /* Bartleby.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Bartleby.h; sourceTree = "<group>"; };
 		E549996F1C3A7E2A00C52A9D /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		E54BAEB41EF96BFB006204C8 /* RangeAndStringTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RangeAndStringTests.swift; sourceTree = "<group>"; };
 		E55934351DEDD1B7001DE10F /* BartlebyTestCase.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BartlebyTestCase.swift; sourceTree = "<group>"; };
 		E55D61431DE9F79800BF63B6 /* BlocksTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BlocksTests.swift; sourceTree = "<group>"; };
 		E56756B91E34B40F00E299F0 /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
@@ -1396,6 +1398,7 @@
 			isa = PBXGroup;
 			children = (
 				E53E2C3B1DD358920040E32B /* PStringTests.swift */,
+				E54BAEB41EF96BFB006204C8 /* RangeAndStringTests.swift */,
 			);
 			path = PString;
 			sourceTree = "<group>";
@@ -2182,6 +2185,7 @@
 				E5B128FB1D1C317300D61261 /* BasicApiTests.swift in Sources */,
 				E5B128F21D1C315D00D61261 /* BFileManagerTests.swift in Sources */,
 				E55D61441DE9F79800BF63B6 /* BlocksTests.swift in Sources */,
+				E54BAEB51EF96BFB006204C8 /* RangeAndStringTests.swift in Sources */,
 				E5B128FA1D1C317300D61261 /* UsersCreationLoadTest.swift in Sources */,
 				E5B128FD1D1C317300D61261 /* AuthCookiesTests.swift in Sources */,
 				E5F5384B1DEAE4EA008DEBF7 /* MultiDocumentsTests.swift in Sources */,
