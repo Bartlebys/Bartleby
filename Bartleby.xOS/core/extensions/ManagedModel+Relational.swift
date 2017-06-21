@@ -41,7 +41,8 @@ extension ManagedModel{
     }
 
 
-    /// The owner declares it properties
+
+    /// The owner declares its property
     /// Both relation are setup owns, and owned
     ///
     /// - Parameters:
@@ -50,6 +51,7 @@ extension ManagedModel{
         self.addRelation(.owns,to: object)
         object.addRelation(.ownedBy,to: self)
     }
+
 
 
 
@@ -76,6 +78,24 @@ extension ManagedModel{
             break
         }
     }
+
+
+
+    /// The owner renounces to its property
+    ///
+    /// - Parameter object: the object
+    open func removeOwnerShip(to object:Relational){
+        self.removeRelation(Relationship.owns, to: object)
+    }
+
+    /// Renounces to free relationship
+    ///
+    /// - Parameter object: the object
+    open func removeFreeRelationShip(to object:Relational){
+        self.removeRelation(Relationship.free, to: object)
+    }
+
+
 
     /// Remove a relation to another object
     ///
