@@ -35,7 +35,7 @@ public protocol Relational:Identifiable{
     /// The owner renounces to its property
     ///
     /// - Parameter object: the object
-    func removeOwnerShip(to object:Relational)
+    func removeOwnerShip(of object:Relational)
 
 
     /// Renounces to free relationship

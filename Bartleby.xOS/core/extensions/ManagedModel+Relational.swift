@@ -84,7 +84,7 @@ extension ManagedModel{
     /// The owner renounces to its property
     ///
     /// - Parameter object: the object
-    open func removeOwnerShip(to object:Relational){
+    open func removeOwnerShip(of object:Relational){
         self.removeRelation(Relationship.owns, to: object)
     }
 
