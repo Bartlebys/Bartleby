@@ -534,6 +534,7 @@
 		E5B128FE1D1C317300D61261 /* AccessControlTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BDEF70A1C9FE4A300D9FB70 /* AccessControlTests.swift */; };
 		E5B129031D1C317300D61261 /* TestCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = E52F94881D01C23A005BDA2D /* TestCase.swift */; };
 		E5B129041D1C317300D61261 /* TestsConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = E52F94891D01C23A005BDA2D /* TestsConfiguration.swift */; };
+		E5EE24671EFBD04300AD42C2 /* NSRect+Mappable.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5EE24661EFBD04300AD42C2 /* NSRect+Mappable.swift */; };
 		E5EF6CFB1EE9B1B700990C48 /* String+Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5EF6CFA1EE9B1B700990C48 /* String+Helpers.swift */; };
 		E5EF6CFC1EE9B1B700990C48 /* String+Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5EF6CFA1EE9B1B700990C48 /* String+Helpers.swift */; };
 		E5F5384B1DEAE4EA008DEBF7 /* MultiDocumentsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5F5384A1DEAE4EA008DEBF7 /* MultiDocumentsTests.swift */; };
@@ -864,6 +865,7 @@
 		E578DD071C3AC53300617627 /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = System/Library/Frameworks/AppKit.framework; sourceTree = SDKROOT; };
 		E590EB231D0EF8DC00150E0B /* UsersCreationLoadTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UsersCreationLoadTest.swift; sourceTree = "<group>"; };
 		E5CEFB511C3BFCBB00C36CBA /* BartlebyKit-Bridging-Header.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "BartlebyKit-Bridging-Header.h"; sourceTree = "<group>"; };
+		E5EE24661EFBD04300AD42C2 /* NSRect+Mappable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSRect+Mappable.swift"; sourceTree = "<group>"; };
 		E5EF6CFA1EE9B1B700990C48 /* String+Helpers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "String+Helpers.swift"; sourceTree = "<group>"; };
 		E5F5384A1DEAE4EA008DEBF7 /* MultiDocumentsTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MultiDocumentsTests.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -1333,6 +1335,7 @@
 				E512525F1E8BAD7F00797254 /* User+Auth.swift */,
 				E5EF6CFA1EE9B1B700990C48 /* String+Helpers.swift */,
 				E511D8DE1EF9609900E59CC3 /* NSRange+Helpers.swift */,
+				E5EE24661EFBD04300AD42C2 /* NSRect+Mappable.swift */,
 			);
 			path = extensions;
 			sourceTree = "<group>";
@@ -1788,6 +1791,7 @@
 				E51252DF1E8BAD7F00797254 /* DeleteTags.swift in Sources */,
 				E51253631E8BAD7F00797254 /* Bartleby.swift in Sources */,
 				E51252991E8BAD7F00797254 /* KeyedChanges.swift in Sources */,
+				E5EE24671EFBD04300AD42C2 /* NSRect+Mappable.swift in Sources */,
 				E51252751E8BAD7F00797254 /* BartlebyDocument.swift in Sources */,
 				E51252D71E8BAD7F00797254 /* DeleteLockers.swift in Sources */,
 				E51254271E8BAD7F00797254 /* Supervisable.swift in Sources */,
