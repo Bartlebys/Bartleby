@@ -423,15 +423,13 @@ open class Bartleby:NSObject {
     }
 
 
-    // MARK : - Sync
+    // MARK : - Sync on Main Thread
 
 
     /// synchronously but thread-safely invoke passed-in block on main thread avoiding deadlock
     open static func syncOnMain(execute block: () -> Void) {
-
         if Thread.isMainThread {
             block()
-
         } else {
             DispatchQueue.main.sync(execute: block)
         }
@@ -439,17 +437,14 @@ open class Bartleby:NSObject {
     
     
     /// synchronously but thread-safely invoke passed-in block on main thread avoiding deadlock
-    open static func syncOnMain<T>(execute work: () throws -> T) rethrows -> T {
-        
+    open static func syncOnMainAndReturn<T>(execute work: () throws -> T) rethrows -> T {
         if Thread.isMainThread {
             return try work()
-            
         } else {
             return try DispatchQueue.main.sync(execute: work)
         }
     }
     
-    
-    
+
     
 }
