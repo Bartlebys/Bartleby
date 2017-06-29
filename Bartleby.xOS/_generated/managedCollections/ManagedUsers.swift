@@ -575,16 +575,18 @@ public extension Notification.Name {
 
     dynamic open var selectedUsers:[User]?{
         didSet{
-            if let users = selectedUsers {
-                 let indexes:[Int]=users.map({ (user) -> Int in
-                    return users.index(where:{ return $0.UID == user.UID })!
-                })
-                self.referentDocument?.metadata.stateDictionary[selectedUsersIndexesKey]=indexes
-            }else{
-                self.referentDocument?.metadata.stateDictionary[selectedUsersIndexesKey]=[Int]()
+            Bartleby.syncOnMain {
+                if let users = selectedUsers {
+                     let indexes:[Int]=users.map({ (user) -> Int in
+                        return users.index(where:{ return $0.UID == user.UID })!
+                    })
+                    self.referentDocument?.metadata.stateDictionary[selectedUsersIndexesKey]=indexes
+                }else{
+                    self.referentDocument?.metadata.stateDictionary[selectedUsersIndexesKey]=[Int]()
 
+                }
+                NotificationCenter.default.post(name:NSNotification.Name.Users.selectionChanged, object: nil)
             }
-            NotificationCenter.default.post(name:NSNotification.Name.Users.selectionChanged, object: nil)
         }
     }
 
