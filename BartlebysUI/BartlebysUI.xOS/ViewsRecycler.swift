@@ -9,6 +9,18 @@
 import Foundation
 import BartlebyKit
 
+
+/// The view recycler facilitate view reusage for high performance rendering
+///
+/// During a rendering loop The most efficient way to recycle views is to :
+///
+/// 1 - `liberateViews`
+/// ... reconfigure the views
+/// 2 - call `removeAvailableViewsFromSuperView`
+///
+/// You can call `liberateOffScreenViews` chronically to free offScreen views
+///
+/// You can call recycleView if necessary (but it is usually not the goodApproach
 open class ViewsRecycler {
 
     class ViewReferer {
@@ -16,6 +28,7 @@ open class ViewsRecycler {
         var view:BXView
         var groupName:String
         var available:Bool
+        var associatedUID:String = Default.NO_UID
 
         public init(view: BXView, groupName:String, available:Bool = false){
             self.view = view
@@ -24,13 +37,11 @@ open class ViewsRecycler {
         }
     }
 
-
     // We keep a reference on all views.
     var _viewsReferers=[ViewReferer]()
 
     // You can for performance tuning determine a min distance to determine what should be considerated as recyclable
     var minOffScreenDistance:CGFloat = 100
-
 
     public init() {}
 
@@ -46,7 +57,8 @@ open class ViewsRecycler {
     open func purgeAvailableViews(){
         let r = self._viewsReferers.enumerated().reversed()
         for (i,referer) in  r{
-            if referer.available && referer.view.superview == nil{
+            if referer.available {
+                referer.view.removeFromSuperview()
                 self._viewsReferers.remove(at: i)
             }
         }
@@ -78,41 +90,72 @@ open class ViewsRecycler {
 
 
     /// You must call this method regularly to recycle off screen views.
-    open func recycleRecyclableViews(){
+    open func liberateOffScreenViews(){
         for referer in self._viewsReferers{
             if let superview = referer.view.superview{
                 if  referer.view.frame.origin.x + referer.view.frame.width + self.minOffScreenDistance < superview.frame.origin.x ||
                     referer.view.frame.origin.x > superview.frame.origin.x + superview.frame.width + self.minOffScreenDistance ||
                     referer.view.frame.origin.y + referer.view.frame.height + self.minOffScreenDistance < superview.frame.origin.y ||
                     referer.view.frame.origin.y > superview.frame.origin.y + superview.frame.height + self.minOffScreenDistance {
-                    referer.view.removeFromSuperview()
                     referer.available = true
                 }
             }else if referer.available == false{
                 // The clients may remove the view from the superview to force the recycling
-                referer.view.removeFromSuperview()
                 referer.available = true
             }
         }
     }
 
 
+    /// Recycle = liberateView + removeFromSuperview
+    ///
+    /// - Parameter view: the view to recycle
+    open func recycleView(view:BXView){
+        view.removeFromSuperview()
+        self.liberate(view: view)
+    }
 
 
-    /// Recycles explicitely a view
+
+    /// Mark explicitely a view as available
     ///
     /// - Parameters:
     ///   - view: the view to recycle
-    open func recycleView(view:BXView)->Bool{
+    open func liberate(viewsGroupedBy groupNames:[String]){
+        let referers = self._viewsReferers.filter({ (referer) -> Bool in
+        return groupNames.contains(referer.groupName)
+        })
+        for referer in referers{
+            referer.available = true
+        }
+    }
+
+    /// Mark explicitely a view as available
+    ///
+    /// - Parameters:
+    ///   - view: the view to recycle
+    open func liberate(view:BXView){
         // Update the view status
         if let vs = self._viewsReferers.first(where: { (referer) -> Bool in
             return referer.view.UID == view.UID
         }){
-            view.removeFromSuperview()
             vs.available = true
-            return true
         }
-        return false
+    }
+
+
+    /// Removes all the unused view from their superview
+    ///
+    /// - Parameter groupNames: the array of group names
+    open func removeAvailableViewsFromSuperView(groupedBy groupNames:[String]){
+        let referers = self._viewsReferers.filter({ (referer) -> Bool in
+            return groupNames.contains(referer.groupName)
+        })
+        for referer in referers{
+            if referer.available{
+                referer.view.removeFromSuperview()
+            }
+        }
     }
 
 
@@ -120,12 +163,22 @@ open class ViewsRecycler {
     /// If necessary the view is created by the factory closure
     /// - Parameters:
     ///   - identifiedBy: and identifier shared between a group of views
+    ///   - associatedUID: we try to propose the same referer for optimization purposes
     ///   - viewFactory:  the factory method to create a new view
     /// - Returns: a recyclable view
-    open func getARecyclableView(groupName:String,viewFactory:()->(BXView))->BXView{
-        if let referer = self._viewsReferers.first(where:{ (referer) -> Bool in
-            return (referer.available && referer.groupName==groupName)
+    open func getARecyclableView(groupName:String,associatedUID:String,viewFactory:()->(BXView))->BXView{
+        var firstAvailableReferer:ViewReferer?
+        if let associatedReferer = self._viewsReferers.first(where: { (referer) -> Bool in
+            let matching = (referer.available && referer.groupName==groupName && associatedUID == associatedUID)
+            if firstAvailableReferer == nil && !matching && referer.available  && referer.groupName==groupName {
+                firstAvailableReferer = referer
+            }
+            return matching
         }){
+            associatedReferer.available = false
+            return associatedReferer.view
+        }else if let referer = firstAvailableReferer{
+            print(associatedUID)
             referer.available = false
             return referer.view
         }
