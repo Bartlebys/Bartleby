@@ -13,25 +13,27 @@
 
     import AppKit
 
+    public typealias XView = NSView
+
+    public typealias XImage = NSImage
+
+    open class BXImageView:NSImageView,Identifiable{
+        open let UID=Bartleby.createUID()
+    }
+
     open class BXView:NSView,Identifiable{
         open let UID=Bartleby.createUID()
     }
 
     open class BXViewController:NSViewController,Identifiable,MessageListener{
-
         open let UID=Bartleby.createUID()
-
         open func handle<T:StateMessage>(message:T){}
     }
 
-
-
     open class BXWindowController: NSWindowController,MessageListener {
-
         open let UID=Bartleby.createUID()
-
         open func handle<T:StateMessage>(message:T){}
-        
+
     }
 
     open class BXTableView:NSTableView,Identifiable{
@@ -40,16 +42,23 @@
 
 
 #elseif os(iOS)
+
     import UIKit
+
+    public typealias XView = UIView
+
+    public typealias XImage = UIImage
+
+    open class BXImageView:UIImageView,Identifiable{
+        open let UID=Bartleby.createUID()
+    }
 
     open class BXView:UIView,Identifiable{
         public let UID=Bartleby.createUID()
     }
 
     open class BXViewController:UIViewController,Identifiable,MessageListener{
-
         public let UID=Bartleby.createUID()
-
         open func handle<T:StateMessage>(message:T){}
     }
 

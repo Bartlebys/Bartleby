@@ -9,7 +9,6 @@
 import Foundation
 import BartlebyKit
 
-
 /// The view recycler facilitate view reusage for high performance rendering
 ///
 /// During a rendering loop The most efficient way to recycle views is to :
@@ -25,12 +24,12 @@ open class ViewsRecycler {
 
     class ViewReferer {
 
-        var view:BXView
+        var view:XView
         var groupName:String
         var available:Bool
         var associatedUID:String = Default.NO_UID
 
-        public init(view: BXView, groupName:String, available:Bool = false){
+        public init(view: XView, groupName:String, available:Bool = false){
             self.view = view
             self.groupName = groupName
             self.available = available
@@ -110,7 +109,7 @@ open class ViewsRecycler {
     /// Recycle = liberateView + removeFromSuperview
     ///
     /// - Parameter view: the view to recycle
-    open func recycleView(view:BXView){
+    open func recycleView(view:XView){
         view.removeFromSuperview()
         self.liberate(view: view)
     }
@@ -134,10 +133,10 @@ open class ViewsRecycler {
     ///
     /// - Parameters:
     ///   - view: the view to recycle
-    open func liberate(view:BXView){
+    open func liberate(view:XView){
         // Update the view status
         if let vs = self._viewsReferers.first(where: { (referer) -> Bool in
-            return referer.view.UID == view.UID
+            return referer.view == view
         }){
             vs.available = true
         }
@@ -166,7 +165,7 @@ open class ViewsRecycler {
     ///   - associatedUID: we try to propose the same referer for optimization purposes
     ///   - viewFactory:  the factory method to create a new view
     /// - Returns: a recyclable view
-    open func getARecyclableView(groupName:String,associatedUID:String,viewFactory:()->(BXView))->BXView{
+    open func getARecyclableView(groupName:String,associatedUID:String,viewFactory:()->(XView))->XView{
         var firstAvailableReferer:ViewReferer?
         if let associatedReferer = self._viewsReferers.first(where: { (referer) -> Bool in
             let matching = (referer.available && referer.groupName==groupName && associatedUID == associatedUID)
@@ -193,8 +192,8 @@ open class ViewsRecycler {
     ///
     /// - Parameter groupName: the array of group names
     /// - Returns: the collection of actives views
-    open func getAllActiveViews(groupedBy groupNames:[String])->[BXView]{
-        return self._viewsReferers.flatMap({ (referer) -> BXView? in
+    open func getAllActiveViews(groupedBy groupNames:[String])->[XView]{
+        return self._viewsReferers.flatMap({ (referer) -> XView? in
             if  ( groupNames.contains(referer.groupName) && !referer.available){
                 return referer.view
             }else{
@@ -209,8 +208,8 @@ open class ViewsRecycler {
     ///
     /// - Parameter groupName: the array of group names
     /// - Returns: the collection of actives views
-    open func getAllViews(groupedBy groupNames:[String])->[BXView]{
-        return self._viewsReferers.flatMap({ (referer) -> BXView? in
+    open func getAllViews(groupedBy groupNames:[String])->[XView]{
+        return self._viewsReferers.flatMap({ (referer) -> XView? in
             if  groupNames.contains(referer.groupName){
                 return referer.view
             }else{
@@ -223,8 +222,8 @@ open class ViewsRecycler {
     /// Returns all the recycler views
     ///
     /// - Returns: the collection of views
-    open func getAllViews()->[BXView]{
-        return self._viewsReferers.flatMap({ (referer) -> BXView? in
+    open func getAllViews()->[XView]{
+        return self._viewsReferers.flatMap({ (referer) -> XView? in
                 return referer.view
         })
     }
