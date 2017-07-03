@@ -50,6 +50,27 @@ extension ManagedModel:RelationsResolution{
     }
 
 
+    /// Resolve the filtered Related Objects
+    ///
+    /// - Parameters:
+    ///   - relationship: the searched relationship
+    ///   - included: the filtering closure
+    /// - Returns: return the related Objects as values and the UID as keys
+    open func hashedFilteredRelations<T:Relational>(_ relationship:Relationship,included:(T)->(Bool))->[UID:T]{
+        var related=[String:T]()
+        for object in self.getContractedRelations(relationship){
+            if let candidate = try? Bartleby.registredObjectByUID(object) as ManagedModel{
+                if let casted = candidate as? T{
+                    if  included(casted) == true {
+                        related[casted.UID]=casted
+                    }
+                }
+            }
+        }
+        return related
+    }
+
+
     /// Resolve the Related Objects
     ///
     /// - Parameters:
