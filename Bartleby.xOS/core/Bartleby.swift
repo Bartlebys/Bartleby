@@ -125,7 +125,7 @@ open class Bartleby:NSObject {
 
      - returns: the document
      */
-    open func getDocumentByUID(_ UID:String) -> BartlebyDocument?{
+    open func getDocumentByUID(_ UID:UID) -> BartlebyDocument?{
         return self._documents[UID]
     }
     /**
@@ -142,7 +142,7 @@ open class Bartleby:NSObject {
 
      - parameter documentUID: the target document UID
      */
-    open func forget(_ documentUID: String) {
+    open func forget(_ documentUID: UID) {
         self._documents.removeValue(forKey: documentUID)
     }
 
@@ -154,7 +154,7 @@ open class Bartleby:NSObject {
      - parameter documentProxyUID: the proxy UID
      - parameter documentUID:      the final UID
      */
-    open func replaceDocumentUID(_ documentProxyUID: String, by documentUID: String) {
+    open func replaceDocumentUID(_ documentProxyUID: UID, by documentUID: UID) {
         if( documentProxyUID != documentUID) {
             if let document=self._documents[documentProxyUID] {
                 self._documents[documentUID]=document
@@ -168,7 +168,7 @@ open class Bartleby:NSObject {
 
      - returns: the UID
      */
-    open static func createUID() -> String {
+    open static func createUID() -> UID {
         // (!) NSUUID are not suitable for MONGODB as Primary Ids.
         // We need to encode them we have choosen base64
         let uid=UUID().uuidString
@@ -318,7 +318,7 @@ open class Bartleby:NSObject {
 
      - returns: the instance
      */
-    open static func registredObjectByUID<T: Collectible>(_ UID: String) throws-> T {
+    open static func registredObjectByUID<T: Collectible>(_ UID: UID) throws-> T {
         if let instance=self._instancesByUID[UID]{
             if let casted=instance as? T{
                 return casted
@@ -335,7 +335,7 @@ open class Bartleby:NSObject {
     /// You should most of the time use : `registredObjectByUID<T: Collectible>(_ UID: String) throws-> T`
     /// - parameter UID:
     /// - returns: the instance
-    open static func registredManagedModelByUID(_ UID: String)-> ManagedModel? {
+    open static func registredManagedModelByUID(_ UID: UID)-> ManagedModel? {
         return try? Bartleby.registredObjectByUID(UID)
     }
 
@@ -345,7 +345,7 @@ open class Bartleby:NSObject {
     ///
     /// - Parameter UIDs: the UIDs
     /// - Returns: the registred Instances
-    open static func registredObjectsByUIDs<T: Collectible>(_ UIDs: [String]) throws-> [T] {
+    open static func registredObjectsByUIDs<T: Collectible>(_ UIDs: [UID]) throws-> [T] {
         var items=[T]()
         for UID in UIDs{
             items.append(try Bartleby.registredObjectByUID(UID))
@@ -362,7 +362,7 @@ open class Bartleby:NSObject {
      î
      - returns: the instance
      */
-    open static func collectibleInstanceByUID(_ UID: String) -> Collectible? {
+    open static func collectibleInstanceByUID(_ UID: UID) -> Collectible? {
         return self._instancesByUID[UID]
     }
 
@@ -373,7 +373,7 @@ open class Bartleby:NSObject {
     /// We store its missing entry is the deferredOwnerships dictionary
     /// For future resolution (on registration)
     /// [notAvailableOwnerUID][relatedOwnedUIDS]
-    fileprivate static var _deferredOwnerships=[String:[String]]()
+    fileprivate static var _deferredOwnerships=[UID:[UID]]()
 
 
 
@@ -384,7 +384,7 @@ open class Bartleby:NSObject {
     /// - Parameters:
     ///   - ownee: the ownee
     ///   - ownerUID: the currently unavailable owner UID
-    open static func appendToDeferredOwnershipsList(_ ownee:Collectible,ownerUID:String){
+    open static func appendToDeferredOwnershipsList(_ ownee:Collectible,ownerUID:UID){
         if self._deferredOwnerships.keys.contains(ownerUID) {
             self._deferredOwnerships[ownerUID]!.append(ownee.UID)
         }else{
@@ -414,7 +414,7 @@ open class Bartleby:NSObject {
     // MARK: - Commit / Push Distribution (dynamic)
 
 
-    open static func markCommitted(_ instanceUID:String){
+    open static func markCommitted(_ instanceUID:UID){
         if let instance=Bartleby.collectibleInstanceByUID(instanceUID){
             instance.hasBeenCommitted()
         }else{

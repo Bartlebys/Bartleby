@@ -16,6 +16,6 @@ import Foundation
 public protocol Identifiable {
 
     // The unique identifier
-    var UID: String { get }
+    var UID: UID { get }
 
 }

@@ -127,7 +127,7 @@ extension ManagedModel{
     /// - Parameters:
     ///   - relationship:  the nature of the contract
     /// - Returns: the relations
-    open func getContractedRelations(_ relationship:Relationship)->[String]{
+    open func getContractedRelations(_ relationship:Relationship)->[UID]{
         switch relationship {
         case Relationship.free:
             return self.freeRelations
