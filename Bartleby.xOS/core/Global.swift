@@ -12,6 +12,7 @@ public let GB=1000000000
 public let MB=1000000
 public let KB=1000
 
+public typealias UID = String
 /**
  Returns a category for glog
 
