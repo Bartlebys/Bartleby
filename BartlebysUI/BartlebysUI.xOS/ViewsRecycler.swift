@@ -13,13 +13,10 @@ import BartlebyKit
 ///
 /// During a rendering loop The most efficient way to recycle views is to :
 ///
-/// 1 - `liberateViews()`
-/// 2 - call `getHashedRecyclableViews()`
+/// 1 - `liberateViews(viewsGroupedBy groupNames:[String])`
+/// 2 - `getHashedRecyclableViews(groupName:String,associatedUIDs:[String],viewFactory:()->(XView))->[UID:XView]`
 /// ... reconfigure the views
-/// 3 - call `removeAvailableViewsFromSuperView()`
-///
-/// You can call `liberateOffScreenViews` chronically to free offScreen views
-///
+/// 3 - `removeAllAvailableViewsFromSuperView()`
 /// You can call recycleView if necessary (but it is usually not the best Approach)
 open class ViewsRecycler {
 
@@ -146,18 +143,17 @@ open class ViewsRecycler {
 
 
     /// Removes all the unused view from their superview
-    ///
-    /// - Parameter groupNames: the array of group names
-    open func removeAvailableViewsFromSuperView(groupedBy groupNames:[String]){
-        let referers = self._viewsReferers.filter({ (referer) -> Bool in
-            return groupNames.contains(referer.groupName)
-        })
-        for referer in referers{
+    open func removeAllAvailableViewsFromSuperView(){
+        // We liberate all the offscreen views
+        self.liberateOffScreenViews()
+        // And remove All the available views from their superview
+        for referer in self._viewsReferers{
             if referer.available{
                 referer.view.removeFromSuperview()
             }
         }
     }
+
 
 
     /// Returns a recyclable view.
