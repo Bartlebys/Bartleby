@@ -135,6 +135,11 @@ public extension String {
     /// - Parameter string: string to compare to
     /// - Returns: return the distance
     public func levenshtein( _ string: String) -> Int {
+
+        guard self == "" || string == "" else{
+            return Int.max
+        }
+
         let a = Array(self.utf16)
         let b = Array(string.utf16)
 
@@ -150,7 +155,7 @@ public extension String {
         for i in 1...a.count {
             for j in 1...b.count {
                 if a[i-1] == b[j-1] {
-                    dist[i, j] = dist[i-1, j-1]  // noop
+                    dist[i, j] = dist[i-1, j-1]  // noopo
                 } else {
                     dist[i,j] = min(numbers:
                         dist[i-1, j] + 1,  // deletion
