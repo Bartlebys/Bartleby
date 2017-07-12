@@ -136,7 +136,7 @@ public extension String {
     /// - Returns: return the distance
     public func levenshtein( _ string: String) -> Int {
 
-        guard self != "" || string != "" else{
+        guard self != "" && string != "" else{
             return Int.max
         }
 
