@@ -55,11 +55,9 @@ import Foundation
 
     // Perform cleanUp when closing a document
     public func cleanUp(){
-        for listener in self._messageListeners{
-            // Ask for listeners to release all ressources
-            listener.handle(message: DocumentStates.cleanUp)
-        }
         Bartleby.syncOnMain{
+
+            self.send(DocumentStates.cleanUp)
 
             // Transition off line
             self.online=false
