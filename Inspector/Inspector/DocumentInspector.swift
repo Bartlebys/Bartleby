@@ -51,6 +51,7 @@ open class DocumentInspector: NSWindowController,DocumentProvider,DocumentDepend
     dynamic weak var castedDocument:BartlebyDocument?{
         didSet{
             self.castedDocument?.metadata.changesAreInspectables = true
+            self.document = nil
         }
     }
 
@@ -117,6 +118,5 @@ open class DocumentInspector: NSWindowController,DocumentProvider,DocumentDepend
             document.synchronizePendingOperations()
         }
     }
-
 
 }
