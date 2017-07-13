@@ -56,25 +56,24 @@ class DecryptorViewController: NSViewController,AsyncDocumentProvider,PasterDele
                     let c=first.components(separatedBy: AppHelper.copyFlag)
                     if c.count >= 3{
                         let crypted=c[1]
-                        // Let's decrypt the data
-                        self.decryptedString = try? Bartleby.cryptoDelegate.decryptString(crypted,useKey:Bartleby.configuration.KEY)
-                        if let d=self.decryptedString?.data(using:.utf8){
-                            if let report = try? document.serializer.deserialize(d) as? Report{
-                                if let metadata=report?.metadata{
-                                    self._document.metadata=metadata
+                        do {
+                            // Let's decrypt the data
+                            self.decryptedString = try Bartleby.cryptoDelegate.decryptString(crypted,useKey:Bartleby.configuration.KEY)
+                            if let d=self.decryptedString?.data(using:.utf8){
+                                if let report = try document.serializer.deserialize(d) as? Report{
+                                    if let metadata=report.metadata{
+                                        self._document.metadata=metadata
+                                    }
+                                    self._document.logs=report.logs
+                                    self._document.metrics=report.metrics
+                                    for c in self._consumers{
+                                        c.providerHasADocument()
+                                    }
+                                    return // Everything seems ok
                                 }
-                                if let logs=report?.logs{
-                                    self._document.logs=logs
-                                }
-                                if let metrics=report?.metrics{
-                                    self._document.metrics=metrics
-                                }
-
-                                for c in self._consumers{
-                                    c.providerHasADocument()
-                                }
-                                return // Everything seems ok
                             }
+                        }catch{
+                            glog("\(error)", file: #file, function: #function, line: #line, category: Default.LOG_SECURITY, decorative: false)
                         }
                     }
                 }

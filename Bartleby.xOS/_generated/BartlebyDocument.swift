@@ -59,7 +59,8 @@ import Foundation
             // Ask for listeners to release all ressources
             listener.handle(message: DocumentStates.cleanUp)
         }
-        Bartleby.syncOnMain {
+        Async.main{
+
             // Transition off line
             self.online=false
 
