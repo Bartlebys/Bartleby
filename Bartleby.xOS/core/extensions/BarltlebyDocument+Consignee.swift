@@ -205,7 +205,7 @@ extension BartlebyDocument:ConcreteConsignee, ConcreteTracker, Consignation, Ada
     #if os(OSX)
         //#if !USE_EMBEDDED_MODULES
         open func presentVolatileMessage(_ window: NSWindow, title: String, body: String)->() {
-           Async.main{() -> Void in
+            Bartleby.syncOnMain{() -> Void in
                 let alert = NSAlert()
                 alert.messageText = title
                 alert.addButton(withTitle: "OK")

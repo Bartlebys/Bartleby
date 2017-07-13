@@ -170,7 +170,7 @@ open class EventSource: NSObject, URLSessionDataDelegate {
 
         self.readyState = EventSourceState.open
         if self.onOpenCallback != nil {
-           Async.main {
+           Bartleby.syncOnMain {
                 self.onOpenCallback!()
             }
         }
@@ -191,7 +191,7 @@ open class EventSource: NSObject, URLSessionDataDelegate {
             }
         }
 
-       Async.main {
+       Bartleby.syncOnMain {
             if let errorCallback = self.onErrorCallback {
                 errorCallback(error as NSError?)
             } else {
@@ -275,7 +275,7 @@ open class EventSource: NSObject, URLSessionDataDelegate {
             }
 
             if let event = parsedEvent.event, let data = parsedEvent.data, let eventHandler = self.eventListeners[event] {
-               Async.main {
+               Bartleby.syncOnMain {
                     eventHandler(self.lastEventID, event, data)
                 }
             }

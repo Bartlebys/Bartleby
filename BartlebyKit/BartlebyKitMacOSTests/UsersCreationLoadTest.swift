@@ -16,9 +16,9 @@ class UsersCreationLoadTest: TestCase {
     static var simultaneousCreations:Int=1
     static var nbOfIteration:Int=simultaneousCreations*1
     static var expecationHasBeenFullFilled=false
-    
 
-     static override func setUp() {
+
+    static override func setUp() {
         super.setUp()
         Bartleby.sharedInstance.configureWith(TestsConfiguration.self)
         // Purge cookie for the domain
@@ -33,7 +33,7 @@ class UsersCreationLoadTest: TestCase {
     fileprivate func _create_a_user(_ completionHandler:@escaping (_ createdUser:User,_ completionState:Completion)->(),idMethod:DocumentMetadata.IdentificationMethod){
 
         // We create one document per User (to permit to variate the identification method without side effect)
-        // You can for sure use one document for all the users 
+        // You can for sure use one document for all the users
         let document=UsersCreationLoadTest.document
         document.configureSchema()
         Bartleby.sharedInstance.declare(document)
@@ -64,14 +64,14 @@ class UsersCreationLoadTest: TestCase {
 
 
         func __create(_ idMethod:DocumentMetadata.IdentificationMethod){
-                self._create_a_user ({ (user, completionState) in
-                    if completionState.success{
-                        __login(user)
-                    }else{
-                        XCTFail("Failure on creation [\(UsersCreationLoadTest.userCounter)]  \(completionState)")
-                        __fullFill()
-                    }
-                },idMethod: idMethod)
+            self._create_a_user ({ (user, completionState) in
+                if completionState.success{
+                    __login(user)
+                }else{
+                    XCTFail("Failure on creation [\(UsersCreationLoadTest.userCounter)]  \(completionState)")
+                    __fullFill()
+                }
+            },idMethod: idMethod)
         }
 
 
@@ -119,10 +119,9 @@ class UsersCreationLoadTest: TestCase {
             if  UsersCreationLoadTest.userCounter == UsersCreationLoadTest.nbOfIteration {
                 __fullFill()
             }else{
-               Async.main{
+                Bartleby.syncOnMain{
                     __create(idMethod)
                 }
-
             }
         }
 
@@ -135,7 +134,7 @@ class UsersCreationLoadTest: TestCase {
         }
 
         // Call the first creation closure
-         __create(idMethod)
+        __create(idMethod)
 
     }
 
@@ -164,9 +163,9 @@ class UsersCreationLoadTest: TestCase {
     }
 
     /**
-        We cannot use cookie on large amount of users (there is a limit)
-        And random failure may occcur.
-        We leave this little test to control that Explicit Cookie Identification works in basic context
+     We cannot use cookie on large amount of users (there is a limit)
+     And random failure may occcur.
+     We leave this little test to control that Explicit Cookie Identification works in basic context
      */
     func test_003_1X5_cookie() {
         UsersCreationLoadTest.simultaneousCreations=1
@@ -219,6 +218,6 @@ class UsersCreationLoadTest: TestCase {
         self._run_test_routine_implementation(expectation,idMethod: DocumentMetadata.IdentificationMethod.key)
         waitForExpectations(timeout: TestsConfiguration.LONG_TIME_OUT_DURATION, handler: nil)
     }
-
+    
     
 }

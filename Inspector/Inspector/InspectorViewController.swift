@@ -15,7 +15,7 @@ protocol FilterPredicateDelegate {
     func filterExpression()->String
 }
 
-class InspectorViewController: NSViewController,DocumentDependent,NSWindowDelegate,FilterPredicateDelegate{
+class InspectorViewController: NSViewController,DocumentDependent,FilterPredicateDelegate{
 
     override var nibName : String { return "InspectorViewController" }
 
@@ -357,7 +357,7 @@ class CollectionListDelegate:NSObject,NSOutlineViewDelegate,NSOutlineViewDataSou
     }
 
     func reloadData(){
-        Async.main {
+        Bartleby.syncOnMain{
             var selectedIndexes=self._outlineView.selectedRowIndexes
             self._outlineView.reloadData()
             if selectedIndexes.count==0 && self._outlineView.numberOfRows > 0 {
@@ -535,7 +535,7 @@ class CollectionListDelegate:NSObject,NSOutlineViewDelegate,NSOutlineViewDataSou
 
     
     func outlineViewSelectionDidChange(_ notification: Notification) {
-        Async.main{
+        Bartleby.syncOnMain{
             let selected=self._outlineView.selectedRow
             if let item=self._outlineView.item(atRow: selected){
                 self._selectionHandler(item)

@@ -64,7 +64,7 @@ class PrepareUserCreationViewController: IdentityStepViewController{
             self.emailComboBox.selectItem(at: 0)
             self.phoneCountryCodeComboBox.selectItem(at: 0)
             self.phoneNumberComboBox.selectItem(at: 0)
-            Async.main{
+            Bartleby.syncOnMain{
                 self.didChange(self.emailComboBox)
             }
         }

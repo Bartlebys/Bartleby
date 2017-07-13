@@ -352,7 +352,7 @@ public struct IdentitiesManager {
                                       userUID: user.UID,
                                       cryptoPassword: user.cryptoPassword,
                                       sucessHandler:{ (context) in
-                                        Async.main{
+                                        Bartleby.syncOnMain{
                                             __patchHasSucceededOn(profile, with: identification)
                                         }
                     }, failureHandler: { (context) in

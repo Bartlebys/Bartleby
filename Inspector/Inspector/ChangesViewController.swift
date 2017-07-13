@@ -30,7 +30,7 @@ class ChangesViewController: NSViewController,Editor,Identifiable{
             self._selectedItem?.addChangesSuperviser(self, closure: { (key, oldValue, newValue) in
                     self.tableView.reloadData()
             })
-           Async.main{
+            Bartleby.syncOnMain{
                 self.tableView.reloadData()
             }
         }

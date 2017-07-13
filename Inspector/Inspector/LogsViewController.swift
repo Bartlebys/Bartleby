@@ -130,7 +130,7 @@ class LogsViewController: NSViewController,DocumentDependent{
 extension LogsViewController:LogEntriesObserver{
 
     func receive(_ entry:LogEntry){
-        Async.main {
+        Bartleby.syncOnMain {
             self.entries.insert(entry, at: 0)
         }
     }

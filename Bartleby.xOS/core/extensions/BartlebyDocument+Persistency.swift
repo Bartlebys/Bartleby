@@ -92,13 +92,15 @@ extension BartlebyDocument{
                 // ERROR
             }
             try self._loadCollectionData(from:fileWrappers)
-
-            Async.main{
+            // Store the reference
+            self.documentFileWrapper=fileWrapper
+            Bartleby.syncOnMain {
                 self.send(DocumentStates.collectionsDataHasBeenDecrypted)
             }
+        }else{
+            // Store the reference
+            self.documentFileWrapper=fileWrapper
         }
-        // Store the reference
-        self.documentFileWrapper=fileWrapper
     }
 
 

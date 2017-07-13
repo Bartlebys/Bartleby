@@ -89,11 +89,11 @@ public class DownloadBlock {
                 var reactions = Array<Reaction> ()
 
                 if 200...299 ~= statusCode {
-                    Async.main{
+                    Bartleby.syncOnMain{
                         self._sucessHandler(tempUrl)
                     }
                 }else{
-                    Async.main{
+                    Bartleby.syncOnMain{
                         let m=NSLocalizedString("Download block failure",
                                                 comment: "Download block failure description")
                         let failureReaction =  Reaction.dispatchAdaptiveMessage(
@@ -107,7 +107,7 @@ public class DownloadBlock {
                         self._failureHandler(context)
                     }
                 }
-                Async.main{
+                Bartleby.syncOnMain{
                     //Let's react according to the context.
                     document.perform(reactions, forContext: context)
                 }

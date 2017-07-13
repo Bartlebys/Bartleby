@@ -149,7 +149,7 @@ struct Flocker{
                         }else{
                             // Close the flockFileHandle
                             flockFileHandle.closeFile()
-                            Async.main{
+                            Bartleby.syncOnMain{
                                 failure(container,NSLocalizedString("Invalid URL", tableName:"system", comment: "Invalid URL")+" \(path)")
                             }
                         }
@@ -160,7 +160,7 @@ struct Flocker{
                         paths.append("/"+pathURL.lastPathComponent)
                     }
                 }else{
-                    Async.main{
+                    Bartleby.syncOnMain{
                         failure(container,NSLocalizedString("Unexisting path: ", tableName:"system", comment: "Unexisting path: ")+flockFilePath)
                     }
                 }
@@ -180,7 +180,7 @@ struct Flocker{
                         progressionState.message=message
                     }
                     progressionState.currentPercentProgress=Double(counter)*Double(100)/Double(progressionState.totalTaskCount)
-                    Async.main{
+                    Bartleby.syncOnMain{
                         // Relay the progression
                         progression(progressionState)
                     }
@@ -229,7 +229,7 @@ struct Flocker{
                 }
 
             }else{
-                Async.main{
+                Bartleby.syncOnMain{
                     failure(container,NSLocalizedString("Invalid Path", tableName:"system", comment: "Invalid Path")+" \(path)")
                 }
             }
@@ -289,7 +289,7 @@ struct Flocker{
                         node.nature=Node.Nature.alias
                         node.proxyPath=aliasDestinationPath
                         container.nodes.append(node)
-                        Async.main{
+                        Bartleby.syncOnMain{
                             success()
                         }
                     }else if type==FileAttributeType.typeRegular{
@@ -377,7 +377,7 @@ struct Flocker{
                                         node.addBlock(block)
                                         container.blocks.append(block)
                                         counter+=1
-                                        Async.main{
+                                        Bartleby.syncOnMain{
                                             progressionState.currentTaskIndex=counter
                                             progressionState.message="\(i) \(filePath): <\( block.startsAt), \(block.startsAt+block.size)> + \(block.size) Bytes"
                                             progression(progressionState)
@@ -386,34 +386,34 @@ struct Flocker{
                                     })
                                 }
                                 container.nodes.append(node)
-                                Async.main{
+                                Bartleby.syncOnMain{
                                     success()
                                 }
                             }catch{
-                                Async.main{
+                                Bartleby.syncOnMain{
                                     failure("\(error)")
                                 }
                             }
                         }else{
-                            Async.main{
+                            Bartleby.syncOnMain{
                                 failure(NSLocalizedString("Enable to create Reading file Handle", tableName:"system", comment: "Enable to create Reading file Handle")+" \(filePath)")
                             }
                         }
                     }else if type==FileAttributeType.typeDirectory{
                         node.nature=Node.Nature.folder
                         container.nodes.append(node)
-                        Async.main{
+                        Bartleby.syncOnMain{
                             success()
                         }
                     }
                 }
             }else{
-                Async.main{
+                Bartleby.syncOnMain{
                     failure(NSLocalizedString("Unable to extract attributes at path:", tableName:"system", comment: "Unable to extract attributes at path:")+" \(filePath)")
                 }
             }
         }else{
-            Async.main{
+            Bartleby.syncOnMain{
                 failure(NSLocalizedString("Invalid file at path:", tableName:"system", comment: "Unexisting file at path:")+" \(filePath)")
             }
         }
@@ -491,7 +491,7 @@ struct Flocker{
                             progressionState.message=message
                         }
                         progressionState.currentPercentProgress=Double(counter)*Double(100)/Double(progressionState.totalTaskCount)
-                        Async.main{
+                        Bartleby.syncOnMain{
                             // Relay the progression
                             progression(progressionState)
                         }
@@ -514,7 +514,7 @@ struct Flocker{
                         }, success: {
                             __onProgression(message:"Unflocked: \(node.relativePath)",incrementGlobalCounter: true)
                             if counter==container.nodes.count{
-                                Async.main{
+                                Bartleby.syncOnMain{
                                     if failuresMessages.count==0{
                                         // it is a success
                                         success(stats)
@@ -532,7 +532,7 @@ struct Flocker{
                         })
                     }
                 }else{
-                    Async.main{
+                    Bartleby.syncOnMain{
                         failure(NSLocalizedString("Enable to create Reading file Handle", tableName:"system", comment: "Enable to create Reading file Handle")+" \(flockedFile)")
                     }
                 }
@@ -662,12 +662,12 @@ struct Flocker{
             }
             progressionState.currentPercentProgress=Double(counter)*Double(100)/Double(progressionState.totalTaskCount)
             // Relay the progression
-            Async.main{
+            Bartleby.syncOnMain{
                 progression(progressionState)
             }
 
             if counter>=blocks.count{
-                Async.main{
+                Bartleby.syncOnMain{
                     if failuresMessages.count==0{
                         // it is a success
                         success()
