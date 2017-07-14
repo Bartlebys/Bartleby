@@ -41,12 +41,7 @@ extension ManagedModel:ProvisionChanges{
         for (_,supervisionClosure) in self._supervisers{
             supervisionClosure(key,oldValue,newValue)
         }
-
-        // We want to save collections only if needed.
-        if var collection = self as? BartlebyCollection{
-            collection.shouldBeSaved=true
-        }
-
+        
        if self._autoCommitIsEnabled == true {
             self.collection?.stage(self)
         }

@@ -68,6 +68,7 @@ public extension Notification.Name {
     open func stage(_ item: Collectible){
         if !self._staged.contains(item.UID){
             self._staged.append(item.UID)
+            self.shouldBeSaved = true
         }
     }
 
@@ -367,6 +368,7 @@ public extension Notification.Name {
         }catch{
             self.referentDocument?.log("\(error)", file: #file, function: #function, line: #line, category: Default.LOG_DEFAULT, decorative: false)
         }
+        self.shouldBeSaved = true
     }
 
     // MARK: Add
@@ -421,9 +423,7 @@ public extension Notification.Name {
             if commit==true {
                CreateUser.commit(item, in:self.referentDocument!)
             }
-
-        }else{
-
+            self.shouldBeSaved = true
         }
     }
 
@@ -466,6 +466,7 @@ public extension Notification.Name {
         if commit==true{
            self._deleted.append(UID)
         }
+        self.shouldBeSaved = true
     }
 
 
