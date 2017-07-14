@@ -14,7 +14,7 @@ import Foundation
 #endif
 
 // MARK: Bartleby's Core: an object that encapsulate the whole http context , request, response
-@objc(HTTPContext) open class HTTPContext : UnManagedModel, Consignable {
+@objc(HTTPContext) open class HTTPContext : UnManagedObject, Consignable {
 
 
 	//A descriptive string for developer to identify the calling context
