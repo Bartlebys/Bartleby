@@ -55,7 +55,7 @@ public extension Completion {
     ///
     /// - Parameter ref: the reference
     func setExternalReferenceResult<T: Collectible>(from ref:T) {
-        let externalRef=StringVO()
+        let externalRef=StringValue()
         externalRef.value=ref.UID
         if let json=externalRef.toJSONString(){
             self.data = json.data(using: String.Encoding.utf8)
@@ -69,7 +69,7 @@ public extension Completion {
     func getResultExternalReference() ->String? {
         if let data = self.data{
             if let json=String(data: data, encoding: String.Encoding.utf8){
-                if let ref:StringVO = Mapper<StringVO>().map(JSONString:json){
+                if let ref:StringValue = Mapper<StringValue>().map(JSONString:json){
                     return ref.value
                 }
             }
