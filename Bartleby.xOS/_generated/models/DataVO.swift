@@ -13,7 +13,7 @@ import Foundation
 	import ObjectMapper
 #endif
 
-// MARK: A simple String UnManagedObject
+// MARK: A simple String UnManagedModel
 @objc(DataVO) open class DataVO : UnManagedModel {
 
 
