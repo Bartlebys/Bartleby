@@ -14,7 +14,7 @@ import Foundation
 #endif
 
 // MARK: Bartleby's Core: used to keep track of changes in memory when inspecting an App (Value Object)
-@objc(KeyedChanges) open class KeyedChanges : ValueObject {
+@objc(KeyedChanges) open class KeyedChanges : UnManagedModel {
 
 
 	//the elapsed time since the app has been launched

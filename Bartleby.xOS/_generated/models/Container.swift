@@ -14,7 +14,7 @@ import Foundation
 #endif
 
 // MARK: Bartleby's Synchronized File System: A container to store Boxes,Nodes,Blocks
-@objc(Container) open class Container : ValueObject {
+@objc(Container) open class Container : UnManagedModel {
 
 
 	//You can setup a password

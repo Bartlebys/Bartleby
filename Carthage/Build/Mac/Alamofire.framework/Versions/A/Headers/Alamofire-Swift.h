@@ -228,22 +228,22 @@ SWIFT_CLASS("_TtC9Alamofire15SessionDelegate")
 /// Overrides default behavior for URLSessionDelegate method <code>urlSession(_:didBecomeInvalidWithError:)</code>.
 @property (nonatomic, copy) void (^ _Nullable sessionDidBecomeInvalidWithError)(NSURLSession * _Nonnull, NSError * _Nullable);
 /// Overrides all behavior for URLSessionDelegate method <code>urlSession(_:didReceive:completionHandler:)</code> and requires the caller to call the <code>completionHandler</code>.
-@property (nonatomic, copy) void (^ _Nullable sessionDidReceiveChallengeWithCompletion)(NSURLSession * _Nonnull, NSURLAuthenticationChallenge * _Nonnull, SWIFT_NOESCAPE void (^ _Nonnull)(NSURLSessionAuthChallengeDisposition, NSURLCredential * _Nullable));
+@property (nonatomic, copy) void (^ _Nullable sessionDidReceiveChallengeWithCompletion)(NSURLSession * _Nonnull, NSURLAuthenticationChallenge * _Nonnull, void (^ _Nonnull)(NSURLSessionAuthChallengeDisposition, NSURLCredential * _Nullable));
 /// Overrides default behavior for URLSessionDelegate method <code>urlSessionDidFinishEvents(forBackgroundURLSession:)</code>.
 @property (nonatomic, copy) void (^ _Nullable sessionDidFinishEventsForBackgroundURLSession)(NSURLSession * _Nonnull);
 /// Overrides default behavior for URLSessionTaskDelegate method <code>urlSession(_:task:willPerformHTTPRedirection:newRequest:completionHandler:)</code>.
 @property (nonatomic, copy) NSURLRequest * _Nullable (^ _Nullable taskWillPerformHTTPRedirection)(NSURLSession * _Nonnull, NSURLSessionTask * _Nonnull, NSHTTPURLResponse * _Nonnull, NSURLRequest * _Nonnull);
 /// Overrides all behavior for URLSessionTaskDelegate method <code>urlSession(_:task:willPerformHTTPRedirection:newRequest:completionHandler:)</code> and
 /// requires the caller to call the <code>completionHandler</code>.
-@property (nonatomic, copy) void (^ _Nullable taskWillPerformHTTPRedirectionWithCompletion)(NSURLSession * _Nonnull, NSURLSessionTask * _Nonnull, NSHTTPURLResponse * _Nonnull, NSURLRequest * _Nonnull, SWIFT_NOESCAPE void (^ _Nonnull)(NSURLRequest * _Nullable));
+@property (nonatomic, copy) void (^ _Nullable taskWillPerformHTTPRedirectionWithCompletion)(NSURLSession * _Nonnull, NSURLSessionTask * _Nonnull, NSHTTPURLResponse * _Nonnull, NSURLRequest * _Nonnull, void (^ _Nonnull)(NSURLRequest * _Nullable));
 /// Overrides all behavior for URLSessionTaskDelegate method <code>urlSession(_:task:didReceive:completionHandler:)</code> and
 /// requires the caller to call the <code>completionHandler</code>.
-@property (nonatomic, copy) void (^ _Nullable taskDidReceiveChallengeWithCompletion)(NSURLSession * _Nonnull, NSURLSessionTask * _Nonnull, NSURLAuthenticationChallenge * _Nonnull, SWIFT_NOESCAPE void (^ _Nonnull)(NSURLSessionAuthChallengeDisposition, NSURLCredential * _Nullable));
+@property (nonatomic, copy) void (^ _Nullable taskDidReceiveChallengeWithCompletion)(NSURLSession * _Nonnull, NSURLSessionTask * _Nonnull, NSURLAuthenticationChallenge * _Nonnull, void (^ _Nonnull)(NSURLSessionAuthChallengeDisposition, NSURLCredential * _Nullable));
 /// Overrides default behavior for URLSessionTaskDelegate method <code>urlSession(_:task:needNewBodyStream:)</code>.
 @property (nonatomic, copy) NSInputStream * _Nullable (^ _Nullable taskNeedNewBodyStream)(NSURLSession * _Nonnull, NSURLSessionTask * _Nonnull);
 /// Overrides all behavior for URLSessionTaskDelegate method <code>urlSession(_:task:needNewBodyStream:)</code> and
 /// requires the caller to call the <code>completionHandler</code>.
-@property (nonatomic, copy) void (^ _Nullable taskNeedNewBodyStreamWithCompletion)(NSURLSession * _Nonnull, NSURLSessionTask * _Nonnull, SWIFT_NOESCAPE void (^ _Nonnull)(NSInputStream * _Nullable));
+@property (nonatomic, copy) void (^ _Nullable taskNeedNewBodyStreamWithCompletion)(NSURLSession * _Nonnull, NSURLSessionTask * _Nonnull, void (^ _Nonnull)(NSInputStream * _Nullable));
 /// Overrides default behavior for URLSessionTaskDelegate method <code>urlSession(_:task:didSendBodyData:totalBytesSent:totalBytesExpectedToSend:)</code>.
 @property (nonatomic, copy) void (^ _Nullable taskDidSendBodyData)(NSURLSession * _Nonnull, NSURLSessionTask * _Nonnull, int64_t, int64_t, int64_t);
 /// Overrides default behavior for URLSessionTaskDelegate method <code>urlSession(_:task:didCompleteWithError:)</code>.
@@ -252,7 +252,7 @@ SWIFT_CLASS("_TtC9Alamofire15SessionDelegate")
 @property (nonatomic, copy) NSURLSessionResponseDisposition (^ _Nullable dataTaskDidReceiveResponse)(NSURLSession * _Nonnull, NSURLSessionDataTask * _Nonnull, NSURLResponse * _Nonnull);
 /// Overrides all behavior for URLSessionDataDelegate method <code>urlSession(_:dataTask:didReceive:completionHandler:)</code> and
 /// requires caller to call the <code>completionHandler</code>.
-@property (nonatomic, copy) void (^ _Nullable dataTaskDidReceiveResponseWithCompletion)(NSURLSession * _Nonnull, NSURLSessionDataTask * _Nonnull, NSURLResponse * _Nonnull, SWIFT_NOESCAPE void (^ _Nonnull)(NSURLSessionResponseDisposition));
+@property (nonatomic, copy) void (^ _Nullable dataTaskDidReceiveResponseWithCompletion)(NSURLSession * _Nonnull, NSURLSessionDataTask * _Nonnull, NSURLResponse * _Nonnull, void (^ _Nonnull)(NSURLSessionResponseDisposition));
 /// Overrides default behavior for URLSessionDataDelegate method <code>urlSession(_:dataTask:didBecome:)</code>.
 @property (nonatomic, copy) void (^ _Nullable dataTaskDidBecomeDownloadTask)(NSURLSession * _Nonnull, NSURLSessionDataTask * _Nonnull, NSURLSessionDownloadTask * _Nonnull);
 /// Overrides default behavior for URLSessionDataDelegate method <code>urlSession(_:dataTask:didReceive:)</code>.
@@ -261,7 +261,7 @@ SWIFT_CLASS("_TtC9Alamofire15SessionDelegate")
 @property (nonatomic, copy) NSCachedURLResponse * _Nullable (^ _Nullable dataTaskWillCacheResponse)(NSURLSession * _Nonnull, NSURLSessionDataTask * _Nonnull, NSCachedURLResponse * _Nonnull);
 /// Overrides all behavior for URLSessionDataDelegate method <code>urlSession(_:dataTask:willCacheResponse:completionHandler:)</code> and
 /// requires caller to call the <code>completionHandler</code>.
-@property (nonatomic, copy) void (^ _Nullable dataTaskWillCacheResponseWithCompletion)(NSURLSession * _Nonnull, NSURLSessionDataTask * _Nonnull, NSCachedURLResponse * _Nonnull, SWIFT_NOESCAPE void (^ _Nonnull)(NSCachedURLResponse * _Nullable));
+@property (nonatomic, copy) void (^ _Nullable dataTaskWillCacheResponseWithCompletion)(NSURLSession * _Nonnull, NSURLSessionDataTask * _Nonnull, NSCachedURLResponse * _Nonnull, void (^ _Nonnull)(NSCachedURLResponse * _Nullable));
 /// Overrides default behavior for URLSessionDownloadDelegate method <code>urlSession(_:downloadTask:didFinishDownloadingTo:)</code>.
 @property (nonatomic, copy) void (^ _Nullable downloadTaskDidFinishDownloadingToURL)(NSURLSession * _Nonnull, NSURLSessionDownloadTask * _Nonnull, NSURL * _Nonnull);
 /// Overrides default behavior for URLSessionDownloadDelegate method <code>urlSession(_:downloadTask:didWriteData:totalBytesWritten:totalBytesExpectedToWrite:)</code>.

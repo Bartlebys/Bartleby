@@ -28,8 +28,8 @@ class SourceEditor: NSViewController,Editor {
                 let selectedJSON=self._selectedItem!.toJSONString(true)
                 self.textView.string=selectedJSON
                 self.enableEdition=true
-            }else if let valueObject = representedObject as? ValueObject{
-                let selectedJSON=valueObject.toJSONString(prettyPrint: true)
+            }else if let UnManagedModel = representedObject as? UnManagedModel{
+                let selectedJSON=UnManagedModel.toJSONString(prettyPrint: true)
                 self.enableEdition=false
                 self.textView.string=selectedJSON
             }

@@ -223,7 +223,7 @@ class InspectorViewController: NSViewController,DocumentDependent,FilterPredicat
                 }
             }
         }else{
-            // It  a ValueObject
+            // It  a UnManagedModel
             if let _ = selected as? DocumentMetadata{
                 self._topViewController=self.sourceEditor
                 self._bottomViewController=self.metadataViewController

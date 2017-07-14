@@ -14,7 +14,7 @@ import Foundation
 #endif
 
 // MARK: Bartleby's Core: A single print entry
-@objc(LogEntry) open class LogEntry : ValueObject {
+@objc(LogEntry) open class LogEntry : UnManagedModel {
 
 
 	//The print entry counter

@@ -14,7 +14,7 @@ import Foundation
 #endif
 
 // MARK: Bartleby's Core: a value object used to record metrics
-@objc(Metrics) open class Metrics : ValueObject {
+@objc(Metrics) open class Metrics : UnManagedModel {
 
 
 	//The referent document

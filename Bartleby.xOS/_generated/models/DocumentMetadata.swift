@@ -14,7 +14,7 @@ import Foundation
 #endif
 
 // MARK: Bartleby's Core: Complete implementation in DocumentMetadata.
-@objc(DocumentMetadata) open class DocumentMetadata : ValueObject {
+@objc(DocumentMetadata) open class DocumentMetadata : UnManagedModel {
 
 
 	//The data space UID can be shared between multiple Docuemnt.

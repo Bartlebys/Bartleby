@@ -13,8 +13,8 @@ import Foundation
 	import ObjectMapper
 #endif
 
-// MARK: A simple String ValueObject
-@objc(StringVO) open class StringVO : ValueObject {
+// MARK: A simple String UnManagedModel
+@objc(StringVO) open class StringVO : UnManagedModel {
 
 
 	//The value

@@ -14,7 +14,7 @@ import Foundation
 #endif
 
 // MARK: Bartleby's Core: an object that encapsulate the URL Request information
-@objc(HTTPRequest) open class HTTPRequest : ValueObject {
+@objc(HTTPRequest) open class HTTPRequest : UnManagedModel {
 
 
 	//The url

@@ -14,7 +14,7 @@ import Foundation
 #endif
 
 // MARK: Bartleby's Commons: A progression state
-@objc(Progression) open class Progression : ValueObject {
+@objc(Progression) open class Progression : UnManagedModel {
 
 
 	//The start time of the progression state

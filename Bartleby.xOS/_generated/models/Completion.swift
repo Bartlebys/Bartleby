@@ -14,7 +14,7 @@ import Foundation
 #endif
 
 // MARK: Bartleby's Commons: A completion state
-@objc(Completion) open class Completion : ValueObject {
+@objc(Completion) open class Completion : UnManagedModel {
 
 
 	//Success if set to true

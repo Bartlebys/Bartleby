@@ -78,18 +78,23 @@ class ImmutableObjectTests: XCTestCase {
 		// RawRepresentable
 		"prop27a": NSNumber(value: 0),
 		"prop27b": NSNumber(value: 1000),
+		"prop27c": [NSNumber(value: 0), NSNumber(value: 1000)],
 
 		"prop28a": Int(0),
 		"prop28b": Int(255),
+		"prop28c": [Int(0), Int(255)],
 
 		"prop29a": Double(0),
 		"prop29b": Double(100),
+		"prop29c": [Double(0), Double(100)],
 
 		"prop30a": Float(0),
 		"prop30b": Float(100),
+		"prop30c": [Float(0), Float(100)],
 		
 		"prop31a": "String A",
 		"prop31b": "String B",
+		"prop31c": ["String A", "String B"],
 		
 		// [[String]]
 		"prop32": [["prop32"]],
@@ -125,7 +130,7 @@ class ImmutableObjectTests: XCTestCase {
 		XCTAssertEqual(immutable.prop1, "Immutable!")
 		XCTAssertEqual(immutable.prop2, 255)
 		XCTAssertEqual(immutable.prop3, true)
-		XCTAssertEqual(immutable.prop4, DBL_MAX)
+		XCTAssertEqual(immutable.prop4, .greatestFiniteMagnitude)
 		
 		XCTAssertEqual(immutable.prop5, "prop5_TRANSFORMED")
 		XCTAssertEqual(immutable.prop6, "prop6_TRANSFORMED")
@@ -158,18 +163,23 @@ class ImmutableObjectTests: XCTestCase {
 		
 		XCTAssertEqual(immutable.prop27a.rawValue, Int64Enum.a.rawValue)
 		XCTAssertEqual(immutable.prop27b.rawValue, Int64Enum.b.rawValue)
+		XCTAssertEqual(immutable.prop27c, [Int64Enum.a, Int64Enum.b])
 		
 		XCTAssertEqual(immutable.prop28a.rawValue, IntEnum.a.rawValue)
 		XCTAssertEqual(immutable.prop28b.rawValue, IntEnum.b.rawValue)
+		XCTAssertEqual(immutable.prop28c, [IntEnum.a, IntEnum.b])
 		
 		XCTAssertEqual(immutable.prop29a.rawValue, DoubleEnum.a.rawValue)
 		XCTAssertEqual(immutable.prop29b.rawValue, DoubleEnum.b.rawValue)
+		XCTAssertEqual(immutable.prop29c, [DoubleEnum.a, DoubleEnum.b])
 		
 		XCTAssertEqual(immutable.prop30a.rawValue, FloatEnum.a.rawValue)
 		XCTAssertEqual(immutable.prop30b.rawValue, FloatEnum.b.rawValue)
+		XCTAssertEqual(immutable.prop30c, [FloatEnum.a, FloatEnum.b])
 		
 		XCTAssertEqual(immutable.prop31a.rawValue, StringEnum.A.rawValue)
 		XCTAssertEqual(immutable.prop31b.rawValue, StringEnum.B.rawValue)
+		XCTAssertEqual(immutable.prop31c, [StringEnum.A, StringEnum.B])
 		
 		XCTAssertEqual(immutable.prop32[0][0], "prop32_TRANSFORMED")
 		XCTAssertEqual(immutable.prop33![0][0], "prop33_TRANSFORMED")
@@ -363,18 +373,23 @@ struct Struct {
 	// RawRepresentable
 	let prop27a: Int64Enum
 	let prop27b: Int64Enum
+	let prop27c: [Int64Enum]
 	
 	let prop28a: IntEnum
 	let prop28b: IntEnum
+	let prop28c: [IntEnum]
 	
 	let prop29a: DoubleEnum
 	let prop29b: DoubleEnum
+	let prop29c: [DoubleEnum]
 	
 	let prop30a: FloatEnum
 	let prop30b: FloatEnum
+	let prop30c: [FloatEnum]
 	
 	let prop31a: StringEnum
 	let prop31b: StringEnum
+	let prop31c: [StringEnum]
 	
 	let prop32: [[String]]
 	let prop33: [[String]]?
@@ -401,7 +416,7 @@ extension Struct: ImmutableMappable {
 		prop1 = try map.value("prop1")
 		prop2 = try map.value("prop2")
 		prop3 = try map.value("prop3")
-		prop4 = (try? map.value("prop4")) ?? DBL_MAX
+		prop4 = (try? map.value("prop4")) ?? .greatestFiniteMagnitude
 		
 		prop5 = try map.value("prop5", using: stringTransform)
 		prop6 = try? map.value("prop6", using: stringTransform)
@@ -429,18 +444,23 @@ extension Struct: ImmutableMappable {
 		
 		prop27a = try map.value("prop27a")
 		prop27b = try map.value("prop27b")
+		prop27c = try map.value("prop27c")
 		
 		prop28a = try map.value("prop28a")
 		prop28b = try map.value("prop28b")
+		prop28c = try map.value("prop28c")
 		
 		prop29a = try map.value("prop29a")
 		prop29b = try map.value("prop29b")
+		prop29c = try map.value("prop29c")
 		
 		prop30a = try map.value("prop30a")
 		prop30b = try map.value("prop30b")
+		prop30c = try map.value("prop30c")
 		
 		prop31a = try map.value("prop31a")
 		prop31b = try map.value("prop31b")
+		prop31c = try map.value("prop31c")
 		
 		prop32 = try map.value("prop32", using: stringTransform)
 		prop33 = try? map.value("prop33", using: stringTransform)
@@ -500,18 +520,23 @@ extension Struct: ImmutableMappable {
 		
 		prop27a >>> map["prop27a"]
 		prop27b >>> map["prop27b"]
+		prop27c >>> map["prop27c"]
 		
 		prop28a >>> map["prop28a"]
 		prop28b >>> map["prop28b"]
+		prop28c >>> map["prop28c"]
 		
 		prop29a >>> map["prop29a"]
 		prop29b >>> map["prop29b"]
+		prop29c >>> map["prop29c"]
 		
 		prop30a >>> map["prop30a"]
 		prop30b >>> map["prop30b"]
+		prop30c >>> map["prop30c"]
 		
 		prop31a >>> map["prop31a"]
 		prop31b >>> map["prop31b"]
+		prop31c >>> map["prop31c"]
 
 		prop32 >>> (map["prop32"], stringTransform)
 		prop33 >>> (map["prop33"], stringTransform)
@@ -559,24 +584,24 @@ private func assertImmutableObjectsEqual(_ lhs: Struct, _ rhs: Struct) {
 	XCTAssertEqual(lhs.prop23, rhs.prop23)
 	
 	// @hack: compare arrays and objects with their string representation.
-	XCTAssertEqual("\(lhs.prop9)", "\(rhs.prop9)")
+	XCTAssertEqual("\(lhs.prop9 as Optional)", "\(rhs.prop9 as Optional)")
 	XCTAssertEqual("\(lhs.prop10)", "\(rhs.prop10)")
 	XCTAssertEqual("\(lhs.prop11)", "\(rhs.prop11)")
-	XCTAssertEqual("\(lhs.prop12)", "\(rhs.prop12)")
+	XCTAssertEqual("\(lhs.prop12 as Optional)", "\(rhs.prop12 as Optional)")
 	XCTAssertEqual("\(lhs.prop13)", "\(rhs.prop13)")
 	XCTAssertEqual("\(lhs.prop14)", "\(rhs.prop14)")
-	XCTAssertEqual("\(lhs.prop15)", "\(rhs.prop15)")
+	XCTAssertEqual("\(lhs.prop15 as Optional)", "\(rhs.prop15 as Optional)")
 	XCTAssertEqual("\(lhs.prop16)", "\(rhs.prop16)")
 	XCTAssertEqual("\(lhs.prop17)", "\(rhs.prop17)")
-	XCTAssertEqual("\(lhs.prop18)", "\(rhs.prop18)")
+	XCTAssertEqual("\(lhs.prop18 as Optional)", "\(rhs.prop18 as Optional)")
 	XCTAssertEqual("\(lhs.prop19)", "\(rhs.prop19)")
 	XCTAssertEqual("\(lhs.prop20)", "\(rhs.prop20)")
-	XCTAssertEqual("\(lhs.prop21)", "\(rhs.prop21)")
+	XCTAssertEqual("\(lhs.prop21 as Optional)", "\(rhs.prop21 as Optional)")
 	XCTAssertEqual("\(lhs.prop22)", "\(rhs.prop22)")
 	XCTAssertEqual("\(lhs.prop32)", "\(rhs.prop32)")
-	XCTAssertEqual("\(lhs.prop33)", "\(rhs.prop33)")
+	XCTAssertEqual("\(lhs.prop33 as Optional)", "\(rhs.prop33 as Optional)")
 	XCTAssertEqual("\(lhs.prop34)", "\(rhs.prop34)")
 	XCTAssertEqual("\(lhs.prop35)", "\(rhs.prop35)")
-	XCTAssertEqual("\(lhs.prop36)", "\(rhs.prop36)")
+	XCTAssertEqual("\(lhs.prop36 as Optional)", "\(rhs.prop36 as Optional)")
 	XCTAssertEqual("\(lhs.prop37)", "\(rhs.prop37)")
 }

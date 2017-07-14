@@ -14,7 +14,7 @@ import Foundation
 #endif
 
 // MARK: Bartleby's Core: a Trigger encapsulates a bunch of that's modelizes a state transformation
-@objc(Trigger) open class Trigger : ValueObject {
+@objc(Trigger) open class Trigger : UnManagedModel {
 
 
 	//The index is injected server side (each observationUID) has it own counter)

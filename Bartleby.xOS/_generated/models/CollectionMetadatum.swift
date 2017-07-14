@@ -14,7 +14,7 @@ import Foundation
 #endif
 
 // MARK: Bartleby's Core: Collection Metadatum. Complete implementation in CollectionMetadatum
-@objc(CollectionMetadatum) open class CollectionMetadatum : ValueObject {
+@objc(CollectionMetadatum) open class CollectionMetadatum : UnManagedModel {
 
 
 	//the used file storage

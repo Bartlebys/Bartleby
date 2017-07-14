@@ -1,5 +1,5 @@
 //
-//  ValueObject.swift
+//  UnManagedModel.swift
 //  BartlebyKit
 //
 //  Created by Benoit Pereira da silva on 13/12/2016.
@@ -13,9 +13,8 @@ import Foundation
 
 // Models can be :
 // - ManagedModel ( fully managed models)
-// - ValueObject ( json & secure Coding serialization support no supervision, no change provisionning )
-
-@objc(ValueObject) open class ValueObject: NSObject, Mappable, NSSecureCoding {
+// - UnManagedModel ( json & secure Coding serialization support no supervision, no change provisionning )
+@objc(UnManagedModel) open class UnManagedModel: NSObject, Mappable, NSSecureCoding {
 
     // MARK: - Mappable
 

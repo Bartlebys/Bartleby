@@ -14,7 +14,7 @@ import Foundation
 #endif
 
 // MARK: A simple wrapper to associate a key and a Data
-@objc(KeyedData) open class KeyedData : ValueObject {
+@objc(KeyedData) open class KeyedData : UnManagedModel {
 
 
 	//The key

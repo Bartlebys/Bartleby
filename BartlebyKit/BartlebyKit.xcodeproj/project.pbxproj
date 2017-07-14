@@ -469,8 +469,8 @@
 		E51254341E8BAD7F00797254 /* ServerErrorCodes.swift in Sources */ = {isa = PBXBuildFile; fileRef = E51252591E8BAD7F00797254 /* ServerErrorCodes.swift */; };
 		E51254351E8BAD7F00797254 /* StatusOfCompletion.swift in Sources */ = {isa = PBXBuildFile; fileRef = E512525A1E8BAD7F00797254 /* StatusOfCompletion.swift */; };
 		E51254361E8BAD7F00797254 /* StatusOfCompletion.swift in Sources */ = {isa = PBXBuildFile; fileRef = E512525A1E8BAD7F00797254 /* StatusOfCompletion.swift */; };
-		E51254371E8BAD7F00797254 /* ValueObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = E512525B1E8BAD7F00797254 /* ValueObject.swift */; };
-		E51254381E8BAD7F00797254 /* ValueObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = E512525B1E8BAD7F00797254 /* ValueObject.swift */; };
+		E51254371E8BAD7F00797254 /* UnManagedModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E512525B1E8BAD7F00797254 /* UnManagedModel.swift */; };
+		E51254381E8BAD7F00797254 /* UnManagedModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E512525B1E8BAD7F00797254 /* UnManagedModel.swift */; };
 		E51254391E8BAD7F00797254 /* NSUndomanager+RegisterUndo.swift in Sources */ = {isa = PBXBuildFile; fileRef = E512525D1E8BAD7F00797254 /* NSUndomanager+RegisterUndo.swift */; };
 		E512543A1E8BAD7F00797254 /* NSUndomanager+RegisterUndo.swift in Sources */ = {isa = PBXBuildFile; fileRef = E512525D1E8BAD7F00797254 /* NSUndomanager+RegisterUndo.swift */; };
 		E512543B1E8BAD7F00797254 /* URL+Utilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = E512525E1E8BAD7F00797254 /* URL+Utilities.swift */; };
@@ -823,7 +823,7 @@
 		E51252581E8BAD7F00797254 /* RelationShip.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RelationShip.swift; sourceTree = "<group>"; };
 		E51252591E8BAD7F00797254 /* ServerErrorCodes.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ServerErrorCodes.swift; sourceTree = "<group>"; };
 		E512525A1E8BAD7F00797254 /* StatusOfCompletion.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StatusOfCompletion.swift; sourceTree = "<group>"; };
-		E512525B1E8BAD7F00797254 /* ValueObject.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ValueObject.swift; sourceTree = "<group>"; };
+		E512525B1E8BAD7F00797254 /* UnManagedModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UnManagedModel.swift; sourceTree = "<group>"; };
 		E512525D1E8BAD7F00797254 /* NSUndomanager+RegisterUndo.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSUndomanager+RegisterUndo.swift"; sourceTree = "<group>"; };
 		E512525E1E8BAD7F00797254 /* URL+Utilities.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "URL+Utilities.swift"; sourceTree = "<group>"; };
 		E512525F1E8BAD7F00797254 /* User+Auth.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "User+Auth.swift"; sourceTree = "<group>"; };
@@ -1203,7 +1203,7 @@
 				E51252581E8BAD7F00797254 /* RelationShip.swift */,
 				E51252591E8BAD7F00797254 /* ServerErrorCodes.swift */,
 				E512525A1E8BAD7F00797254 /* StatusOfCompletion.swift */,
-				E512525B1E8BAD7F00797254 /* ValueObject.swift */,
+				E512525B1E8BAD7F00797254 /* UnManagedModel.swift */,
 			);
 			path = core;
 			sourceTree = "<group>";
@@ -1704,7 +1704,7 @@
 				E51253211E8BAD7F00797254 /* UIX.swift in Sources */,
 				E512544B1E8BAD7F00797254 /* LoginUser.swift in Sources */,
 				E51253B31E8BAD7F00797254 /* ManagedModel+Logs.swift in Sources */,
-				E51254371E8BAD7F00797254 /* ValueObject.swift in Sources */,
+				E51254371E8BAD7F00797254 /* UnManagedModel.swift in Sources */,
 				E51253251E8BAD7F00797254 /* BSFS.swift in Sources */,
 				E51253031E8BAD7F00797254 /* ReadUserById.swift in Sources */,
 				E512528D1E8BAD7F00797254 /* Completion.swift in Sources */,
@@ -1962,7 +1962,7 @@
 				E51253221E8BAD7F00797254 /* UIX.swift in Sources */,
 				E512544C1E8BAD7F00797254 /* LoginUser.swift in Sources */,
 				E51253B41E8BAD7F00797254 /* ManagedModel+Logs.swift in Sources */,
-				E51254381E8BAD7F00797254 /* ValueObject.swift in Sources */,
+				E51254381E8BAD7F00797254 /* UnManagedModel.swift in Sources */,
 				E51253261E8BAD7F00797254 /* BSFS.swift in Sources */,
 				E51253041E8BAD7F00797254 /* ReadUserById.swift in Sources */,
 				E512528E1E8BAD7F00797254 /* Completion.swift in Sources */,
