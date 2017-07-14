@@ -10,9 +10,6 @@
 import Foundation
 
 
-// MARK: - Equatable
-
-
 public protocol Identifiable {
 
     // The unique identifier

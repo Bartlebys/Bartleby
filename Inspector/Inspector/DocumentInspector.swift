@@ -48,13 +48,7 @@ open class DocumentInspector: NSWindowController,DocumentProvider,DocumentDepend
     }
 
     // The selected document
-    dynamic weak var castedDocument:BartlebyDocument?{
-        didSet{
-            self.castedDocument?.metadata.changesAreInspectables = true
-            self.document = nil
-        }
-    }
-
+    dynamic weak var castedDocument:BartlebyDocument?
 
     //MARK : Window
 
@@ -75,8 +69,9 @@ open class DocumentInspector: NSWindowController,DocumentProvider,DocumentDepend
     open var documentProvider: DocumentProvider?{
         didSet{
             if let documentReference=self.documentProvider?.getDocument(){
-                self.document=documentReference
+                self.document = nil
                 self.castedDocument=documentReference
+                self.castedDocument?.metadata.changesAreInspectables = true
                 self.window?.title=NSLocalizedString("Inspector", tableName:"bartlebys.OSX-Apps", comment: "Inspector window title") + " (" + ( documentReference.fileURL?.lastPathComponent ?? "" ) + ")"
 
                 let inspectorTabViewItem=NSTabViewItem(viewController:self.inspectorViewController)

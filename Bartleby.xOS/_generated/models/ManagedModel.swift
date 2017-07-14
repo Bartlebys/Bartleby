@@ -69,14 +69,11 @@ import Foundation
 	//MARK: - ChangesInspectable Protocol
 	dynamic open var changedKeys:[KeyedChanges] = [KeyedChanges]()
 
-	//Internal flag used not to propagate changes for example during deserialization (it blocks provisionChanges)
+	////Internal flag used not to propagate changes (for example during deserialization) -> Check ManagedModel + ProvisionChanges for detailled explanantions
 	dynamic internal var _quietChanges:Bool = false
 
-	//Auto commit availability
+	////Auto commit availability -> Check ManagedModel + ProvisionChanges for detailed explanantions
 	dynamic internal var _autoCommitIsEnabled:Bool = true
-
-	//Is supervision enabled?
-	dynamic internal var _supervisionIsEnabled:Bool = true
 
 	//The internal commit provisioning counter to discriminate Creation from Update and for possible frequency analysis
 	dynamic open var commitCounter:Int = 0
