@@ -68,9 +68,11 @@ public extension Notification.Name {
     open func stage(_ item: Collectible){
         if !self._staged.contains(item.UID){
             self._staged.append(item.UID)
-            self.shouldBeSaved = true
-            self.referentDocument?.hasChanged()
         }
+// When operation off line The staging may have already occur in previous session.
+// So we need to mark shouldBeSaved even if the element is already staged
+self.shouldBeSaved = true
+self.referentDocument?.hasChanged()
     }
 
     // Used to determine if the wrapper should be saved.
