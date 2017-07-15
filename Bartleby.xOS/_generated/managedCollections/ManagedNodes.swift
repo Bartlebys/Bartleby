@@ -69,6 +69,7 @@ public extension Notification.Name {
         if !self._staged.contains(item.UID){
             self._staged.append(item.UID)
             self.shouldBeSaved = true
+            self.referentDocument?.hasChanged()
         }
     }
 
