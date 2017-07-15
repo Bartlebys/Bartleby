@@ -241,7 +241,7 @@ extension BartlebyDocument{
 
                             if var collection = self.collectionByName(metadatum.collectionName) {
 
-                                Swift.print("\(collection.shouldBeSaved ? "Should save":"No Need to save") \(metadatum.collectionName)) ")
+                                self.log("\(collection.shouldBeSaved ? "Saving":"No Need to save") \(metadatum.collectionName)")
                                 if collection.shouldBeSaved{
 
                                     // We use multiple files
