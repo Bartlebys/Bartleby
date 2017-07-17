@@ -16,7 +16,7 @@ public enum SerializableError: Error {
     case typeMissmatch
     case typeNameUndefined
     case unknownTypeName(typeName:String)
-    case enableToTransformDataToDictionary
+    case unableToTransformDataToDictionary
     case invalidUTF8String
 }
 

@@ -52,13 +52,13 @@ open class JSerializer: Serializer {
             if let JSONDictionary = try JSONSerialization.jsonObject(with: data, options:JSONSerialization.ReadingOptions.allowFragments) as? [String:AnyObject] {
                 return try self.deserializeFromDictionary(JSONDictionary)
             }
-            throw SerializableError.enableToTransformDataToDictionary
+            throw SerializableError.unableToTransformDataToDictionary
         }catch{
             if (autoDecrypt){
                 let decrypted=try Bartleby.cryptoDelegate.decryptData(data,useKey:Bartleby.configuration.KEY)
                 return try self._deserializeFromData(decrypted, autoDecrypt: false)
             }else{
-                throw SerializableError.enableToTransformDataToDictionary
+                throw SerializableError.unableToTransformDataToDictionary
             }
         }
     }
