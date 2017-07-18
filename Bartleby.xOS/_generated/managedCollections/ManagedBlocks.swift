@@ -69,10 +69,10 @@ public extension Notification.Name {
         if !self._staged.contains(item.UID){
             self._staged.append(item.UID)
         }
-// When operation off line The staging may have already occur in previous session.
-// So we need to mark shouldBeSaved even if the element is already staged
-self.shouldBeSaved = true
-self.referentDocument?.hasChanged()
+        // When operation off line The staging may have already occur in previous session.
+        // So we need to mark shouldBeSaved even if the element is already staged
+        self.shouldBeSaved = true
+        self.referentDocument?.hasChanged()
     }
 
     // Used to determine if the wrapper should be saved.
