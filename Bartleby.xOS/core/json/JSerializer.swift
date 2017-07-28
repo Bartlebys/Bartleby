@@ -31,6 +31,7 @@ open class JSerializer: Serializer {
     // MARK: - Deserialization
 
     /// Deserializes a fully typed object
+    /// And registers the instance into its collection and Document
     ///
     /// - Parameter data:  data
     /// - Returns: the serizalizable Object
@@ -41,7 +42,6 @@ open class JSerializer: Serializer {
 
 
     ///  The concrete deserialization logic with auto decrypt logic.
-    ///
     /// - Parameters:
     ///   - data: the data
     ///   - autoDecrypt: should we try to autodecrypt ?
@@ -64,7 +64,7 @@ open class JSerializer: Serializer {
     }
 
     /// Deserializes from an UTF8 string
-    ///
+    /// And registers the instance into its collection and Document
     /// - Parameter dictionary: the dictionary
     /// - Returns: the serializable instance
     /// - Throws: SerializableError and CryptoError
@@ -76,7 +76,8 @@ open class JSerializer: Serializer {
     }
 
 
-    /// Deserializes from a dictionary
+    /// Deserializes from a dictionary (the implementation of the Mapping)
+    /// And registers the instance into its collection and Document
     ///
     /// - Parameter dictionary: the dictionary
     /// - Returns: the serializable instance
