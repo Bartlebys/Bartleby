@@ -465,7 +465,7 @@ public extension Notification.Name {
 
             (undoManager.prepare(withInvocationTarget: self) as AnyObject).addObjectFrom(serializedData)
             if !undoManager.isUndoing {
-                undoManager.setActionName(NSLocalizedString("Add Box", comment: "Add Box undo action"))
+                undoManager.setActionName(NSLocalizedString("Remove Box", comment: "Remove Box undo action"))
             }
         }
         

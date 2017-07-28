@@ -465,7 +465,7 @@ public extension Notification.Name {
 
             (undoManager.prepare(withInvocationTarget: self) as AnyObject).addObjectFrom(serializedData)
             if !undoManager.isUndoing {
-                undoManager.setActionName(NSLocalizedString("Add Locker", comment: "Add Locker undo action"))
+                undoManager.setActionName(NSLocalizedString("Remove Locker", comment: "Remove Locker undo action"))
             }
         }
         
