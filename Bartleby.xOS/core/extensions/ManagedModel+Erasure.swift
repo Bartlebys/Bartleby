@@ -22,6 +22,12 @@ extension ManagedModel{
             // Call the overridable cleaning method
             document.willErase(self)
 
+            // Erase from managed collection first
+            // The collection may register the homologous action in the document UndoManager
+            if let collection=document.collectionByName(self.d_collectionName) {
+                collection.removeObject(self, commit:commit)
+            }
+
             var erasableUIDS:[String]=[self.UID]
 
             // Erase recursively
@@ -46,10 +52,6 @@ extension ManagedModel{
                 }
             })
 
-            // Erase from managed collection
-            if let collection=document.collectionByName(self.d_collectionName) {
-                collection.removeObject(self, commit:commit)
-            }
 
         }else{
             throw ErasingError.referentDocumentUndefined
