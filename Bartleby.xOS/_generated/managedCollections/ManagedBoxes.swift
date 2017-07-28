@@ -399,7 +399,9 @@ public extension Notification.Name {
             // Add the inverse of this invocation to the undo stack
             if let undoManager: UndoManager = self.undoManager {
                 self.beginUndoGrouping()
-                (undoManager.prepare(withInvocationTarget: self) as AnyObject).removeObjectWithID(item.UID, commit:commit)
+                undoManager.registerUndo(withTarget: self, handler: { (targetSelf) in
+                    targetSelf.removeObjectWithID(item.UID, commit:commit)
+                })
                 if !undoManager.isUndoing {
                     undoManager.setActionName(NSLocalizedString("Add Box", comment: "AddBox undo action"))
                 }
@@ -441,7 +443,9 @@ public extension Notification.Name {
             self.beginUndoGrouping()
             // Add the inverse of this invocation to the undo stack
             let serializedData = item.serialize()
-            (undoManager.prepare(withInvocationTarget: self) as AnyObject).addObjectFrom(serializedData)
+             undoManager.registerUndo(withTarget: self, handler: { (targetSelf) in
+                targetSelf.addObjectFrom(serializedData)
+             })
             if !undoManager.isUndoing {
                 undoManager.setActionName(NSLocalizedString("Remove Box", comment: "Remove Box undo action"))
             }
