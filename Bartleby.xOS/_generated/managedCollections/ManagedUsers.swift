@@ -409,9 +409,9 @@ public extension Notification.Name {
 
             // Add the inverse of this invocation to the undo stack
             if let undoManager: UndoManager = undoManager {
-                (undoManager.prepare(withInvocationTarget: self) as AnyObject).removeObjectFromItemsAtIndex(index, commit:commit)
+                (undoManager.prepare(withInvocationTarget: self) as AnyObject).removeObjectWithID(item.UID, commit:commit)
                 if !undoManager.isUndoing {
-                    undoManager.setActionName(NSLocalizedString("AddUser", comment: "AddUser undo action"))
+                    undoManager.setActionName(NSLocalizedString("Add User", comment: "AddUser undo action"))
                 }
             }
                         #if os(OSX) && !USE_EMBEDDED_MODULES
@@ -442,18 +442,29 @@ public extension Notification.Name {
     - parameter commit: should we commit the removal?
     */
     open func removeObjectFromItemsAtIndex(_ index: Int, commit:Bool=true) {
+
+        guard  self._storage.count > index else {
+
+            return
+        }
+
         let item : User =  self[index]
 
-        // Add the inverse of this invocation to the undo stack
+      // Add the inverse of this invocation to the undo stack
         if let undoManager: UndoManager = undoManager {
-            // We don't want to introduce a retain cycle
-            // But with the objc magic casting undoManager.prepareWithInvocationTarget(self) as? UsersManagedCollection fails
-            // That's why we have added an registerUndo extension on UndoManager
-            undoManager.registerUndo({ () -> Void in
-               self.insertObject(item, inItemsAtIndex: index, commit:commit)
-            })
+            // Has an edit occurred already in this event?
+            if undoManager.groupingLevel > 0 {
+                // Close the last group
+                undoManager.endUndoGrouping()
+                // Open a new group
+                undoManager.beginUndoGrouping()
+            }
+            // Add the inverse of this invocation to the undo stack
+            let serializedData = item.serialize()
+
+            (undoManager.prepare(withInvocationTarget: self) as AnyObject).addObjectFrom(serializedData)
             if !undoManager.isUndoing {
-                undoManager.setActionName(NSLocalizedString("RemoveUser", comment: "Remove User undo action"))
+                undoManager.setActionName(NSLocalizedString("Add User", comment: "Add User undo action"))
             }
         }
         
@@ -469,7 +480,37 @@ public extension Notification.Name {
         if commit==true{
            self._deleted.append(UID)
         }
+        #if os(OSX) && !USE_EMBEDDED_MODULES
+            if let arrayController = self.arrayController{
+                // Re-arrange (in case the user has sorted a column)
+                arrayController.rearrangeObjects()
+            }
+        #endif
+
+        try? item.erase()
         self.shouldBeSaved = true
+    }
+
+    /// Add an Object from an opaque serialized Data
+    /// Used by the UndoManager.
+    ///
+    /// - Parameter data: the serialized Object
+    open func addObjectFrom(_ data:Data){
+        do{
+            if let timedText:User = try self.referentDocument?.serializer.deserialize(data) as? User {
+                if let owners = Bartleby.registredManagedModelByUIDs(timedText.ownedBy){
+                    for owner in owners{
+                        // Re associate the relations.
+                        if !owner.owns.contains(timedText.UID){
+                            owner.owns.append(timedText.UID)
+                        }
+                    }
+                }
+                self.add(timedText, commit: true)
+            }
+        }catch{
+            self.referentDocument?.log("\(error)")
+        }
     }
 
 

@@ -395,6 +395,12 @@ public extension Notification.Name {
     - parameter commit: should we commit the removal?
     */
     open func removeObjectFromItemsAtIndex(_ index: Int, commit:Bool=true) {
+
+        guard  self._storage.count > index else {
+
+            return
+        }
+
         let item : PushOperation =  self[index]
 
         // Remove the item from the collection
@@ -408,7 +414,37 @@ public extension Notification.Name {
     
         // Commit is ignored because
         // Distant persistency is not allowed for PushOperation
+        #if os(OSX) && !USE_EMBEDDED_MODULES
+            if let arrayController = self.arrayController{
+                // Re-arrange (in case the user has sorted a column)
+                arrayController.rearrangeObjects()
+            }
+        #endif
+
+        try? item.erase()
         self.shouldBeSaved = true
+    }
+
+    /// Add an Object from an opaque serialized Data
+    /// Used by the UndoManager.
+    ///
+    /// - Parameter data: the serialized Object
+    open func addObjectFrom(_ data:Data){
+        do{
+            if let timedText:PushOperation = try self.referentDocument?.serializer.deserialize(data) as? PushOperation {
+                if let owners = Bartleby.registredManagedModelByUIDs(timedText.ownedBy){
+                    for owner in owners{
+                        // Re associate the relations.
+                        if !owner.owns.contains(timedText.UID){
+                            owner.owns.append(timedText.UID)
+                        }
+                    }
+                }
+                self.add(timedText, commit: true)
+            }
+        }catch{
+            self.referentDocument?.log("\(error)")
+        }
     }
 
 

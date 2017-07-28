@@ -280,7 +280,6 @@
 		E5FC56A81F19117500099201 /* UnManagedModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5FC55AA1F19117500099201 /* UnManagedModel.swift */; };
 		E5FC56A91F19117500099201 /* NSRange+Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5FC55AC1F19117500099201 /* NSRange+Helpers.swift */; };
 		E5FC56AA1F19117500099201 /* NSRect+Mappable.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5FC55AD1F19117500099201 /* NSRect+Mappable.swift */; };
-		E5FC56AB1F19117600099201 /* NSUndomanager+RegisterUndo.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5FC55AE1F19117500099201 /* NSUndomanager+RegisterUndo.swift */; };
 		E5FC56AC1F19117600099201 /* String+Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5FC55AF1F19117500099201 /* String+Helpers.swift */; };
 		E5FC56AD1F19117600099201 /* URL+Utilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5FC55B01F19117500099201 /* URL+Utilities.swift */; };
 		E5FC56AE1F19117600099201 /* User+Auth.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5FC55B11F19117500099201 /* User+Auth.swift */; };
@@ -595,7 +594,6 @@
 		E5FC55AA1F19117500099201 /* UnManagedModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UnManagedModel.swift; sourceTree = "<group>"; };
 		E5FC55AC1F19117500099201 /* NSRange+Helpers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSRange+Helpers.swift"; sourceTree = "<group>"; };
 		E5FC55AD1F19117500099201 /* NSRect+Mappable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSRect+Mappable.swift"; sourceTree = "<group>"; };
-		E5FC55AE1F19117500099201 /* NSUndomanager+RegisterUndo.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSUndomanager+RegisterUndo.swift"; sourceTree = "<group>"; };
 		E5FC55AF1F19117500099201 /* String+Helpers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "String+Helpers.swift"; sourceTree = "<group>"; };
 		E5FC55B01F19117500099201 /* URL+Utilities.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "URL+Utilities.swift"; sourceTree = "<group>"; };
 		E5FC55B11F19117500099201 /* User+Auth.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "User+Auth.swift"; sourceTree = "<group>"; };
@@ -1181,7 +1179,6 @@
 			children = (
 				E5FC55AC1F19117500099201 /* NSRange+Helpers.swift */,
 				E5FC55AD1F19117500099201 /* NSRect+Mappable.swift */,
-				E5FC55AE1F19117500099201 /* NSUndomanager+RegisterUndo.swift */,
 				E5FC55AF1F19117500099201 /* String+Helpers.swift */,
 				E5FC55B01F19117500099201 /* URL+Utilities.swift */,
 				E5FC55B11F19117500099201 /* User+Auth.swift */,
@@ -1608,7 +1605,6 @@
 				E5FC55E01F19117500099201 /* Progression.swift in Sources */,
 				E5FC560C1F19117500099201 /* ReadTagsByIds.swift in Sources */,
 				E5FC56251F19117500099201 /* Block+Facilities.swift in Sources */,
-				E5FC56AB1F19117600099201 /* NSUndomanager+RegisterUndo.swift in Sources */,
 				E5FC56771F19117500099201 /* ImageTransform.swift in Sources */,
 				E5FC56261F19117500099201 /* Box+Facilities.swift in Sources */,
 				E5FC56081F19117500099201 /* ReadNodeById.swift in Sources */,

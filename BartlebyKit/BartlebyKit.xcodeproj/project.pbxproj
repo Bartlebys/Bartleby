@@ -467,8 +467,6 @@
 		E51254361E8BAD7F00797254 /* StatusOfCompletion.swift in Sources */ = {isa = PBXBuildFile; fileRef = E512525A1E8BAD7F00797254 /* StatusOfCompletion.swift */; };
 		E51254371E8BAD7F00797254 /* UnManagedModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E512525B1E8BAD7F00797254 /* UnManagedModel.swift */; };
 		E51254381E8BAD7F00797254 /* UnManagedModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E512525B1E8BAD7F00797254 /* UnManagedModel.swift */; };
-		E51254391E8BAD7F00797254 /* NSUndomanager+RegisterUndo.swift in Sources */ = {isa = PBXBuildFile; fileRef = E512525D1E8BAD7F00797254 /* NSUndomanager+RegisterUndo.swift */; };
-		E512543A1E8BAD7F00797254 /* NSUndomanager+RegisterUndo.swift in Sources */ = {isa = PBXBuildFile; fileRef = E512525D1E8BAD7F00797254 /* NSUndomanager+RegisterUndo.swift */; };
 		E512543B1E8BAD7F00797254 /* URL+Utilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = E512525E1E8BAD7F00797254 /* URL+Utilities.swift */; };
 		E512543C1E8BAD7F00797254 /* URL+Utilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = E512525E1E8BAD7F00797254 /* URL+Utilities.swift */; };
 		E512543D1E8BAD7F00797254 /* User+Auth.swift in Sources */ = {isa = PBXBuildFile; fileRef = E512525F1E8BAD7F00797254 /* User+Auth.swift */; };
@@ -820,7 +818,6 @@
 		E51252591E8BAD7F00797254 /* ServerErrorCodes.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ServerErrorCodes.swift; sourceTree = "<group>"; };
 		E512525A1E8BAD7F00797254 /* StatusOfCompletion.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StatusOfCompletion.swift; sourceTree = "<group>"; };
 		E512525B1E8BAD7F00797254 /* UnManagedModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UnManagedModel.swift; sourceTree = "<group>"; };
-		E512525D1E8BAD7F00797254 /* NSUndomanager+RegisterUndo.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSUndomanager+RegisterUndo.swift"; sourceTree = "<group>"; };
 		E512525E1E8BAD7F00797254 /* URL+Utilities.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "URL+Utilities.swift"; sourceTree = "<group>"; };
 		E512525F1E8BAD7F00797254 /* User+Auth.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "User+Auth.swift"; sourceTree = "<group>"; };
 		E51252611E8BAD7F00797254 /* Identification.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Identification.swift; sourceTree = "<group>"; };
@@ -1328,7 +1325,6 @@
 		E512525C1E8BAD7F00797254 /* extensions */ = {
 			isa = PBXGroup;
 			children = (
-				E512525D1E8BAD7F00797254 /* NSUndomanager+RegisterUndo.swift */,
 				E512525E1E8BAD7F00797254 /* URL+Utilities.swift */,
 				E512525F1E8BAD7F00797254 /* User+Auth.swift */,
 				E5EF6CFA1EE9B1B700990C48 /* String+Helpers.swift */,
@@ -1862,7 +1858,6 @@
 				E51253231E8BAD7F00797254 /* BoxStates.swift in Sources */,
 				E51253931E8BAD7F00797254 /* Completion+Conveniences.swift in Sources */,
 				E51253D91E8BAD7F00797254 /* ObjectExpositionError.swift in Sources */,
-				E51254391E8BAD7F00797254 /* NSUndomanager+RegisterUndo.swift in Sources */,
 				E512529F1E8BAD7F00797254 /* LogEntry.swift in Sources */,
 				E51253371E8BAD7F00797254 /* FileReference.swift in Sources */,
 				E51252FD1E8BAD7F00797254 /* ReadTagById.swift in Sources */,
@@ -2117,7 +2112,6 @@
 				E51253241E8BAD7F00797254 /* BoxStates.swift in Sources */,
 				E51253941E8BAD7F00797254 /* Completion+Conveniences.swift in Sources */,
 				E51253DA1E8BAD7F00797254 /* ObjectExpositionError.swift in Sources */,
-				E512543A1E8BAD7F00797254 /* NSUndomanager+RegisterUndo.swift in Sources */,
 				E51252A01E8BAD7F00797254 /* LogEntry.swift in Sources */,
 				E51253381E8BAD7F00797254 /* FileReference.swift in Sources */,
 				E51252FE1E8BAD7F00797254 /* ReadTagById.swift in Sources */,
