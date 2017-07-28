@@ -38,5 +38,21 @@ extension ManagedModel{
         return self._runTimeTypeName!
     }
 
+    // A a shortcut to the undo manager
+    open var undoManager:UndoManager? { return self.referentDocument?.undoManager }
+
+    // Begins a new Undo Grouping 
+    open func beginUndoGrouping(){
+        if let undoManager = self.undoManager{
+            // Has an edit occurred already in this event?
+            if undoManager.groupingLevel > 0 {
+                // Close the last group
+                undoManager.endUndoGrouping()
+                // Open a new group
+                undoManager.beginUndoGrouping()
+            }
+        }
+    }
+
 
 }

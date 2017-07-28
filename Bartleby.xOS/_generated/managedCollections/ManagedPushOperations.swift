@@ -129,8 +129,6 @@ public extension Notification.Name {
         }
     }
 
-    open var undoManager:UndoManager? { return self.referentDocument?.undoManager }
-
     open func generate() -> AnyIterator<PushOperation> {
         var nextIndex = -1
         let limit=self._storage.count-1
@@ -368,14 +366,13 @@ public extension Notification.Name {
             self._UIDS.insert(item.UID, at: index)
             self._items.insert(item, at:index)
             self._storage[item.UID]=item
+
             #if os(OSX) && !USE_EMBEDDED_MODULES
             if let arrayController = self.arrayController{
-
                 // Re-arrange (in case the user has sorted a column)
                 arrayController.rearrangeObjects()
             }
             #endif
-
 
             // Commit is ignored because
             // Distant persistency is not allowed for PushOperation
@@ -395,12 +392,9 @@ public extension Notification.Name {
     - parameter commit: should we commit the removal?
     */
     open func removeObjectFromItemsAtIndex(_ index: Int, commit:Bool=true) {
-
-        guard  self._storage.count > index else {
-
+        guard self._storage.count > index else {
             return
         }
-
         let item : PushOperation =  self[index]
 
         // Remove the item from the collection
@@ -563,7 +557,6 @@ public extension Notification.Name {
                     self.referentDocument?.metadata.stateDictionary[selectedPushOperationsIndexesKey]=indexes
                 }else{
                     self.referentDocument?.metadata.stateDictionary[selectedPushOperationsIndexesKey]=[Int]()
-
                 }
                 NotificationCenter.default.post(name:NSNotification.Name.PushOperations.selectionChanged, object: nil)
             }

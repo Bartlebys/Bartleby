@@ -129,8 +129,6 @@ public extension Notification.Name {
         }
     }
 
-    open var undoManager:UndoManager? { return self.referentDocument?.undoManager }
-
     open func generate() -> AnyIterator<Block> {
         var nextIndex = -1
         let limit=self._storage.count-1
@@ -398,31 +396,21 @@ public extension Notification.Name {
             self._items.insert(item, at:index)
             self._storage[item.UID]=item
 
-            if let undoManager = self.undoManager{
-                // Has an edit occurred already in this event?
-                if undoManager.groupingLevel > 0 {
-                    // Close the last group
-                    undoManager.endUndoGrouping()
-                    // Open a new group
-                    undoManager.beginUndoGrouping()
-                }
-            }
-
             // Add the inverse of this invocation to the undo stack
-            if let undoManager: UndoManager = undoManager {
+            if let undoManager: UndoManager = self.undoManager {
+                self.beginUndoGrouping()
                 (undoManager.prepare(withInvocationTarget: self) as AnyObject).removeObjectWithID(item.UID, commit:commit)
                 if !undoManager.isUndoing {
                     undoManager.setActionName(NSLocalizedString("Add Block", comment: "AddBlock undo action"))
                 }
             }
-                        #if os(OSX) && !USE_EMBEDDED_MODULES
+            
+            #if os(OSX) && !USE_EMBEDDED_MODULES
             if let arrayController = self.arrayController{
-
                 // Re-arrange (in case the user has sorted a column)
                 arrayController.rearrangeObjects()
             }
             #endif
-
 
             if commit==true {
                CreateBlock.commit(item, in:self.referentDocument!)
@@ -443,26 +431,16 @@ public extension Notification.Name {
     - parameter commit: should we commit the removal?
     */
     open func removeObjectFromItemsAtIndex(_ index: Int, commit:Bool=true) {
-
-        guard  self._storage.count > index else {
-
+        guard self._storage.count > index else {
             return
         }
-
         let item : Block =  self[index]
 
       // Add the inverse of this invocation to the undo stack
-        if let undoManager: UndoManager = undoManager {
-            // Has an edit occurred already in this event?
-            if undoManager.groupingLevel > 0 {
-                // Close the last group
-                undoManager.endUndoGrouping()
-                // Open a new group
-                undoManager.beginUndoGrouping()
-            }
+        if let undoManager: UndoManager = self.undoManager {
+            self.beginUndoGrouping()
             // Add the inverse of this invocation to the undo stack
             let serializedData = item.serialize()
-
             (undoManager.prepare(withInvocationTarget: self) as AnyObject).addObjectFrom(serializedData)
             if !undoManager.isUndoing {
                 undoManager.setActionName(NSLocalizedString("Remove Block", comment: "Remove Block undo action"))
@@ -630,7 +608,6 @@ public extension Notification.Name {
                     self.referentDocument?.metadata.stateDictionary[selectedBlocksIndexesKey]=indexes
                 }else{
                     self.referentDocument?.metadata.stateDictionary[selectedBlocksIndexesKey]=[Int]()
-
                 }
                 NotificationCenter.default.post(name:NSNotification.Name.Blocks.selectionChanged, object: nil)
             }
