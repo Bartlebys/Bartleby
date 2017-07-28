@@ -340,6 +340,15 @@ open class Bartleby:NSObject {
     }
 
 
+    /// Returns a collection of ManagedModel by UIDs
+    /// Those instance are not casted.
+    /// You should most of the time use : `registredObjectByUID<T: Collectible>(_ UID: String) throws-> T`
+    /// - parameter UID:
+    /// - returns: the instance
+    open static func registredManagedModelByUIDs(_ UIDs: [UID])-> [ManagedModel]? {
+        return try? Bartleby.registredObjectsByUIDs(UIDs)
+    }
+
 
     ///  Returns the registred instance of by UIDs
     ///
