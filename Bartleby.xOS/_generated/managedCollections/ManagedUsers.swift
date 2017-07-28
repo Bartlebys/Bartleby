@@ -480,6 +480,7 @@ public extension Notification.Name {
         if commit==true{
            self._deleted.append(UID)
         }
+
         #if os(OSX) && !USE_EMBEDDED_MODULES
             if let arrayController = self.arrayController{
                 // Re-arrange (in case the user has sorted a column)
@@ -497,16 +498,16 @@ public extension Notification.Name {
     /// - Parameter data: the serialized Object
     open func addObjectFrom(_ data:Data){
         do{
-            if let timedText:User = try self.referentDocument?.serializer.deserialize(data) as? User {
-                if let owners = Bartleby.registredManagedModelByUIDs(timedText.ownedBy){
+            if let user:User = try self.referentDocument?.serializer.deserialize(data) as? User {
+                if let owners = Bartleby.registredManagedModelByUIDs(user.ownedBy){
                     for owner in owners{
                         // Re associate the relations.
-                        if !owner.owns.contains(timedText.UID){
-                            owner.owns.append(timedText.UID)
+                        if !owner.owns.contains(user.UID){
+                            owner.owns.append(user.UID)
                         }
                     }
                 }
-                self.add(timedText, commit: true)
+                self.add(user, commit: true)
             }
         }catch{
             self.referentDocument?.log("\(error)")

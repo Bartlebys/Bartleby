@@ -414,6 +414,7 @@ public extension Notification.Name {
     
         // Commit is ignored because
         // Distant persistency is not allowed for PushOperation
+
         #if os(OSX) && !USE_EMBEDDED_MODULES
             if let arrayController = self.arrayController{
                 // Re-arrange (in case the user has sorted a column)
@@ -431,16 +432,16 @@ public extension Notification.Name {
     /// - Parameter data: the serialized Object
     open func addObjectFrom(_ data:Data){
         do{
-            if let timedText:PushOperation = try self.referentDocument?.serializer.deserialize(data) as? PushOperation {
-                if let owners = Bartleby.registredManagedModelByUIDs(timedText.ownedBy){
+            if let pushOperation:PushOperation = try self.referentDocument?.serializer.deserialize(data) as? PushOperation {
+                if let owners = Bartleby.registredManagedModelByUIDs(pushOperation.ownedBy){
                     for owner in owners{
                         // Re associate the relations.
-                        if !owner.owns.contains(timedText.UID){
-                            owner.owns.append(timedText.UID)
+                        if !owner.owns.contains(pushOperation.UID){
+                            owner.owns.append(pushOperation.UID)
                         }
                     }
                 }
-                self.add(timedText, commit: true)
+                self.add(pushOperation, commit: true)
             }
         }catch{
             self.referentDocument?.log("\(error)")
