@@ -530,6 +530,8 @@
 		E5B128FE1D1C317300D61261 /* AccessControlTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BDEF70A1C9FE4A300D9FB70 /* AccessControlTests.swift */; };
 		E5B129031D1C317300D61261 /* TestCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = E52F94881D01C23A005BDA2D /* TestCase.swift */; };
 		E5B129041D1C317300D61261 /* TestsConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = E52F94891D01C23A005BDA2D /* TestsConfiguration.swift */; };
+		E5C28EF41F2CE6B200138146 /* BartlebyDocument+UndoFacilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5C28EF31F2CE6B200138146 /* BartlebyDocument+UndoFacilities.swift */; };
+		E5C28EF51F2CE6B200138146 /* BartlebyDocument+UndoFacilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5C28EF31F2CE6B200138146 /* BartlebyDocument+UndoFacilities.swift */; };
 		E5EE24671EFBD04300AD42C2 /* NSRect+Mappable.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5EE24661EFBD04300AD42C2 /* NSRect+Mappable.swift */; };
 		E5EF6CFB1EE9B1B700990C48 /* String+Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5EF6CFA1EE9B1B700990C48 /* String+Helpers.swift */; };
 		E5EF6CFC1EE9B1B700990C48 /* String+Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5EF6CFA1EE9B1B700990C48 /* String+Helpers.swift */; };
@@ -859,6 +861,7 @@
 		E56C005A1C8ED51D00BB6B19 /* BartlebyKitTOSXTests-Bridging-Header.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "BartlebyKitTOSXTests-Bridging-Header.h"; sourceTree = "<group>"; };
 		E578DD071C3AC53300617627 /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = System/Library/Frameworks/AppKit.framework; sourceTree = SDKROOT; };
 		E590EB231D0EF8DC00150E0B /* UsersCreationLoadTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UsersCreationLoadTest.swift; sourceTree = "<group>"; };
+		E5C28EF31F2CE6B200138146 /* BartlebyDocument+UndoFacilities.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "BartlebyDocument+UndoFacilities.swift"; sourceTree = "<group>"; };
 		E5CEFB511C3BFCBB00C36CBA /* BartlebyKit-Bridging-Header.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "BartlebyKit-Bridging-Header.h"; sourceTree = "<group>"; };
 		E5EE24661EFBD04300AD42C2 /* NSRect+Mappable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSRect+Mappable.swift"; sourceTree = "<group>"; };
 		E5EF6CFA1EE9B1B700990C48 /* String+Helpers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "String+Helpers.swift"; sourceTree = "<group>"; };
@@ -1221,6 +1224,7 @@
 				E51252021E8BAD7F00797254 /* BartlebyDocument+SecurityScopes.swift */,
 				E51252031E8BAD7F00797254 /* BartlebyDocument+SuperIterable.swift */,
 				E51252041E8BAD7F00797254 /* BartlebyDocument+Triggers.swift */,
+				E5C28EF31F2CE6B200138146 /* BartlebyDocument+UndoFacilities.swift */,
 				E51252051E8BAD7F00797254 /* CollectionMetadatum+Proxy.swift */,
 				E51252061E8BAD7F00797254 /* Completion+Conveniences.swift */,
 				E51252071E8BAD7F00797254 /* Completion+Result.swift */,
@@ -1896,6 +1900,7 @@
 				E512540F1E8BAD7F00797254 /* Mergeable.swift in Sources */,
 				E51253051E8BAD7F00797254 /* ReadUsersByIds.swift in Sources */,
 				E51254611E8BAD7F00797254 /* PString.swift in Sources */,
+				E5C28EF41F2CE6B200138146 /* BartlebyDocument+UndoFacilities.swift in Sources */,
 				E51252B31E8BAD7F00797254 /* User.swift in Sources */,
 				E512540D1E8BAD7F00797254 /* Logger.swift in Sources */,
 				E512537D1E8BAD7F00797254 /* BartlebyDocument+LocalUpsertAndDelete.swift in Sources */,
@@ -2153,6 +2158,7 @@
 				E51252B41E8BAD7F00797254 /* User.swift in Sources */,
 				E512540E1E8BAD7F00797254 /* Logger.swift in Sources */,
 				E512537E1E8BAD7F00797254 /* BartlebyDocument+LocalUpsertAndDelete.swift in Sources */,
+				E5C28EF51F2CE6B200138146 /* BartlebyDocument+UndoFacilities.swift in Sources */,
 				E51253901E8BAD7F00797254 /* BartlebyDocument+Triggers.swift in Sources */,
 				E51253D61E8BAD7F00797254 /* ImageTransform.swift in Sources */,
 				E512530C1E8BAD7F00797254 /* UpdateBlocks.swift in Sources */,

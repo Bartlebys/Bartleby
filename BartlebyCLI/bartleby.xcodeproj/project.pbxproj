@@ -48,6 +48,7 @@
 		E561FA861E364F00008E46D9 /* TransformOperators.swift in Sources */ = {isa = PBXBuildFile; fileRef = E561FA701E364F00008E46D9 /* TransformOperators.swift */; };
 		E561FA871E364F00008E46D9 /* TransformType.swift in Sources */ = {isa = PBXBuildFile; fileRef = E561FA711E364F00008E46D9 /* TransformType.swift */; };
 		E561FA881E364F00008E46D9 /* URLTransform.swift in Sources */ = {isa = PBXBuildFile; fileRef = E561FA721E364F00008E46D9 /* URLTransform.swift */; };
+		E5C28EF71F2CEA5800138146 /* BartlebyDocument+UndoFacilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5C28EF61F2CEA5800138146 /* BartlebyDocument+UndoFacilities.swift */; };
 		E5CC291F1D846CB300F7C783 /* CommandLine.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5CC28AC1D846CB300F7C783 /* CommandLine.swift */; };
 		E5CC29201D846CB300F7C783 /* Option.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5CC28AE1D846CB300F7C783 /* Option.swift */; };
 		E5CC29211D846CB300F7C783 /* StringExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5CC28AF1D846CB300F7C783 /* StringExtensions.swift */; };
@@ -361,6 +362,7 @@
 		E561FA701E364F00008E46D9 /* TransformOperators.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TransformOperators.swift; sourceTree = "<group>"; };
 		E561FA711E364F00008E46D9 /* TransformType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TransformType.swift; sourceTree = "<group>"; };
 		E561FA721E364F00008E46D9 /* URLTransform.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = URLTransform.swift; sourceTree = "<group>"; };
+		E5C28EF61F2CEA5800138146 /* BartlebyDocument+UndoFacilities.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "BartlebyDocument+UndoFacilities.swift"; sourceTree = "<group>"; };
 		E5CC28AC1D846CB300F7C783 /* CommandLine.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CommandLine.swift; sourceTree = "<group>"; };
 		E5CC28AE1D846CB300F7C783 /* Option.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Option.swift; sourceTree = "<group>"; };
 		E5CC28AF1D846CB300F7C783 /* StringExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StringExtensions.swift; sourceTree = "<group>"; };
@@ -1067,6 +1069,7 @@
 				E5FC554B1F19117500099201 /* BartlebyDocument+Logs.swift */,
 				E5FC554C1F19117500099201 /* BartlebyDocument+Metrics.swift */,
 				E5FC554D1F19117500099201 /* BartlebyDocument+Operations.swift */,
+				E5C28EF61F2CEA5800138146 /* BartlebyDocument+UndoFacilities.swift */,
 				E5FC554E1F19117500099201 /* BartlebyDocument+Persistency.swift */,
 				E5FC554F1F19117500099201 /* BartlebyDocument+Preparation.swift */,
 				E5FC55501F19117500099201 /* BartlebyDocument+Reachability.swift */,
@@ -1545,6 +1548,7 @@
 				E5FC565E1F19117500099201 /* LogEntry+Conveniences.swift in Sources */,
 				E5FC568F1F19117500099201 /* IterableCollectibleCollection.swift in Sources */,
 				E5FC56321F19117500099201 /* CryptedKeyValueStorage.swift in Sources */,
+				E5C28EF71F2CEA5800138146 /* BartlebyDocument+UndoFacilities.swift in Sources */,
 				E561FA751E364F00008E46D9 /* DateFormatterTransform.swift in Sources */,
 				E5FC56061F19117500099201 /* ReadLockersByIds.swift in Sources */,
 				E5FC563B1F19117500099201 /* String+HMAC.swift in Sources */,
