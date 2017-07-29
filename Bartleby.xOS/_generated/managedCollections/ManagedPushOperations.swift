@@ -421,12 +421,13 @@ public extension Notification.Name {
     }
 
     /// Add an Object from an opaque serialized Data
+    /// And registers the object into bartleby and its parent collection
     /// Used by the UndoManager.
     ///
     /// - Parameter data: the serialized Object
     open func addObjectFrom(_ data:Data){
         do{
-            if let pushOperation:PushOperation = try self.referentDocument?.serializer.deserialize(data) as? PushOperation {
+            if let pushOperation:PushOperation = try self.referentDocument?.serializer.deserialize(data,register:true) as? PushOperation {
                 if let owners = Bartleby.registredManagedModelByUIDs(pushOperation.ownedBy){
                     for owner in owners{
                         // Re associate the relations.

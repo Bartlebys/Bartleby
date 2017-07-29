@@ -60,7 +60,7 @@ class DecryptorViewController: NSViewController,AsyncDocumentProvider,PasterDele
                             // Let's decrypt the data
                             self.decryptedString = try Bartleby.cryptoDelegate.decryptString(crypted,useKey:Bartleby.configuration.KEY)
                             if let d=self.decryptedString?.data(using:.utf8){
-                                if let report = try document.serializer.deserialize(d) as? Report{
+                                if let report = try document.serializer.deserialize(d, register: false) as? Report{
                                     if let metadata=report.metadata{
                                         self._document.metadata=metadata
                                     }

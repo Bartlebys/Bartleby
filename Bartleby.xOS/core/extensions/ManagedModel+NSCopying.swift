@@ -15,15 +15,15 @@ extension ManagedModel:NSCopying{
         if let document=self.referentDocument{
             let data: Data = document.serializer.serialize(self)
             do{
-                if let copied = try document.serializer.deserialize(data) as? ManagedModel{
-                    // Reallocate the collection
-                    copied.collection=self.collection
-                    return copied as AnyObject
+                if let copied = try document.serializer.deserialize(data, register: false) as? ManagedModel{
+                    // Reallocate the collection ? is equivalent to register
+                    //copied.collection=self.collection
+                    return copied as Any
                 }
             }catch{
                 self.log("ERROR with Copy with zone on \(String(describing: self._runTimeTypeName)) \(self.UID) \(error)" as AnyObject, file:#file, function:#function, line:#line,category:Default.LOG_DEFAULT)
             }
-            return self as AnyObject
+            return self as Any
         }
         return self
     }

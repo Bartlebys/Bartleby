@@ -227,7 +227,7 @@
 		E5FC56731F19117500099201 /* PushOperation+Conveniences.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5FC55721F19117500099201 /* PushOperation+Conveniences.swift */; };
 		E5FC56741F19117500099201 /* Global.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5FC55731F19117500099201 /* Global.swift */; };
 		E5FC56751F19117500099201 /* Handlers.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5FC55741F19117500099201 /* Handlers.swift */; };
-		E5FC56761F19117500099201 /* JSerializer.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5FC55761F19117500099201 /* JSerializer.swift */; };
+		E5FC56761F19117500099201 /* JSONSerializer.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5FC55761F19117500099201 /* JSONSerializer.swift */; };
 		E5FC56771F19117500099201 /* ImageTransform.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5FC55781F19117500099201 /* ImageTransform.swift */; };
 		E5FC56781F19117500099201 /* ManagedModelError.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5FC55791F19117500099201 /* ManagedModelError.swift */; };
 		E5FC56791F19117500099201 /* ObjectExpositionError.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5FC557A1F19117500099201 /* ObjectExpositionError.swift */; };
@@ -541,7 +541,7 @@
 		E5FC55721F19117500099201 /* PushOperation+Conveniences.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "PushOperation+Conveniences.swift"; sourceTree = "<group>"; };
 		E5FC55731F19117500099201 /* Global.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Global.swift; sourceTree = "<group>"; };
 		E5FC55741F19117500099201 /* Handlers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Handlers.swift; sourceTree = "<group>"; };
-		E5FC55761F19117500099201 /* JSerializer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JSerializer.swift; sourceTree = "<group>"; };
+		E5FC55761F19117500099201 /* JSONSerializer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JSONSerializer.swift; sourceTree = "<group>"; };
 		E5FC55781F19117500099201 /* ImageTransform.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageTransform.swift; sourceTree = "<group>"; };
 		E5FC55791F19117500099201 /* ManagedModelError.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ManagedModelError.swift; sourceTree = "<group>"; };
 		E5FC557A1F19117500099201 /* ObjectExpositionError.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ObjectExpositionError.swift; sourceTree = "<group>"; };
@@ -1111,7 +1111,7 @@
 		E5FC55751F19117500099201 /* json */ = {
 			isa = PBXGroup;
 			children = (
-				E5FC55761F19117500099201 /* JSerializer.swift */,
+				E5FC55761F19117500099201 /* JSONSerializer.swift */,
 				E5FC55771F19117500099201 /* transforms */,
 			);
 			path = json;
@@ -1537,7 +1537,7 @@
 				E5FC56711F19117500099201 /* NSNotification+Progression.swift in Sources */,
 				E5FC56511F19117500099201 /* BartlebyDocument+Reachability.swift in Sources */,
 				E5FC56BC1F19117600099201 /* VerifyLocker.swift in Sources */,
-				E5FC56761F19117500099201 /* JSerializer.swift in Sources */,
+				E5FC56761F19117500099201 /* JSONSerializer.swift in Sources */,
 				E5FC56031F19117500099201 /* ReadBoxesByIds.swift in Sources */,
 				E5FC56871F19117500099201 /* DictionaryRepresentation.swift in Sources */,
 				E5FC56891F19117500099201 /* DocumentMetadataProtocol.swift in Sources */,

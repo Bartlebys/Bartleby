@@ -365,8 +365,8 @@
 		E51253D01E8BAD7F00797254 /* Global.swift in Sources */ = {isa = PBXBuildFile; fileRef = E51252241E8BAD7F00797254 /* Global.swift */; };
 		E51253D11E8BAD7F00797254 /* Handlers.swift in Sources */ = {isa = PBXBuildFile; fileRef = E51252251E8BAD7F00797254 /* Handlers.swift */; };
 		E51253D21E8BAD7F00797254 /* Handlers.swift in Sources */ = {isa = PBXBuildFile; fileRef = E51252251E8BAD7F00797254 /* Handlers.swift */; };
-		E51253D31E8BAD7F00797254 /* JSerializer.swift in Sources */ = {isa = PBXBuildFile; fileRef = E51252271E8BAD7F00797254 /* JSerializer.swift */; };
-		E51253D41E8BAD7F00797254 /* JSerializer.swift in Sources */ = {isa = PBXBuildFile; fileRef = E51252271E8BAD7F00797254 /* JSerializer.swift */; };
+		E51253D31E8BAD7F00797254 /* JSONSerializer.swift in Sources */ = {isa = PBXBuildFile; fileRef = E51252271E8BAD7F00797254 /* JSONSerializer.swift */; };
+		E51253D41E8BAD7F00797254 /* JSONSerializer.swift in Sources */ = {isa = PBXBuildFile; fileRef = E51252271E8BAD7F00797254 /* JSONSerializer.swift */; };
 		E51253D51E8BAD7F00797254 /* ImageTransform.swift in Sources */ = {isa = PBXBuildFile; fileRef = E51252291E8BAD7F00797254 /* ImageTransform.swift */; };
 		E51253D61E8BAD7F00797254 /* ImageTransform.swift in Sources */ = {isa = PBXBuildFile; fileRef = E51252291E8BAD7F00797254 /* ImageTransform.swift */; };
 		E51253D71E8BAD7F00797254 /* ManagedModelError.swift in Sources */ = {isa = PBXBuildFile; fileRef = E512522A1E8BAD7F00797254 /* ManagedModelError.swift */; };
@@ -767,7 +767,7 @@
 		E51252231E8BAD7F00797254 /* PushOperation+Conveniences.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "PushOperation+Conveniences.swift"; sourceTree = "<group>"; };
 		E51252241E8BAD7F00797254 /* Global.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Global.swift; sourceTree = "<group>"; };
 		E51252251E8BAD7F00797254 /* Handlers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Handlers.swift; sourceTree = "<group>"; };
-		E51252271E8BAD7F00797254 /* JSerializer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JSerializer.swift; sourceTree = "<group>"; };
+		E51252271E8BAD7F00797254 /* JSONSerializer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JSONSerializer.swift; sourceTree = "<group>"; };
 		E51252291E8BAD7F00797254 /* ImageTransform.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageTransform.swift; sourceTree = "<group>"; };
 		E512522A1E8BAD7F00797254 /* ManagedModelError.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ManagedModelError.swift; sourceTree = "<group>"; };
 		E512522B1E8BAD7F00797254 /* ObjectExpositionError.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ObjectExpositionError.swift; sourceTree = "<group>"; };
@@ -1259,7 +1259,7 @@
 		E51252261E8BAD7F00797254 /* json */ = {
 			isa = PBXGroup;
 			children = (
-				E51252271E8BAD7F00797254 /* JSerializer.swift */,
+				E51252271E8BAD7F00797254 /* JSONSerializer.swift */,
 				E51252281E8BAD7F00797254 /* transforms */,
 			);
 			path = json;
@@ -1763,7 +1763,7 @@
 				E51253171E8BAD7F00797254 /* UpdateNodes.swift in Sources */,
 				E512542D1E8BAD7F00797254 /* UserProtocol.swift in Sources */,
 				E512535B1E8BAD7F00797254 /* NoCrypto.swift in Sources */,
-				E51253D31E8BAD7F00797254 /* JSerializer.swift in Sources */,
+				E51253D31E8BAD7F00797254 /* JSONSerializer.swift in Sources */,
 				E51252D11E8BAD7F00797254 /* DeleteBox.swift in Sources */,
 				E51252BF1E8BAD7F00797254 /* CreateLockers.swift in Sources */,
 				E51253FB1E8BAD7F00797254 /* DocumentProvider.swift in Sources */,
@@ -2020,7 +2020,7 @@
 				E51253181E8BAD7F00797254 /* UpdateNodes.swift in Sources */,
 				E512542E1E8BAD7F00797254 /* UserProtocol.swift in Sources */,
 				E512535C1E8BAD7F00797254 /* NoCrypto.swift in Sources */,
-				E51253D41E8BAD7F00797254 /* JSerializer.swift in Sources */,
+				E51253D41E8BAD7F00797254 /* JSONSerializer.swift in Sources */,
 				E51252D21E8BAD7F00797254 /* DeleteBox.swift in Sources */,
 				E51252C01E8BAD7F00797254 /* CreateLockers.swift in Sources */,
 				E51253FC1E8BAD7F00797254 /* DocumentProvider.swift in Sources */,

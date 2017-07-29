@@ -80,7 +80,7 @@ import Foundation
     }
 
     // The document shared Serializer
-    open lazy var serializer:Serializer=JSerializer(document: self)
+    open lazy var serializer:Serializer=JSONSerializer(document: self)
 
     // Keep a reference to the document file Wrapper
     open lazy var documentFileWrapper:FileWrapper=FileWrapper(directoryWithFileWrappers:[:])

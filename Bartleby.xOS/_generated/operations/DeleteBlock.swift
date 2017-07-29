@@ -20,13 +20,9 @@ import Foundation
         return "DeleteBlock"
     }
 
-    override open class var collectionName:String{
-        return "embeddedInPushOperations"
-    }
+    override open class var collectionName:String{ return "embeddedInPushOperations" }
 
-    override open var d_collectionName:String{
-        return "embeddedInPushOperations"
-    }
+    override open var d_collectionName:String{ return "embeddedInPushOperations" }
 
     fileprivate var _payload:String=Default.VOID_STRING
 

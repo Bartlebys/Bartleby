@@ -169,7 +169,7 @@ extension BartlebyDocument {
                 var collectibleItems=[Collectible]()
                 do {
                     for jsonDictionary in jsonDictionaries{
-                        if let collectible = try self.serializer.deserializeFromDictionary(jsonDictionary) as? Collectible{
+                        if let collectible = try self.serializer.deserializeFromDictionary(jsonDictionary, register: false) as? Collectible{
                             collectibleItems.append(collectible)
                         }
                     }

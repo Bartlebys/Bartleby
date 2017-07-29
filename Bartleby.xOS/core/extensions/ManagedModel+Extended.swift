@@ -31,9 +31,8 @@ extension ManagedModel{
 
     // The runTypeName is used when deserializing the insta@nce.
     open func runTimeTypeName() -> String {
-        guard let _ = self._runTimeTypeName  else {
+        if self._runTimeTypeName == nil{
             self._runTimeTypeName = NSStringFromClass(type(of: self))
-            return self._runTimeTypeName!
         }
         return self._runTimeTypeName!
     }

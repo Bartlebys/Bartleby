@@ -430,7 +430,7 @@ class CollectionListDelegate:NSObject,NSOutlineViewDelegate,NSOutlineViewDataSou
     func outlineView(_ outlineView: NSOutlineView, itemForPersistentObject object: Any) -> Any? {
         if let deserializable = object as? Data {
             do {
-                let o = try self._documentReference.serializer.deserialize(deserializable)
+                let o = try self._documentReference.serializer.deserialize(deserializable, register: false)
                 return o
             } catch {
                 glog("Outline deserialization issue on \(object) \(error)", file:#file, function:#function, line:#line)

@@ -100,7 +100,7 @@ extension BartlebyDocument {
                                                 for itemRep in collectionDictionary{
                                                     if let itemRepDictionary = itemRep as? [String:Any]{
                                                         do {
-                                                            if let instance=try self.serializer.deserializeFromDictionary(itemRepDictionary) as? Collectible{
+                                                            if let instance=try self.serializer.deserializeFromDictionary(itemRepDictionary, register: false) as? Collectible{
                                                                 if let user:User=instance as? User{
                                                                     // We donnot want to expose the document current user
                                                                     if user.creatorUID != user.UID{

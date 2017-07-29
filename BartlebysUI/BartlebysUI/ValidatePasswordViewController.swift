@@ -113,7 +113,7 @@ class ValidatePasswordViewController: IdentityStepViewController{
                             "password":password,
                             ];
 
-                        let serializable = try document.serializer.deserializeFromDictionary(dictionary)
+                        let serializable = try document.serializer.deserializeFromDictionary(dictionary, register: false)
                         if let user:User = serializable as? User{
                             user.creatorUID=user.UID
                             user.referentDocument=document

@@ -9,12 +9,19 @@
 
 import Foundation
 
-
-/// DATA is an Opaque binary TYPE
-/// A serializer should uses defines it own dialect.
+/// A Serializer is able to Serialize / Deserialize
+/// from and to an Opaque binary TYPE
+/// It deals with the dynamic casting.
+/// Refer to `JSONSerializer` for an implementation
+///
+/// A serializer defines it own  dialect.
 /// Instance of Type X -> Data
 /// Data -> Instance of Type X
-/// To support UTF8 you can use base64Encoded Data
+///
+/// A Serializer enable to register
+/// the deserialized Instances in their collection & document.
+///
+/// Note: To support safely UTF8 you can use base64Encoded Data
 public protocol Serializer {
 
     // MARK: -
@@ -22,7 +29,7 @@ public protocol Serializer {
     // The containing document reference
     var document:BartlebyDocument { get }
 
-    /// The file extension for file based serializers. eg: "json" for JSerializer
+    /// The file extension for file based serializers. eg: "json" for JSONSerializer
     var fileExtension: String { get }
 
 
@@ -35,26 +42,30 @@ public protocol Serializer {
 
     /// Deserializes a fully typed object
     ///
-    /// - Parameter data:  data
-    /// - Returns: the serizalizable Object
-    /// - Throws: ...
-    func deserialize(_ data: Data) throws -> Serializable
+    /// - Parameters:
+    ///   - data: the opaque data
+    ///   - register: should we register to document and collection?
+    /// - Returns: the deserialized object
+    /// - Throws: Deserialization exceptions
+    func deserialize(_ data: Data,register:Bool) throws -> Serializable
 
 
     /// Deserializes from an UTF8 string
-    ///
-    /// - Parameter dictionary: the dictionary
-    /// - Returns: the serializable instance
+    /// - Parameters:
+    ///   - string: the string
+    ///   - register: should we register to document and collection?
+    /// - Returns: the deserialized object
     /// - Throws: Variable exception (serializer based)
-    func deserializeFromUTF8String(_ string:String)throws ->Serializable
+    func deserializeFromUTF8String(_ string:String,register:Bool)throws ->Serializable
 
 
     /// Deserializes from a dictionary
-    ///
-    /// - Parameter dictionary: the dictionary
-    /// - Returns: the serializable instance
+    /// - Parameters:
+    ///   - dictionary: the dictionary
+    ///   - register: should we register to document and collection?
+    /// - Returns: the deserialized object
     /// - Throws: Variable exception (serializer based)
-    func deserializeFromDictionary(_ dictionary: [String:Any])throws ->Serializable
+    func deserializeFromDictionary(_ dictionary: [String:Any],register:Bool)throws ->Serializable
 
     // MARK: - Serialization
 

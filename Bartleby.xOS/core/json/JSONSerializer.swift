@@ -1,5 +1,5 @@
 //
-//  JSerializer.swift
+//  JSONSerializer.swift
 //  Bartleby
 //
 //  Created by Benoit Pereira da Silva on 24/10/2015.
@@ -12,7 +12,7 @@ import Foundation
     import ObjectMapper
 #endif
 
-open class JSerializer: Serializer {
+open class JSONSerializer: Serializer {
 
 
     // The containing document reference
@@ -26,63 +26,56 @@ open class JSerializer: Serializer {
         self.document=document
     }
 
-    open var autoDecrypt=false
 
     // MARK: - Deserialization
 
     /// Deserializes a fully typed object
-    /// And registers the instance into its collection and Document
     ///
-    /// - Parameter data:  data
-    /// - Returns: the serizalizable Object
-    /// - Throws: ...
-    open func deserialize(_ data: Data) throws -> Serializable {
-        return try self._deserializeFromData(data, autoDecrypt: self.autoDecrypt)
+    /// - Parameters:
+    ///   - data: the opaque data
+    ///   - register: should we register to document and collection?
+    /// - Returns: the deserialized object
+    /// - Throws: Deserialization exceptions
+    open func deserialize(_ data: Data,register:Bool) throws -> Serializable {
+        return try self._deserializeFromData(data,register:register)
     }
 
 
     ///  The concrete deserialization logic with auto decrypt logic.
     /// - Parameters:
     ///   - data: the data
-    ///   - autoDecrypt: should we try to autodecrypt ?
+    ///   - register: should we register to document and collection?
     /// - Returns: the Serializable instance
     /// - Throws: SerializableError and CryptoError
-    fileprivate func _deserializeFromData(_ data: Data,autoDecrypt:Bool) throws -> Serializable{
-        do {
-            if let JSONDictionary = try JSONSerialization.jsonObject(with: data, options:JSONSerialization.ReadingOptions.allowFragments) as? [String:AnyObject] {
-                return try self.deserializeFromDictionary(JSONDictionary)
-            }
-            throw SerializableError.unableToTransformDataToDictionary
-        }catch{
-            if (autoDecrypt){
-                let decrypted=try Bartleby.cryptoDelegate.decryptData(data,useKey:Bartleby.configuration.KEY)
-                return try self._deserializeFromData(decrypted, autoDecrypt: false)
-            }else{
-                throw SerializableError.unableToTransformDataToDictionary
-            }
+    fileprivate func _deserializeFromData(_ data: Data,register:Bool) throws -> Serializable{
+
+        if let JSONDictionary = try JSONSerialization.jsonObject(with: data, options:JSONSerialization.ReadingOptions.allowFragments) as? [String:AnyObject] {
+            return try self.deserializeFromDictionary(JSONDictionary, register: register)
         }
+        throw SerializableError.unableToTransformDataToDictionary
     }
 
     /// Deserializes from an UTF8 string
-    /// And registers the instance into its collection and Document
-    /// - Parameter dictionary: the dictionary
-    /// - Returns: the serializable instance
-    /// - Throws: SerializableError and CryptoError
-    open  func deserializeFromUTF8String(_ string: String) throws -> Serializable {
+    /// - Parameters:
+    ///   - string: the string
+    ///   - register: should we register to document and collection?
+    /// - Returns: the deserialized object
+    /// - Throws: Variable exception (serializer based)
+    open  func deserializeFromUTF8String(_ string: String,register:Bool) throws -> Serializable {
         if let data=string.data(using: .utf8){
-            return try self._deserializeFromData(data, autoDecrypt: self.autoDecrypt)
+            return try self._deserializeFromData(data,register:register)
         }
         throw SerializableError.invalidUTF8String
     }
 
 
-    /// Deserializes from a dictionary (the implementation of the Mapping)
-    /// And registers the instance into its collection and Document
-    ///
-    /// - Parameter dictionary: the dictionary
-    /// - Returns: the serializable instance
-    /// - Throws:  SerializableError and CryptoError JSON errors
-    open func deserializeFromDictionary(_ dictionary: [String:Any]) throws -> Serializable {
+    /// Deserializes from a dictionary
+    /// - Parameters:
+    ///   - dictionary: the dictionary
+    ///   - register: should we register to document and collection?
+    /// - Returns: the deserialized object
+    /// - Throws: Variable exception (serializer based)
+    open func deserializeFromDictionary(_ dictionary: [String:Any],register:Bool) throws -> Serializable {
         if let typeName = dictionary[Default.TYPE_NAME_KEY] as? String {
             if let Reference = NSClassFromString(typeName) as? Serializable.Type {
                 if  var mappable = Reference.init() as? Mappable {
@@ -103,12 +96,15 @@ open class JSerializer: Serializer {
                     }
                     // Set up the runtime references.
                     if var collectible = mappable as? Collectible {
-                        if (collectible is BartlebyCollection) || (collectible is BartlebyOperation){
-                             // Add the document reference
-                            collectible.referentDocument=self.document
-                        }else{
-                            // Add the collection reference
-                            collectible.collection=self.document.collectionByName(collectible.d_collectionName)
+                        if register{
+                            if (collectible is BartlebyCollection) || (collectible is BartlebyOperation){
+                                // Add the document reference
+                                collectible.referentDocument=self.document
+                            }else{
+                                // Add the collection reference
+                                // Calls the Bartleby.register(self)
+                                collectible.collection=self.document.collectionByName(collectible.d_collectionName)
+                            }
                         }
                         return collectible
                     } else {
@@ -143,5 +139,5 @@ open class JSerializer: Serializer {
     open func serializeToUTF8String(_ instance: Serializable) -> String{
         return instance.serializeToUFf8String()
     }
-
+    
 }
