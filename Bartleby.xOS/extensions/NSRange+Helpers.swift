@@ -8,31 +8,6 @@
 
 import Foundation
 
-public func ==(lhr: NSRange, rhr: NSRange) -> Bool {
-    return NSEqualRanges(lhr, rhr)
-}
-
-extension NSRange : Equatable, Hashable {
-
-    public var hashValue: Int {
-        // We could use https://en.wikipedia.org/wiki/Pairing_function#Cantor_pairing_function
-        // but we prefer to use http://szudzik.com/ElegantPairing.pdf
-        let a = self.location
-        let b = self.length
-        let A = a >= 0 ? 2 * a : -2 * a - 1
-        let B = b >= 0 ? 2 * b : -2 * b - 1
-        return A >= B ?  (A * A + A + B) : (A + B * B)
-    }
-}
-
-
-extension NSRange:CustomStringConvertible{
-
-    public var description: String {
-        return "NSRange(location:\(self.location), length:\(self.length))"
-    }
-
-}
 
 // MARK: - Helper
 

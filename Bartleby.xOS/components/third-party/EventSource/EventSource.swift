@@ -20,7 +20,7 @@ open class EventSource: NSObject, URLSessionDataDelegate {
     let url: URL
     fileprivate let lastEventIDKey: String
     fileprivate let receivedString: NSString?
-    fileprivate var onOpenCallback: ((Void) -> Void)?
+    fileprivate var onOpenCallback: (() -> Void)?
     fileprivate var onErrorCallback: ((NSError?) -> Void)?
     fileprivate var onMessageCallback: ((_ id: String?, _ event: String?, _ data: String?) -> Void)?
     open internal(set) var readyState: EventSourceState
@@ -116,7 +116,7 @@ open class EventSource: NSObject, URLSessionDataDelegate {
 
     //Mark: EventListeners
 
-    open func onOpen(_ onOpenCallback: @escaping ((Void) -> Void)) {
+    open func onOpen(_ onOpenCallback: @escaping (() -> Void)) {
         self.onOpenCallback = onOpenCallback
     }
 
