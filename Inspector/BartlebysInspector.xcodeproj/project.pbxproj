@@ -274,7 +274,7 @@
 					E53F0B721DF96319003301DD = {
 						CreatedOnToolsVersion = 8.1;
 						DevelopmentTeam = 984ZD3F8L6;
-						LastSwiftMigration = 0810;
+						LastSwiftMigration = 0900;
 						ProvisioningStyle = Automatic;
 					};
 					E53F0B7B1DF96319003301DD = {

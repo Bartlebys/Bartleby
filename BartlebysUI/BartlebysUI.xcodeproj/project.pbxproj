@@ -301,7 +301,7 @@
 					E5FAC51F1DF95B1C00398C95 = {
 						CreatedOnToolsVersion = 8.1;
 						DevelopmentTeam = 984ZD3F8L6;
-						LastSwiftMigration = 0810;
+						LastSwiftMigration = 0900;
 						ProvisioningStyle = Automatic;
 					};
 				};
