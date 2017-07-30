@@ -182,37 +182,6 @@ import Foundation
         }
     }
 
-
-    // MARK: - NSSecureCoding
-
-    required public init?(coder decoder: NSCoder) {
-        super.init(coder: decoder)
-        self.quietChanges {
-			self.digest=String(describing: decoder.decodeObject(of: NSString.self, forKey: "digest")! as NSString)
-			self.rank=decoder.decodeInteger(forKey:"rank") 
-			self.startsAt=decoder.decodeInteger(forKey:"startsAt") 
-			self.size=decoder.decodeInteger(forKey:"size") 
-			self.priority=decoder.decodeInteger(forKey:"priority") 
-			self.compressed=decoder.decodeBool(forKey:"compressed") 
-			self.crypted=decoder.decodeBool(forKey:"crypted") 
-        }
-    }
-
-    override open func encode(with coder: NSCoder) {
-        super.encode(with:coder)
-		coder.encode(self.digest,forKey:"digest")
-		coder.encode(self.rank,forKey:"rank")
-		coder.encode(self.startsAt,forKey:"startsAt")
-		coder.encode(self.size,forKey:"size")
-		coder.encode(self.priority,forKey:"priority")
-		coder.encode(self.compressed,forKey:"compressed")
-		coder.encode(self.crypted,forKey:"crypted")
-    }
-
-    override open class var supportsSecureCoding:Bool{
-        return true
-    }
-
      required public init() {
         super.init()
     }

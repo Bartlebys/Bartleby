@@ -99,35 +99,6 @@ import Foundation
         }
     }
 
-
-    // MARK: - NSSecureCoding
-
-    required public init?(coder decoder: NSCoder) {
-        super.init(coder: decoder)
-        self.quietChanges {
-			self.ids=decoder.decodeObject(of: [NSArray.classForCoder(),NSString.self], forKey: "ids") as? [String]
-			self.result_fields=decoder.decodeObject(of: [NSArray.classForCoder(),NSString.self], forKey: "result_fields") as? [String]
-			self.sort=decoder.decodeObject(of: [NSDictionary.classForCoder(),NSString.classForCoder(),NSNumber.classForCoder(),NSObject.classForCoder(),NSSet.classForCoder()], forKey: "sort")as? [String:Any]
-        }
-    }
-
-    override open func encode(with coder: NSCoder) {
-        super.encode(with:coder)
-		if let ids = self.ids {
-			coder.encode(ids,forKey:"ids")
-		}
-		if let result_fields = self.result_fields {
-			coder.encode(result_fields,forKey:"result_fields")
-		}
-		if let sort = self.sort {
-			coder.encode(sort,forKey:"sort")
-		}
-    }
-
-    override open class var supportsSecureCoding:Bool{
-        return true
-    }
-
 }
 
 @objc(ReadUsersByIds) open class ReadUsersByIds : ManagedModel{

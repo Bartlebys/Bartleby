@@ -14,7 +14,7 @@ import Foundation
 // Models can be :
 // - ManagedModel ( fully managed models)
 // - UnManagedModel ( json & secure Coding serialization support no supervision, no change provisionning )
-@objc(UnManagedModel) open class UnManagedModel: NSObject, Mappable, NSSecureCoding {
+@objc(UnManagedModel) open class UnManagedModel: NSObject, Mappable {
 
     // MARK: - Mappable
 

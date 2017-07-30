@@ -34,27 +34,6 @@ import Foundation
         }
     }
 
-
-    // MARK: - NSSecureCoding
-
-    required public init?(coder decoder: NSCoder) {
-        super.init(coder: decoder)
-        self.quietChanges {
-			self.value=decoder.decodeObject(of: NSData.self, forKey:"value") as Data?
-        }
-    }
-
-    override open func encode(with coder: NSCoder) {
-        super.encode(with:coder)
-		if let value = self.value {
-			coder.encode(value,forKey:"value")
-		}
-    }
-
-    override open class var supportsSecureCoding:Bool{
-        return true
-    }
-
      required public init() {
         super.init()
     }

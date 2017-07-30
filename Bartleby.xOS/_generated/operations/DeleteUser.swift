@@ -88,25 +88,6 @@ import Foundation
     }
 
 
-    // MARK: - NSSecureCoding
-
-    required public init?(coder decoder: NSCoder) {
-        super.init(coder: decoder)
-        self.quietChanges {
-			self._payload=String(describing: decoder.decodeObject(of: NSString.self, forKey: "_payload")! as NSString)
-        }
-    }
-
-    override open func encode(with coder: NSCoder) {
-        super.encode(with:coder)
-		coder.encode(self._payload,forKey:"_payload")
-    }
-
-    override open class var supportsSecureCoding:Bool{
-        return true
-    }
-
-
     /**
     Creates the operation and proceeds to commit
 

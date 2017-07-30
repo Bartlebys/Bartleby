@@ -54,37 +54,6 @@ import Foundation
         }
     }
 
-
-    // MARK: - NSSecureCoding
-
-    required public init?(coder decoder: NSCoder) {
-        super.init(coder: decoder)
-        self.quietChanges {
-			self.success=decoder.decodeBool(forKey:"success") 
-			self.statusCode=decoder.decodeInteger(forKey:"statusCode") 
-			self.message=String(describing: decoder.decodeObject(of: NSString.self, forKey: "message")! as NSString)
-			self.data=decoder.decodeObject(of: NSData.self, forKey:"data") as Data?
-			self.category=String(describing: decoder.decodeObject(of: NSString.self, forKey: "category")! as NSString)
-			self.externalIdentifier=String(describing: decoder.decodeObject(of: NSString.self, forKey: "externalIdentifier")! as NSString)
-        }
-    }
-
-    override open func encode(with coder: NSCoder) {
-        super.encode(with:coder)
-		coder.encode(self.success,forKey:"success")
-		coder.encode(self.statusCode,forKey:"statusCode")
-		coder.encode(self.message,forKey:"message")
-		if let data = self.data {
-			coder.encode(data,forKey:"data")
-		}
-		coder.encode(self.category,forKey:"category")
-		coder.encode(self.externalIdentifier,forKey:"externalIdentifier")
-    }
-
-    override open class var supportsSecureCoding:Bool{
-        return true
-    }
-
      required public init() {
         super.init()
     }

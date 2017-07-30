@@ -343,59 +343,6 @@ import Foundation
         }
     }
 
-
-    // MARK: - NSSecureCoding
-
-    required public init?(coder decoder: NSCoder) {
-        super.init(coder: decoder)
-        self.quietChanges {
-			self.spaceUID=String(describing: decoder.decodeObject(of: NSString.self, forKey: "spaceUID")! as NSString)
-			self.verificationMethod=User.VerificationMethod(rawValue:String(describing: decoder.decodeObject(of: NSString.self, forKey: "verificationMethod")! as NSString))! 
-			self.localAssociationID=String(describing: decoder.decodeObject(of: NSString.self, forKey: "localAssociationID")! as NSString)
-			self.firstname=String(describing: decoder.decodeObject(of: NSString.self, forKey: "firstname")! as NSString)
-			self.lastname=String(describing: decoder.decodeObject(of: NSString.self, forKey: "lastname")! as NSString)
-			self.email=String(describing: decoder.decodeObject(of: NSString.self, forKey: "email")! as NSString)
-			self.pseudo=String(describing: decoder.decodeObject(of: NSString.self, forKey: "pseudo")! as NSString)
-			self.phoneCountryCode=String(describing: decoder.decodeObject(of: NSString.self, forKey: "phoneCountryCode")! as NSString)
-			self.phoneNumber=String(describing: decoder.decodeObject(of: NSString.self, forKey: "phoneNumber")! as NSString)
-			self.password=String(describing: decoder.decodeObject(of: NSString.self, forKey: "password")! as NSString)
-			self.status=User.Status(rawValue:String(describing: decoder.decodeObject(of: NSString.self, forKey: "status")! as NSString))! 
-			self.notes=String(describing: decoder.decodeObject(of: NSString.self, forKey:"notes") as NSString?)
-			self.supportsPasswordMemorization=decoder.decodeBool(forKey:"supportsPasswordMemorization") 
-			self.supportsPasswordUpdate=decoder.decodeBool(forKey:"supportsPasswordUpdate") 
-			self.supportsPasswordSyndication=decoder.decodeBool(forKey:"supportsPasswordSyndication") 
-			self.base64Image=String(describing: decoder.decodeObject(of: NSString.self, forKey:"base64Image") as NSString?)
-        }
-    }
-
-    override open func encode(with coder: NSCoder) {
-        super.encode(with:coder)
-		coder.encode(self.spaceUID,forKey:"spaceUID")
-		coder.encode(self.verificationMethod.rawValue ,forKey:"verificationMethod")
-		coder.encode(self.localAssociationID,forKey:"localAssociationID")
-		coder.encode(self.firstname,forKey:"firstname")
-		coder.encode(self.lastname,forKey:"lastname")
-		coder.encode(self.email,forKey:"email")
-		coder.encode(self.pseudo,forKey:"pseudo")
-		coder.encode(self.phoneCountryCode,forKey:"phoneCountryCode")
-		coder.encode(self.phoneNumber,forKey:"phoneNumber")
-		coder.encode(self.password,forKey:"password")
-		coder.encode(self.status.rawValue ,forKey:"status")
-		if let notes = self.notes {
-			coder.encode(notes,forKey:"notes")
-		}
-		coder.encode(self.supportsPasswordMemorization,forKey:"supportsPasswordMemorization")
-		coder.encode(self.supportsPasswordUpdate,forKey:"supportsPasswordUpdate")
-		coder.encode(self.supportsPasswordSyndication,forKey:"supportsPasswordSyndication")
-		if let base64Image = self.base64Image {
-			coder.encode(base64Image,forKey:"base64Image")
-		}
-    }
-
-    override open class var supportsSecureCoding:Bool{
-        return true
-    }
-
      required public init() {
         super.init()
     }

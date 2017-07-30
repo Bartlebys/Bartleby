@@ -115,35 +115,6 @@ import Foundation
         }
     }
 
-
-    // MARK: - NSSecureCoding
-
-    required public init?(coder decoder: NSCoder) {
-        super.init(coder: decoder)
-        self.quietChanges {
-			self.creationDate=decoder.decodeObject(of: NSDate.self , forKey:"creationDate") as Date?
-			self.color=String(describing: decoder.decodeObject(of: NSString.self, forKey:"color") as NSString?)
-			self.icon=String(describing: decoder.decodeObject(of: NSString.self, forKey:"icon") as NSString?)
-        }
-    }
-
-    override open func encode(with coder: NSCoder) {
-        super.encode(with:coder)
-		if let creationDate = self.creationDate {
-			coder.encode(creationDate,forKey:"creationDate")
-		}
-		if let color = self.color {
-			coder.encode(color,forKey:"color")
-		}
-		if let icon = self.icon {
-			coder.encode(icon,forKey:"icon")
-		}
-    }
-
-    override open class var supportsSecureCoding:Bool{
-        return true
-    }
-
      required public init() {
         super.init()
     }

@@ -58,45 +58,6 @@ import Foundation
         }
     }
 
-
-    // MARK: - NSSecureCoding
-
-    required public init?(coder decoder: NSCoder) {
-        super.init(coder: decoder)
-        self.quietChanges {
-			self.caller=String(describing: decoder.decodeObject(of: NSString.self, forKey: "caller")! as NSString)
-			self.code=decoder.decodeInteger(forKey:"code") 
-			self.httpStatusCode=decoder.decodeInteger(forKey:"httpStatusCode") 
-			self.relatedURL=decoder.decodeObject(of: NSURL.self, forKey:"relatedURL") as URL?
-			self.request=decoder.decodeObject(of:HTTPRequest.self, forKey: "request") 
-			self.responseString=String(describing: decoder.decodeObject(of: NSString.self, forKey:"responseString") as NSString?)
-			self.message=String(describing: decoder.decodeObject(of: NSString.self, forKey:"message") as NSString?)
-        }
-    }
-
-    override open func encode(with coder: NSCoder) {
-        super.encode(with:coder)
-		coder.encode(self.caller,forKey:"caller")
-		coder.encode(self.code,forKey:"code")
-		coder.encode(self.httpStatusCode,forKey:"httpStatusCode")
-		if let relatedURL = self.relatedURL {
-			coder.encode(relatedURL,forKey:"relatedURL")
-		}
-		if let request = self.request {
-			coder.encode(request,forKey:"request")
-		}
-		if let responseString = self.responseString {
-			coder.encode(responseString,forKey:"responseString")
-		}
-		if let message = self.message {
-			coder.encode(message,forKey:"message")
-		}
-    }
-
-    override open class var supportsSecureCoding:Bool{
-        return true
-    }
-
      required public init() {
         super.init()
     }

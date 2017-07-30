@@ -50,39 +50,6 @@ import Foundation
         }
     }
 
-
-    // MARK: - NSSecureCoding
-
-    required public init?(coder decoder: NSCoder) {
-        super.init(coder: decoder)
-        self.quietChanges {
-			self.url=decoder.decodeObject(of: NSURL.self, forKey:"url") as URL?
-			self.httpMethod=String(describing: decoder.decodeObject(of: NSString.self, forKey: "httpMethod")! as NSString)
-			self.headers=decoder.decodeObject(of: [NSDictionary.classForCoder(),NSString.classForCoder(),NSNumber.classForCoder(),NSObject.classForCoder(),NSSet.classForCoder()], forKey: "headers")as? [String:Any]
-			self.httpBody=decoder.decodeObject(of: NSData.self, forKey:"httpBody") as Data?
-			self.timeout=decoder.decodeDouble(forKey:"timeout") 
-        }
-    }
-
-    override open func encode(with coder: NSCoder) {
-        super.encode(with:coder)
-		if let url = self.url {
-			coder.encode(url,forKey:"url")
-		}
-		coder.encode(self.httpMethod,forKey:"httpMethod")
-		if let headers = self.headers {
-			coder.encode(headers,forKey:"headers")
-		}
-		if let httpBody = self.httpBody {
-			coder.encode(httpBody,forKey:"httpBody")
-		}
-		coder.encode(self.timeout,forKey:"timeout")
-    }
-
-    override open class var supportsSecureCoding:Bool{
-        return true
-    }
-
      required public init() {
         super.init()
     }

@@ -256,47 +256,6 @@ import Foundation
         }
     }
 
-
-    // MARK: - NSSecureCoding
-
-    required public init?(coder decoder: NSCoder) {
-        super.init(coder: decoder)
-        self.quietChanges {
-			self.associatedDocumentUID=String(describing: decoder.decodeObject(of: NSString.self, forKey:"associatedDocumentUID") as NSString?)
-			self.subjectUID=String(describing: decoder.decodeObject(of: NSString.self, forKey: "subjectUID")! as NSString)
-			self.userUID=String(describing: decoder.decodeObject(of: NSString.self, forKey: "userUID")! as NSString)
-			self.mode=Locker.Mode(rawValue:String(describing: decoder.decodeObject(of: NSString.self, forKey: "mode")! as NSString))! 
-			self.verificationMethod=Locker.VerificationMethod(rawValue:String(describing: decoder.decodeObject(of: NSString.self, forKey: "verificationMethod")! as NSString))! 
-			self.security=Locker.Security(rawValue:String(describing: decoder.decodeObject(of: NSString.self, forKey: "security")! as NSString))! 
-			self.code=String(describing: decoder.decodeObject(of: NSString.self, forKey: "code")! as NSString)
-			self.numberOfAttempt=decoder.decodeInteger(forKey:"numberOfAttempt") 
-			self.startDate=decoder.decodeObject(of: NSDate.self , forKey: "startDate")! as Date
-			self.endDate=decoder.decodeObject(of: NSDate.self , forKey: "endDate")! as Date
-			self.gems=String(describing: decoder.decodeObject(of: NSString.self, forKey: "gems")! as NSString)
-        }
-    }
-
-    override open func encode(with coder: NSCoder) {
-        super.encode(with:coder)
-		if let associatedDocumentUID = self.associatedDocumentUID {
-			coder.encode(associatedDocumentUID,forKey:"associatedDocumentUID")
-		}
-		coder.encode(self.subjectUID,forKey:"subjectUID")
-		coder.encode(self.userUID,forKey:"userUID")
-		coder.encode(self.mode.rawValue ,forKey:"mode")
-		coder.encode(self.verificationMethod.rawValue ,forKey:"verificationMethod")
-		coder.encode(self.security.rawValue ,forKey:"security")
-		coder.encode(self.code,forKey:"code")
-		coder.encode(self.numberOfAttempt,forKey:"numberOfAttempt")
-		coder.encode(self.startDate,forKey:"startDate")
-		coder.encode(self.endDate,forKey:"endDate")
-		coder.encode(self.gems,forKey:"gems")
-    }
-
-    override open class var supportsSecureCoding:Bool{
-        return true
-    }
-
      required public init() {
         super.init()
     }

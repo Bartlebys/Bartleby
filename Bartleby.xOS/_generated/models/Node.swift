@@ -283,61 +283,6 @@ import Foundation
         }
     }
 
-
-    // MARK: - NSSecureCoding
-
-    required public init?(coder decoder: NSCoder) {
-        super.init(coder: decoder)
-        self.quietChanges {
-			self.type=String(describing: decoder.decodeObject(of: NSString.self, forKey: "type")! as NSString)
-			self.relativePath=String(describing: decoder.decodeObject(of: NSString.self, forKey: "relativePath")! as NSString)
-			self.proxyPath=String(describing: decoder.decodeObject(of: NSString.self, forKey:"proxyPath") as NSString?)
-			self.blocksMaxSize=decoder.decodeInteger(forKey:"blocksMaxSize") 
-			self.numberOfBlocks=decoder.decodeInteger(forKey:"numberOfBlocks") 
-			self.priority=decoder.decodeInteger(forKey:"priority") 
-			self.nature=Node.Nature(rawValue:String(describing: decoder.decodeObject(of: NSString.self, forKey: "nature")! as NSString))! 
-			self.modificationDate=decoder.decodeObject(of: NSDate.self , forKey:"modificationDate") as Date?
-			self.creationDate=decoder.decodeObject(of: NSDate.self , forKey:"creationDate") as Date?
-			self.referentNodeUID=String(describing: decoder.decodeObject(of: NSString.self, forKey:"referentNodeUID") as NSString?)
-			self.authorized=decoder.decodeObject(of: [NSArray.classForCoder(),NSString.self], forKey: "authorized")! as! [String]
-			self.size=decoder.decodeInteger(forKey:"size") 
-			self.digest=String(describing: decoder.decodeObject(of: NSString.self, forKey: "digest")! as NSString)
-			self.compressedBlocks=decoder.decodeBool(forKey:"compressedBlocks") 
-			self.cryptedBlocks=decoder.decodeBool(forKey:"cryptedBlocks") 
-        }
-    }
-
-    override open func encode(with coder: NSCoder) {
-        super.encode(with:coder)
-		coder.encode(self.type,forKey:"type")
-		coder.encode(self.relativePath,forKey:"relativePath")
-		if let proxyPath = self.proxyPath {
-			coder.encode(proxyPath,forKey:"proxyPath")
-		}
-		coder.encode(self.blocksMaxSize,forKey:"blocksMaxSize")
-		coder.encode(self.numberOfBlocks,forKey:"numberOfBlocks")
-		coder.encode(self.priority,forKey:"priority")
-		coder.encode(self.nature.rawValue ,forKey:"nature")
-		if let modificationDate = self.modificationDate {
-			coder.encode(modificationDate,forKey:"modificationDate")
-		}
-		if let creationDate = self.creationDate {
-			coder.encode(creationDate,forKey:"creationDate")
-		}
-		if let referentNodeUID = self.referentNodeUID {
-			coder.encode(referentNodeUID,forKey:"referentNodeUID")
-		}
-		coder.encode(self.authorized,forKey:"authorized")
-		coder.encode(self.size,forKey:"size")
-		coder.encode(self.digest,forKey:"digest")
-		coder.encode(self.compressedBlocks,forKey:"compressedBlocks")
-		coder.encode(self.cryptedBlocks,forKey:"cryptedBlocks")
-    }
-
-    override open class var supportsSecureCoding:Bool{
-        return true
-    }
-
      required public init() {
         super.init()
     }

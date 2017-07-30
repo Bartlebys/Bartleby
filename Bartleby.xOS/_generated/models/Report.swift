@@ -100,31 +100,6 @@ import Foundation
         }
     }
 
-
-    // MARK: - NSSecureCoding
-
-    required public init?(coder decoder: NSCoder) {
-        super.init(coder: decoder)
-        self.quietChanges {
-			self.metadata=decoder.decodeObject(of:DocumentMetadata.self, forKey: "metadata") 
-			self.logs=decoder.decodeObject(of: [NSArray.classForCoder(),LogEntry.classForCoder()], forKey: "logs")! as! [LogEntry]
-			self.metrics=decoder.decodeObject(of: [NSArray.classForCoder(),Metrics.classForCoder()], forKey: "metrics")! as! [Metrics]
-        }
-    }
-
-    override open func encode(with coder: NSCoder) {
-        super.encode(with:coder)
-		if let metadata = self.metadata {
-			coder.encode(metadata,forKey:"metadata")
-		}
-		coder.encode(self.logs,forKey:"logs")
-		coder.encode(self.metrics,forKey:"metrics")
-    }
-
-    override open class var supportsSecureCoding:Bool{
-        return true
-    }
-
      required public init() {
         super.init()
     }

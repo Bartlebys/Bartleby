@@ -46,33 +46,6 @@ import Foundation
         }
     }
 
-
-    // MARK: - NSSecureCoding
-
-    required public init?(coder decoder: NSCoder) {
-        super.init(coder: decoder)
-        self.quietChanges {
-			self.password=String(describing: decoder.decodeObject(of: NSString.self, forKey:"password") as NSString?)
-			self.boxes=decoder.decodeObject(of: [NSArray.classForCoder(),Box.classForCoder()], forKey: "boxes")! as! [Box]
-			self.nodes=decoder.decodeObject(of: [NSArray.classForCoder(),Node.classForCoder()], forKey: "nodes")! as! [Node]
-			self.blocks=decoder.decodeObject(of: [NSArray.classForCoder(),Block.classForCoder()], forKey: "blocks")! as! [Block]
-        }
-    }
-
-    override open func encode(with coder: NSCoder) {
-        super.encode(with:coder)
-		if let password = self.password {
-			coder.encode(password,forKey:"password")
-		}
-		coder.encode(self.boxes,forKey:"boxes")
-		coder.encode(self.nodes,forKey:"nodes")
-		coder.encode(self.blocks,forKey:"blocks")
-    }
-
-    override open class var supportsSecureCoding:Bool{
-        return true
-    }
-
      required public init() {
         super.init()
     }

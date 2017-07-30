@@ -73,43 +73,6 @@ import Foundation
         }
     }
 
-
-    // MARK: - NSSecureCoding
-
-    required public init?(coder decoder: NSCoder) {
-        super.init(coder: decoder)
-        self.quietChanges {
-			self.operationName=String(describing: decoder.decodeObject(of: NSString.self, forKey: "operationName")! as NSString)
-			self.counter=decoder.decodeInteger(forKey:"counter") 
-			self.elapsed=decoder.decodeDouble(forKey:"elapsed") 
-			self.latency=decoder.decodeDouble(forKey:"latency") 
-			self.requestDuration=decoder.decodeDouble(forKey:"requestDuration") 
-			self.serializationDuration=decoder.decodeDouble(forKey:"serializationDuration") 
-			self.totalDuration=decoder.decodeDouble(forKey:"totalDuration") 
-			self.httpContext=decoder.decodeObject(of:HTTPContext.self, forKey: "httpContext") 
-			self.streamOrientation=Metrics.StreamOrientation(rawValue:String(describing: decoder.decodeObject(of: NSString.self, forKey: "streamOrientation")! as NSString))! 
-        }
-    }
-
-    override open func encode(with coder: NSCoder) {
-        super.encode(with:coder)
-		coder.encode(self.operationName,forKey:"operationName")
-		coder.encode(self.counter,forKey:"counter")
-		coder.encode(self.elapsed,forKey:"elapsed")
-		coder.encode(self.latency,forKey:"latency")
-		coder.encode(self.requestDuration,forKey:"requestDuration")
-		coder.encode(self.serializationDuration,forKey:"serializationDuration")
-		coder.encode(self.totalDuration,forKey:"totalDuration")
-		if let httpContext = self.httpContext {
-			coder.encode(httpContext,forKey:"httpContext")
-		}
-		coder.encode(self.streamOrientation.rawValue ,forKey:"streamOrientation")
-    }
-
-    override open class var supportsSecureCoding:Bool{
-        return true
-    }
-
      required public init() {
         super.init()
     }

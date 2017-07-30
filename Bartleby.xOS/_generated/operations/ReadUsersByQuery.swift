@@ -99,35 +99,6 @@ import Foundation
         }
     }
 
-
-    // MARK: - NSSecureCoding
-
-    required public init?(coder decoder: NSCoder) {
-        super.init(coder: decoder)
-        self.quietChanges {
-			self.result_fields=decoder.decodeObject(of: [NSArray.classForCoder(),NSString.self], forKey: "result_fields") as? [String]
-			self.sort=decoder.decodeObject(of: [NSDictionary.classForCoder(),NSString.classForCoder(),NSNumber.classForCoder(),NSObject.classForCoder(),NSSet.classForCoder()], forKey: "sort")as? [String:Any]
-			self.query=decoder.decodeObject(of: [NSDictionary.classForCoder(),NSString.classForCoder(),NSNumber.classForCoder(),NSObject.classForCoder(),NSSet.classForCoder()], forKey: "query")as? [String:Any]
-        }
-    }
-
-    override open func encode(with coder: NSCoder) {
-        super.encode(with:coder)
-		if let result_fields = self.result_fields {
-			coder.encode(result_fields,forKey:"result_fields")
-		}
-		if let sort = self.sort {
-			coder.encode(sort,forKey:"sort")
-		}
-		if let query = self.query {
-			coder.encode(query,forKey:"query")
-		}
-    }
-
-    override open class var supportsSecureCoding:Bool{
-        return true
-    }
-
 }
 
 @objc(ReadUsersByQuery) open class ReadUsersByQuery : ManagedModel{

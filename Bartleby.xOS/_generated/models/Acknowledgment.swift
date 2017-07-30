@@ -42,29 +42,6 @@ import Foundation
         }
     }
 
-
-    // MARK: - NSSecureCoding
-
-    required public init?(coder decoder: NSCoder) {
-        super.init(coder: decoder)
-        self.quietChanges {
-			self.triggerIndex=decoder.decodeInteger(forKey:"triggerIndex") 
-			self.uids=decoder.decodeObject(of: [NSArray.classForCoder(),NSString.self], forKey: "uids")! as! [String]
-			self.triggerRelayDuration=decoder.decodeDouble(forKey:"triggerRelayDuration") 
-        }
-    }
-
-    override open func encode(with coder: NSCoder) {
-        super.encode(with:coder)
-		coder.encode(self.triggerIndex,forKey:"triggerIndex")
-		coder.encode(self.uids,forKey:"uids")
-		coder.encode(self.triggerRelayDuration,forKey:"triggerRelayDuration")
-    }
-
-    override open class var supportsSecureCoding:Bool{
-        return true
-    }
-
      required public init() {
         super.init()
     }

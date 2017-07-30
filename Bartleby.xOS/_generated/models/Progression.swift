@@ -66,45 +66,6 @@ import Foundation
         }
     }
 
-
-    // MARK: - NSSecureCoding
-
-    required public init?(coder decoder: NSCoder) {
-        super.init(coder: decoder)
-        self.quietChanges {
-			self.startTime=decoder.decodeDouble(forKey:"startTime") 
-			self.currentTaskIndex=decoder.decodeInteger(forKey:"currentTaskIndex") 
-			self.totalTaskCount=decoder.decodeInteger(forKey:"totalTaskCount") 
-			self.currentPercentProgress=decoder.decodeDouble(forKey:"currentPercentProgress") 
-			self.message=String(describing: decoder.decodeObject(of: NSString.self, forKey: "message")! as NSString)
-			self.informations=String(describing: decoder.decodeObject(of: NSString.self, forKey: "informations")! as NSString)
-			self.data=decoder.decodeObject(of: NSData.self, forKey:"data") as Data?
-			self.category=String(describing: decoder.decodeObject(of: NSString.self, forKey: "category")! as NSString)
-			self.externalIdentifier=String(describing: decoder.decodeObject(of: NSString.self, forKey: "externalIdentifier")! as NSString)
-        }
-    }
-
-    override open func encode(with coder: NSCoder) {
-        super.encode(with:coder)
-		if let startTime = self.startTime {
-			coder.encode(startTime,forKey:"startTime")
-		}
-		coder.encode(self.currentTaskIndex,forKey:"currentTaskIndex")
-		coder.encode(self.totalTaskCount,forKey:"totalTaskCount")
-		coder.encode(self.currentPercentProgress,forKey:"currentPercentProgress")
-		coder.encode(self.message,forKey:"message")
-		coder.encode(self.informations,forKey:"informations")
-		if let data = self.data {
-			coder.encode(data,forKey:"data")
-		}
-		coder.encode(self.category,forKey:"category")
-		coder.encode(self.externalIdentifier,forKey:"externalIdentifier")
-    }
-
-    override open class var supportsSecureCoding:Bool{
-        return true
-    }
-
      required public init() {
         super.init()
     }

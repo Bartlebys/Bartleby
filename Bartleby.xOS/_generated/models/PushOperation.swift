@@ -156,51 +156,6 @@ import Foundation
         }
     }
 
-
-    // MARK: - NSSecureCoding
-
-    required public init?(coder decoder: NSCoder) {
-        super.init(coder: decoder)
-        self.quietChanges {
-			self.commandUID=String(describing: decoder.decodeObject(of: NSString.self, forKey:"commandUID") as NSString?)
-			self.toDictionary=decoder.decodeObject(of: [NSDictionary.classForCoder(),NSString.classForCoder(),NSNumber.classForCoder(),NSObject.classForCoder(),NSSet.classForCoder()], forKey: "toDictionary")as? [String:Any]
-			self.responseDictionary=decoder.decodeObject(of: [NSDictionary.classForCoder(),NSString.classForCoder(),NSNumber.classForCoder(),NSObject.classForCoder(),NSSet.classForCoder()], forKey: "responseDictionary")as? [String:Any]
-			self.completionState=decoder.decodeObject(of:Completion.self, forKey: "completionState") 
-			self.status=PushOperation.Status(rawValue:String(describing: decoder.decodeObject(of: NSString.self, forKey: "status")! as NSString))! 
-			self.counter=decoder.decodeInteger(forKey:"counter") 
-			self.creationDate=decoder.decodeObject(of: NSDate.self , forKey:"creationDate") as Date?
-			self.lastInvocationDate=decoder.decodeObject(of: NSDate.self , forKey:"lastInvocationDate") as Date?
-        }
-    }
-
-    override open func encode(with coder: NSCoder) {
-        super.encode(with:coder)
-		if let commandUID = self.commandUID {
-			coder.encode(commandUID,forKey:"commandUID")
-		}
-		if let toDictionary = self.toDictionary {
-			coder.encode(toDictionary,forKey:"toDictionary")
-		}
-		if let responseDictionary = self.responseDictionary {
-			coder.encode(responseDictionary,forKey:"responseDictionary")
-		}
-		if let completionState = self.completionState {
-			coder.encode(completionState,forKey:"completionState")
-		}
-		coder.encode(self.status.rawValue ,forKey:"status")
-		coder.encode(self.counter,forKey:"counter")
-		if let creationDate = self.creationDate {
-			coder.encode(creationDate,forKey:"creationDate")
-		}
-		if let lastInvocationDate = self.lastInvocationDate {
-			coder.encode(lastInvocationDate,forKey:"lastInvocationDate")
-		}
-    }
-
-    override open class var supportsSecureCoding:Bool{
-        return true
-    }
-
      required public init() {
         super.init()
     }

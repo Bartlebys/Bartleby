@@ -52,31 +52,6 @@ import Foundation
         }
     }
 
-
-    // MARK: - NSSecureCoding
-
-    required public init?(coder decoder: NSCoder) {
-        super.init(coder: decoder)
-        self.quietChanges {
-			self.storage=CollectionMetadatum.Storage(rawValue:String(describing: decoder.decodeObject(of: NSString.self, forKey: "storage")! as NSString))! 
-			self.collectionName=String(describing: decoder.decodeObject(of: NSString.self, forKey: "collectionName")! as NSString)
-			self.persistsDistantly=decoder.decodeBool(forKey:"persistsDistantly") 
-			self.inMemory=decoder.decodeBool(forKey:"inMemory") 
-        }
-    }
-
-    override open func encode(with coder: NSCoder) {
-        super.encode(with:coder)
-		coder.encode(self.storage.rawValue ,forKey:"storage")
-		coder.encode(self.collectionName,forKey:"collectionName")
-		coder.encode(self.persistsDistantly,forKey:"persistsDistantly")
-		coder.encode(self.inMemory,forKey:"inMemory")
-    }
-
-    override open class var supportsSecureCoding:Bool{
-        return true
-    }
-
      required public init() {
         super.init()
     }

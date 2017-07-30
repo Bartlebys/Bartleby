@@ -42,29 +42,6 @@ import Foundation
         }
     }
 
-
-    // MARK: - NSSecureCoding
-
-    required public init?(coder decoder: NSCoder) {
-        super.init(coder: decoder)
-        self.quietChanges {
-			self.elapsed=decoder.decodeDouble(forKey:"elapsed") 
-			self.key=String(describing: decoder.decodeObject(of: NSString.self, forKey: "key")! as NSString)
-			self.changes=String(describing: decoder.decodeObject(of: NSString.self, forKey: "changes")! as NSString)
-        }
-    }
-
-    override open func encode(with coder: NSCoder) {
-        super.encode(with:coder)
-		coder.encode(self.elapsed,forKey:"elapsed")
-		coder.encode(self.key,forKey:"key")
-		coder.encode(self.changes,forKey:"changes")
-    }
-
-    override open class var supportsSecureCoding:Bool{
-        return true
-    }
-
      required public init() {
         super.init()
     }

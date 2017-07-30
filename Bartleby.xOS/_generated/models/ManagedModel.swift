@@ -14,7 +14,7 @@ import Foundation
 #endif
 
 // MARK: Bartleby's Core: The base of any ManagedModel
-@objc(ManagedModel) open class ManagedModel : NSObject, Collectible, Mappable, NSSecureCoding{
+@objc(ManagedModel) open class ManagedModel : NSObject, Collectible, Mappable{
 
     // Universal type support
      open class func typeName() -> String {
@@ -228,45 +228,6 @@ import Foundation
             self._typeName <- map[Default.TYPE_NAME_KEY]
             self._id <- map[Default.UID_KEY]
         }
-    }
-
-
-    // MARK: - NSSecureCoding
-
-    required public init?(coder decoder: NSCoder) {
-        super.init()
-        self.quietChanges {
-			self.externalID=String(describing: decoder.decodeObject(of: NSString.self, forKey: "externalID")! as NSString)
-			self.creatorUID=String(describing: decoder.decodeObject(of: NSString.self, forKey: "creatorUID")! as NSString)
-			self.ownedBy=decoder.decodeObject(of: [NSArray.classForCoder(),NSString.self], forKey: "ownedBy")! as! [String]
-			self.freeRelations=decoder.decodeObject(of: [NSArray.classForCoder(),NSString.self], forKey: "freeRelations")! as! [String]
-			self.summary=String(describing: decoder.decodeObject(of: NSString.self, forKey:"summary") as NSString?)
-			self.ephemeral=decoder.decodeBool(forKey:"ephemeral") 
-			self.commitCounter=decoder.decodeInteger(forKey:"commitCounter") 
-            self._typeName=type(of: self).typeName()
-            self._id=String(describing: decoder.decodeObject(of: NSString.self, forKey: "_id")! as NSString)
-        }
-    }
-
-     open func encode(with coder: NSCoder) {
-        
-		coder.encode(self.externalID,forKey:"externalID")
-		coder.encode(self.creatorUID,forKey:"creatorUID")
-		coder.encode(self.ownedBy,forKey:"ownedBy")
-		coder.encode(self.freeRelations,forKey:"freeRelations")
-		if let summary = self.summary {
-			coder.encode(summary,forKey:"summary")
-		}
-		coder.encode(self.ephemeral,forKey:"ephemeral")
-		coder.encode(self.commitCounter,forKey:"commitCounter")
-        self._typeName=type(of: self).typeName()// Store the universal type name on serialization
-        coder.encode(self._typeName, forKey: Default.TYPE_NAME_KEY)
-        coder.encode(self._id, forKey: Default.UID_KEY)
-        
-    }
-
-     open class var supportsSecureCoding:Bool{
-        return true
     }
 
     override required public init() {

@@ -66,41 +66,6 @@ import Foundation
         }
     }
 
-
-    // MARK: - NSSecureCoding
-
-    required public init?(coder decoder: NSCoder) {
-        super.init(coder: decoder)
-        self.quietChanges {
-			self.counter=decoder.decodeInteger(forKey:"counter") 
-			self.line=decoder.decodeInteger(forKey:"line") 
-			self.elapsed=decoder.decodeDouble(forKey:"elapsed") 
-			self.message=String(describing: decoder.decodeObject(of: NSString.self, forKey: "message")! as NSString)
-			self.file=String(describing: decoder.decodeObject(of: NSString.self, forKey: "file")! as NSString)
-			self.function=String(describing: decoder.decodeObject(of: NSString.self, forKey: "function")! as NSString)
-			self.category=String(describing: decoder.decodeObject(of: NSString.self, forKey: "category")! as NSString)
-			self.decorative=decoder.decodeBool(forKey:"decorative") 
-			self._runUID=String(describing: decoder.decodeObject(of: NSString.self, forKey: "_runUID")! as NSString)
-        }
-    }
-
-    override open func encode(with coder: NSCoder) {
-        super.encode(with:coder)
-		coder.encode(self.counter,forKey:"counter")
-		coder.encode(self.line,forKey:"line")
-		coder.encode(self.elapsed,forKey:"elapsed")
-		coder.encode(self.message,forKey:"message")
-		coder.encode(self.file,forKey:"file")
-		coder.encode(self.function,forKey:"function")
-		coder.encode(self.category,forKey:"category")
-		coder.encode(self.decorative,forKey:"decorative")
-		coder.encode(self._runUID,forKey:"_runUID")
-    }
-
-    override open class var supportsSecureCoding:Bool{
-        return true
-    }
-
      required public init() {
         super.init()
     }
