@@ -515,7 +515,6 @@
 		E5598ECF1F18FE7E000617C6 /* DataValue.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5598ECD1F18FE7E000617C6 /* DataValue.swift */; };
 		E5598ED01F18FE7E000617C6 /* StringValue.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5598ECE1F18FE7E000617C6 /* StringValue.swift */; };
 		E55D61441DE9F79800BF63B6 /* BlocksTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E55D61431DE9F79800BF63B6 /* BlocksTests.swift */; };
-		E56756BA1E34B40F00E299F0 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E56756B91E34B40F00E299F0 /* Security.framework */; };
 		E577CA471CCFB31500756BDD /* BartlebyKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E54999581C3A7D0100C52A9D /* BartlebyKit.framework */; };
 		E5B128F21D1C315D00D61261 /* BFileManagerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B5D0A071CDE1F48001FB281 /* BFileManagerTests.swift */; };
 		E5B128F31D1C315D00D61261 /* TransformTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BBF7D441CC8E4E400F2237B /* TransformTests.swift */; };
@@ -873,7 +872,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				E56756BA1E34B40F00E299F0 /* Security.framework in Frameworks */,
 				E50805C11DF6C26F0085E5C3 /* Alamofire.framework in Frameworks */,
 				E50805C21DF6C26F0085E5C3 /* ObjectMapper.framework in Frameworks */,
 			);
