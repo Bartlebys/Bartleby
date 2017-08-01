@@ -10,7 +10,6 @@
 import Foundation
 #if !USE_EMBEDDED_MODULES
 	import Alamofire
-	import ObjectMapper
 #endif
 
 @objc(UpdateBlock) public class UpdateBlock : ManagedModel,BartlebyOperation{
@@ -24,7 +23,7 @@ import Foundation
 
     override open var d_collectionName:String{ return "embeddedInPushOperations" }
 
-    fileprivate var _payload:String=Default.VOID_STRING
+    fileprivate var _payload:Data?
 
     required public init() {
         super.init()
@@ -34,7 +33,7 @@ import Foundation
     // MARK: - Exposed (Bartleby's KVC like generative implementation)
 
     /// Return all the exposed instance variables keys. (Exposed == public and modifiable).
-    override open var exposedKeys:[String] {
+    override  open var exposedKeys:[String] {
         var exposed=super.exposedKeys
         exposed.append(contentsOf:["_payload"])
         return exposed
@@ -47,10 +46,10 @@ import Foundation
     /// - parameter key:   the key
     ///
     /// - throws: throws an Exception when the key is not exposed
-    override open func setExposedValue(_ value:Any?, forKey key: String) throws {
+    override  open func setExposedValue(_ value:Any?, forKey key: String) throws {
         switch key {
             case "_payload":
-                if let casted=value as? String{
+                if let casted=value as? Data{
                     self._payload=casted
                 }
             default:
@@ -66,7 +65,7 @@ import Foundation
     /// - throws: throws Exception when the key is not exposed
     ///
     /// - returns: returns the value
-    override open func getExposedValueForKey(_ key:String) throws -> Any?{
+    override  open func getExposedValueForKey(_ key:String) throws -> Any?{
         switch key {
             case "_payload":
                return self._payload
@@ -74,17 +73,25 @@ import Foundation
                 return try super.getExposedValueForKey(key)
         }
     }
-    // MARK: - Mappable
+    // MARK: - Codable
 
-    required public init?(map: Map) {
-        super.init(map:map)
+
+    enum payloadCodingKeys: String,CodingKey{
+		case _payload
     }
 
-    override open func mapping(map: Map) {
-        super.mapping(map: map)
-        self.quietChanges {
-			self._payload <- ( map["_payload"] )
+    required public init(from decoder: Decoder) throws{
+		try super.init(from: decoder)
+        try self.quietThrowingChanges {
+			let values = try decoder.container(keyedBy: payloadCodingKeys.self)
+			self._payload = try values.decode(Data.self,forKey:._payload)
         }
+    }
+
+    override open func encode(to encoder: Encoder) throws {
+		try super.encode(to:encoder)
+		var container = encoder.container(keyedBy: payloadCodingKeys.self)
+		try container.encodeIfPresent(self._payload,forKey:._payload)
     }
 
 
@@ -97,9 +104,9 @@ import Foundation
     static func commit(_ block:Block, in document:BartlebyDocument){
         let operationInstance=UpdateBlock()
         operationInstance.referentDocument = document
-        operationInstance._payload=block.toJSONString() ?? Default.VOID_STRING
         let context=Context(code:2874210455, caller: "\(operationInstance.runTimeTypeName()).commit")
         do{
+            operationInstance._payload = try JSONEncoder().encode(block.self)
             let ic:ManagedPushOperations = try document.getCollection()
             // Create the pushOperation
             let pushOperation = PushOperation()
@@ -131,8 +138,8 @@ import Foundation
 
     open func push(sucessHandler success:@escaping (_ context:HTTPContext)->(),
         failureHandler failure:@escaping (_ context:HTTPContext)->()){
-        if let block = Mapper <Block>().map(JSONString:self._payload){
             do{
+                let block = try JSONDecoder().decode(Block.self, from:self._payload ?? Data())
                 // The unitary operation are not always idempotent
                 // so we do not want to push multiple times unintensionnaly.
                 // Check BartlebyDocument+Operations.swift to understand Operation status
@@ -145,7 +152,7 @@ import Foundation
                         sucessHandler: { (context: HTTPContext) -> () in
                             pushOperation.counter=pushOperation.counter+1
                             pushOperation.status=PushOperation.Status.completed
-                            pushOperation.responseDictionary=Mapper<HTTPContext>().toJSON(context)
+                            pushOperation.responseData = try? JSONEncoder().encode(context)
                             pushOperation.lastInvocationDate=Date()
                             let completion=Completion.successStateFromHTTPContext(context)
                             completion.setResult(context)
@@ -155,7 +162,7 @@ import Foundation
                         failureHandler: {(context: HTTPContext) -> () in
                             pushOperation.counter=pushOperation.counter+1
                             pushOperation.status=PushOperation.Status.completed
-                            pushOperation.responseDictionary=Mapper<HTTPContext>().toJSON(context)
+                            pushOperation.responseData = try? JSONEncoder().encode(context)
                             pushOperation.lastInvocationDate=Date()
                             let completion=Completion.failureStateFromHTTPContext(context)
                             completion.setResult(context)
@@ -165,7 +172,7 @@ import Foundation
                     )
                 }else{
                     glog("Operation can't be pushed \(pushOperation.status)", file: #file, function: #function, line: #line, category: Default.LOG_FAULT, decorative: false)
-    }
+                }
             }catch{
                 let context = HTTPContext( code:3 ,
                 caller: "UpdateBlock.execute",
@@ -176,9 +183,6 @@ import Foundation
                 glog("\(error)", file: #file, function: #function, line: #line, category: Default.LOG_WARNING, decorative: false)
             }
 
-        }else{
-            glog("block should not be nil", file: #file, function: #function, line: #line, category: Default.LOG_WARNING, decorative: false)
-        }
     }
 
     internal func _getOperation()throws->PushOperation{
@@ -199,8 +203,8 @@ import Foundation
             failureHandler failure: @escaping(_ context:HTTPContext)->()){
             if let document = Bartleby.sharedInstance.getDocumentByUID(documentUID) {
                 let pathURL = document.baseURL.appendingPathComponent("block")
-                var parameters=Dictionary<String, Any>()
-                parameters["block"]=Mapper<Block>().toJSON(block)
+                var parameters = [String: Any]()
+                parameters["block"] = block.dictionaryRepresentation()
                 let urlRequest=HTTPManager.requestWithToken(inDocumentWithUID:document.UID,withActionName:"UpdateBlock" ,forMethod:"PUT", and: pathURL)
                 do {
                     let r=try JSONEncoding().encode(urlRequest,with:parameters)

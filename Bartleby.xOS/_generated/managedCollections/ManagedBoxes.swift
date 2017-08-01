@@ -13,7 +13,6 @@ import AppKit
 #endif
 #if !USE_EMBEDDED_MODULES
 	import Alamofire
-	import ObjectMapper
 #endif
 
 // MARK: - Notification
@@ -294,46 +293,41 @@ public extension Notification.Name {
                 return try super.getExposedValueForKey(key)
         }
     }
-    // MARK: - Mappable
 
-    required public init?(map: Map) {
-        super.init(map:map)
+
+
+
+
+    
+     // MARK: - Codable
+
+
+    enum CodingKeys: String,CodingKey{
+		case _storage
+		case _staged
+		case _deleted
     }
 
-    override open func mapping(map: Map) {
-        super.mapping(map: map)
-        self.quietChanges {
-			self._storage <- ( map["_storage"] )
-			self._staged <- ( map["_staged"] )
-            self._deleted <- ( map["_deleted"] )
-            if map.mappingType == MappingType.fromJSON{
-                self._rebuildFromStorage()
-            }
+    required public init(from decoder: Decoder) throws{
+		try super.init(from: decoder)
+        try self.quietThrowingChanges {
+			let values = try decoder.container(keyedBy: CodingKeys.self)
+			self._storage = try values.decode([String:Box].self,forKey:._storage)
+			self._staged = try values.decode([String].self,forKey:._staged)
+			self._deleted = try values.decode([String].self,forKey:._deleted)
+			self._rebuildFromStorage()
         }
     }
 
-
-    // MARK: - NSSecureCoding
-
-    required public init?(coder decoder: NSCoder) {
-        super.init(coder: decoder)
-        self.quietChanges {
-            self._storage=decoder.decodeObject(of: [NSDictionary.classForCoder(),NSString.self,Box.classForCoder()], forKey: "_storage")! as! [String:Box]
-			self._staged=decoder.decodeObject(of: [NSArray.classForCoder(),NSString.self], forKey: "_staged")! as! [String]
-            self._deleted=decoder.decodeObject(of: [NSArray.classForCoder(),NSString.self], forKey: "_deleted")! as! [String]
-            self._rebuildFromStorage()
-        }
+    override open func encode(to encoder: Encoder) throws {
+		try super.encode(to:encoder)
+		var container = encoder.container(keyedBy: CodingKeys.self)
+		try container.encode(self._storage,forKey:._storage)
+		try container.encode(self._staged,forKey:._staged)
+		try container.encode(self._deleted,forKey:._deleted)
     }
+    
 
-    override open func encode(with coder: NSCoder) {
-        super.encode(with:coder)
-		coder.encode(self._storage,forKey:"_storage")
-		coder.encode(self._staged,forKey:"_staged")
-    }
-
-    override open class var supportsSecureCoding:Bool{
-        return true
-    }
 
     // MARK: - Upsert
 

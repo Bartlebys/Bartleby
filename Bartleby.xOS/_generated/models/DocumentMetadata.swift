@@ -10,7 +10,6 @@
 import Foundation
 #if !USE_EMBEDDED_MODULES
 	import Alamofire
-	import ObjectMapper
 #endif
 
 // MARK: Bartleby's Core: Complete implementation in DocumentMetadata.
@@ -135,46 +134,371 @@ import Foundation
 	dynamic open var qosIndice:Double = 0
 
 
-    // MARK: - Mappable
+    // MARK: - Codable
 
-    required public init?(map: Map) {
-        super.init(map:map)
+
+    enum DocumentMetadataCodingKeys: String,CodingKey{
+		case spaceUID
+		case persistentUID
+		case currentUserUID
+		case currentUserEmail
+		case currentUserFullPhoneNumber
+		case sugar
+		case lockerUID
+		case userHasBeenControlled
+		case secondaryAuthFactorRequired
+		case identificationMethod
+		case appGroup
+		case identificationValue
+		case collaborationServerURL
+		case registred
+		case changesAreInspectables
+		case cleanupBoxesWhenClosingDocument
+		case collectionsMetadata
+		case stateDictionary
+		case URLBookmarkData
+		case preferredFileName
+		case triggersIndexesDebugHistory
+		case ownedTriggersIndexes
+		case lastIntegratedTriggerIndex
+		case receivedTriggers
+		case operationsQuarantine
+		case bunchInProgress
+		case totalNumberOfOperations
+		case pendingOperationsProgressionState
+		case shouldBeOnline
+		case online
+		case transition
+		case pushOnChanges
+		case saveThePassword
+		case cumulatedUpMetricsDuration
+		case totalNumberOfUpMetrics
+		case qosIndice
     }
 
-    override open func mapping(map: Map) {
-        super.mapping(map: map)
-        self.quietChanges {
-			self.spaceUID <- ( map["spaceUID"] )
-			self.persistentUID <- ( map["persistentUID"] )
-			self.currentUserUID <- ( map["currentUserUID"] )
-			self.currentUserEmail <- ( map["currentUserEmail"] )
-			self.currentUserFullPhoneNumber <- ( map["currentUserFullPhoneNumber"] )
-			self.lockerUID <- ( map["lockerUID"] )
-			self.secondaryAuthFactorRequired <- ( map["secondaryAuthFactorRequired"] )
-			self.identificationMethod <- ( map["identificationMethod"] )
-			self.appGroup <- ( map["appGroup"] )
-			self.identificationValue <- ( map["identificationValue"] )
-			self.collaborationServerURL <- ( map["collaborationServerURL"], URLTransform(shouldEncodeURLString:false) )
-			self.registred <- ( map["registred"] )
-			self.collectionsMetadata <- ( map["collectionsMetadata"] )
-			self.stateDictionary <- ( map["stateDictionary"] )
-			self.URLBookmarkData <- ( map["URLBookmarkData"] )
-			self.preferredFileName <- ( map["preferredFileName"] )
-			self.triggersIndexesDebugHistory <- ( map["triggersIndexesDebugHistory"] )
-			self.ownedTriggersIndexes <- ( map["ownedTriggersIndexes"] )
-			self.lastIntegratedTriggerIndex <- ( map["lastIntegratedTriggerIndex"] )
-			self.receivedTriggers <- ( map["receivedTriggers"] )
-			self.operationsQuarantine <- ( map["operationsQuarantine"] )
-			self.shouldBeOnline <- ( map["shouldBeOnline"] )
-			self.online <- ( map["online"] )
-			self.pushOnChanges <- ( map["pushOnChanges"] )
-			self.saveThePassword <- ( map["saveThePassword"] )
-			self.cumulatedUpMetricsDuration <- ( map["cumulatedUpMetricsDuration"] )
-			self.totalNumberOfUpMetrics <- ( map["totalNumberOfUpMetrics"] )
-			self.qosIndice <- ( map["qosIndice"] )
+    required public init(from decoder: Decoder) throws{
+		try super.init(from: decoder)
+        try self.quietThrowingChanges {
+			let values = try decoder.container(keyedBy: DocumentMetadataCodingKeys.self)
+			self.spaceUID = try values.decode(String.self,forKey:.spaceUID)
+			self.persistentUID = try values.decode(String.self,forKey:.persistentUID)
+			self.currentUserUID = try values.decode(String.self,forKey:.currentUserUID)
+			self.currentUserEmail = try values.decode(String.self,forKey:.currentUserEmail)
+			self.currentUserFullPhoneNumber = try values.decode(String.self,forKey:.currentUserFullPhoneNumber)
+			self.lockerUID = try values.decode(String.self,forKey:.lockerUID)
+			self.secondaryAuthFactorRequired = try values.decode(Bool.self,forKey:.secondaryAuthFactorRequired)
+			self.identificationMethod = DocumentMetadata.IdentificationMethod(rawValue: try values.decode(String.self,forKey:.identificationMethod)) ?? .key
+			self.appGroup = try values.decode(String.self,forKey:.appGroup)
+			self.identificationValue = try values.decode(String.self,forKey:.identificationValue)
+			self.collaborationServerURL = try values.decode(URL.self,forKey:.collaborationServerURL)
+			self.registred = try values.decode(Bool.self,forKey:.registred)
+			self.collectionsMetadata = try values.decode([CollectionMetadatum].self,forKey:.collectionsMetadata)
+			self.stateDictionary = try values.decode([String:Any].self,forKey:.stateDictionary)
+			self.URLBookmarkData = try values.decode([KeyedData].self,forKey:.URLBookmarkData)
+			self.preferredFileName = try values.decode(String.self,forKey:.preferredFileName)
+			self.triggersIndexesDebugHistory = try values.decode([Int].self,forKey:.triggersIndexesDebugHistory)
+			self.ownedTriggersIndexes = try values.decode([Int].self,forKey:.ownedTriggersIndexes)
+			self.lastIntegratedTriggerIndex = try values.decode(Int.self,forKey:.lastIntegratedTriggerIndex)
+			self.receivedTriggers = try values.decode([Trigger].self,forKey:.receivedTriggers)
+			self.operationsQuarantine = try values.decode([PushOperation].self,forKey:.operationsQuarantine)
+			self.shouldBeOnline = try values.decode(Bool.self,forKey:.shouldBeOnline)
+			self.online = try values.decode(Bool.self,forKey:.online)
+			self.pushOnChanges = try values.decode(Bool.self,forKey:.pushOnChanges)
+			self.saveThePassword = try values.decode(Bool.self,forKey:.saveThePassword)
+			self.cumulatedUpMetricsDuration = try values.decode(Double.self,forKey:.cumulatedUpMetricsDuration)
+			self.totalNumberOfUpMetrics = try values.decode(Int.self,forKey:.totalNumberOfUpMetrics)
+			self.qosIndice = try values.decode(Double.self,forKey:.qosIndice)
         }
     }
 
+    override open func encode(to encoder: Encoder) throws {
+		try super.encode(to:encoder)
+		var container = encoder.container(keyedBy: DocumentMetadataCodingKeys.self)
+		try container.encodeIfPresent(self.spaceUID,forKey:.spaceUID)
+		try container.encodeIfPresent(self.persistentUID,forKey:.persistentUID)
+		try container.encodeIfPresent(self.currentUserUID,forKey:.currentUserUID)
+		try container.encodeIfPresent(self.currentUserEmail,forKey:.currentUserEmail)
+		try container.encodeIfPresent(self.currentUserFullPhoneNumber,forKey:.currentUserFullPhoneNumber)
+		try container.encodeIfPresent(self.lockerUID,forKey:.lockerUID)
+		try container.encodeIfPresent(self.secondaryAuthFactorRequired,forKey:.secondaryAuthFactorRequired)
+		try container.encodeIfPresent(self.identificationMethod.rawValue ,forKey:.identificationMethod)
+		try container.encodeIfPresent(self.appGroup,forKey:.appGroup)
+		try container.encodeIfPresent(self.identificationValue,forKey:.identificationValue)
+		try container.encodeIfPresent(self.collaborationServerURL,forKey:.collaborationServerURL)
+		try container.encodeIfPresent(self.registred,forKey:.registred)
+		try container.encodeIfPresent(self.collectionsMetadata,forKey:.collectionsMetadata)
+		try container.encodeIfPresent(self.stateDictionary,forKey:.stateDictionary)
+		try container.encodeIfPresent(self.URLBookmarkData,forKey:.URLBookmarkData)
+		try container.encodeIfPresent(self.preferredFileName,forKey:.preferredFileName)
+		try container.encodeIfPresent(self.triggersIndexesDebugHistory,forKey:.triggersIndexesDebugHistory)
+		try container.encodeIfPresent(self.ownedTriggersIndexes,forKey:.ownedTriggersIndexes)
+		try container.encodeIfPresent(self.lastIntegratedTriggerIndex,forKey:.lastIntegratedTriggerIndex)
+		try container.encodeIfPresent(self.receivedTriggers,forKey:.receivedTriggers)
+		try container.encodeIfPresent(self.operationsQuarantine,forKey:.operationsQuarantine)
+		try container.encodeIfPresent(self.shouldBeOnline,forKey:.shouldBeOnline)
+		try container.encodeIfPresent(self.online,forKey:.online)
+		try container.encodeIfPresent(self.pushOnChanges,forKey:.pushOnChanges)
+		try container.encodeIfPresent(self.saveThePassword,forKey:.saveThePassword)
+		try container.encodeIfPresent(self.cumulatedUpMetricsDuration,forKey:.cumulatedUpMetricsDuration)
+		try container.encodeIfPresent(self.totalNumberOfUpMetrics,forKey:.totalNumberOfUpMetrics)
+		try container.encodeIfPresent(self.qosIndice,forKey:.qosIndice)
+    }
+
+
+    // MARK: - Exposed (Bartleby's KVC like generative implementation)
+
+    /// Return all the exposed instance variables keys. (Exposed == public and modifiable).
+    override  open var exposedKeys:[String] {
+        var exposed=super.exposedKeys
+        exposed.append(contentsOf:["spaceUID","persistentUID","currentUserUID","currentUserEmail","currentUserFullPhoneNumber","sugar","lockerUID","userHasBeenControlled","secondaryAuthFactorRequired","identificationMethod","appGroup","identificationValue","collaborationServerURL","registred","changesAreInspectables","cleanupBoxesWhenClosingDocument","collectionsMetadata","stateDictionary","URLBookmarkData","preferredFileName","triggersIndexesDebugHistory","ownedTriggersIndexes","lastIntegratedTriggerIndex","receivedTriggers","operationsQuarantine","bunchInProgress","totalNumberOfOperations","pendingOperationsProgressionState","shouldBeOnline","online","transition","pushOnChanges","saveThePassword","cumulatedUpMetricsDuration","totalNumberOfUpMetrics","qosIndice"])
+        return exposed
+    }
+
+
+    /// Set the value of the given key
+    ///
+    /// - parameter value: the value
+    /// - parameter key:   the key
+    ///
+    /// - throws: throws an Exception when the key is not exposed
+    override  open func setExposedValue(_ value:Any?, forKey key: String) throws {
+        switch key {
+            case "spaceUID":
+                if let casted=value as? String{
+                    self.spaceUID=casted
+                }
+            case "persistentUID":
+                if let casted=value as? String{
+                    self.persistentUID=casted
+                }
+            case "currentUserUID":
+                if let casted=value as? String{
+                    self.currentUserUID=casted
+                }
+            case "currentUserEmail":
+                if let casted=value as? String{
+                    self.currentUserEmail=casted
+                }
+            case "currentUserFullPhoneNumber":
+                if let casted=value as? String{
+                    self.currentUserFullPhoneNumber=casted
+                }
+            case "sugar":
+                if let casted=value as? String{
+                    self.sugar=casted
+                }
+            case "lockerUID":
+                if let casted=value as? String{
+                    self.lockerUID=casted
+                }
+            case "userHasBeenControlled":
+                if let casted=value as? Bool{
+                    self.userHasBeenControlled=casted
+                }
+            case "secondaryAuthFactorRequired":
+                if let casted=value as? Bool{
+                    self.secondaryAuthFactorRequired=casted
+                }
+            case "identificationMethod":
+                if let casted=value as? DocumentMetadata.IdentificationMethod{
+                    self.identificationMethod=casted
+                }
+            case "appGroup":
+                if let casted=value as? String{
+                    self.appGroup=casted
+                }
+            case "identificationValue":
+                if let casted=value as? String{
+                    self.identificationValue=casted
+                }
+            case "collaborationServerURL":
+                if let casted=value as? URL{
+                    self.collaborationServerURL=casted
+                }
+            case "registred":
+                if let casted=value as? Bool{
+                    self.registred=casted
+                }
+            case "changesAreInspectables":
+                if let casted=value as? Bool{
+                    self.changesAreInspectables=casted
+                }
+            case "cleanupBoxesWhenClosingDocument":
+                if let casted=value as? Bool{
+                    self.cleanupBoxesWhenClosingDocument=casted
+                }
+            case "collectionsMetadata":
+                if let casted=value as? [CollectionMetadatum]{
+                    self.collectionsMetadata=casted
+                }
+            case "stateDictionary":
+                if let casted=value as? [String:Any]{
+                    self.stateDictionary=casted
+                }
+            case "URLBookmarkData":
+                if let casted=value as? [KeyedData]{
+                    self.URLBookmarkData=casted
+                }
+            case "preferredFileName":
+                if let casted=value as? String{
+                    self.preferredFileName=casted
+                }
+            case "triggersIndexesDebugHistory":
+                if let casted=value as? [Int]{
+                    self.triggersIndexesDebugHistory=casted
+                }
+            case "ownedTriggersIndexes":
+                if let casted=value as? [Int]{
+                    self.ownedTriggersIndexes=casted
+                }
+            case "lastIntegratedTriggerIndex":
+                if let casted=value as? Int{
+                    self.lastIntegratedTriggerIndex=casted
+                }
+            case "receivedTriggers":
+                if let casted=value as? [Trigger]{
+                    self.receivedTriggers=casted
+                }
+            case "operationsQuarantine":
+                if let casted=value as? [PushOperation]{
+                    self.operationsQuarantine=casted
+                }
+            case "bunchInProgress":
+                if let casted=value as? Bool{
+                    self.bunchInProgress=casted
+                }
+            case "totalNumberOfOperations":
+                if let casted=value as? Int{
+                    self.totalNumberOfOperations=casted
+                }
+            case "pendingOperationsProgressionState":
+                if let casted=value as? Progression{
+                    self.pendingOperationsProgressionState=casted
+                }
+            case "shouldBeOnline":
+                if let casted=value as? Bool{
+                    self.shouldBeOnline=casted
+                }
+            case "online":
+                if let casted=value as? Bool{
+                    self.online=casted
+                }
+            case "transition":
+                if let casted=value as? DocumentMetadata.Transition{
+                    self.transition=casted
+                }
+            case "pushOnChanges":
+                if let casted=value as? Bool{
+                    self.pushOnChanges=casted
+                }
+            case "saveThePassword":
+                if let casted=value as? Bool{
+                    self.saveThePassword=casted
+                }
+            case "cumulatedUpMetricsDuration":
+                if let casted=value as? Double{
+                    self.cumulatedUpMetricsDuration=casted
+                }
+            case "totalNumberOfUpMetrics":
+                if let casted=value as? Int{
+                    self.totalNumberOfUpMetrics=casted
+                }
+            case "qosIndice":
+                if let casted=value as? Double{
+                    self.qosIndice=casted
+                }
+            default:
+                return try super.setExposedValue(value, forKey: key)
+        }
+    }
+
+
+    /// Returns the value of an exposed key.
+    ///
+    /// - parameter key: the key
+    ///
+    /// - throws: throws Exception when the key is not exposed
+    ///
+    /// - returns: returns the value
+    override  open func getExposedValueForKey(_ key:String) throws -> Any?{
+        switch key {
+            case "spaceUID":
+               return self.spaceUID
+            case "persistentUID":
+               return self.persistentUID
+            case "currentUserUID":
+               return self.currentUserUID
+            case "currentUserEmail":
+               return self.currentUserEmail
+            case "currentUserFullPhoneNumber":
+               return self.currentUserFullPhoneNumber
+            case "sugar":
+               return self.sugar
+            case "lockerUID":
+               return self.lockerUID
+            case "userHasBeenControlled":
+               return self.userHasBeenControlled
+            case "secondaryAuthFactorRequired":
+               return self.secondaryAuthFactorRequired
+            case "identificationMethod":
+               return self.identificationMethod
+            case "appGroup":
+               return self.appGroup
+            case "identificationValue":
+               return self.identificationValue
+            case "collaborationServerURL":
+               return self.collaborationServerURL
+            case "registred":
+               return self.registred
+            case "changesAreInspectables":
+               return self.changesAreInspectables
+            case "cleanupBoxesWhenClosingDocument":
+               return self.cleanupBoxesWhenClosingDocument
+            case "collectionsMetadata":
+               return self.collectionsMetadata
+            case "stateDictionary":
+               return self.stateDictionary
+            case "URLBookmarkData":
+               return self.URLBookmarkData
+            case "preferredFileName":
+               return self.preferredFileName
+            case "triggersIndexesDebugHistory":
+               return self.triggersIndexesDebugHistory
+            case "ownedTriggersIndexes":
+               return self.ownedTriggersIndexes
+            case "lastIntegratedTriggerIndex":
+               return self.lastIntegratedTriggerIndex
+            case "receivedTriggers":
+               return self.receivedTriggers
+            case "operationsQuarantine":
+               return self.operationsQuarantine
+            case "bunchInProgress":
+               return self.bunchInProgress
+            case "totalNumberOfOperations":
+               return self.totalNumberOfOperations
+            case "pendingOperationsProgressionState":
+               return self.pendingOperationsProgressionState
+            case "shouldBeOnline":
+               return self.shouldBeOnline
+            case "online":
+               return self.online
+            case "transition":
+               return self.transition
+            case "pushOnChanges":
+               return self.pushOnChanges
+            case "saveThePassword":
+               return self.saveThePassword
+            case "cumulatedUpMetricsDuration":
+               return self.cumulatedUpMetricsDuration
+            case "totalNumberOfUpMetrics":
+               return self.totalNumberOfUpMetrics
+            case "qosIndice":
+               return self.qosIndice
+            default:
+                return try super.getExposedValueForKey(key)
+        }
+    }
+    // MARK: - Initializable
      required public init() {
         super.init()
     }

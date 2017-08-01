@@ -7,10 +7,6 @@
 //
 
 import Foundation
-#if !USE_EMBEDDED_MODULES
-    import Alamofire
-    import ObjectMapper
-#endif
 
 public let BARTLEBYS_COMPLETION_NOTIFICATION_NAME="BARTLEBYS_COMPLETION_NOTIFICATION_NAME"
 
@@ -18,13 +14,15 @@ public let BARTLEBYS_COMPLETION_NOTIFICATION_NAME="BARTLEBYS_COMPLETION_NOTIFICA
 extension Notification {
 
     public init(completionState: Completion, object: AnyObject?) {
-       self.init(name: Notification.Name(rawValue: BARTLEBYS_COMPLETION_NOTIFICATION_NAME), object: object, userInfo:completionState.toJSON())
+        let data = (try? JSONEncoder().encode(completionState)) ?? Data()
+        self.init(name: Notification.Name(rawValue: BARTLEBYS_COMPLETION_NOTIFICATION_NAME), object: object, userInfo:["data":data])
     }
 
     public func getCompletionState() -> Completion? {
         if let dictionary=(self as NSNotification).userInfo as? [String:AnyObject] {
-            let completion = Mapper<Completion>().map(JSON: dictionary)
-            return completion
+            if let data = dictionary["data"] as? Data{
+                return try? JSONDecoder().decode(Completion.self, from: data)
+            }
         }
         return nil
     }

@@ -67,7 +67,9 @@ public struct IdentitiesManager {
                 if document.metadata.appGroup != ""{
                     let identities=try Identities.loadFromKeyChain(accessGroup: document.metadata.appGroup)
                     for profile in identities.profiles{
-                        document.log("\(profile.toJSONString() ?? "NO PROFILE" )", file: #file, function: #function, line: #line, category: Default.LOG_SECURITY, decorative: false)
+                        let jsonProfileData : Data =  try JSONEncoder().encode(profile)
+                        let jsonProfileString = String.init(data: jsonProfileData, encoding: Default.STRING_ENCODING)
+                        document.log("\(jsonProfileString ?? "NO PROFILE" )", file: #file, function: #function, line: #line, category: Default.LOG_SECURITY, decorative: false)
                     }
                 }else{
                     document.log("App group is a must to allow shared storage", file: #file, function: #function, line: #line, category: Default.LOG_SECURITY, decorative: false)

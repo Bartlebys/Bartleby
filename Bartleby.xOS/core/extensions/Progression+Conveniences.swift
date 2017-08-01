@@ -7,9 +7,6 @@
 //
 
 import Foundation
-#if !USE_EMBEDDED_MODULES
-    import ObjectMapper
-#endif
 
 // MARK: - Progression
 

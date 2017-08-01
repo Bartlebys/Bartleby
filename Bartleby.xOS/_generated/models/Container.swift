@@ -10,7 +10,6 @@
 import Foundation
 #if !USE_EMBEDDED_MODULES
 	import Alamofire
-	import ObjectMapper
 #endif
 
 // MARK: Bartleby's Synchronized File System: A container to store Boxes,Nodes,Blocks
@@ -30,22 +29,99 @@ import Foundation
 	dynamic open var blocks:[Block] = [Block]()
 
 
-    // MARK: - Mappable
+    // MARK: - Codable
 
-    required public init?(map: Map) {
-        super.init(map:map)
+
+    enum ContainerCodingKeys: String,CodingKey{
+		case password
+		case boxes
+		case nodes
+		case blocks
     }
 
-    override open func mapping(map: Map) {
-        super.mapping(map: map)
-        self.quietChanges {
-			self.password <- ( map["password"] )
-			self.boxes <- ( map["boxes"] )
-			self.nodes <- ( map["nodes"] )
-			self.blocks <- ( map["blocks"] )
+    required public init(from decoder: Decoder) throws{
+		try super.init(from: decoder)
+        try self.quietThrowingChanges {
+			let values = try decoder.container(keyedBy: ContainerCodingKeys.self)
+			self.password = try values.decode(String.self,forKey:.password)
+			self.boxes = try values.decode([Box].self,forKey:.boxes)
+			self.nodes = try values.decode([Node].self,forKey:.nodes)
+			self.blocks = try values.decode([Block].self,forKey:.blocks)
         }
     }
 
+    override open func encode(to encoder: Encoder) throws {
+		try super.encode(to:encoder)
+		var container = encoder.container(keyedBy: ContainerCodingKeys.self)
+		try container.encodeIfPresent(self.password,forKey:.password)
+		try container.encodeIfPresent(self.boxes,forKey:.boxes)
+		try container.encodeIfPresent(self.nodes,forKey:.nodes)
+		try container.encodeIfPresent(self.blocks,forKey:.blocks)
+    }
+
+
+    // MARK: - Exposed (Bartleby's KVC like generative implementation)
+
+    /// Return all the exposed instance variables keys. (Exposed == public and modifiable).
+    override  open var exposedKeys:[String] {
+        var exposed=super.exposedKeys
+        exposed.append(contentsOf:["password","boxes","nodes","blocks"])
+        return exposed
+    }
+
+
+    /// Set the value of the given key
+    ///
+    /// - parameter value: the value
+    /// - parameter key:   the key
+    ///
+    /// - throws: throws an Exception when the key is not exposed
+    override  open func setExposedValue(_ value:Any?, forKey key: String) throws {
+        switch key {
+            case "password":
+                if let casted=value as? String{
+                    self.password=casted
+                }
+            case "boxes":
+                if let casted=value as? [Box]{
+                    self.boxes=casted
+                }
+            case "nodes":
+                if let casted=value as? [Node]{
+                    self.nodes=casted
+                }
+            case "blocks":
+                if let casted=value as? [Block]{
+                    self.blocks=casted
+                }
+            default:
+                return try super.setExposedValue(value, forKey: key)
+        }
+    }
+
+
+    /// Returns the value of an exposed key.
+    ///
+    /// - parameter key: the key
+    ///
+    /// - throws: throws Exception when the key is not exposed
+    ///
+    /// - returns: returns the value
+    override  open func getExposedValueForKey(_ key:String) throws -> Any?{
+        switch key {
+            case "password":
+               return self.password
+            case "boxes":
+               return self.boxes
+            case "nodes":
+               return self.nodes
+            case "blocks":
+               return self.blocks
+            default:
+                return try super.getExposedValueForKey(key)
+        }
+    }
+    // MARK: - Initializable
      required public init() {
         super.init()
     }

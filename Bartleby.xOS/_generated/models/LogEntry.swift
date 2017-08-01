@@ -10,7 +10,6 @@
 import Foundation
 #if !USE_EMBEDDED_MODULES
 	import Alamofire
-	import ObjectMapper
 #endif
 
 // MARK: Bartleby's Core: A single print entry
@@ -45,27 +44,138 @@ import Foundation
 	dynamic private var _runUID:String = "\(Bartleby.runUID)"
 
 
-    // MARK: - Mappable
+    // MARK: - Codable
 
-    required public init?(map: Map) {
-        super.init(map:map)
+
+    enum LogEntryCodingKeys: String,CodingKey{
+		case counter
+		case line
+		case elapsed
+		case message
+		case file
+		case function
+		case category
+		case decorative
+		case _runUID
     }
 
-    override open func mapping(map: Map) {
-        super.mapping(map: map)
-        self.quietChanges {
-			self.counter <- ( map["counter"] )
-			self.line <- ( map["line"] )
-			self.elapsed <- ( map["elapsed"] )
-			self.message <- ( map["message"] )
-			self.file <- ( map["file"] )
-			self.function <- ( map["function"] )
-			self.category <- ( map["category"] )
-			self.decorative <- ( map["decorative"] )
-			self._runUID <- ( map["_runUID"] )
+    required public init(from decoder: Decoder) throws{
+		try super.init(from: decoder)
+        try self.quietThrowingChanges {
+			let values = try decoder.container(keyedBy: LogEntryCodingKeys.self)
+			self.counter = try values.decode(Int.self,forKey:.counter)
+			self.line = try values.decode(Int.self,forKey:.line)
+			self.elapsed = try values.decode(Double.self,forKey:.elapsed)
+			self.message = try values.decode(String.self,forKey:.message)
+			self.file = try values.decode(String.self,forKey:.file)
+			self.function = try values.decode(String.self,forKey:.function)
+			self.category = try values.decode(String.self,forKey:.category)
+			self.decorative = try values.decode(Bool.self,forKey:.decorative)
+			self._runUID = try values.decode(String.self,forKey:._runUID)
         }
     }
 
+    override open func encode(to encoder: Encoder) throws {
+		try super.encode(to:encoder)
+		var container = encoder.container(keyedBy: LogEntryCodingKeys.self)
+		try container.encodeIfPresent(self.counter,forKey:.counter)
+		try container.encodeIfPresent(self.line,forKey:.line)
+		try container.encodeIfPresent(self.elapsed,forKey:.elapsed)
+		try container.encodeIfPresent(self.message,forKey:.message)
+		try container.encodeIfPresent(self.file,forKey:.file)
+		try container.encodeIfPresent(self.function,forKey:.function)
+		try container.encodeIfPresent(self.category,forKey:.category)
+		try container.encodeIfPresent(self.decorative,forKey:.decorative)
+		try container.encodeIfPresent(self._runUID,forKey:._runUID)
+    }
+
+
+    // MARK: - Exposed (Bartleby's KVC like generative implementation)
+
+    /// Return all the exposed instance variables keys. (Exposed == public and modifiable).
+    override  open var exposedKeys:[String] {
+        var exposed=super.exposedKeys
+        exposed.append(contentsOf:["counter","line","elapsed","message","file","function","category","decorative"])
+        return exposed
+    }
+
+
+    /// Set the value of the given key
+    ///
+    /// - parameter value: the value
+    /// - parameter key:   the key
+    ///
+    /// - throws: throws an Exception when the key is not exposed
+    override  open func setExposedValue(_ value:Any?, forKey key: String) throws {
+        switch key {
+            case "counter":
+                if let casted=value as? Int{
+                    self.counter=casted
+                }
+            case "line":
+                if let casted=value as? Int{
+                    self.line=casted
+                }
+            case "elapsed":
+                if let casted=value as? Double{
+                    self.elapsed=casted
+                }
+            case "message":
+                if let casted=value as? String{
+                    self.message=casted
+                }
+            case "file":
+                if let casted=value as? String{
+                    self.file=casted
+                }
+            case "function":
+                if let casted=value as? String{
+                    self.function=casted
+                }
+            case "category":
+                if let casted=value as? String{
+                    self.category=casted
+                }
+            case "decorative":
+                if let casted=value as? Bool{
+                    self.decorative=casted
+                }
+            default:
+                return try super.setExposedValue(value, forKey: key)
+        }
+    }
+
+
+    /// Returns the value of an exposed key.
+    ///
+    /// - parameter key: the key
+    ///
+    /// - throws: throws Exception when the key is not exposed
+    ///
+    /// - returns: returns the value
+    override  open func getExposedValueForKey(_ key:String) throws -> Any?{
+        switch key {
+            case "counter":
+               return self.counter
+            case "line":
+               return self.line
+            case "elapsed":
+               return self.elapsed
+            case "message":
+               return self.message
+            case "file":
+               return self.file
+            case "function":
+               return self.function
+            case "category":
+               return self.category
+            case "decorative":
+               return self.decorative
+            default:
+                return try super.getExposedValueForKey(key)
+        }
+    }
+    // MARK: - Initializable
      required public init() {
         super.init()
     }

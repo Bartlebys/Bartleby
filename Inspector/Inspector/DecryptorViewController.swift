@@ -7,7 +7,6 @@
 //
 
 import Cocoa
-import ObjectMapper
 import BartlebyKit
 
 class DecryptorViewController: NSViewController,AsyncDocumentProvider,PasterDelegate{

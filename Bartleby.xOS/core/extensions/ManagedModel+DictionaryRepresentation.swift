@@ -8,14 +8,20 @@
 
 import Foundation
 
-#if !USE_EMBEDDED_MODULES
-    import ObjectMapper
-#endif
-
 extension ManagedModel:DictionaryRepresentation {
 
-    open func dictionaryRepresentation()->[String:Any] {
-        return Mapper().toJSON(self)
+    open func dictionaryRepresentation() -> [String : Any] {
+        var dictionary = [String:Any]()
+        for key in self.exposedKeys{
+            if let value = try? self.getExposedValueForKey(key){
+                if let convertibleValue = value as? DictionaryRepresentation{
+                    dictionary[key] = convertibleValue.dictionaryRepresentation()
+                }else{
+                    dictionary[key] = value
+                }
+            }
+        }
+        return dictionary
     }
-    
+
 }

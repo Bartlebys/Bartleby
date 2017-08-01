@@ -8,7 +8,6 @@
 
 import Foundation
 #if !USE_EMBEDDED_MODULES
-    import ObjectMapper
     import Alamofire
 #endif
 

@@ -9,8 +9,7 @@
 //
 import Foundation
 #if !USE_EMBEDDED_MODULES
-	import Alamofire
-	import ObjectMapper
+		import Alamofire
 #endif
 
 // MARK: Bartleby's Core: a tag can be used to classify instances (The tag are set using relationships)
@@ -21,7 +20,7 @@ import Foundation
         return "Tag"
     }
 
-	dynamic open var creationDate:Date? {
+	@objc dynamic open var creationDate:Date? {
 	    didSet { 
 	       if !self.wantsQuietChanges && creationDate != oldValue {
 	            self.provisionChanges(forKey: "creationDate",oldValue: oldValue,newValue: creationDate) 
@@ -29,7 +28,7 @@ import Foundation
 	    }
 	}
 
-	dynamic open var color:String? {
+	@objc dynamic open var color:String? {
 	    didSet { 
 	       if !self.wantsQuietChanges && color != oldValue {
 	            self.provisionChanges(forKey: "color",oldValue: oldValue,newValue: color) 
@@ -37,7 +36,7 @@ import Foundation
 	    }
 	}
 
-	dynamic open var icon:String? {
+	@objc dynamic open var icon:String? {
 	    didSet { 
 	       if !self.wantsQuietChanges && icon != oldValue {
 	            self.provisionChanges(forKey: "icon",oldValue: oldValue,newValue: icon) 
@@ -45,10 +44,39 @@ import Foundation
 	    }
 	}
 
+
+    // MARK: - Codable
+
+
+    enum TagCodingKeys: String,CodingKey{
+		case creationDate
+		case color
+		case icon
+    }
+
+    required public init(from decoder: Decoder) throws{
+		try super.init(from: decoder)
+        try self.quietThrowingChanges {
+			let values = try decoder.container(keyedBy: TagCodingKeys.self)
+			self.creationDate = try values.decode(Date.self,forKey:.creationDate)
+			self.color = try values.decode(String.self,forKey:.color)
+			self.icon = try values.decode(String.self,forKey:.icon)
+        }
+    }
+
+    override open func encode(to encoder: Encoder) throws {
+		try super.encode(to:encoder)
+		var container = encoder.container(keyedBy: TagCodingKeys.self)
+		try container.encodeIfPresent(self.creationDate,forKey:.creationDate)
+		try container.encodeIfPresent(self.color,forKey:.color)
+		try container.encodeIfPresent(self.icon,forKey:.icon)
+    }
+
+
     // MARK: - Exposed (Bartleby's KVC like generative implementation)
 
     /// Return all the exposed instance variables keys. (Exposed == public and modifiable).
-    override open var exposedKeys:[String] {
+    override  open var exposedKeys:[String] {
         var exposed=super.exposedKeys
         exposed.append(contentsOf:["creationDate","color","icon"])
         return exposed
@@ -61,7 +89,7 @@ import Foundation
     /// - parameter key:   the key
     ///
     /// - throws: throws an Exception when the key is not exposed
-    override open func setExposedValue(_ value:Any?, forKey key: String) throws {
+    override  open func setExposedValue(_ value:Any?, forKey key: String) throws {
         switch key {
             case "creationDate":
                 if let casted=value as? Date{
@@ -88,7 +116,7 @@ import Foundation
     /// - throws: throws Exception when the key is not exposed
     ///
     /// - returns: returns the value
-    override open func getExposedValueForKey(_ key:String) throws -> Any?{
+    override  open func getExposedValueForKey(_ key:String) throws -> Any?{
         switch key {
             case "creationDate":
                return self.creationDate
@@ -100,30 +128,17 @@ import Foundation
                 return try super.getExposedValueForKey(key)
         }
     }
-    // MARK: - Mappable
-
-    required public init?(map: Map) {
-        super.init(map:map)
-    }
-
-    override open func mapping(map: Map) {
-        super.mapping(map: map)
-        self.quietChanges {
-			self.creationDate <- ( map["creationDate"], ISO8601DateTransform() )
-			self.color <- ( map["color"] )
-			self.icon <- ( map["icon"] )
-        }
-    }
-
-     required public init() {
+    // MARK: - Initializable
+    required public init() {
         super.init()
     }
 
-    override open class var collectionName:String{
+    // MARK: - UniversalType
+    override  open class var collectionName:String{
         return "tags"
     }
 
-    override open var d_collectionName:String{
+    override  open var d_collectionName:String{
         return Tag.collectionName
     }
 }

@@ -10,7 +10,6 @@
 import Foundation
 #if !USE_EMBEDDED_MODULES
 	import Alamofire
-	import ObjectMapper
 #endif
 
 // MARK: A simple wrapper to associate a key and a Data
@@ -24,20 +23,81 @@ import Foundation
 	dynamic open var data:Data = Data()
 
 
-    // MARK: - Mappable
+    // MARK: - Codable
 
-    required public init?(map: Map) {
-        super.init(map:map)
+
+    enum KeyedDataCodingKeys: String,CodingKey{
+		case key
+		case data
     }
 
-    override open func mapping(map: Map) {
-        super.mapping(map: map)
-        self.quietChanges {
-			self.key <- ( map["key"] )
-			self.data <- ( map["data"], DataTransform() )
+    required public init(from decoder: Decoder) throws{
+		try super.init(from: decoder)
+        try self.quietThrowingChanges {
+			let values = try decoder.container(keyedBy: KeyedDataCodingKeys.self)
+			self.key = try values.decode(String.self,forKey:.key)
+			self.data = try values.decode(Data.self,forKey:.data)
         }
     }
 
+    override open func encode(to encoder: Encoder) throws {
+		try super.encode(to:encoder)
+		var container = encoder.container(keyedBy: KeyedDataCodingKeys.self)
+		try container.encodeIfPresent(self.key,forKey:.key)
+		try container.encodeIfPresent(self.data,forKey:.data)
+    }
+
+
+    // MARK: - Exposed (Bartleby's KVC like generative implementation)
+
+    /// Return all the exposed instance variables keys. (Exposed == public and modifiable).
+    override  open var exposedKeys:[String] {
+        var exposed=super.exposedKeys
+        exposed.append(contentsOf:["key","data"])
+        return exposed
+    }
+
+
+    /// Set the value of the given key
+    ///
+    /// - parameter value: the value
+    /// - parameter key:   the key
+    ///
+    /// - throws: throws an Exception when the key is not exposed
+    override  open func setExposedValue(_ value:Any?, forKey key: String) throws {
+        switch key {
+            case "key":
+                if let casted=value as? String{
+                    self.key=casted
+                }
+            case "data":
+                if let casted=value as? Data{
+                    self.data=casted
+                }
+            default:
+                return try super.setExposedValue(value, forKey: key)
+        }
+    }
+
+
+    /// Returns the value of an exposed key.
+    ///
+    /// - parameter key: the key
+    ///
+    /// - throws: throws Exception when the key is not exposed
+    ///
+    /// - returns: returns the value
+    override  open func getExposedValueForKey(_ key:String) throws -> Any?{
+        switch key {
+            case "key":
+               return self.key
+            case "data":
+               return self.data
+            default:
+                return try super.getExposedValueForKey(key)
+        }
+    }
+    // MARK: - Initializable
      required public init() {
         super.init()
     }

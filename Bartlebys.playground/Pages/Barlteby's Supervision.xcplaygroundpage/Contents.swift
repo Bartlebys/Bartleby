@@ -1,7 +1,6 @@
 //: [Previous](@previous)
 
 import Alamofire
-import ObjectMapper
 import BartlebyKit
 
 var document=BartlebyDocument()

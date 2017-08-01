@@ -7,11 +7,9 @@
 //
 
 import Foundation
-#if !USE_EMBEDDED_MODULES
-    import ObjectMapper
-#endif
 
 public enum BartlebyOperationError:Error{
+    case dataNotFound
     case operationNotFound(UID:String)
     case documentNotFound(documentUID:String)
 }

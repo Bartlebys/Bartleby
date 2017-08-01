@@ -8,24 +8,22 @@
 
 import Foundation
 
-#if !USE_EMBEDDED_MODULES
-    import Alamofire
-    import ObjectMapper
-#endif
-
 public let BARTLEBYS_PROGRESSION_NOTIFICATION_NAME="BARTLEBYS_PROGRESSION_NOTIFICATION_NAME"
 
 /// A Completion notification
 extension Notification {
 
+
     public init(progressionState: Progression, object: AnyObject?) {
-        self.init(name: Notification.Name(rawValue: BARTLEBYS_PROGRESSION_NOTIFICATION_NAME), object: object, userInfo:progressionState.toJSON())
+        let data = (try? JSONEncoder().encode(progressionState)) ?? Data()
+        self.init(name: Notification.Name(rawValue: BARTLEBYS_COMPLETION_NOTIFICATION_NAME), object: object, userInfo:["data":data])
     }
 
     public func getProgressionState() -> Progression? {
         if let dictionary=(self as NSNotification).userInfo as? [String:AnyObject] {
-            let progression = Mapper<Progression>().map(JSON: dictionary)
-            return progression
+            if let data = dictionary["data"] as? Data{
+                return try? JSONDecoder().decode(Progression.self, from: data)
+            }
         }
         return nil
     }

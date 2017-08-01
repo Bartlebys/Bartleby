@@ -9,8 +9,7 @@
 //
 import Foundation
 #if !USE_EMBEDDED_MODULES
-	import Alamofire
-	import ObjectMapper
+		import Alamofire
 #endif
 
 // MARK: Bartleby's Core: a Report object that can be used for analytics and support purposes
@@ -22,18 +21,47 @@ import Foundation
     }
 
 	//The document Metadata (contains highly sensitive data)
-	dynamic open var metadata:DocumentMetadata?
+	@objc dynamic open var metadata:DocumentMetadata?
 
 	//A collection logs
-	dynamic open var logs:[LogEntry] = [LogEntry]()
+	@objc dynamic open var logs:[LogEntry] = [LogEntry]()
 
 	//A collection metrics
-	dynamic open var metrics:[Metrics] = [Metrics]()
+	@objc dynamic open var metrics:[Metrics] = [Metrics]()
+
+
+    // MARK: - Codable
+
+
+    enum ReportCodingKeys: String,CodingKey{
+		case metadata
+		case logs
+		case metrics
+    }
+
+    required public init(from decoder: Decoder) throws{
+		try super.init(from: decoder)
+        try self.quietThrowingChanges {
+			let values = try decoder.container(keyedBy: ReportCodingKeys.self)
+			self.metadata = try values.decode(DocumentMetadata.self,forKey:.metadata)
+			self.logs = try values.decode([LogEntry].self,forKey:.logs)
+			self.metrics = try values.decode([Metrics].self,forKey:.metrics)
+        }
+    }
+
+    override open func encode(to encoder: Encoder) throws {
+		try super.encode(to:encoder)
+		var container = encoder.container(keyedBy: ReportCodingKeys.self)
+		try container.encodeIfPresent(self.metadata,forKey:.metadata)
+		try container.encodeIfPresent(self.logs,forKey:.logs)
+		try container.encodeIfPresent(self.metrics,forKey:.metrics)
+    }
+
 
     // MARK: - Exposed (Bartleby's KVC like generative implementation)
 
     /// Return all the exposed instance variables keys. (Exposed == public and modifiable).
-    override open var exposedKeys:[String] {
+    override  open var exposedKeys:[String] {
         var exposed=super.exposedKeys
         exposed.append(contentsOf:["metadata","logs","metrics"])
         return exposed
@@ -46,7 +74,7 @@ import Foundation
     /// - parameter key:   the key
     ///
     /// - throws: throws an Exception when the key is not exposed
-    override open func setExposedValue(_ value:Any?, forKey key: String) throws {
+    override  open func setExposedValue(_ value:Any?, forKey key: String) throws {
         switch key {
             case "metadata":
                 if let casted=value as? DocumentMetadata{
@@ -73,7 +101,7 @@ import Foundation
     /// - throws: throws Exception when the key is not exposed
     ///
     /// - returns: returns the value
-    override open func getExposedValueForKey(_ key:String) throws -> Any?{
+    override  open func getExposedValueForKey(_ key:String) throws -> Any?{
         switch key {
             case "metadata":
                return self.metadata
@@ -85,30 +113,17 @@ import Foundation
                 return try super.getExposedValueForKey(key)
         }
     }
-    // MARK: - Mappable
-
-    required public init?(map: Map) {
-        super.init(map:map)
-    }
-
-    override open func mapping(map: Map) {
-        super.mapping(map: map)
-        self.quietChanges {
-			self.metadata <- ( map["metadata"] )
-			self.logs <- ( map["logs"] )
-			self.metrics <- ( map["metrics"] )
-        }
-    }
-
-     required public init() {
+    // MARK: - Initializable
+    required public init() {
         super.init()
     }
 
-    override open class var collectionName:String{
+    // MARK: - UniversalType
+    override  open class var collectionName:String{
         return "reports"
     }
 
-    override open var d_collectionName:String{
+    override  open var d_collectionName:String{
         return Report.collectionName
     }
 }

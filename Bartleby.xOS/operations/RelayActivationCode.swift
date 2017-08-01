@@ -10,7 +10,6 @@ import Foundation
 
 #if !USE_EMBEDDED_MODULES
     import Alamofire
-    import ObjectMapper
 #endif
 
 
@@ -86,7 +85,7 @@ open class RelayActivationCode {
                 metrics.httpContext=context
 
                 if Bartleby.configuration.DEVELOPER_MODE{
-                    print(context.toJSONString() ?? "")
+                    print(context)
                 }
                 
                 // React according to the situation

@@ -15,9 +15,6 @@ import Foundation
     import UIKit
 #endif
 
-#if !USE_EMBEDDED_MODULES
-    import ObjectMapper
-#endif
 
 //MARK: - Bartleby
 

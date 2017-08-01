@@ -9,7 +9,7 @@
 import Foundation
 
 
-public protocol Exposed:Committable{
+public protocol Exposed{
 
     /// Return all the exposed instance variables names. Exposed means public and modifiable.
     var exposedKeys:[String] { get }

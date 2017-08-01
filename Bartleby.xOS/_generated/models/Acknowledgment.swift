@@ -10,7 +10,6 @@
 import Foundation
 #if !USE_EMBEDDED_MODULES
 	import Alamofire
-	import ObjectMapper
 #endif
 
 // MARK: Bartleby's Core: an object used to Acknowledge a Trigger
@@ -27,21 +26,90 @@ import Foundation
 	dynamic open var triggerRelayDuration:Double = 0
 
 
-    // MARK: - Mappable
+    // MARK: - Codable
 
-    required public init?(map: Map) {
-        super.init(map:map)
+
+    enum AcknowledgmentCodingKeys: String,CodingKey{
+		case triggerIndex
+		case uids
+		case triggerRelayDuration
     }
 
-    override open func mapping(map: Map) {
-        super.mapping(map: map)
-        self.quietChanges {
-			self.triggerIndex <- ( map["triggerIndex"] )
-			self.uids <- ( map["uids"] )
-			self.triggerRelayDuration <- ( map["triggerRelayDuration"] )
+    required public init(from decoder: Decoder) throws{
+		try super.init(from: decoder)
+        try self.quietThrowingChanges {
+			let values = try decoder.container(keyedBy: AcknowledgmentCodingKeys.self)
+			self.triggerIndex = try values.decode(Int.self,forKey:.triggerIndex)
+			self.uids = try values.decode([String].self,forKey:.uids)
+			self.triggerRelayDuration = try values.decode(Double.self,forKey:.triggerRelayDuration)
         }
     }
 
+    override open func encode(to encoder: Encoder) throws {
+		try super.encode(to:encoder)
+		var container = encoder.container(keyedBy: AcknowledgmentCodingKeys.self)
+		try container.encodeIfPresent(self.triggerIndex,forKey:.triggerIndex)
+		try container.encodeIfPresent(self.uids,forKey:.uids)
+		try container.encodeIfPresent(self.triggerRelayDuration,forKey:.triggerRelayDuration)
+    }
+
+
+    // MARK: - Exposed (Bartleby's KVC like generative implementation)
+
+    /// Return all the exposed instance variables keys. (Exposed == public and modifiable).
+    override  open var exposedKeys:[String] {
+        var exposed=super.exposedKeys
+        exposed.append(contentsOf:["triggerIndex","uids","triggerRelayDuration"])
+        return exposed
+    }
+
+
+    /// Set the value of the given key
+    ///
+    /// - parameter value: the value
+    /// - parameter key:   the key
+    ///
+    /// - throws: throws an Exception when the key is not exposed
+    override  open func setExposedValue(_ value:Any?, forKey key: String) throws {
+        switch key {
+            case "triggerIndex":
+                if let casted=value as? Int{
+                    self.triggerIndex=casted
+                }
+            case "uids":
+                if let casted=value as? [String]{
+                    self.uids=casted
+                }
+            case "triggerRelayDuration":
+                if let casted=value as? Double{
+                    self.triggerRelayDuration=casted
+                }
+            default:
+                return try super.setExposedValue(value, forKey: key)
+        }
+    }
+
+
+    /// Returns the value of an exposed key.
+    ///
+    /// - parameter key: the key
+    ///
+    /// - throws: throws Exception when the key is not exposed
+    ///
+    /// - returns: returns the value
+    override  open func getExposedValueForKey(_ key:String) throws -> Any?{
+        switch key {
+            case "triggerIndex":
+               return self.triggerIndex
+            case "uids":
+               return self.uids
+            case "triggerRelayDuration":
+               return self.triggerRelayDuration
+            default:
+                return try super.getExposedValueForKey(key)
+        }
+    }
+    // MARK: - Initializable
      required public init() {
         super.init()
     }

@@ -8,10 +8,6 @@
 
 import Foundation
 
-#if !USE_EMBEDDED_MODULES
-    import ObjectMapper
-#endif
-
 // MARK: - Serializable
 
 extension ManagedModel:Serializable{
@@ -43,8 +39,12 @@ extension ManagedModel:Serializable{
             if JSONDictionary[Default.UID_KEY] == nil || JSONDictionary[Default.UID_KEY] as? String == Default.NO_UID{
                 JSONDictionary.removeValue(forKey: Default.UID_KEY)
             }
-            let map=Map(mappingType: .fromJSON, JSON: JSONDictionary)
-            self.mapping(map: map)
+
+           //#TODO
+            //let map=Map(mappingType: .fromJSON, JSON: JSONDictionary)
+            //self.mapping(map: map)
+
+
             if provisionChanges && self.isInspectable {
                 self.provisionChanges(forKey: "*", oldValue: self, newValue: self)
             }

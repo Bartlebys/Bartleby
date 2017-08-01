@@ -8,11 +8,7 @@
 
 import Foundation
 
-#if !USE_EMBEDDED_MODULES
-    import ObjectMapper
-#endif
-
-public struct Profile:Mappable{
+public struct Profile:Codable{
 
     public var url:URL=Bartleby.configuration.API_BASE_URL
     public var documentUID:String=Default.NO_UID
@@ -22,13 +18,4 @@ public struct Profile:Mappable{
 
     public init() {}
 
-    public init?(map: Map) {}
-
-    public mutating func mapping(map: Map) {
-        self.url <- ( map["url"],URLTransform(shouldEncodeURLString:false))
-        self.documentUID <- (map["documentUID"])
-        self.documentSpaceUID <- (map["documentSpaceUID"])
-        self.user <- ( map["user"] )
-        self.requiresPatch <- ( map["requiresPatch"] )
-    }
 }

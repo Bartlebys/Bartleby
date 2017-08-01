@@ -9,8 +9,7 @@
 //
 import Foundation
 #if !USE_EMBEDDED_MODULES
-	import Alamofire
-	import ObjectMapper
+		import Alamofire
 #endif
 
 // MARK: Bartleby's Synchronized File System: a node references a collection of blocks that compose a files, or an alias or a folder
@@ -22,7 +21,7 @@ import Foundation
     }
 
 	//The type of node is a classifier equivalent to a file extension.
-	dynamic open var type:String = ""{
+	@objc dynamic open var type:String = ""{
 	    didSet { 
 	       if !self.wantsQuietChanges && type != oldValue {
 	            self.provisionChanges(forKey: "type",oldValue: oldValue,newValue: type) 
@@ -31,19 +30,19 @@ import Foundation
 	}
 
 	//The relative path inside the box
-	dynamic open var relativePath:String = "\(Default.NO_PATH)"
+	@objc dynamic open var relativePath:String = "\(Default.NO_PATH)"
 
 	//A relative path for a proxy file (And the resolved path if nature==.alias)
-	dynamic open var proxyPath:String?
+	@objc dynamic open var proxyPath:String?
 
 	//The max size of a block (defines the average size of the block last block excluded)
-	dynamic open var blocksMaxSize:Int = Default.MAX_INT
+	@objc dynamic open var blocksMaxSize:Int = Default.MAX_INT
 
 	//The total number of blocks
-	dynamic open var numberOfBlocks:Int = 0
+	@objc dynamic open var numberOfBlocks:Int = 0
 
 	//The priority level of the node (is applicated to its block)
-	dynamic open var priority:Int = 0
+	@objc dynamic open var priority:Int = 0
 
 	//The node nature
 	public enum Nature:String{
@@ -55,22 +54,22 @@ import Foundation
 	open var nature:Nature = .file
 
 	//Can be extracted from FileAttributeKey.modificationDate
-	dynamic open var modificationDate:Date?
+	@objc dynamic open var modificationDate:Date?
 
 	//Can be extracted from FileAttributeKey.creationDate
-	dynamic open var creationDate:Date?
+	@objc dynamic open var creationDate:Date?
 
 	//If nature is .alias the UID of the referent node, else can be set to self.UID or not set at all
-	dynamic open var referentNodeUID:String?
+	@objc dynamic open var referentNodeUID:String?
 
 	//The list of the authorized User.UID,(if set to ["*"] the block is reputed public). Replicated in any Block to allow pre-downloading during node Upload
-	dynamic open var authorized:[String] = [String]()
+	@objc dynamic open var authorized:[String] = [String]()
 
 	//The size of the file
-	dynamic open var size:Int = Default.MAX_INT
+	@objc dynamic open var size:Int = Default.MAX_INT
 
 	//The SHA1 digest of the node is the digest of all its blocks digest.
-	dynamic open var digest:String = "\(Default.NO_DIGEST)"{
+	@objc dynamic open var digest:String = "\(Default.NO_DIGEST)"{
 	    didSet { 
 	       if !self.wantsQuietChanges && digest != oldValue {
 	            self.provisionChanges(forKey: "digest",oldValue: oldValue,newValue: digest) 
@@ -79,30 +78,100 @@ import Foundation
 	}
 
 	//If set to true the blocks should be compressed (using LZ4)
-	dynamic open var compressedBlocks:Bool = true
+	@objc dynamic open var compressedBlocks:Bool = true
 
 	//If set to true the blocks will be crypted (using AES256)
-	dynamic open var cryptedBlocks:Bool = true
+	@objc dynamic open var cryptedBlocks:Bool = true
 
 	//The upload Progression State (not serializable, not supervisable directly by : self.addChangesSuperviser use self.uploadProgression.addChangesSuperviser)
-	dynamic open var uploadProgression:Progression = Progression()
+	@objc dynamic open var uploadProgression:Progression = Progression()
 
 	//The Download Progression State (not serializable, not supervisable directly by : self.addChangesSuperviser use self.downloadProgression.addChangesSuperviser)
-	dynamic open var downloadProgression:Progression = Progression()
+	@objc dynamic open var downloadProgression:Progression = Progression()
 
 	//Turned to true if there is an upload in progress (used for progress consolidation optimization)
-	dynamic open var uploadInProgress:Bool = false
+	@objc dynamic open var uploadInProgress:Bool = false
 
 	//Turned to true if there is an upload in progress (used for progress consolidation optimization)
-	dynamic open var downloadInProgress:Bool = false
+	@objc dynamic open var downloadInProgress:Bool = false
 
 	//Turned to true if there is an Assembly in progress (used for progress consolidation optimization)
-	dynamic open var assemblyInProgress:Bool = false
+	@objc dynamic open var assemblyInProgress:Bool = false
+
+
+    // MARK: - Codable
+
+
+    enum NodeCodingKeys: String,CodingKey{
+		case type
+		case relativePath
+		case proxyPath
+		case blocksMaxSize
+		case numberOfBlocks
+		case priority
+		case nature
+		case modificationDate
+		case creationDate
+		case referentNodeUID
+		case authorized
+		case size
+		case digest
+		case compressedBlocks
+		case cryptedBlocks
+		case uploadProgression
+		case downloadProgression
+		case uploadInProgress
+		case downloadInProgress
+		case assemblyInProgress
+    }
+
+    required public init(from decoder: Decoder) throws{
+		try super.init(from: decoder)
+        try self.quietThrowingChanges {
+			let values = try decoder.container(keyedBy: NodeCodingKeys.self)
+			self.type = try values.decode(String.self,forKey:.type)
+			self.relativePath = try values.decode(String.self,forKey:.relativePath)
+			self.proxyPath = try values.decode(String.self,forKey:.proxyPath)
+			self.blocksMaxSize = try values.decode(Int.self,forKey:.blocksMaxSize)
+			self.numberOfBlocks = try values.decode(Int.self,forKey:.numberOfBlocks)
+			self.priority = try values.decode(Int.self,forKey:.priority)
+			self.nature = Node.Nature(rawValue: try values.decode(String.self,forKey:.nature)) ?? .file
+			self.modificationDate = try values.decode(Date.self,forKey:.modificationDate)
+			self.creationDate = try values.decode(Date.self,forKey:.creationDate)
+			self.referentNodeUID = try values.decode(String.self,forKey:.referentNodeUID)
+			self.authorized = try values.decode([String].self,forKey:.authorized)
+			self.size = try values.decode(Int.self,forKey:.size)
+			self.digest = try values.decode(String.self,forKey:.digest)
+			self.compressedBlocks = try values.decode(Bool.self,forKey:.compressedBlocks)
+			self.cryptedBlocks = try values.decode(Bool.self,forKey:.cryptedBlocks)
+        }
+    }
+
+    override open func encode(to encoder: Encoder) throws {
+		try super.encode(to:encoder)
+		var container = encoder.container(keyedBy: NodeCodingKeys.self)
+		try container.encodeIfPresent(self.type,forKey:.type)
+		try container.encodeIfPresent(self.relativePath,forKey:.relativePath)
+		try container.encodeIfPresent(self.proxyPath,forKey:.proxyPath)
+		try container.encodeIfPresent(self.blocksMaxSize,forKey:.blocksMaxSize)
+		try container.encodeIfPresent(self.numberOfBlocks,forKey:.numberOfBlocks)
+		try container.encodeIfPresent(self.priority,forKey:.priority)
+		try container.encodeIfPresent(self.nature.rawValue ,forKey:.nature)
+		try container.encodeIfPresent(self.modificationDate,forKey:.modificationDate)
+		try container.encodeIfPresent(self.creationDate,forKey:.creationDate)
+		try container.encodeIfPresent(self.referentNodeUID,forKey:.referentNodeUID)
+		try container.encodeIfPresent(self.authorized,forKey:.authorized)
+		try container.encodeIfPresent(self.size,forKey:.size)
+		try container.encodeIfPresent(self.digest,forKey:.digest)
+		try container.encodeIfPresent(self.compressedBlocks,forKey:.compressedBlocks)
+		try container.encodeIfPresent(self.cryptedBlocks,forKey:.cryptedBlocks)
+    }
+
 
     // MARK: - Exposed (Bartleby's KVC like generative implementation)
 
     /// Return all the exposed instance variables keys. (Exposed == public and modifiable).
-    override open var exposedKeys:[String] {
+    override  open var exposedKeys:[String] {
         var exposed=super.exposedKeys
         exposed.append(contentsOf:["type","relativePath","proxyPath","blocksMaxSize","numberOfBlocks","priority","nature","modificationDate","creationDate","referentNodeUID","authorized","size","digest","compressedBlocks","cryptedBlocks","uploadProgression","downloadProgression","uploadInProgress","downloadInProgress","assemblyInProgress"])
         return exposed
@@ -115,7 +184,7 @@ import Foundation
     /// - parameter key:   the key
     ///
     /// - throws: throws an Exception when the key is not exposed
-    override open func setExposedValue(_ value:Any?, forKey key: String) throws {
+    override  open func setExposedValue(_ value:Any?, forKey key: String) throws {
         switch key {
             case "type":
                 if let casted=value as? String{
@@ -210,7 +279,7 @@ import Foundation
     /// - throws: throws Exception when the key is not exposed
     ///
     /// - returns: returns the value
-    override open func getExposedValueForKey(_ key:String) throws -> Any?{
+    override  open func getExposedValueForKey(_ key:String) throws -> Any?{
         switch key {
             case "type":
                return self.type
@@ -256,42 +325,17 @@ import Foundation
                 return try super.getExposedValueForKey(key)
         }
     }
-    // MARK: - Mappable
-
-    required public init?(map: Map) {
-        super.init(map:map)
-    }
-
-    override open func mapping(map: Map) {
-        super.mapping(map: map)
-        self.quietChanges {
-			self.type <- ( map["type"] )
-			self.relativePath <- ( map["relativePath"] )
-			self.proxyPath <- ( map["proxyPath"] )
-			self.blocksMaxSize <- ( map["blocksMaxSize"] )
-			self.numberOfBlocks <- ( map["numberOfBlocks"] )
-			self.priority <- ( map["priority"] )
-			self.nature <- ( map["nature"] )
-			self.modificationDate <- ( map["modificationDate"], ISO8601DateTransform() )
-			self.creationDate <- ( map["creationDate"], ISO8601DateTransform() )
-			self.referentNodeUID <- ( map["referentNodeUID"] )
-			self.authorized <- ( map["authorized"] )// @todo marked generatively as Cryptable Should be crypted!
-			self.size <- ( map["size"] )
-			self.digest <- ( map["digest"] )
-			self.compressedBlocks <- ( map["compressedBlocks"] )
-			self.cryptedBlocks <- ( map["cryptedBlocks"] )
-        }
-    }
-
-     required public init() {
+    // MARK: - Initializable
+    required public init() {
         super.init()
     }
 
-    override open class var collectionName:String{
+    // MARK: - UniversalType
+    override  open class var collectionName:String{
         return "nodes"
     }
 
-    override open var d_collectionName:String{
+    override  open var d_collectionName:String{
         return Node.collectionName
     }
 }

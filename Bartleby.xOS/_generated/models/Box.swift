@@ -9,8 +9,7 @@
 //
 import Foundation
 #if !USE_EMBEDDED_MODULES
-	import Alamofire
-	import ObjectMapper
+		import Alamofire
 #endif
 
 // MARK: Bartleby's Synchronized File System: A box is a logical reference for Nodes and Blocks
@@ -22,33 +21,61 @@ import Foundation
     }
 
 	//Turned to true when the box is mounted (not serializable, not supervisable)
-	dynamic open var isMounted:Bool = false
+	@objc dynamic open var isMounted:Bool = false
 
 	//Turned to true if there is an Assembly in progress (used for progress consolidation optimization)
-	dynamic open var assemblyInProgress:Bool = false
+	@objc dynamic open var assemblyInProgress:Bool = false
 
 	//A volatile box is unmounted automatically
-	dynamic open var volatile:Bool = true
+	@objc dynamic open var volatile:Bool = true
 
 	//The upload Progression State (not serializable, not supervisable directly by : self.addChangesSuperviser use self.uploadProgression.addChangesSuperviser)
-	dynamic open var uploadProgression:Progression = Progression()
+	@objc dynamic open var uploadProgression:Progression = Progression()
 
 	//The Download Progression State (not serializable, not supervisable directly by : self.addChangesSuperviser use self.downloadProgression.addChangesSuperviser)
-	dynamic open var downloadProgression:Progression = Progression()
+	@objc dynamic open var downloadProgression:Progression = Progression()
 
 	//The Assembly Progression State (not serializable, not supervisable directly by : self.addChangesSuperviser use self.downloadProgression.addChangesSuperviser)
-	dynamic open var assemblyProgression:Progression = Progression()
+	@objc dynamic open var assemblyProgression:Progression = Progression()
 
 	//Turned to true if there is an upload in progress (used for progress consolidation optimization)
-	dynamic open var uploadInProgress:Bool = false
+	@objc dynamic open var uploadInProgress:Bool = false
 
 	//Turned to true if there is an upload in progress (used for progress consolidation optimization)
-	dynamic open var downloadInProgress:Bool = false
+	@objc dynamic open var downloadInProgress:Bool = false
+
+
+    // MARK: - Codable
+
+
+    enum BoxCodingKeys: String,CodingKey{
+		case isMounted
+		case assemblyInProgress
+		case volatile
+		case uploadProgression
+		case downloadProgression
+		case assemblyProgression
+		case uploadInProgress
+		case downloadInProgress
+    }
+
+    required public init(from decoder: Decoder) throws{
+		try super.init(from: decoder)
+        try self.quietThrowingChanges {
+			let values = try decoder.container(keyedBy: BoxCodingKeys.self)
+        }
+    }
+
+    override open func encode(to encoder: Encoder) throws {
+		try super.encode(to:encoder)
+		var container = encoder.container(keyedBy: BoxCodingKeys.self)
+    }
+
 
     // MARK: - Exposed (Bartleby's KVC like generative implementation)
 
     /// Return all the exposed instance variables keys. (Exposed == public and modifiable).
-    override open var exposedKeys:[String] {
+    override  open var exposedKeys:[String] {
         var exposed=super.exposedKeys
         exposed.append(contentsOf:["isMounted","assemblyInProgress","volatile","uploadProgression","downloadProgression","assemblyProgression","uploadInProgress","downloadInProgress"])
         return exposed
@@ -61,7 +88,7 @@ import Foundation
     /// - parameter key:   the key
     ///
     /// - throws: throws an Exception when the key is not exposed
-    override open func setExposedValue(_ value:Any?, forKey key: String) throws {
+    override  open func setExposedValue(_ value:Any?, forKey key: String) throws {
         switch key {
             case "isMounted":
                 if let casted=value as? Bool{
@@ -108,7 +135,7 @@ import Foundation
     /// - throws: throws Exception when the key is not exposed
     ///
     /// - returns: returns the value
-    override open func getExposedValueForKey(_ key:String) throws -> Any?{
+    override  open func getExposedValueForKey(_ key:String) throws -> Any?{
         switch key {
             case "isMounted":
                return self.isMounted
@@ -130,27 +157,17 @@ import Foundation
                 return try super.getExposedValueForKey(key)
         }
     }
-    // MARK: - Mappable
-
-    required public init?(map: Map) {
-        super.init(map:map)
-    }
-
-    override open func mapping(map: Map) {
-        super.mapping(map: map)
-        self.quietChanges {
-        }
-    }
-
-     required public init() {
+    // MARK: - Initializable
+    required public init() {
         super.init()
     }
 
-    override open class var collectionName:String{
+    // MARK: - UniversalType
+    override  open class var collectionName:String{
         return "boxes"
     }
 
-    override open var d_collectionName:String{
+    override  open var d_collectionName:String{
         return Box.collectionName
     }
 }

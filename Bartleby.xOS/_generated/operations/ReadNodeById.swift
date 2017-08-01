@@ -11,7 +11,6 @@
 import Foundation
 #if !USE_EMBEDDED_MODULES
 	import Alamofire
-	import ObjectMapper
 #endif
 
 @objc(ReadNodeById) open class ReadNodeById : ManagedModel{
@@ -29,12 +28,12 @@ import Foundation
 	
         if let document = Bartleby.sharedInstance.getDocumentByUID(documentUID) {
             let pathURL=document.baseURL.appendingPathComponent("node/\(nodeId)")
-            let dictionary:Dictionary<String, Any>=Dictionary<String, Any>()
+            let dictionary:[String:Any]=[String:Any]()
             let urlRequest=HTTPManager.requestWithToken(inDocumentWithUID:document.UID,withActionName:"ReadNodeById" ,forMethod:"GET", and: pathURL)
             
             do {
                 let r=try URLEncoding().encode(urlRequest,with:dictionary)
-                request(r).responseString(completionHandler: { (response) in
+                request(r).responseData(completionHandler: { (response) in
                   
                     let request=response.request
                     let result=response.result
@@ -78,25 +77,17 @@ import Foundation
             
                     }else{
                           if 200...299 ~= statusCode {
-	                            if let string=result.value{
-	                                if let instance = Mapper <Node>().map(JSONString:string){
-	                                    success(instance)
-	                                }else{
-	                                    let failureReaction =  Reaction.dispatchAdaptiveMessage(
-	                                        context: context,
-	                                        title: NSLocalizedString("Deserialization issue",
-	                                        comment: "Deserialization issue"),
-	                                        body:"\(String(describing: result.value))\n\(#file)\n\(#function)\nhttp Status code: (\(statusCode))",
-	                                        transmit:{ (selectedIndex) -> () in
-	                                    })
-	                                    reactions.append(failureReaction)
-	                                    failure(context)
-	                                }
-	                            }else{
+	                       do{
+	                            if let data = response.data{
+	                                let instance = try JSONDecoder().decode(Node.self,from:data)
+	                                success(instance)
+	                              }else{
+	                                throw BartlebyOperationError.dataNotFound
+	                              }
+	                            }catch{
 	                                let failureReaction =  Reaction.dispatchAdaptiveMessage(
 	                                    context: context,
-	                                    title: NSLocalizedString("No String Deserialization issue",
-	                                                             comment: "No String Deserialization issue"),
+	                                    title:"\(error)",
 	                                    body: "\(String(describing: result.value))\n\(#file)\n\(#function)\nhttp Status code: (\(statusCode))",
 	                                    transmit: { (selectedIndex) -> () in
 	                                })

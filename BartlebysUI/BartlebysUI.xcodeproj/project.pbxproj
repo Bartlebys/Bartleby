@@ -13,7 +13,6 @@
 		E530947E1E4B50300068D7EC /* BartlebysUI iOS.h in Headers */ = {isa = PBXBuildFile; fileRef = E53094701E4B50300068D7EC /* BartlebysUI iOS.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		E53F09861DF95C4E003301DD /* BartlebyKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E53F09851DF95C4E003301DD /* BartlebyKit.framework */; };
 		E53F0B571DF95D80003301DD /* DropView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E53F0B561DF95D80003301DD /* DropView.swift */; };
-		E543244B1E98DE8C00ED89D9 /* ObjectMapper.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E54324461E98DE0600ED89D9 /* ObjectMapper.framework */; };
 		E55FF9841E155F5900EE3393 /* IdentityWindowController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E55FF9821E155F5900EE3393 /* IdentityWindowController.swift */; };
 		E55FF9851E155F5900EE3393 /* IdentityWindowController.xib in Resources */ = {isa = PBXBuildFile; fileRef = E55FF9831E155F5900EE3393 /* IdentityWindowController.xib */; };
 		E55FF9881E155FF300EE3393 /* UpdatePasswordViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E55FF9861E155FF300EE3393 /* UpdatePasswordViewController.swift */; };
@@ -95,7 +94,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				E53F09861DF95C4E003301DD /* BartlebyKit.framework in Frameworks */,
-				E543244B1E98DE8C00ED89D9 /* ObjectMapper.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

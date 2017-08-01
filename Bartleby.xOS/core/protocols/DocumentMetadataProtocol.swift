@@ -10,7 +10,6 @@ import Foundation
 
 #if !USE_EMBEDDED_MODULES
     import Alamofire
-    import ObjectMapper
 #endif
 
 
@@ -25,7 +24,7 @@ public enum DocumentMetadataError: Error {
 // A model that encapsulates the descriptions-CollectionMetadatum of its persitent collections
 // and stores the collaborative session data
 
-public protocol DocumentMetadataProtocol:  Mappable {
+public protocol DocumentMetadataProtocol:  Codable {
 
     associatedtype CollectionMetadatumType
     associatedtype User

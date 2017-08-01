@@ -8,11 +8,7 @@
 
 import Foundation
 
-#if !USE_EMBEDDED_MODULES
-    import ObjectMapper
-#endif
-
-public struct Identification:Mappable {
+public struct Identification:Codable {
 
     public var email:String=""
     public var phoneCountryCode:String=""
@@ -20,20 +16,6 @@ public struct Identification:Mappable {
     public var password:String=""
     public var externalID:String=Default.NO_UID
     public var supportsPasswordSyndication:Bool=Bartleby.configuration.SUPPORTS_PASSWORD_SYNDICATION_BY_DEFAULT
-
-    public init() {}
-
-    public init?(map: Map) {}
-
-    public mutating func mapping(map: Map) {
-        self.email <- ( map["email"] )
-        self.phoneCountryCode <- ( map["phoneCountryCode"] )
-        self.phoneNumber <- ( map["phoneNumber"] )
-        self.password <- ( map["password"] )
-        self.externalID <- (map["externalID"])
-        self.supportsPasswordSyndication <- (map["supportsPasswordSyndication"])
-    }
-
 
     public static func identificationFrom(user:User)->Identification{
         var identification=Identification()

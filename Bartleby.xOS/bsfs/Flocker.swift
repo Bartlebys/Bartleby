@@ -7,9 +7,6 @@
 //
 
 import Foundation
-#if !USE_EMBEDDED_MODULES
-    import ObjectMapper
-#endif
 
 enum FlockerError:Error{
     case unableToAccessToContainer(at:String,message:String)
@@ -431,8 +428,7 @@ struct Flocker{
     fileprivate func _writeContainerIntoFlock( handle: FileHandle,
                                                container: Container)throws->(){
         try autoreleasepool { () -> Void in
-            let jsonDictionary=container.toJSON()
-            var data = try JSONSerialization.data(withJSONObject: jsonDictionary)
+            var data = try JSONEncoder().encode(container)
             data = try data.compress(algorithm: .lz4)
             data = try self._cryptoHelper.encryptData(data,useKey:self._key)
             var cryptedSize:UInt64=UInt64(data.count)
@@ -586,12 +582,7 @@ struct Flocker{
                     var data=fileHandle.readData(ofLength: Int(footerSize))
                     data = try self._cryptoHelper.decryptData(data,useKey: self._key)
                     data = try data.decompress(algorithm: .lz4)
-                    if let jsonString=String.init(data: data, encoding: String.Encoding.utf8){
-                         container = Mapper<Container>().map(JSONString: jsonString)
-                    }else{
-                        throw FlockerError.unableToAccessToContainer(at: flockedFile, message: "Mapping has failed")
-                    }
-
+                    container = try JSONDecoder().decode(Container.self, from: data)
                 }catch let e{
                     error=e
                 }

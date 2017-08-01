@@ -8,10 +8,6 @@
 
 import Foundation
 
-#if !USE_EMBEDDED_MODULES
-    import ObjectMapper
-#endif
-
 // MARK: - Result Extensions
 
 // We expose pairs of Setter and Getter to cast the Result.
@@ -24,12 +20,8 @@ public extension Completion {
     ///  Stores the serializabale result
     ///
     /// - Parameter result: the serializable result
-    func setResult<T: Mappable>(_ result: T) {
-        if let json=result.toJSONString(){
-            if let encoded=json.data(using: String.Encoding.utf8){
-                self.data=encoded
-            }
-        }
+    func setResult<T: Codable>(_ result: T) {
+        self.data = try? JSONEncoder().encode(result)
     }
 
 
@@ -37,13 +29,9 @@ public extension Completion {
     ///  Gets the deserialized result
     ///  If the result is an external reference the reference is resolved automatically
     /// - Returns: the deserialized result
-    func getResult<T: Mappable>() -> T? {
+    func getResult<T: Codable>() -> T? {
         if let data=self.data {
-            if let json = String.init(data: data, encoding: String.Encoding.utf8){
-                if let ref:T = Mapper<T>().map(JSONString:json){
-                    return ref
-                }
-            }
+            return try? JSONDecoder().decode(T.self, from: data)
         }
         return nil
     }
@@ -57,9 +45,7 @@ public extension Completion {
     func setExternalReferenceResult<T: Collectible>(from ref:T) {
         let externalRef=StringValue()
         externalRef.value=ref.UID
-        if let json=externalRef.toJSONString(){
-            self.data = json.data(using: String.Encoding.utf8)
-        }
+        self.data = try? JSONEncoder().encode(externalRef)
     }
 
 
@@ -68,11 +54,8 @@ public extension Completion {
     /// - Returns: the external reference UID
     func getResultExternalReference() ->String? {
         if let data = self.data{
-            if let json=String(data: data, encoding: String.Encoding.utf8){
-                if let ref:StringValue = Mapper<StringValue>().map(JSONString:json){
-                    return ref.value
-                }
-            }
+            let stringValue =  try? JSONDecoder().decode(StringValue.self, from: data)
+            return stringValue?.value
         }
         return nil
     }

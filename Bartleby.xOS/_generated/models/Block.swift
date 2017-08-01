@@ -9,8 +9,7 @@
 //
 import Foundation
 #if !USE_EMBEDDED_MODULES
-	import Alamofire
-	import ObjectMapper
+		import Alamofire
 #endif
 
 // MARK: Bartleby's Synchronized File System: a block references bytes
@@ -22,7 +21,7 @@ import Foundation
     }
 
 	//The SHA1 digest of the block
-	dynamic open var digest:String = "\(Default.NO_DIGEST)"{
+	@objc dynamic open var digest:String = "\(Default.NO_DIGEST)"{
 	    didSet { 
 	       if !self.wantsQuietChanges && digest != oldValue {
 	            self.provisionChanges(forKey: "digest",oldValue: oldValue,newValue: digest) 
@@ -31,39 +30,84 @@ import Foundation
 	}
 
 	//The rank of the Block in the node
-	dynamic open var rank:Int = 0
+	@objc dynamic open var rank:Int = 0
 
 	//The starting bytes of the block in the Node (== the position of the block in the file)
-	dynamic open var startsAt:Int = 0
+	@objc dynamic open var startsAt:Int = 0
 
 	//The size of the Block
-	dynamic open var size:Int = Default.MAX_INT
+	@objc dynamic open var size:Int = Default.MAX_INT
 
 	//The priority level of the block (higher priority produces the block to be synchronized before the lower priority blocks)
-	dynamic open var priority:Int = 0
+	@objc dynamic open var priority:Int = 0
 
 	//If set to true the blocks should be compressed (using LZ4)
-	dynamic open var compressed:Bool = true
+	@objc dynamic open var compressed:Bool = true
 
 	//If set to true the blocks will be crypted (using AES256)
-	dynamic open var crypted:Bool = true
+	@objc dynamic open var crypted:Bool = true
 
 	//The upload Progression State (not serializable, not supervisable directly by : self.addChangesSuperviser use self.uploadProgression.addChangesSuperviser)
-	dynamic open var uploadProgression:Progression = Progression()
+	@objc dynamic open var uploadProgression:Progression = Progression()
 
 	//The Download Progression State (not serializable, not supervisable directly by : self.addChangesSuperviser use self.downloadProgression.addChangesSuperviser)
-	dynamic open var downloadProgression:Progression = Progression()
+	@objc dynamic open var downloadProgression:Progression = Progression()
 
 	//Turned to true if there is an upload in progress (used for progress consolidation optimization)
-	dynamic open var uploadInProgress:Bool = false
+	@objc dynamic open var uploadInProgress:Bool = false
 
 	//Turned to true if there is an upload in progress (used for progress consolidation optimization)
-	dynamic open var downloadInProgress:Bool = false
+	@objc dynamic open var downloadInProgress:Bool = false
+
+
+    // MARK: - Codable
+
+
+    enum BlockCodingKeys: String,CodingKey{
+		case digest
+		case rank
+		case startsAt
+		case size
+		case priority
+		case compressed
+		case crypted
+		case uploadProgression
+		case downloadProgression
+		case uploadInProgress
+		case downloadInProgress
+    }
+
+    required public init(from decoder: Decoder) throws{
+		try super.init(from: decoder)
+        try self.quietThrowingChanges {
+			let values = try decoder.container(keyedBy: BlockCodingKeys.self)
+			self.digest = try values.decode(String.self,forKey:.digest)
+			self.rank = try values.decode(Int.self,forKey:.rank)
+			self.startsAt = try values.decode(Int.self,forKey:.startsAt)
+			self.size = try values.decode(Int.self,forKey:.size)
+			self.priority = try values.decode(Int.self,forKey:.priority)
+			self.compressed = try values.decode(Bool.self,forKey:.compressed)
+			self.crypted = try values.decode(Bool.self,forKey:.crypted)
+        }
+    }
+
+    override open func encode(to encoder: Encoder) throws {
+		try super.encode(to:encoder)
+		var container = encoder.container(keyedBy: BlockCodingKeys.self)
+		try container.encodeIfPresent(self.digest,forKey:.digest)
+		try container.encodeIfPresent(self.rank,forKey:.rank)
+		try container.encodeIfPresent(self.startsAt,forKey:.startsAt)
+		try container.encodeIfPresent(self.size,forKey:.size)
+		try container.encodeIfPresent(self.priority,forKey:.priority)
+		try container.encodeIfPresent(self.compressed,forKey:.compressed)
+		try container.encodeIfPresent(self.crypted,forKey:.crypted)
+    }
+
 
     // MARK: - Exposed (Bartleby's KVC like generative implementation)
 
     /// Return all the exposed instance variables keys. (Exposed == public and modifiable).
-    override open var exposedKeys:[String] {
+    override  open var exposedKeys:[String] {
         var exposed=super.exposedKeys
         exposed.append(contentsOf:["digest","rank","startsAt","size","priority","compressed","crypted","uploadProgression","downloadProgression","uploadInProgress","downloadInProgress"])
         return exposed
@@ -76,7 +120,7 @@ import Foundation
     /// - parameter key:   the key
     ///
     /// - throws: throws an Exception when the key is not exposed
-    override open func setExposedValue(_ value:Any?, forKey key: String) throws {
+    override  open func setExposedValue(_ value:Any?, forKey key: String) throws {
         switch key {
             case "digest":
                 if let casted=value as? String{
@@ -135,7 +179,7 @@ import Foundation
     /// - throws: throws Exception when the key is not exposed
     ///
     /// - returns: returns the value
-    override open func getExposedValueForKey(_ key:String) throws -> Any?{
+    override  open func getExposedValueForKey(_ key:String) throws -> Any?{
         switch key {
             case "digest":
                return self.digest
@@ -163,34 +207,17 @@ import Foundation
                 return try super.getExposedValueForKey(key)
         }
     }
-    // MARK: - Mappable
-
-    required public init?(map: Map) {
-        super.init(map:map)
-    }
-
-    override open func mapping(map: Map) {
-        super.mapping(map: map)
-        self.quietChanges {
-			self.digest <- ( map["digest"] )
-			self.rank <- ( map["rank"] )
-			self.startsAt <- ( map["startsAt"] )
-			self.size <- ( map["size"] )
-			self.priority <- ( map["priority"] )
-			self.compressed <- ( map["compressed"] )
-			self.crypted <- ( map["crypted"] )
-        }
-    }
-
-     required public init() {
+    // MARK: - Initializable
+    required public init() {
         super.init()
     }
 
-    override open class var collectionName:String{
+    // MARK: - UniversalType
+    override  open class var collectionName:String{
         return "blocks"
     }
 
-    override open var d_collectionName:String{
+    override  open var d_collectionName:String{
         return Block.collectionName
     }
 }

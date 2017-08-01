@@ -8,10 +8,6 @@
 
 import Foundation
 
-#if !USE_EMBEDDED_MODULES
-    import ObjectMapper
-#endif
-
 
 // The standard DocumentMetadata implementation
 // The underlining model has been implemented by flexions in BaseDocumentMetadata
@@ -19,24 +15,14 @@ extension DocumentMetadata:DocumentMetadataProtocol {
 
     // Data Serialization
     public func toCryptedData() throws -> Data{
-        if let metadataString=self.toJSONString(){
-            let crypted = try Bartleby.cryptoDelegate.encryptString(metadataString,useKey:Bartleby.configuration.KEY)
-            if let metadataData = crypted.data(using:.utf8){
-                   return metadataData
-            }
-        }
-        throw DocumentMetadataError.dataSerializationFailed
+        let metadataString = try JSONEncoder().encode(self)
+        return  try Bartleby.cryptoDelegate.encryptData(metadataString, useKey: Bartleby.configuration.KEY)
     }
 
     // Data DeSerialization
     public static func fromCryptedData(_ data:Data) throws ->DocumentMetadata{
-        if let cryptedJson = String(data: data, encoding:.utf8){
-            let decrypted = try Bartleby.cryptoDelegate.decryptString(cryptedJson,useKey:Bartleby.configuration.KEY)
-            if let metadata = Mapper <DocumentMetadata>().map(JSONString:decrypted){
-                return metadata
-            }
-        }
-        throw DocumentMetadataError.dataDeserializationFailed
+        let decrypted = try Bartleby.cryptoDelegate.decryptData(data,useKey:Bartleby.configuration.KEY)
+        return try JSONDecoder().decode(DocumentMetadata.self, from: decrypted)
     }
 
 
@@ -59,5 +45,4 @@ extension DocumentMetadata:DocumentMetadataProtocol {
             return ""
         }
     }
-
 }

@@ -26,7 +26,6 @@ import Foundation
 import Foundation
 #if !USE_EMBEDDED_MODULES
     import Alamofire
-    import ObjectMapper
 #endif
 
 

@@ -8,7 +8,6 @@
 
 import Cocoa
 import BartlebyKit
-import ObjectMapper
 
 class ValidatePasswordViewController: IdentityStepViewController{
 

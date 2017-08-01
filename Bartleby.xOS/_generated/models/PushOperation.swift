@@ -9,8 +9,7 @@
 //
 import Foundation
 #if !USE_EMBEDDED_MODULES
-	import Alamofire
-	import ObjectMapper
+		import Alamofire
 #endif
 
 // MARK: Bartleby's Core: an object used to provision serialized operation.
@@ -22,16 +21,16 @@ import Foundation
     }
 
 	//The unique identifier of the related Command
-	dynamic open var commandUID:String?
+	@objc dynamic open var commandUID:String?
 
 	//The dictionary representation of a serialized action call
-	dynamic open var toDictionary:[String:Any]?
+	@objc dynamic open var toDictionary:[String:Any]?
 
-	//The dictionary representation of the last response serialized data
-	open var responseDictionary:[String:Any]?
+	//The last response serialized data
+	open var responseData:Data?
 
 	//The completion state of the operation
-	dynamic open var completionState:Completion?
+	@objc dynamic open var completionState:Completion?
 
 	//The invocation Status None: on creation, Pending: can be pushed, InProgress: the endpoint has been called, Completed : The end point call has been completed
 	public enum Status:String{
@@ -43,20 +42,64 @@ import Foundation
 	open var status:Status = .none
 
 	//The invocation counter
-	dynamic open var counter:Int = -1
+	@objc dynamic open var counter:Int = -1
 
 	//The creationdate
-	dynamic open var creationDate:Date?
+	@objc dynamic open var creationDate:Date?
 
 	//The last invocation date
-	dynamic open var lastInvocationDate:Date?
+	@objc dynamic open var lastInvocationDate:Date?
+
+
+    // MARK: - Codable
+
+
+    enum PushOperationCodingKeys: String,CodingKey{
+		case commandUID
+		case toDictionary
+		case responseData
+		case completionState
+		case status
+		case counter
+		case creationDate
+		case lastInvocationDate
+    }
+
+    required public init(from decoder: Decoder) throws{
+		try super.init(from: decoder)
+        try self.quietThrowingChanges {
+			let values = try decoder.container(keyedBy: PushOperationCodingKeys.self)
+			self.commandUID = try values.decode(String.self,forKey:.commandUID)
+			self.toDictionary = try values.decode([String:Any].self,forKey:.toDictionary)
+			self.responseData = try values.decode(Data.self,forKey:.responseData)
+			self.completionState = try values.decode(Completion.self,forKey:.completionState)
+			self.status = PushOperation.Status(rawValue: try values.decode(String.self,forKey:.status)) ?? .none
+			self.counter = try values.decode(Int.self,forKey:.counter)
+			self.creationDate = try values.decode(Date.self,forKey:.creationDate)
+			self.lastInvocationDate = try values.decode(Date.self,forKey:.lastInvocationDate)
+        }
+    }
+
+    override open func encode(to encoder: Encoder) throws {
+		try super.encode(to:encoder)
+		var container = encoder.container(keyedBy: PushOperationCodingKeys.self)
+		try container.encodeIfPresent(self.commandUID,forKey:.commandUID)
+		try container.encodeIfPresent(self.toDictionary,forKey:.toDictionary)
+		try container.encodeIfPresent(self.responseData,forKey:.responseData)
+		try container.encodeIfPresent(self.completionState,forKey:.completionState)
+		try container.encodeIfPresent(self.status.rawValue ,forKey:.status)
+		try container.encodeIfPresent(self.counter,forKey:.counter)
+		try container.encodeIfPresent(self.creationDate,forKey:.creationDate)
+		try container.encodeIfPresent(self.lastInvocationDate,forKey:.lastInvocationDate)
+    }
+
 
     // MARK: - Exposed (Bartleby's KVC like generative implementation)
 
     /// Return all the exposed instance variables keys. (Exposed == public and modifiable).
-    override open var exposedKeys:[String] {
+    override  open var exposedKeys:[String] {
         var exposed=super.exposedKeys
-        exposed.append(contentsOf:["commandUID","toDictionary","responseDictionary","completionState","status","counter","creationDate","lastInvocationDate"])
+        exposed.append(contentsOf:["commandUID","toDictionary","responseData","completionState","status","counter","creationDate","lastInvocationDate"])
         return exposed
     }
 
@@ -67,7 +110,7 @@ import Foundation
     /// - parameter key:   the key
     ///
     /// - throws: throws an Exception when the key is not exposed
-    override open func setExposedValue(_ value:Any?, forKey key: String) throws {
+    override  open func setExposedValue(_ value:Any?, forKey key: String) throws {
         switch key {
             case "commandUID":
                 if let casted=value as? String{
@@ -77,9 +120,9 @@ import Foundation
                 if let casted=value as? [String:Any]{
                     self.toDictionary=casted
                 }
-            case "responseDictionary":
-                if let casted=value as? [String:Any]{
-                    self.responseDictionary=casted
+            case "responseData":
+                if let casted=value as? Data{
+                    self.responseData=casted
                 }
             case "completionState":
                 if let casted=value as? Completion{
@@ -114,14 +157,14 @@ import Foundation
     /// - throws: throws Exception when the key is not exposed
     ///
     /// - returns: returns the value
-    override open func getExposedValueForKey(_ key:String) throws -> Any?{
+    override  open func getExposedValueForKey(_ key:String) throws -> Any?{
         switch key {
             case "commandUID":
                return self.commandUID
             case "toDictionary":
                return self.toDictionary
-            case "responseDictionary":
-               return self.responseDictionary
+            case "responseData":
+               return self.responseData
             case "completionState":
                return self.completionState
             case "status":
@@ -136,35 +179,17 @@ import Foundation
                 return try super.getExposedValueForKey(key)
         }
     }
-    // MARK: - Mappable
-
-    required public init?(map: Map) {
-        super.init(map:map)
-    }
-
-    override open func mapping(map: Map) {
-        super.mapping(map: map)
-        self.quietChanges {
-			self.commandUID <- ( map["commandUID"] )
-			self.toDictionary <- ( map["toDictionary"] )
-			self.responseDictionary <- ( map["responseDictionary"] )
-			self.completionState <- ( map["completionState"] )
-			self.status <- ( map["status"] )
-			self.counter <- ( map["counter"] )
-			self.creationDate <- ( map["creationDate"], ISO8601DateTransform() )
-			self.lastInvocationDate <- ( map["lastInvocationDate"], ISO8601DateTransform() )
-        }
-    }
-
-     required public init() {
+    // MARK: - Initializable
+    required public init() {
         super.init()
     }
 
-    override open class var collectionName:String{
+    // MARK: - UniversalType
+    override  open class var collectionName:String{
         return "pushOperations"
     }
 
-    override open var d_collectionName:String{
+    override  open var d_collectionName:String{
         return PushOperation.collectionName
     }
 }

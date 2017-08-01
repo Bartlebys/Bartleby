@@ -7,9 +7,6 @@
 //
 
 import Foundation
-#if !USE_EMBEDDED_MODULES
-    import ObjectMapper
-#endif
 
 public enum IdentitiesError:Error{
     case serializationFailure
@@ -18,7 +15,7 @@ public enum IdentitiesError:Error{
 }
 
 
-public struct Identities:Mappable {
+public struct Identities:Codable {
 
     // You should set your own storage key during Document initialization
     public static var storageKey="identities.org.bartlebys"
@@ -28,23 +25,15 @@ public struct Identities:Mappable {
 
     public init () {}
 
-    public init?(map: Map) {
-    }
-
-    public mutating func mapping(map: Map) {
-        self.identifications <- ( map["identifications"] )
-        self.profiles <- ( map["profiles"] )
-    }
 
     func saveToKeyChain(accessGroup:String)throws->(){
-        if let json=self.toJSONString(){
+        let json = try JSONEncoder().encode(self)
             let keyChainHelper=KeyChainHelper(accessGroup: accessGroup)
             // The identities are crypted in the KeyChain
-            let crypted = try Bartleby.cryptoDelegate.encryptString(json,useKey:Bartleby.configuration.KEY)
+            let jsonString =  try json.string(using: Default.STRING_ENCODING)
+            let crypted = try Bartleby.cryptoDelegate.encryptString(jsonString,useKey:Bartleby.configuration.KEY)
             let _ = keyChainHelper.set(crypted, forKey: Identities.storageKey)
-        }else{
-            throw IdentitiesError.serializationFailure
-        }
+
     }
 
     public static func loadFromKeyChain(accessGroup:String)throws->Identities{
@@ -52,15 +41,16 @@ public struct Identities:Mappable {
         if let cryptedJson=keyChainHelper.get(Identities.storageKey){
             // The identities are crypted in the KeyChain
             let json = try Bartleby.cryptoDelegate.decryptString(cryptedJson,useKey:Bartleby.configuration.KEY)
-            if let instance = Mapper <Identities>().map(JSONString:json){
+            if let jsonData = json.data(using: Default.STRING_ENCODING){
+                let instance = try JSONDecoder().decode(Identities.self, from: jsonData)
                 return instance
             }else{
-                throw IdentitiesError.deserializationFailure
+                throw IdentitiesError.missingData
             }
-        }else{
-            // Return a void Identities
-            return Identities()
         }
+
+        // Return a void Identities
+        return Identities()
+
     }
 }
-

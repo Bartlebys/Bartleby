@@ -8,9 +8,6 @@
 
 
 import Foundation
-#if !USE_EMBEDDED_MODULES
-    import ObjectMapper
-#endif
 
 open class JSONSerializer: Serializer {
 
@@ -48,7 +45,6 @@ open class JSONSerializer: Serializer {
     /// - Returns: the Serializable instance
     /// - Throws: SerializableError and CryptoError
     fileprivate func _deserializeFromData(_ data: Data,register:Bool) throws -> Serializable{
-
         if let JSONDictionary = try JSONSerialization.jsonObject(with: data, options:JSONSerialization.ReadingOptions.allowFragments) as? [String:AnyObject] {
             return try self.deserializeFromDictionary(JSONDictionary, register: register)
         }
@@ -77,39 +73,38 @@ open class JSONSerializer: Serializer {
     /// - Throws: Variable exception (serializer based)
     open func deserializeFromDictionary(_ dictionary: [String:Any],register:Bool) throws -> Serializable {
         if let typeName = dictionary[Default.TYPE_NAME_KEY] as? String {
-            if let Reference = NSClassFromString(typeName) as? Serializable.Type {
-                if  var mappable = Reference.init() as? Mappable {
+            if let Reference = NSClassFromString(typeName) as? NSObject.Type {
+                if  let instance = Reference.init() as? ManagedModel {
                     // Remove the UID_KEY if set to nil or NO_UID
                     if dictionary[Default.UID_KEY] == nil || dictionary[Default.UID_KEY] as? String == Default.NO_UID{
                         // We provide a mutable copy only if necessary (for performance purposes)
                         var mutableDictionary=dictionary
                         mutableDictionary.removeValue(forKey: Default.UID_KEY)
+                        //#TODO
                         // Create the Map
-                        let map=Map(mappingType: .fromJSON, JSON : mutableDictionary)
+                        //let map=Map(mappingType: .fromJSON, JSON : mutableDictionary)
                         // Proceed to Mapping
-                        mappable.mapping(map: map)
+                        //instance.mapping(map: map)
                     }else{
+                        //#TODO
                         // Create the Map
-                        let map=Map(mappingType: .fromJSON, JSON : dictionary)
+                        //let map=Map(mappingType: .fromJSON, JSON : dictionary)
                         // Proceed to Mapping
-                        mappable.mapping(map: map)
+                        //instance.mapping(map: map)
                     }
                     // Set up the runtime references.
-                    if var collectible = mappable as? Collectible {
                         if register{
-                            if (collectible is BartlebyCollection) || (collectible is BartlebyOperation){
+                            if (instance is BartlebyCollection) || (instance is BartlebyOperation){
                                 // Add the document reference
-                                collectible.referentDocument=self.document
+                                instance.referentDocument=self.document
                             }else{
                                 // Add the collection reference
                                 // Calls the Bartleby.register(self)
-                                collectible.collection=self.document.collectionByName(collectible.d_collectionName)
+                                instance.collection=self.document.collectionByName(instance.d_collectionName)
                             }
                         }
-                        return collectible
-                    } else {
-                        throw SerializableError.typeMissmatch
-                    }
+                        return instance
+
                 } else {
                     throw SerializableError.typeMissmatch
                 }

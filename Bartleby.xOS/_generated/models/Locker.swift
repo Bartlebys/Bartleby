@@ -9,8 +9,7 @@
 //
 import Foundation
 #if !USE_EMBEDDED_MODULES
-	import Alamofire
-	import ObjectMapper
+		import Alamofire
 #endif
 
 // MARK: Bartleby's Core: a locker
@@ -22,7 +21,7 @@ import Foundation
     }
 
 	//The associated document UID.
-	dynamic open var associatedDocumentUID:String? {
+	@objc dynamic open var associatedDocumentUID:String? {
 	    didSet { 
 	       if !self.wantsQuietChanges && associatedDocumentUID != oldValue {
 	            self.provisionChanges(forKey: "associatedDocumentUID",oldValue: oldValue,newValue: associatedDocumentUID) 
@@ -31,7 +30,7 @@ import Foundation
 	}
 
 	//The subject UID you want to lock
-	dynamic open var subjectUID:String = "\(Default.NO_UID)"{
+	@objc dynamic open var subjectUID:String = "\(Default.NO_UID)"{
 	    didSet { 
 	       if !self.wantsQuietChanges && subjectUID != oldValue {
 	            self.provisionChanges(forKey: "subjectUID",oldValue: oldValue,newValue: subjectUID) 
@@ -40,7 +39,7 @@ import Foundation
 	}
 
 	//The userUID that can unlock the locker
-	dynamic open var userUID:String = "\(Default.NO_UID)"{
+	@objc dynamic open var userUID:String = "\(Default.NO_UID)"{
 	    didSet { 
 	       if !self.wantsQuietChanges && userUID != oldValue {
 	            self.provisionChanges(forKey: "userUID",oldValue: oldValue,newValue: userUID) 
@@ -88,7 +87,7 @@ import Foundation
 	}
 
 	//This code should be cryptable / decryptable
-	dynamic open var code:String = "\(Bartleby.randomStringWithLength(6,signs:"0123456789ABCDEFGHJKMNPQRZTUVW"))"{
+	@objc dynamic open var code:String = "\(Bartleby.randomStringWithLength(6,signs:"0123456789ABCDEFGHJKMNPQRZTUVW"))"{
 	    didSet { 
 	       if !self.wantsQuietChanges && code != oldValue {
 	            self.provisionChanges(forKey: "code",oldValue: oldValue,newValue: code) 
@@ -97,7 +96,7 @@ import Foundation
 	}
 
 	//The number of attempts
-	dynamic open var numberOfAttempt:Int = 3  {
+	@objc dynamic open var numberOfAttempt:Int = 3  {
 	    didSet { 
 	       if !self.wantsQuietChanges && numberOfAttempt != oldValue {
 	            self.provisionChanges(forKey: "numberOfAttempt",oldValue: oldValue,newValue: numberOfAttempt)  
@@ -105,7 +104,7 @@ import Foundation
 	    }
 	}
 
-	dynamic open var startDate:Date = Date()  {
+	@objc dynamic open var startDate:Date = Date()  {
 	    didSet { 
 	       if !self.wantsQuietChanges && startDate != oldValue {
 	            self.provisionChanges(forKey: "startDate",oldValue: oldValue,newValue: startDate)  
@@ -113,7 +112,7 @@ import Foundation
 	    }
 	}
 
-	dynamic open var endDate:Date = Date()  {
+	@objc dynamic open var endDate:Date = Date()  {
 	    didSet { 
 	       if !self.wantsQuietChanges && endDate != oldValue {
 	            self.provisionChanges(forKey: "endDate",oldValue: oldValue,newValue: endDate)  
@@ -122,7 +121,7 @@ import Foundation
 	}
 
 	//Thoses data gems will be return on success (the gems are crypted client side)
-	dynamic open var gems:String = "\(Default.NO_GEM)"{
+	@objc dynamic open var gems:String = "\(Default.NO_GEM)"{
 	    didSet { 
 	       if !self.wantsQuietChanges && gems != oldValue {
 	            self.provisionChanges(forKey: "gems",oldValue: oldValue,newValue: gems) 
@@ -130,10 +129,63 @@ import Foundation
 	    }
 	}
 
+
+    // MARK: - Codable
+
+
+    enum LockerCodingKeys: String,CodingKey{
+		case associatedDocumentUID
+		case subjectUID
+		case userUID
+		case mode
+		case verificationMethod
+		case security
+		case code
+		case numberOfAttempt
+		case startDate
+		case endDate
+		case gems
+    }
+
+    required public init(from decoder: Decoder) throws{
+		try super.init(from: decoder)
+        try self.quietThrowingChanges {
+			let values = try decoder.container(keyedBy: LockerCodingKeys.self)
+			self.associatedDocumentUID = try values.decode(String.self,forKey:.associatedDocumentUID)
+			self.subjectUID = try values.decode(String.self,forKey:.subjectUID)
+			self.userUID = try values.decode(String.self,forKey:.userUID)
+			self.mode = Locker.Mode(rawValue: try values.decode(String.self,forKey:.mode)) ?? .autoDestructive
+			self.verificationMethod = Locker.VerificationMethod(rawValue: try values.decode(String.self,forKey:.verificationMethod)) ?? .online
+			self.security = Locker.Security(rawValue: try values.decode(String.self,forKey:.security)) ?? .secondaryAuthFactorRequired
+			self.code = try values.decode(String.self,forKey:.code)
+			self.numberOfAttempt = try values.decode(Int.self,forKey:.numberOfAttempt)
+			self.startDate = try values.decode(Date.self,forKey:.startDate)
+			self.endDate = try values.decode(Date.self,forKey:.endDate)
+			self.gems = try values.decode(String.self,forKey:.gems)
+        }
+    }
+
+    override open func encode(to encoder: Encoder) throws {
+		try super.encode(to:encoder)
+		var container = encoder.container(keyedBy: LockerCodingKeys.self)
+		try container.encodeIfPresent(self.associatedDocumentUID,forKey:.associatedDocumentUID)
+		try container.encodeIfPresent(self.subjectUID,forKey:.subjectUID)
+		try container.encodeIfPresent(self.userUID,forKey:.userUID)
+		try container.encodeIfPresent(self.mode.rawValue ,forKey:.mode)
+		try container.encodeIfPresent(self.verificationMethod.rawValue ,forKey:.verificationMethod)
+		try container.encodeIfPresent(self.security.rawValue ,forKey:.security)
+		try container.encodeIfPresent(self.code,forKey:.code)
+		try container.encodeIfPresent(self.numberOfAttempt,forKey:.numberOfAttempt)
+		try container.encodeIfPresent(self.startDate,forKey:.startDate)
+		try container.encodeIfPresent(self.endDate,forKey:.endDate)
+		try container.encodeIfPresent(self.gems,forKey:.gems)
+    }
+
+
     // MARK: - Exposed (Bartleby's KVC like generative implementation)
 
     /// Return all the exposed instance variables keys. (Exposed == public and modifiable).
-    override open var exposedKeys:[String] {
+    override  open var exposedKeys:[String] {
         var exposed=super.exposedKeys
         exposed.append(contentsOf:["associatedDocumentUID","subjectUID","userUID","mode","verificationMethod","security","code","numberOfAttempt","startDate","endDate","gems"])
         return exposed
@@ -146,7 +198,7 @@ import Foundation
     /// - parameter key:   the key
     ///
     /// - throws: throws an Exception when the key is not exposed
-    override open func setExposedValue(_ value:Any?, forKey key: String) throws {
+    override  open func setExposedValue(_ value:Any?, forKey key: String) throws {
         switch key {
             case "associatedDocumentUID":
                 if let casted=value as? String{
@@ -205,7 +257,7 @@ import Foundation
     /// - throws: throws Exception when the key is not exposed
     ///
     /// - returns: returns the value
-    override open func getExposedValueForKey(_ key:String) throws -> Any?{
+    override  open func getExposedValueForKey(_ key:String) throws -> Any?{
         switch key {
             case "associatedDocumentUID":
                return self.associatedDocumentUID
@@ -233,38 +285,17 @@ import Foundation
                 return try super.getExposedValueForKey(key)
         }
     }
-    // MARK: - Mappable
-
-    required public init?(map: Map) {
-        super.init(map:map)
-    }
-
-    override open func mapping(map: Map) {
-        super.mapping(map: map)
-        self.quietChanges {
-			self.associatedDocumentUID <- ( map["associatedDocumentUID"] )
-			self.subjectUID <- ( map["subjectUID"] )
-			self.userUID <- ( map["userUID"] )
-			self.mode <- ( map["mode"] )
-			self.verificationMethod <- ( map["verificationMethod"] )
-			self.security <- ( map["security"] )
-			self.code <- ( map["code"] )
-			self.numberOfAttempt <- ( map["numberOfAttempt"] )
-			self.startDate <- ( map["startDate"], ISO8601DateTransform() )
-			self.endDate <- ( map["endDate"], ISO8601DateTransform() )
-			self.gems <- ( map["gems"], CryptedStringTransform() )
-        }
-    }
-
-     required public init() {
+    // MARK: - Initializable
+    required public init() {
         super.init()
     }
 
-    override open class var collectionName:String{
+    // MARK: - UniversalType
+    override  open class var collectionName:String{
         return "lockers"
     }
 
-    override open var d_collectionName:String{
+    override  open var d_collectionName:String{
         return Locker.collectionName
     }
 }

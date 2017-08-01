@@ -9,9 +9,5 @@
 
 import Foundation
 
-#if !USE_EMBEDDED_MODULES
-    import ObjectMapper
-#endif
-
 // Formal conformance to CollectionMetadatumProtocol
 extension CollectionMetadatum:CollectionMetadatumProtocol {}

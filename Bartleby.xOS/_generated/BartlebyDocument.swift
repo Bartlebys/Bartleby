@@ -28,7 +28,6 @@ import UIKit
 import Foundation
 #if !USE_EMBEDDED_MODULES
 	import Alamofire
-	import ObjectMapper
 #endif
 
 @objc(BartlebyDocument) open class BartlebyDocument : BXDocument,BoxDelegate {
@@ -394,7 +393,10 @@ import Foundation
         if T.typeName()=="User"{
             return self._newUser(commit:commit) as! T
         }
-        var instance=T()
+        // Bartleby 1.x on Swift 4
+        // Still uses a dynamic approach based on the Objc runtime.
+        let DynamicClass = NSClassFromString(T.typeName()) as! NSObject.Type
+        var instance = DynamicClass.init() as! T
         if let collection=self.collectionByName(instance.d_collectionName){
             collection.add(instance, commit: false)
         }

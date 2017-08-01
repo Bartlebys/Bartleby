@@ -11,7 +11,6 @@
 import Foundation
 #if !USE_EMBEDDED_MODULES
 	import Alamofire
-	import ObjectMapper
 #endif
 @objc(ReadLockersByIdsParameters) public class ReadLockersByIdsParameters : ManagedModel {
 		// Universal type support
@@ -32,7 +31,7 @@ import Foundation
     // MARK: - Exposed (Bartleby's KVC like generative implementation)
 
     /// Return all the exposed instance variables keys. (Exposed == public and modifiable).
-    override open var exposedKeys:[String] {
+    override  open var exposedKeys:[String] {
         var exposed=super.exposedKeys
         exposed.append(contentsOf:["ids","result_fields","sort"])
         return exposed
@@ -45,7 +44,7 @@ import Foundation
     /// - parameter key:   the key
     ///
     /// - throws: throws an Exception when the key is not exposed
-    override open func setExposedValue(_ value:Any?, forKey key: String) throws {
+    override  open func setExposedValue(_ value:Any?, forKey key: String) throws {
         switch key {
             case "ids":
                 if let casted=value as? [String]{
@@ -72,7 +71,7 @@ import Foundation
     /// - throws: throws Exception when the key is not exposed
     ///
     /// - returns: returns the value
-    override open func getExposedValueForKey(_ key:String) throws -> Any?{
+    override  open func getExposedValueForKey(_ key:String) throws -> Any?{
         switch key {
             case "ids":
                return self.ids
@@ -84,19 +83,31 @@ import Foundation
                 return try super.getExposedValueForKey(key)
         }
     }
-    // MARK: - Mappable
+    // MARK: - Codable
 
-    required public init?(map: Map) {
-        super.init(map:map)
+
+    enum CodingKeys: String,CodingKey{
+		case ids
+		case result_fields
+		case sort
     }
 
-    override open func mapping(map: Map) {
-        super.mapping(map: map)
-        self.quietChanges {
-			self.ids <- ( map["ids"] )
-			self.result_fields <- ( map["result_fields"] )
-			self.sort <- ( map["sort"] )
+    required public init(from decoder: Decoder) throws{
+		try super.init(from: decoder)
+        try self.quietThrowingChanges {
+			let values = try decoder.container(keyedBy: CodingKeys.self)
+			self.ids = try values.decode([String].self,forKey:.ids)
+			self.result_fields = try values.decode([String].self,forKey:.result_fields)
+			self.sort = try values.decodeIfPresent([String:Any].self,forKey:.sort)
         }
+    }
+
+    override open func encode(to encoder: Encoder) throws {
+		try super.encode(to:encoder)
+		var container = encoder.container(keyedBy: CodingKeys.self)
+		try container.encodeIfPresent(self.ids,forKey:.ids)
+		try container.encodeIfPresent(self.result_fields,forKey:.result_fields)
+		try container.encodeIfPresent(self.sort,forKey:.sort)
     }
 
 }
@@ -116,12 +127,12 @@ import Foundation
 	
         if let document = Bartleby.sharedInstance.getDocumentByUID(documentUID) {
             let pathURL=document.baseURL.appendingPathComponent("lockers")
-            let dictionary:Dictionary<String, Any>?=Mapper().toJSON(parameters)
+            let dictionary:[String:Any]? = parameters.dictionaryRepresentation()
             let urlRequest=HTTPManager.requestWithToken(inDocumentWithUID:document.UID,withActionName:"ReadLockersByIds" ,forMethod:"GET", and: pathURL)
             
             do {
                 let r=try URLEncoding().encode(urlRequest,with:dictionary)
-                request(r).responseString(completionHandler: { (response) in
+                request(r).responseData(completionHandler: { (response) in
                   
                     let request=response.request
                     let result=response.result
@@ -165,25 +176,17 @@ import Foundation
             
                     }else{
                           if 200...299 ~= statusCode {
-	                            if let string=result.value{
-	                                if let instance = Mapper <Locker>().mapArray(JSONString:string){
-	                                    success(instance)
-	                                }else{
-	                                    let failureReaction =  Reaction.dispatchAdaptiveMessage(
-	                                        context: context,
-	                                        title: NSLocalizedString("Deserialization issue",
-	                                        comment: "Deserialization issue"),
-	                                        body:"\(String(describing: result.value))\n\(#file)\n\(#function)\nhttp Status code: (\(statusCode))",
-	                                        transmit:{ (selectedIndex) -> () in
-	                                    })
-	                                    reactions.append(failureReaction)
-	                                    failure(context)
-	                                }
-	                            }else{
+	                        do{
+	                            if let data = response.data{
+	                                let instance = try JSONDecoder().decode([Locker].self,from:data)
+	                                success(instance)
+	                              }else{
+	                                throw BartlebyOperationError.dataNotFound
+	                              }
+	                            }catch{
 	                                let failureReaction =  Reaction.dispatchAdaptiveMessage(
 	                                    context: context,
-	                                    title: NSLocalizedString("No String Deserialization issue",
-	                                                             comment: "No String Deserialization issue"),
+	                                    title:"\(error)",
 	                                    body: "\(String(describing: result.value))\n\(#file)\n\(#function)\nhttp Status code: (\(statusCode))",
 	                                    transmit: { (selectedIndex) -> () in
 	                                })

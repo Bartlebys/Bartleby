@@ -23,9 +23,7 @@ class TestObserver: NSObject, XCTestObservation {
     }
 
     func testCaseWillStart(_ testCase: XCTestCase) {
-        if let name = testCase.name {
-            print("\n#### \(name) ####\n")
-        }
+        print("\n#### \(testCase.name) ####\n")
     }
 
     func testCase(_ testCase: XCTestCase, didFailWithDescription description: String, inFile filePath: String?, atLine lineNumber: UInt) {

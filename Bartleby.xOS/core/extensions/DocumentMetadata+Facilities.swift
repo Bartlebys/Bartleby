@@ -13,11 +13,25 @@ public extension DocumentMetadata{
     public var debugTriggersHistory:Bool{ return true } // Should be set to False
 
     public var jsonReceivedTrigger:String{
-        return self.receivedTriggers.toJSONString(prettyPrint: true) ?? "..."
+        let encoder = JSONEncoder()
+        encoder.outputFormatting = .prettyPrinted
+        if let data = try? encoder.encode(self.receivedTriggers){
+            if let string = String(data: data, encoding: Default.STRING_ENCODING){
+                return string
+            }
+        }
+        return "..."
     }
 
     public var jsonOperationsQuarantine:String{
-        return self.operationsQuarantine.toJSONString(prettyPrint: true) ?? "..."
+        let encoder = JSONEncoder()
+        encoder.outputFormatting = .prettyPrinted
+        if let data = try? encoder.encode(self.operationsQuarantine){
+            if let string = String(data: data, encoding: Default.STRING_ENCODING){
+                return string
+            }
+        }
+        return "..."
     }
 
 

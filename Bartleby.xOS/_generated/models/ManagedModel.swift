@@ -9,20 +9,19 @@
 //
 import Foundation
 #if !USE_EMBEDDED_MODULES
-	import Alamofire
-	import ObjectMapper
+		import Alamofire
 #endif
 
 // MARK: Bartleby's Core: The base of any ManagedModel
-@objc(ManagedModel) open class ManagedModel : NSObject, Collectible, Mappable{
+@objc(ManagedModel) open class ManagedModel : NSObject, Collectible, Codable{
 
     // Universal type support
-     open class func typeName() -> String {
+    open class func typeName() -> String {
         return "ManagedModel"
     }
 
 	//An external unique identifier
-	dynamic open var externalID:String = ""{
+	@objc dynamic open var externalID:String = ""{
 	    didSet { 
 	       if !self.wantsQuietChanges && externalID != oldValue {
 	            self.provisionChanges(forKey: "externalID",oldValue: oldValue,newValue: externalID) 
@@ -31,10 +30,10 @@ import Foundation
 	}
 
 	//Collectible protocol: The Creator UID - Can be used for ACL purposes automatically injected in new entities Factories
-	dynamic open var creatorUID:String = "\(Default.NO_UID)"
+	@objc dynamic open var creatorUID:String = "\(Default.NO_UID)"
 
 	//The UIDS of the owners
-	dynamic open var ownedBy:[String] = [String]()  {
+	@objc dynamic open var ownedBy:[String] = [String]()  {
 	    didSet { 
 	       if !self.wantsQuietChanges && ownedBy != oldValue {
 	            self.provisionChanges(forKey: "ownedBy",oldValue: oldValue,newValue: ownedBy)  
@@ -43,7 +42,7 @@ import Foundation
 	}
 
 	//The UIDS of the free relations
-	dynamic open var freeRelations:[String] = [String]()  {
+	@objc dynamic open var freeRelations:[String] = [String]()  {
 	    didSet { 
 	       if !self.wantsQuietChanges && freeRelations != oldValue {
 	            self.provisionChanges(forKey: "freeRelations",oldValue: oldValue,newValue: freeRelations)  
@@ -52,10 +51,10 @@ import Foundation
 	}
 
 	//The UIDS of the owned entities (Neither supervised nor serialized check appendToDeferredOwnershipsList for explanations)
-	dynamic open var owns:[String] = [String]()
+	@objc dynamic open var owns:[String] = [String]()
 
 	//A human readable model summary. If you want to disclose more information you can adopt the Descriptible protocol.
-	dynamic open var summary:String? {
+	@objc dynamic open var summary:String? {
 	    didSet { 
 	       if !self.wantsQuietChanges && summary != oldValue {
 	            self.provisionChanges(forKey: "summary",oldValue: oldValue,newValue: summary) 
@@ -64,19 +63,20 @@ import Foundation
 	}
 
 	//An instance Marked ephemeral will be destroyed server side on next ephemeral cleaning procedure.This flag allows for example to remove entities that have been for example created by unit-tests.
-	dynamic open var ephemeral:Bool = false
+	@objc dynamic open var ephemeral:Bool = false
 
 	//MARK: - ChangesInspectable Protocol
-	dynamic open var changedKeys:[KeyedChanges] = [KeyedChanges]()
+	@objc dynamic open var changedKeys:[KeyedChanges] = [KeyedChanges]()
 
 	////Internal flag used not to propagate changes (for example during deserialization) -> Check ManagedModel + ProvisionChanges for detailled explanantions
-	dynamic internal var _quietChanges:Bool = false
+	@objc dynamic internal var _quietChanges:Bool = false
 
 	////Auto commit availability -> Check ManagedModel + ProvisionChanges for detailed explanantions
-	dynamic internal var _autoCommitIsEnabled:Bool = true
+	@objc dynamic internal var _autoCommitIsEnabled:Bool = true
 
 	//The internal commit provisioning counter to discriminate Creation from Update and for possible frequency analysis
-	dynamic open var commitCounter:Int = 0
+	@objc dynamic open var commitCounter:Int = 0
+
 
     // A reference to the document that currently holds this Managed Model.
     // Most of the time set by its collection (with notable exclusion of currentUser, and a few other special cases)
@@ -116,6 +116,49 @@ import Foundation
 
     // The Run time Type name (can be different to typeName)
     internal var _runTimeTypeName: String?
+
+
+    // MARK: - Codable
+
+
+    enum ManagedModelCodingKeys: String,CodingKey{
+		case externalID
+		case creatorUID
+		case ownedBy
+		case freeRelations
+		case owns
+		case summary
+		case ephemeral
+		case changedKeys
+		case _quietChanges
+		case _autoCommitIsEnabled
+		case commitCounter
+    }
+
+    required public init(from decoder: Decoder) throws{
+		super.init()
+        try self.quietThrowingChanges {
+			let values = try decoder.container(keyedBy: ManagedModelCodingKeys.self)
+			self.externalID = try values.decode(String.self,forKey:.externalID)
+			self.creatorUID = try values.decode(String.self,forKey:.creatorUID)
+			self.ownedBy = try values.decode([String].self,forKey:.ownedBy)
+			self.freeRelations = try values.decode([String].self,forKey:.freeRelations)
+			self.summary = try values.decode(String.self,forKey:.summary)
+			self.ephemeral = try values.decode(Bool.self,forKey:.ephemeral)
+			self.commitCounter = try values.decode(Int.self,forKey:.commitCounter)
+        }
+    }
+
+    open func encode(to encoder: Encoder) throws {
+		var container = encoder.container(keyedBy: ManagedModelCodingKeys.self)
+		try container.encodeIfPresent(self.externalID,forKey:.externalID)
+		try container.encodeIfPresent(self.creatorUID,forKey:.creatorUID)
+		try container.encodeIfPresent(self.ownedBy,forKey:.ownedBy)
+		try container.encodeIfPresent(self.freeRelations,forKey:.freeRelations)
+		try container.encodeIfPresent(self.summary,forKey:.summary)
+		try container.encodeIfPresent(self.ephemeral,forKey:.ephemeral)
+		try container.encodeIfPresent(self.commitCounter,forKey:.commitCounter)
+    }
 
 
     // MARK: - Exposed (Bartleby's KVC like generative implementation)
@@ -209,31 +252,12 @@ import Foundation
                 throw ObjectExpositionError.unknownKey(key: key,forTypeName: ManagedModel.typeName())
         }
     }
-    // MARK: - Mappable
-
-    required public init?(map: Map) {
-        
-    }
-
-     open func mapping(map: Map) {
-        
-        self.quietChanges {
-			self.externalID <- ( map["externalID"] )
-			self.creatorUID <- ( map["creatorUID"] )
-			self.ownedBy <- ( map["ownedBy"] )
-			self.freeRelations <- ( map["freeRelations"] )
-			self.summary <- ( map["summary"] )
-			self.ephemeral <- ( map["ephemeral"] )
-			self.commitCounter <- ( map["commitCounter"] )
-            self._typeName <- map[Default.TYPE_NAME_KEY]
-            self._id <- map[Default.UID_KEY]
-        }
-    }
-
-    override required public init() {
+    // MARK: - Initializable
+   override  required public init() {
         super.init()
     }
 
+    // MARK: - UniversalType
      open class var collectionName:String{
         return "managedModels"
     }

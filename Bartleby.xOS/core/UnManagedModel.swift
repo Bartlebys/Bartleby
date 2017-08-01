@@ -7,42 +7,72 @@
 //
 
 import Foundation
-#if !USE_EMBEDDED_MODULES
-    import ObjectMapper
-#endif
 
 // Models can be :
 // - ManagedModel ( fully managed models)
-// - UnManagedModel ( json & secure Coding serialization support no supervision, no change provisionning )
-@objc(UnManagedModel) open class UnManagedModel: NSObject, Mappable {
+// - UnManagedModel (no supervision, no change provisionning )
+@objc(UnManagedModel) open class UnManagedModel: NSObject,Codable,Exposed {
 
-    // MARK: - Mappable
-
-    required public init?(map: Map) {
-    }
-
-    open func mapping(map: Map) {
-    }
-
-    // MARK: - NSSecureCoding
-
-    required public init?(coder decoder: NSCoder) {
-        super.init()
-    }
-
-    open func encode(with coder: NSCoder) {
-    }
-
-    open class var supportsSecureCoding:Bool{
-        return true
-    }
 
     required public override init() {
         super.init()
     }
 
-    public func quietChanges(_ changes:()->()){
+
+    /// Performs the deserialization without invoking provisionChanges
+    ///
+    /// - parameter changes: the changes closure
+    public func quietChanges(_  changes:()->()){
         changes()
     }
 
+
+    /// Performs the deserialization without invoking provisionChanges
+    ///
+    /// - parameter changes: the changes closure
+    public func quietThrowingChanges(_ changes:()throws->())rethrows{
+        try changes()
+    }
+
+
+    // MARK: - Codable
+
+    required public init(from decoder: Decoder) throws{
+        super.init()
+    }
+
+    open func encode(to encoder: Encoder) throws {
+    }
+
+    // MARK: - Exposed
+
+    open var exposedKeys:[String] {
+        return [String]()
+    }
+
+    open func setExposedValue(_ value:Any?, forKey key: String) throws {
+    }
+
+    open func getExposedValueForKey(_ key:String) throws -> Any?{
+        return nil
+    }
 }
+
+extension UnManagedModel:DictionaryRepresentation{
+
+    open func dictionaryRepresentation() -> [String : Any] {
+        var dictionary = [String:Any]()
+        for key in self.exposedKeys{
+            if let value = try? self.getExposedValueForKey(key){
+                if let convertibleValue = value as? DictionaryRepresentation{
+                    dictionary[key] = convertibleValue.dictionaryRepresentation()
+                }else{
+                  dictionary[key] = value
+                }
+            }
+        }
+        return dictionary
+    }
+}
+
+

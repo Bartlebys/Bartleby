@@ -9,8 +9,7 @@
 //
 import Foundation
 #if !USE_EMBEDDED_MODULES
-	import Alamofire
-	import ObjectMapper
+		import Alamofire
 #endif
 
 // MARK: Bartleby's Core: a user in a specified data Space
@@ -22,7 +21,7 @@ import Foundation
     }
 
 	//The spaceUID. A user with the same credentials can exists within multiple Data space.
-	dynamic open var spaceUID:String = "\(Bartleby.createUID())"{
+	@objc dynamic open var spaceUID:String = "\(Bartleby.createUID())"{
 	    didSet { 
 	       if !self.wantsQuietChanges && spaceUID != oldValue {
 	            self.provisionChanges(forKey: "spaceUID",oldValue: oldValue,newValue: spaceUID) 
@@ -45,7 +44,7 @@ import Foundation
 	}
 
 	//The localAssociationID is an UID used to group accounts that are stored in the KeyChain. The first Created Account determines that UID
-	dynamic open var localAssociationID:String = "\(Default.NO_UID)"{
+	@objc dynamic open var localAssociationID:String = "\(Default.NO_UID)"{
 	    didSet { 
 	       if !self.wantsQuietChanges && localAssociationID != oldValue {
 	            self.provisionChanges(forKey: "localAssociationID",oldValue: oldValue,newValue: localAssociationID) 
@@ -53,7 +52,7 @@ import Foundation
 	    }
 	}
 
-	dynamic open var firstname:String = "\(Bartleby.randomStringWithLength(5))"{
+	@objc dynamic open var firstname:String = "\(Bartleby.randomStringWithLength(5))"{
 	    didSet { 
 	       if !self.wantsQuietChanges && firstname != oldValue {
 	            self.provisionChanges(forKey: "firstname",oldValue: oldValue,newValue: firstname) 
@@ -61,7 +60,7 @@ import Foundation
 	    }
 	}
 
-	dynamic open var lastname:String = "\(Bartleby.randomStringWithLength(5))"{
+	@objc dynamic open var lastname:String = "\(Bartleby.randomStringWithLength(5))"{
 	    didSet { 
 	       if !self.wantsQuietChanges && lastname != oldValue {
 	            self.provisionChanges(forKey: "lastname",oldValue: oldValue,newValue: lastname) 
@@ -70,7 +69,7 @@ import Foundation
 	}
 
 	//The user's email. 
-	dynamic open var email:String = ""{
+	@objc dynamic open var email:String = ""{
 	    didSet { 
 	       if !self.wantsQuietChanges && email != oldValue {
 	            self.provisionChanges(forKey: "email",oldValue: oldValue,newValue: email) 
@@ -79,7 +78,7 @@ import Foundation
 	}
 
 	//The user's pseudo
-	dynamic open var pseudo:String = ""{
+	@objc dynamic open var pseudo:String = ""{
 	    didSet { 
 	       if !self.wantsQuietChanges && pseudo != oldValue {
 	            self.provisionChanges(forKey: "pseudo",oldValue: oldValue,newValue: pseudo) 
@@ -88,7 +87,7 @@ import Foundation
 	}
 
 	//The user's phone country code
-	dynamic open var phoneCountryCode:String = ""{
+	@objc dynamic open var phoneCountryCode:String = ""{
 	    didSet { 
 	       if !self.wantsQuietChanges && phoneCountryCode != oldValue {
 	            self.provisionChanges(forKey: "phoneCountryCode",oldValue: oldValue,newValue: phoneCountryCode) 
@@ -97,7 +96,7 @@ import Foundation
 	}
 
 	//The user's phone number
-	dynamic open var phoneNumber:String = ""{
+	@objc dynamic open var phoneNumber:String = ""{
 	    didSet { 
 	       if !self.wantsQuietChanges && phoneNumber != oldValue {
 	            self.provisionChanges(forKey: "phoneNumber",oldValue: oldValue,newValue: phoneNumber) 
@@ -106,7 +105,7 @@ import Foundation
 	}
 
 	//The user password
-	dynamic open var password:String = ""{
+	@objc dynamic open var password:String = ""{
 	    didSet { 
 	       if !self.wantsQuietChanges && password != oldValue {
 	            self.provisionChanges(forKey: "password",oldValue: oldValue,newValue: password) 
@@ -129,7 +128,7 @@ import Foundation
 	}
 
 	//Notes
-	dynamic open var notes:String? {
+	@objc dynamic open var notes:String? {
 	    didSet { 
 	       if !self.wantsQuietChanges && notes != oldValue {
 	            self.provisionChanges(forKey: "notes",oldValue: oldValue,newValue: notes) 
@@ -138,10 +137,10 @@ import Foundation
 	}
 
 	//set to true on the first successfull login in the session (this property is not serialized)
-	dynamic open var loginHasSucceed:Bool = false
+	@objc dynamic open var loginHasSucceed:Bool = false
 
 	//Can a user memorize her/his password
-	dynamic open var supportsPasswordMemorization:Bool = Bartleby.configuration.SUPPORTS_PASSWORD_MEMORIZATION_BY_DEFAULT  {
+	@objc dynamic open var supportsPasswordMemorization:Bool = Bartleby.configuration.SUPPORTS_PASSWORD_MEMORIZATION_BY_DEFAULT  {
 	    didSet { 
 	       if !self.wantsQuietChanges && supportsPasswordMemorization != oldValue {
 	            self.provisionChanges(forKey: "supportsPasswordMemorization",oldValue: oldValue,newValue: supportsPasswordMemorization)  
@@ -150,7 +149,7 @@ import Foundation
 	}
 
 	//Can a user update her/his  own password
-	dynamic open var supportsPasswordUpdate:Bool = Bartleby.configuration.SUPPORTS_PASSWORD_UPDATE_BY_DEFAULT  {
+	@objc dynamic open var supportsPasswordUpdate:Bool = Bartleby.configuration.SUPPORTS_PASSWORD_UPDATE_BY_DEFAULT  {
 	    didSet { 
 	       if !self.wantsQuietChanges && supportsPasswordUpdate != oldValue {
 	            self.provisionChanges(forKey: "supportsPasswordUpdate",oldValue: oldValue,newValue: supportsPasswordUpdate)  
@@ -159,7 +158,7 @@ import Foundation
 	}
 
 	//If a local user has the same credentials can her/his password be syndicated
-	dynamic open var supportsPasswordSyndication:Bool = Bartleby.configuration.SUPPORTS_PASSWORD_SYNDICATION_BY_DEFAULT  {
+	@objc dynamic open var supportsPasswordSyndication:Bool = Bartleby.configuration.SUPPORTS_PASSWORD_SYNDICATION_BY_DEFAULT  {
 	    didSet { 
 	       if !self.wantsQuietChanges && supportsPasswordSyndication != oldValue {
 	            self.provisionChanges(forKey: "supportsPasswordSyndication",oldValue: oldValue,newValue: supportsPasswordSyndication)  
@@ -168,7 +167,7 @@ import Foundation
 	}
 
 	//A JFIF base 64 encoded picture of the user
-	dynamic open var base64Image:String? {
+	@objc dynamic open var base64Image:String? {
 	    didSet { 
 	       if !self.wantsQuietChanges && base64Image != oldValue {
 	            self.provisionChanges(forKey: "base64Image",oldValue: oldValue,newValue: base64Image) 
@@ -176,10 +175,79 @@ import Foundation
 	    }
 	}
 
+
+    // MARK: - Codable
+
+
+    enum UserCodingKeys: String,CodingKey{
+		case spaceUID
+		case verificationMethod
+		case localAssociationID
+		case firstname
+		case lastname
+		case email
+		case pseudo
+		case phoneCountryCode
+		case phoneNumber
+		case password
+		case status
+		case notes
+		case loginHasSucceed
+		case supportsPasswordMemorization
+		case supportsPasswordUpdate
+		case supportsPasswordSyndication
+		case base64Image
+    }
+
+    required public init(from decoder: Decoder) throws{
+		try super.init(from: decoder)
+        try self.quietThrowingChanges {
+			let values = try decoder.container(keyedBy: UserCodingKeys.self)
+			self.spaceUID = try values.decode(String.self,forKey:.spaceUID)
+			self.verificationMethod = User.VerificationMethod(rawValue: try values.decode(String.self,forKey:.verificationMethod)) ?? .byPhoneNumber
+			self.localAssociationID = try values.decode(String.self,forKey:.localAssociationID)
+			self.firstname = try values.decode(String.self,forKey:.firstname)
+			self.lastname = try values.decode(String.self,forKey:.lastname)
+			self.email = try values.decode(String.self,forKey:.email)
+			self.pseudo = try values.decode(String.self,forKey:.pseudo)
+			self.phoneCountryCode = try values.decode(String.self,forKey:.phoneCountryCode)
+			self.phoneNumber = try values.decode(String.self,forKey:.phoneNumber)
+			self.password = try values.decode(String.self,forKey:.password)
+			self.status = User.Status(rawValue: try values.decode(String.self,forKey:.status)) ?? .new
+			self.notes = try values.decode(String.self,forKey:.notes)
+			self.supportsPasswordMemorization = try values.decode(Bool.self,forKey:.supportsPasswordMemorization)
+			self.supportsPasswordUpdate = try values.decode(Bool.self,forKey:.supportsPasswordUpdate)
+			self.supportsPasswordSyndication = try values.decode(Bool.self,forKey:.supportsPasswordSyndication)
+			self.base64Image = try values.decode(String.self,forKey:.base64Image)
+        }
+    }
+
+    override open func encode(to encoder: Encoder) throws {
+		try super.encode(to:encoder)
+		var container = encoder.container(keyedBy: UserCodingKeys.self)
+		try container.encodeIfPresent(self.spaceUID,forKey:.spaceUID)
+		try container.encodeIfPresent(self.verificationMethod.rawValue ,forKey:.verificationMethod)
+		try container.encodeIfPresent(self.localAssociationID,forKey:.localAssociationID)
+		try container.encodeIfPresent(self.firstname,forKey:.firstname)
+		try container.encodeIfPresent(self.lastname,forKey:.lastname)
+		try container.encodeIfPresent(self.email,forKey:.email)
+		try container.encodeIfPresent(self.pseudo,forKey:.pseudo)
+		try container.encodeIfPresent(self.phoneCountryCode,forKey:.phoneCountryCode)
+		try container.encodeIfPresent(self.phoneNumber,forKey:.phoneNumber)
+		try container.encodeIfPresent(self.password,forKey:.password)
+		try container.encodeIfPresent(self.status.rawValue ,forKey:.status)
+		try container.encodeIfPresent(self.notes,forKey:.notes)
+		try container.encodeIfPresent(self.supportsPasswordMemorization,forKey:.supportsPasswordMemorization)
+		try container.encodeIfPresent(self.supportsPasswordUpdate,forKey:.supportsPasswordUpdate)
+		try container.encodeIfPresent(self.supportsPasswordSyndication,forKey:.supportsPasswordSyndication)
+		try container.encodeIfPresent(self.base64Image,forKey:.base64Image)
+    }
+
+
     // MARK: - Exposed (Bartleby's KVC like generative implementation)
 
     /// Return all the exposed instance variables keys. (Exposed == public and modifiable).
-    override open var exposedKeys:[String] {
+    override  open var exposedKeys:[String] {
         var exposed=super.exposedKeys
         exposed.append(contentsOf:["spaceUID","verificationMethod","localAssociationID","firstname","lastname","email","pseudo","phoneCountryCode","phoneNumber","password","status","notes","loginHasSucceed","supportsPasswordMemorization","supportsPasswordUpdate","supportsPasswordSyndication","base64Image"])
         return exposed
@@ -192,7 +260,7 @@ import Foundation
     /// - parameter key:   the key
     ///
     /// - throws: throws an Exception when the key is not exposed
-    override open func setExposedValue(_ value:Any?, forKey key: String) throws {
+    override  open func setExposedValue(_ value:Any?, forKey key: String) throws {
         switch key {
             case "spaceUID":
                 if let casted=value as? String{
@@ -275,7 +343,7 @@ import Foundation
     /// - throws: throws Exception when the key is not exposed
     ///
     /// - returns: returns the value
-    override open func getExposedValueForKey(_ key:String) throws -> Any?{
+    override  open func getExposedValueForKey(_ key:String) throws -> Any?{
         switch key {
             case "spaceUID":
                return self.spaceUID
@@ -315,43 +383,17 @@ import Foundation
                 return try super.getExposedValueForKey(key)
         }
     }
-    // MARK: - Mappable
-
-    required public init?(map: Map) {
-        super.init(map:map)
-    }
-
-    override open func mapping(map: Map) {
-        super.mapping(map: map)
-        self.quietChanges {
-			self.spaceUID <- ( map["spaceUID"] )
-			self.verificationMethod <- ( map["verificationMethod"] )
-			self.localAssociationID <- ( map["localAssociationID"] )
-			self.firstname <- ( map["firstname"] )
-			self.lastname <- ( map["lastname"] )
-			self.email <- ( map["email"] )
-			self.pseudo <- ( map["pseudo"] )
-			self.phoneCountryCode <- ( map["phoneCountryCode"] )
-			self.phoneNumber <- ( map["phoneNumber"] )
-			self.password <- ( map["password"], CryptedStringTransform() )
-			self.status <- ( map["status"] )
-			self.notes <- ( map["notes"] )
-			self.supportsPasswordMemorization <- ( map["supportsPasswordMemorization"] )
-			self.supportsPasswordUpdate <- ( map["supportsPasswordUpdate"] )
-			self.supportsPasswordSyndication <- ( map["supportsPasswordSyndication"] )
-			self.base64Image <- ( map["base64Image"] )
-        }
-    }
-
-     required public init() {
+    // MARK: - Initializable
+    required public init() {
         super.init()
     }
 
-    override open class var collectionName:String{
+    // MARK: - UniversalType
+    override  open class var collectionName:String{
         return "users"
     }
 
-    override open var d_collectionName:String{
+    override  open var d_collectionName:String{
         return User.collectionName
     }
 }

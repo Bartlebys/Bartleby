@@ -9,7 +9,6 @@
 import Foundation
 #if !USE_EMBEDDED_MODULES
     import Alamofire
-    import ObjectMapper
 #endif
 
 open class TriggersByIds {
@@ -67,8 +66,8 @@ open class TriggersByIds {
                         failure(context)
                     } else {
                         if 200...299 ~= statusCode {
-                            if let string=result.value{
-                                if let instance = Mapper <Trigger>().mapArray(JSONString:string) {
+                            if let data = response.data{
+                                if let instance = try? JSONDecoder().decode([Trigger].self,from:data){
                                     success(instance)
                                 } else {
                                     let failureReaction =  Reaction.dispatchAdaptiveMessage(

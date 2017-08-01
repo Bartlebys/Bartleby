@@ -19,10 +19,19 @@ public extension ManagedModel{
     /// Performs the deserialization without invoking provisionChanges
     ///
     /// - parameter changes: the changes closure
-    public func quietChanges(_ changes:()->()){
+    public func quietChanges(_  changes:()->()){
         self._quietChanges=true
         changes()
         self._quietChanges=false
     }
-    
+
+
+    /// Performs the deserialization without invoking provisionChanges
+    ///
+    /// - parameter changes: the changes closure
+    public func quietThrowingChanges(_ changes:()throws->())rethrows{
+        self._quietChanges=true
+        try changes()
+        self._quietChanges=false
+    }
 }
