@@ -11,7 +11,7 @@ import BartlebyKit
 
 class RecoverSugarViewController: IdentityStepViewController {
 
-    override var nibName : String { return "RecoverSugarViewController" }
+    override var nibName : NSNib.Name { return NSNib.Name("RecoverSugarViewController") }
 
     @IBOutlet weak var consignsLabel: NSTextField!
 

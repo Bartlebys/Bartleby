@@ -11,7 +11,7 @@ import BartlebyKit
 
 class DecryptorViewController: NSViewController,AsyncDocumentProvider,PasterDelegate{
 
-    override open var nibName : String { return "DecryptorViewController" }
+    override open var nibName : NSNib.Name { return NSNib.Name("DecryptorViewController") }
 
     @IBOutlet var cryptedTextView: NSTextView!
 
@@ -48,7 +48,7 @@ class DecryptorViewController: NSViewController,AsyncDocumentProvider,PasterDele
     // MARK: - PasterDelegate
 
     func pasted(){
-        let p=NSPasteboard.general()
+        let p=NSPasteboard.general
         if let document = self.getDocument(){
             if let objects=p.readObjects(forClasses: [NSString.self], options: [:]) as? [String]{
                 if let first=objects.first{

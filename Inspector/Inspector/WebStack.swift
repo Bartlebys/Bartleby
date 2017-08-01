@@ -12,7 +12,7 @@ import BartlebyKit
 
 class WebStack: NSViewController,DocumentDependent,WebFrameLoadDelegate {
 
-    override var nibName : String { return "WebStack" }
+    override var nibName : NSNib.Name { return NSNib.Name("WebStack") }
 
     @IBOutlet weak var webView: WebView!{
         didSet{

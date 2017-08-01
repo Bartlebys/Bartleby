@@ -11,7 +11,7 @@ import BartlebyKit
 
 class RevealPasswordViewController: IdentityStepViewController {
 
-    override var nibName : String { return "RevealPasswordViewController" }
+    override var nibName : NSNib.Name { return NSNib.Name("RevealPasswordViewController") }
 
     @IBOutlet weak var explanationsTextField: NSTextField!
 

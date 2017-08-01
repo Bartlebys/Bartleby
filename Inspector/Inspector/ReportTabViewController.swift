@@ -11,7 +11,7 @@ import BartlebyKit
 
 class ReportTabViewController: NSTabViewController,AsyncDocumentDependent,DocumentProvider {
 
-    override var nibName : String { return "ReportTabViewController" }
+    override var nibName : NSNib.Name { return NSNib.Name("ReportTabViewController") }
 
     internal var _decryptorTabViewItem:NSTabViewItem?
 

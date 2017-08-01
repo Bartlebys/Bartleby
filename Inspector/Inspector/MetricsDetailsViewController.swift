@@ -15,13 +15,13 @@ open class MetricsDetailsViewController: NSViewController,Editor,Identifiable,NS
 
     public var UID:String=Bartleby.createUID()
 
-    override open var nibName : String { return "MetricsDetailsViewController" }
+    override open var nibName : NSNib.Name { return NSNib.Name("MetricsDetailsViewController") }
 
-    dynamic var responseString:String?
+    @objc dynamic var responseString:String?
 
-    dynamic var requestString:String?
+    @objc dynamic var requestString:String?
 
-    open dynamic var arrayOfmetrics:[Metrics]=[Metrics](){
+    @objc open dynamic var arrayOfmetrics:[Metrics]=[Metrics](){
         didSet{
             if let m=arrayOfmetrics.last{
                 self.metrics=m
@@ -58,13 +58,13 @@ open class MetricsDetailsViewController: NSViewController,Editor,Identifiable,NS
         }
     }
 
-    public dynamic var displayedIndex:String="0"
+    @objc public dynamic var displayedIndex:String="0"
 
 
 
     // The Selected Metrics
     // We are using using Bindings
-    dynamic internal var metrics:Metrics?{
+    @objc dynamic internal var metrics:Metrics?{
         didSet{
             if let r=metrics?.httpContext?.responseString{
                 self.responseString=r.jsonPrettify()
@@ -72,8 +72,14 @@ open class MetricsDetailsViewController: NSViewController,Editor,Identifiable,NS
                 self.responseString="no response"
             }
             if let request=metrics?.httpContext?.request{
-                let formattedString=request.toJSONString(prettyPrint: true)
-                self.requestString=formattedString
+                let encoder = JSONEncoder()
+                encoder.outputFormatting = .prettyPrinted
+                let data = try? encoder.encode(request)
+                if let string = data?.optionalString(using:Default.STRING_ENCODING){
+                    self.requestString = string
+                }else{
+                     self.requestString="decoding issue"
+                }
             }else{
                 self.requestString="no request"
             }
@@ -111,19 +117,33 @@ open class MetricsDetailsViewController: NSViewController,Editor,Identifiable,NS
     @IBOutlet var objectController: NSObjectController!
 
     @IBAction func copyAllToPasteBoard(_ sender: Any) {
-        if let c=metrics?.toJSONString(prettyPrint: true){
-            NSPasteboard.general().clearContents()
-            let ns:NSString=c as NSString
-            NSPasteboard.general().writeObjects([ns])
+        var stringifyedMetrics = Default.NO_MESSAGE
+        let encoder = JSONEncoder()
+        encoder.outputFormatting = .prettyPrinted
+        let data = try? encoder.encode(self.metrics)
+        if let string = data?.optionalString(using:Default.STRING_ENCODING){
+            stringifyedMetrics=string
+        }
+        if stringifyedMetrics != Default.NO_MESSAGE {
+            NSPasteboard.general.clearContents()
+            let ns:NSString=stringifyedMetrics as NSString
+            NSPasteboard.general.writeObjects([ns])
         }
     }
 
 
     @IBAction func copyToPasteBoard(_ sender: AnyObject) {
-        if let c=arrayOfmetrics.toJSONString(prettyPrint: true){
-            NSPasteboard.general().clearContents()
-            let ns:NSString=c as NSString
-            NSPasteboard.general().writeObjects([ns])
+        var stringifyedMetrics = Default.NO_MESSAGE
+        let encoder = JSONEncoder()
+        encoder.outputFormatting = .prettyPrinted
+        let data = try? encoder.encode(self.arrayOfmetrics)
+        if let string = data?.optionalString(using:Default.STRING_ENCODING){
+            stringifyedMetrics=string
+        }
+        if stringifyedMetrics != Default.NO_MESSAGE {
+            NSPasteboard.general.clearContents()
+            let ns:NSString=stringifyedMetrics as NSString
+            NSPasteboard.general.writeObjects([ns])
         }
     }
 

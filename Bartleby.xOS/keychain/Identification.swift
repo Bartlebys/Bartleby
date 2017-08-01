@@ -17,8 +17,15 @@ open class Identification:Codable {
     open var externalID:String=Default.NO_UID
     open var supportsPasswordSyndication:Bool=Bartleby.configuration.SUPPORTS_PASSWORD_SYNDICATION_BY_DEFAULT
 
+    // During Swift 4 migration we encountered a blocking issue
+    // It is impossible to instantiate an Identification() from BartlebysUI
+    // It causes a segfault during compilation
+    open static func newIdentification()->Identification{
+        return Identification()
+    }
+
     open static func identificationFrom(user:User)->Identification{
-        var identification=Identification()
+        let identification=Identification()
         identification.email=user.email
         identification.phoneCountryCode=user.phoneCountryCode
         identification.phoneNumber=user.phoneNumber

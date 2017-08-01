@@ -11,7 +11,7 @@ import BartlebyKit
 
 class ValidatePasswordViewController: IdentityStepViewController{
 
-    override var nibName : String { return "ValidatePasswordViewController" }
+    override var nibName : NSNib.Name { return NSNib.Name("ValidatePasswordViewController") }
 
     @IBOutlet weak var emailLabel: NSTextField!
 
@@ -66,7 +66,7 @@ class ValidatePasswordViewController: IdentityStepViewController{
             }
 
             if document.metadata.saveThePassword == true && supportsPasswordMemorization{
-                self.memorizePasswordCheckBox.state=1
+                self.memorizePasswordCheckBox.state = NSControl.StateValue.on
                 let password=document.currentUser.password
                 self.passwordTextField.stringValue=password
             }else{
@@ -90,7 +90,7 @@ class ValidatePasswordViewController: IdentityStepViewController{
                 let documentPassword=PString.trim(document.currentUser.password)
                 if currentPassword == documentPassword{
                     document.send(IdentificationStates.passwordsAreMatching)
-                    document.metadata.saveThePassword=(self.memorizePasswordCheckBox.state==1)
+                    document.metadata.saveThePassword=(self.memorizePasswordCheckBox.state == NSControl.StateValue.on )
                     self.identityWindowController?.identificationIsValid=true
                     document.online=true
                     self.stepDelegate?.didValidateStep( self.stepIndex)

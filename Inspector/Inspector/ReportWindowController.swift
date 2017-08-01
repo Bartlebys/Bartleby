@@ -11,7 +11,7 @@ import BartlebyKit
 
 open class ReportWindowController: NSWindowController{
 
-    override open var windowNibName: String?{ return "ReportWindowController" }
+    override open var windowNibName: NSNib.Name?{ return NSNib.Name("ReportWindowController") }
 
     @IBOutlet var reportTabViewController: ReportTabViewController!{
         didSet{

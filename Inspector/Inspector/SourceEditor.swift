@@ -15,7 +15,7 @@ class SourceEditor: NSViewController,Editor {
 
     var UID:String=Bartleby.createUID()
 
-    override var nibName : String { return "SourceEditor" }
+    override var nibName : NSNib.Name { return NSNib.Name("SourceEditor") }
 
     override var representedObject: Any?{
         didSet{
@@ -27,8 +27,8 @@ class SourceEditor: NSViewController,Editor {
                 let selectedJSON=self._selectedItem!.toJSONString(true)
                 self.textView.string=selectedJSON
                 self.enableEdition=true
-            }else if let UnManagedModel = representedObject as? UnManagedModel{
-                let selectedJSON=UnManagedModel.toJSONString(prettyPrint: true)
+            }else if let unManagedModel = representedObject as? UnManagedModel{
+                let selectedJSON=unManagedModel.toJSONString(true)
                 self.enableEdition=false
                 self.textView.string=selectedJSON
             }
@@ -52,7 +52,7 @@ class SourceEditor: NSViewController,Editor {
     @IBOutlet weak var textEditionZoneConstraint: NSLayoutConstraint!
 
 
-    fileprivate dynamic var enableEdition:Bool=false{
+    @objc fileprivate dynamic var enableEdition:Bool=false{
         didSet{
             self.textView.enabledTextCheckingTypes=0
             if enableEdition==true{
@@ -76,7 +76,7 @@ class SourceEditor: NSViewController,Editor {
 
     @IBAction func applyChanges(_ sender: AnyObject) {
         let newJsonString=self.textView.string
-        if let data=newJsonString?.data(using: String.Encoding.utf8), let selectedItem=self._selectedItem{
+        if let data=newJsonString.data(using: String.Encoding.utf8), let selectedItem=self._selectedItem{
             let previousData=selectedItem.serialize()
             do{
                 let _=try selectedItem.updateData(data,provisionChanges: true)

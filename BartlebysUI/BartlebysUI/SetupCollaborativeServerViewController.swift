@@ -14,7 +14,7 @@ class SetupCollaborativeServerViewController: IdentityStepViewController{
     // During dev you can setup to false (not to consume SMS credits)
     let relayActivationCode:Bool=false
 
-    override var nibName : String { return "SetupCollaborativeServerViewController" }
+    override var nibName : NSNib.Name { return NSNib.Name("SetupCollaborativeServerViewController") }
 
     @IBOutlet weak var box: NSBox!
 

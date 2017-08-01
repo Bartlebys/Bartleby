@@ -75,4 +75,32 @@ extension UnManagedModel:DictionaryRepresentation{
     }
 }
 
+extension UnManagedModel:JSONString{
+
+    // MARK:-  JSONString
+
+    open func toJSONString(_ prettyPrint:Bool)->String{
+        // #TODO
+        //if let j=Mapper().toJSONString(self, prettyPrint:prettyPrint) {
+        //    return j
+        //} else {
+        return "{}"
+        //}
+    }
+
+    // MARK: - CustomStringConvertible
+
+    override open var description: String {
+        get {
+            if self is Descriptible {
+                return (self as! Descriptible).toString()
+            }else{
+                return self.toJSONString(true)
+            }
+
+        }
+    }
+
+}
+
 

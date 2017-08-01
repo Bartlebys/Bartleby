@@ -11,7 +11,7 @@ import BartlebyKit
 
 class BSFSViewController: NSViewController,DocumentDependent,NSOutlineViewDelegate,NSOutlineViewDataSource{
 
-    override var nibName : String { return "BSFSViewController" }
+    override var nibName : NSNib.Name { return NSNib.Name("BSFSViewController") }
 
     fileprivate var _document:BartlebyDocument?
 
@@ -53,14 +53,14 @@ class BSFSViewController: NSViewController,DocumentDependent,NSOutlineViewDelega
         if let document = self._document{
             if let object = item as? ManagedModel{
                 if let casted=object as? Box{
-                    let view = outlineView.make(withIdentifier: "BoxCell", owner: self) as! NSTableCellView
+                    let view = outlineView.makeView(withIdentifier: NSUserInterfaceItemIdentifier(rawValue: "BoxCell"), owner: self) as! NSTableCellView
                     if let textField = view.textField {
                         textField.stringValue = "Box \(casted.UID) | Mounted:\(casted.isMounted)"
                     }
                     self._configureInlineButton(view, object: casted)
                     return view
                 }else if let casted=object as? Node{
-                    let view = outlineView.make(withIdentifier: "NodeCell", owner: self) as! NSTableCellView
+                    let view = outlineView.makeView(withIdentifier: NSUserInterfaceItemIdentifier(rawValue: "NodeCell"), owner: self) as! NSTableCellView
 
 
                     if let textField = view.textField {
@@ -83,7 +83,7 @@ class BSFSViewController: NSViewController,DocumentDependent,NSOutlineViewDelega
                     self._configureInlineButton(view, object: casted)
                     return view
                 }else if let casted=object as? Block{
-                    let view = outlineView.make(withIdentifier: "BlockCell", owner: self) as! NSTableCellView
+                    let view = outlineView.makeView(withIdentifier: NSUserInterfaceItemIdentifier(rawValue: "BlockCell"), owner: self) as! NSTableCellView
                     if let textField = view.textField {
                         if let exists = document.blocksWrapper?.fileWrappers?.keys.contains(casted.digest){
                             if exists{
@@ -97,7 +97,7 @@ class BSFSViewController: NSViewController,DocumentDependent,NSOutlineViewDelega
                     self._configureInlineButton(view, object: casted)
                     return view
                 }else{
-                    let view = outlineView.make(withIdentifier: "ObjectCell", owner: self) as! NSTableCellView
+                    let view = outlineView.makeView(withIdentifier: NSUserInterfaceItemIdentifier(rawValue: "ObjectCell"), owner: self) as! NSTableCellView
                     if let textField = view.textField {
                         if let s=item as? String{
                             textField.stringValue = s

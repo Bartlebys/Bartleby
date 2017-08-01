@@ -13,7 +13,7 @@ class SendMessageViewController: IdentityStepViewController {
 
     // @TODO
 
-    override var nibName : String { return "SendMessageViewController" }
+    override var nibName : NSNib.Name { return NSNib.Name("SendMessageViewController") }
 
     override func viewDidLoad() {
         super.viewDidLoad()

@@ -12,7 +12,7 @@ import BartlebyKit
 class ConfirmActivationViewController: IdentityStepViewController{
 
 
-    override var nibName : String { return "ConfirmActivationViewController" }
+    override var nibName : NSNib.Name { return NSNib.Name("ConfirmActivationViewController") }
 
     @IBOutlet weak var confirmLabel: NSTextField!
 

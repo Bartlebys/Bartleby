@@ -13,9 +13,9 @@ import BartlebysUI
 
 class ChronologyViewController: NSViewController ,DocumentDependent,NSTableViewDelegate{
 
-    override var nibName : String { return "ChronologyViewController" }
+    override var nibName : NSNib.Name { return NSNib.Name("ChronologyViewController") }
 
-    internal dynamic var _document:BartlebyDocument?
+    @objc internal dynamic var _document:BartlebyDocument?
 
     @IBOutlet weak var tableView: BXTableView!
 
@@ -69,7 +69,7 @@ class ChronologyViewController: NSViewController ,DocumentDependent,NSTableViewD
                                                asPopoverRelativeTo: frame,
                                                of: tableView,
                                                preferredEdge:NSRectEdge(rawValue: 2)!,
-                                               behavior: NSPopoverBehavior.transient)
+                                               behavior: NSPopover.Behavior.transient)
                 }
             }
         }
@@ -80,21 +80,27 @@ class ChronologyViewController: NSViewController ,DocumentDependent,NSTableViewD
         if self.arrayController.selectedObjects.count>0{
             // Take the selection
             if let m=self.arrayController.selectedObjects as? [Metrics]{
-                if let j = m.toJSONString(){
-                    stringifyedMetrics=j.jsonPrettify()
+                let encoder = JSONEncoder()
+                encoder.outputFormatting = .prettyPrinted
+                let data = try? encoder.encode(m)
+                if let string = data?.optionalString(using:Default.STRING_ENCODING){
+                    stringifyedMetrics=string
                 }
             }
         }else{
             // Take all the metricss
             if let m=self.arrayController.arrangedObjects as? [Metrics]{
-                if let j = m.toJSONString(){
-                    stringifyedMetrics=j.jsonPrettify()
+                let encoder = JSONEncoder()
+                encoder.outputFormatting = .prettyPrinted
+                let data = try? encoder.encode(m)
+                if let string = data?.optionalString(using:Default.STRING_ENCODING){
+                    stringifyedMetrics=string
                 }
             }
         }
-        NSPasteboard.general().clearContents()
+        NSPasteboard.general.clearContents()
         let ns:NSString=stringifyedMetrics as NSString
-        NSPasteboard.general().writeObjects([ns])
+        NSPasteboard.general.writeObjects([ns])
     }
 
     // MARK: Filtering

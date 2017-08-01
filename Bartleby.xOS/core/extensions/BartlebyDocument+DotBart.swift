@@ -33,7 +33,7 @@ extension BartlebyDocument {
         savePanel.allowedFileTypes=["bart"]
         savePanel.begin(completionHandler: { (result) in
             Bartleby.syncOnMain{
-                if result.rawValue==NSFileHandlingPanelOKButton{
+                if result.hashValue==NSFileHandlingPanelOKButton{
                     if let url = savePanel.url {
                         let filePath=url.path
                         self.exportMetadataTo(filePath, handlers:handlers)
@@ -50,7 +50,7 @@ extension BartlebyDocument {
         openPanel.allowedFileTypes=["bart"]
         openPanel.begin(completionHandler: { (result) in
             Bartleby.syncOnMain{
-                if result.rawValue==NSFileHandlingPanelOKButton{
+                if result.hashValue==NSFileHandlingPanelOKButton{
                     if let url = openPanel.url {
                         let filePath=url.path
                         self.importMetadataFrom(filePath,handlers:handlers)

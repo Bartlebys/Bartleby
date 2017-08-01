@@ -11,7 +11,7 @@ import BartlebyKit
 
 class UpdatePasswordViewController: IdentityStepViewController{
 
-    override var nibName : String { return "UpdatePasswordViewController" }
+    override var nibName : NSNib.Name { return NSNib.Name("UpdatePasswordViewController") }
 
     @IBOutlet weak var passwordTextField: NSTextField!
 

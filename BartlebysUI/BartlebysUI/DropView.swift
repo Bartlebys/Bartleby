@@ -7,7 +7,7 @@
 
 
 import Foundation
-import Cocoa
+import AppKit
 
 extension Notification.Name {
     public struct DropView {
@@ -49,7 +49,7 @@ open class DropView:NSView{
         super.draw(dirtyRect)
         guard let color = self.backgroundColor else {return}
         color.setFill()
-        NSRectFill(self.bounds)
+        __NSRectFill(self.bounds)
     }
 
 
@@ -90,7 +90,7 @@ open class DropView:NSView{
 
     required public init?(coder: NSCoder) {
         super.init(coder: coder)
-        self.register(forDraggedTypes: [NSFilenamesPboardType, NSURLPboardType])
+        self.registerForDraggedTypes([NSPasteboard.PasteboardType("NSFilenamesPboardType"), NSPasteboard.PasteboardType("NSFontPboardType")])
     }
 
 
@@ -140,7 +140,7 @@ open class DropView:NSView{
     }
 
     override open func performDragOperation(_ sender: NSDraggingInfo) -> Bool {
-        if let paths = sender.draggingPasteboard().propertyList(forType: NSFilenamesPboardType) as? [String]{
+        if let paths = sender.draggingPasteboard().propertyList(forType: NSPasteboard.PasteboardType("NSFilenamesPboardType")) as? [String]{
             if self.filterIrreleventUTTypes==false{
                 self._droppedFilesPaths = paths
             }else{
@@ -162,7 +162,7 @@ open class DropView:NSView{
 
 
     private func _checkValidity(drag: NSDraggingInfo) -> Bool {
-        if let paths = drag.draggingPasteboard().propertyList(forType: NSFilenamesPboardType) as? [String]{
+        if let paths = drag.draggingPasteboard().propertyList(forType: NSPasteboard.PasteboardType("NSFilenamesPboardType")) as? [String]{
             var isValid = (self.filterIrreleventUTTypes==true) ? false : true
             for path in paths{
                 let url=URL(fileURLWithPath: path)

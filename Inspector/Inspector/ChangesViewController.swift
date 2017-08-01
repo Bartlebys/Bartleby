@@ -15,7 +15,7 @@ class ChangesViewController: NSViewController,Editor,Identifiable{
 
     var UID:String=Bartleby.createUID()
 
-    override var nibName : String { return "ChangesViewController" }
+    override var nibName : NSNib.Name { return NSNib.Name("ChangesViewController") }
 
     @IBOutlet weak var tableView: NSTableView!
     
@@ -36,7 +36,7 @@ class ChangesViewController: NSViewController,Editor,Identifiable{
         }
     }
 
-    fileprivate dynamic var _selectedItem:EditorOf?
+    @objc fileprivate dynamic var _selectedItem:EditorOf?
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -109,7 +109,7 @@ extension ChangesViewController:NSTableViewDelegate{
             text = item.changes.replacingOccurrences(of: "\n", with: "")
             cellIdentifier = "ChangesCell"
         }
-        if let cell = tableView.make(withIdentifier: cellIdentifier, owner: nil) as? NSTableCellView {
+        if let cell = tableView.makeView(withIdentifier: NSUserInterfaceItemIdentifier(rawValue: cellIdentifier), owner: nil) as? NSTableCellView {
             cell.textField?.stringValue = text
             //cell.imageView?.image = image ?? nil
             return cell

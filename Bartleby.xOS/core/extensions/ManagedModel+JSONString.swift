@@ -27,13 +27,9 @@ extension ManagedModel:JSONString{
         get {
             if self is Descriptible {
                 return (self as! Descriptible).toString()
+            }else{
+                return self.toJSONString(true)
             }
-           // #TODO
-            //if let j=Mapper().toJSONString(self, prettyPrint:false) {
-            // return j
-            //} else {
-                return "{}"
-            //}
         }
     }
     

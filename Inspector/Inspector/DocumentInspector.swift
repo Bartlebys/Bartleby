@@ -17,7 +17,7 @@ public protocol Editor:Identifiable{
 
 open class DocumentInspector: NSWindowController,DocumentProvider,DocumentDependent {
 
-    override open var windowNibName: String?{ return "DocumentInspector" }
+    override open var windowNibName: NSNib.Name?{ return NSNib.Name("DocumentInspector") }
 
     static let CHANGES_HAS_BEEN_RESET_NOTIFICATION="CHANGES_HAS_BEEN_RESET_NOTIFICATION"
 
@@ -39,7 +39,7 @@ open class DocumentInspector: NSWindowController,DocumentProvider,DocumentDepend
     @IBOutlet var bsfsViewController: BSFSViewController!
 
     // We bind this index on the scopeSegmentedControl
-    open dynamic var selectedIndex:Int = -1{
+    @objc open dynamic var selectedIndex:Int = -1{
         didSet{
             if oldValue != selectedIndex || (oldValue == -1  && selectedIndex >= 0 ){
                 self.globalTabView.selectTabViewItem(at: selectedIndex)
@@ -48,7 +48,7 @@ open class DocumentInspector: NSWindowController,DocumentProvider,DocumentDepend
     }
 
     // The selected document
-    dynamic weak var castedDocument:BartlebyDocument?
+    @objc dynamic weak var castedDocument:BartlebyDocument?
 
     //MARK : Window
 
@@ -101,7 +101,7 @@ open class DocumentInspector: NSWindowController,DocumentProvider,DocumentDepend
     @IBAction func openWebStack(_ sender:AnyObject)  {
         if let document=self.castedDocument {
             if let url=document.metadata.currentUser?.signInURL(for:document){
-                NSWorkspace.shared().open(url)
+                NSWorkspace.shared.open(url)
             }
         }
     }

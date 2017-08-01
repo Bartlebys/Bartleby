@@ -22,7 +22,7 @@ class ConfirmUpdatePasswordActivationCode: IdentityStepViewController {
     var confirmationIsImpossible=false
 
 
-    override var nibName : String { return "ConfirmUpdatePasswordActivationCode" }
+    override var nibName : NSNib.Name { return NSNib.Name("ConfirmUpdatePasswordActivationCode") }
 
     override func viewDidLoad() {
         super.viewDidLoad()

@@ -9,7 +9,7 @@
 import Cocoa
 import BartlebyKit
 
-open class IdentityStepViewController: NSViewController ,DocumentDependent,IdentityStep{
+@objc open class IdentityStepViewController: NSViewController ,DocumentDependent,IdentityStep{
 
     open var stepDelegate:IdentityStepNavigation?
 

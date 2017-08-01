@@ -12,10 +12,10 @@ import BartlebysUI
 
 class LogsViewController: NSViewController,DocumentDependent{
 
-    override var nibName : String { return "LogsViewController" }
+    override var nibName : NSNib.Name { return NSNib.Name("LogsViewController")}
 
     @IBOutlet weak var messageColumn: NSTableColumn!
-    var font:NSFont=NSFont.systemFont(ofSize: NSFont.smallSystemFontSize())
+    var font:NSFont=NSFont.systemFont(ofSize: NSFont.smallSystemFontSize)
 
     fileprivate var _document:BartlebyDocument?
 
@@ -25,7 +25,7 @@ class LogsViewController: NSViewController,DocumentDependent{
 
     @IBOutlet var arrayController: NSArrayController!
 
-    dynamic var entries=[LogEntry]()
+    @objc dynamic var entries=[LogEntry]()
 
     fileprivate var _lockFilterUpdate=false
 
@@ -115,13 +115,18 @@ class LogsViewController: NSViewController,DocumentDependent{
         var stringifyedMetrics=Default.NO_MESSAGE
         // Take all the Log entries
         if let m=self.arrayController.arrangedObjects as? [LogEntry]{
-            if let j = m.toJSONString(){
-                stringifyedMetrics=j.jsonPrettify()
+            let encoder = JSONEncoder()
+            encoder.outputFormatting = .prettyPrinted
+            let data = try? encoder.encode(m)
+            if let string = data?.optionalString(using:Default.STRING_ENCODING){
+                stringifyedMetrics = string
+            }else{
+                stringifyedMetrics = "decoding issue"
             }
         }
-        NSPasteboard.general().clearContents()
+        NSPasteboard.general.clearContents()
         let ns:NSString=stringifyedMetrics as NSString
-        NSPasteboard.general().writeObjects([ns])
+        NSPasteboard.general.writeObjects([ns])
     }
 
 
@@ -145,9 +150,9 @@ extension LogsViewController:NSTableViewDelegate{
         let width=self.messageColumn.width-80;
         let constraintRect = CGSize(width: width, height: CGFloat.greatestFiniteMagnitude)
         let paragraphStyle = NSMutableParagraphStyle()
-        paragraphStyle.lineBreakMode = NSLineBreakMode.byCharWrapping;
-        let attributes = [NSFontAttributeName:font, NSParagraphStyleAttributeName:paragraphStyle] as [String : Any]
-        let boundingBox = item.message.boundingRect(with: constraintRect, options: NSStringDrawingOptions.usesLineFragmentOrigin, attributes: attributes, context: nil)
+        paragraphStyle.lineBreakMode = NSParagraphStyle.LineBreakMode.byCharWrapping;
+        let attributes = [NSAttributedStringKey.font.rawValue:font, NSAttributedStringKey.paragraphStyle:paragraphStyle] as! [NSAttributedStringKey : Any]
+        let boundingBox = item.message.boundingRect(with: constraintRect, options: NSString.DrawingOptions.usesLineFragmentOrigin, attributes: attributes, context: nil)
         return boundingBox.height + 20
     }
 }

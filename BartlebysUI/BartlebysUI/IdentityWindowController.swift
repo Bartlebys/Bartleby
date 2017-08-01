@@ -46,7 +46,7 @@ public protocol IdentityStep{
 public class IdentityWindowController: NSWindowController,DocumentProvider,IdentityStepNavigation {
 
 
-    override public var windowNibName: String? { return "IdentityWindowController" }
+    override public var windowNibName: NSNib.Name? { return NSNib.Name("IdentityWindowController") }
 
     // MARK: DocumentDependent
 

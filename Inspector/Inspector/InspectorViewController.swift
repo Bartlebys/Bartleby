@@ -17,7 +17,7 @@ protocol FilterPredicateDelegate {
 
 class InspectorViewController: NSViewController,DocumentDependent,FilterPredicateDelegate{
 
-    override var nibName : String { return "InspectorViewController" }
+    override var nibName : NSNib.Name { return NSNib.Name("InspectorViewController") }
 
     @IBOutlet var listOutlineView: NSOutlineView!
 
@@ -82,7 +82,7 @@ class InspectorViewController: NSViewController,DocumentDependent,FilterPredicat
     @IBAction func openWebStack(_ sender: AnyObject) {
         if let document=self.documentProvider?.getDocument() {
             if let url=document.metadata.currentUser?.signInURL(for:document){
-                NSWorkspace.shared().open(url)
+                NSWorkspace.shared.open(url)
             }
         }
     }
@@ -444,14 +444,14 @@ class CollectionListDelegate:NSObject,NSOutlineViewDelegate,NSOutlineViewDataSou
     public func outlineView(_ outlineView: NSOutlineView, viewFor tableColumn: NSTableColumn?, item: Any) -> NSView? {
         if let object = item as? ManagedModel{
             if let casted=object as? BartlebyCollection {
-                let view = outlineView.make(withIdentifier: "CollectionCell", owner: self) as! NSTableCellView
+                let view = outlineView.makeView(withIdentifier: NSUserInterfaceItemIdentifier(rawValue: "CollectionCell"), owner: self) as! NSTableCellView
                 if let textField = view.textField {
                     textField.stringValue = casted.d_collectionName
                 }
                 self.configureInlineButton(view, object: casted)
                 return view
             }else if  let casted=object as? User {
-                let view = outlineView.make(withIdentifier: "UserCell", owner: self) as! NSTableCellView
+                let view = outlineView.makeView(withIdentifier: NSUserInterfaceItemIdentifier(rawValue: "UserCell"), owner: self) as! NSTableCellView
                 if let textField = view.textField {
                     if casted.UID==self._documentReference.currentUser.UID{
                         textField.stringValue = "Current User"
@@ -463,7 +463,7 @@ class CollectionListDelegate:NSObject,NSOutlineViewDelegate,NSOutlineViewDataSou
                 return view
             }else{
                 let casted=object
-                let view = outlineView.make(withIdentifier: "ObjectCell", owner: self) as! NSTableCellView
+                let view = outlineView.makeView(withIdentifier: NSUserInterfaceItemIdentifier(rawValue: "ObjectCell"), owner: self) as! NSTableCellView
                 if let textField = view.textField {
                     textField.stringValue = casted.UID
                 }
@@ -473,14 +473,14 @@ class CollectionListDelegate:NSObject,NSOutlineViewDelegate,NSOutlineViewDataSou
         }else{
             // Value Object
             if let object = item as? DocumentMetadata{
-                let view = outlineView.make(withIdentifier: "ObjectCell", owner: self) as! NSTableCellView
+                let view = outlineView.makeView(withIdentifier: NSUserInterfaceItemIdentifier(rawValue: "ObjectCell"), owner: self) as! NSTableCellView
                 if let textField = view.textField {
                     textField.stringValue = "Document Metadata"
                 }
                 self.configureInlineButton(view, object: object)
                 return view
             }else{
-                let view = outlineView.make(withIdentifier: "ObjectCell", owner: self) as! NSTableCellView
+                let view = outlineView.makeView(withIdentifier: NSUserInterfaceItemIdentifier(rawValue: "ObjectCell"), owner: self) as! NSTableCellView
                 if let textField = view.textField {
                     if let s=item as? String{
                         textField.stringValue = s

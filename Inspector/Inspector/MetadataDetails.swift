@@ -27,7 +27,7 @@ class MetadataDetails: NSViewController , Editor, Identifiable,NSTabViewDelegate
 
     var UID:String=Bartleby.createUID()
 
-    override var nibName : String { return "MetadataDetails" }
+    override var nibName : NSNib.Name { return NSNib.Name("MetadataDetails") }
 
     @IBOutlet weak var tabView: NSTabView!{
         didSet{
@@ -79,7 +79,7 @@ class MetadataDetails: NSViewController , Editor, Identifiable,NSTabViewDelegate
     }
 
 
-    fileprivate dynamic var _metadata:DocumentMetadata?
+    @objc fileprivate dynamic var _metadata:DocumentMetadata?
 
     override var representedObject: Any?{
         willSet{
@@ -108,7 +108,7 @@ class MetadataDetails: NSViewController , Editor, Identifiable,NSTabViewDelegate
     }
 
 
-    public func refreshMetadata(notification:Notification){
+    @objc public func refreshMetadata(notification:Notification){
         if let documentReference=self.documentProvider?.getDocument(){
             self.triggersDiagnosticTextView.string=documentReference.getTriggerBufferInformations()
             self.operationsQuarantineTextView.string=documentReference.metadata.jsonOperationsQuarantine

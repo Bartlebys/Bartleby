@@ -11,13 +11,13 @@ enum  DataEncodingError:Error {
     case stringEncodingHasFailed
 }
 
-extension Data{
+public extension Data{
 
-    func optionalString(using:String.Encoding)->String?{
+    public func optionalString(using:String.Encoding)->String?{
         return String(data: self, encoding: using)
     }
 
-    func string(using:String.Encoding)throws->String{
+    public func string(using:String.Encoding)throws->String{
         if let s = String(data: self, encoding: using){
             return s
         }

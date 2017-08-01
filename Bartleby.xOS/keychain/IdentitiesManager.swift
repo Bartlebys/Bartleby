@@ -45,7 +45,7 @@ open class IdentitiesManager {
                     }
                     return true
                 }){
-                    var identification=Identification()
+                    let identification=Identification()
                     identification.email=profile.user?.email ?? ""
                     identification.phoneCountryCode=profile.user?.phoneCountryCode ?? ""
                     identification.phoneNumber=profile.user?.phoneNumber ?? ""
@@ -222,7 +222,7 @@ open class IdentitiesManager {
         guard document.metadata.appGroup != "" else{
             throw IdentitiesManagerError.appGroupIsMissing
         }
-        var identities=try Identities.loadFromKeyChain(accessGroup: document.metadata.appGroup)
+        let identities=try Identities.loadFromKeyChain(accessGroup: document.metadata.appGroup)
 
         /// Update the Masters users.
         var newUser=true
@@ -255,7 +255,7 @@ open class IdentitiesManager {
             // It will be Upserted normally.
         }else{
             // Add the user to the stored profiles.
-            var profile=Profile()
+            let profile=Profile()
             profile.documentUID=document.UID
             profile.documentSpaceUID=document.spaceUID
             profile.user=document.currentUser
@@ -314,14 +314,14 @@ open class IdentitiesManager {
 
             func __patchHasSucceededOn(_ profile:Profile, with identification:Identification){
                 // Recover the identification and profile.
-                var profile = profile
+                let profile = profile
                 profile.user?.email=identification.email
                 profile.user?.phoneNumber=identification.phoneNumber
                 profile.user?.password=identification.password
                 profile.user?.externalID=identification.externalID
                 profile.requiresPatch=false
                 do{
-                    var identities=try Identities.loadFromKeyChain(accessGroup: document.metadata.appGroup)
+                    let identities=try Identities.loadFromKeyChain(accessGroup: document.metadata.appGroup)
                     if let idx=identities.profiles.index(where: { (p) -> Bool in
                         return p.user?.UID == profile.user?.UID
                     }){

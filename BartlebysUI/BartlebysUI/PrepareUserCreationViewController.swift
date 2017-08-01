@@ -10,9 +10,9 @@ import Cocoa
 import BartlebyKit
 
 // Creates potentialy a user.
-@objc class PrepareUserCreationViewController: IdentityStepViewController{
+@objc open class PrepareUserCreationViewController: IdentityStepViewController{
 
-    override var nibName : String { return "PrepareUserCreationViewController" }
+    override open var nibName : NSNib.Name { return NSNib.Name("PrepareUserCreationViewController") }
 
     private var _suggestedIdentifications=[Identification]()
 
@@ -38,10 +38,10 @@ import BartlebyKit
 
     var countryCodes:[String]=["Greece (+30)","Netherlands (+31)","Belgium (+32)","France (+33)","United Kingdom (+44)"]
 
-    override func viewWillAppear() {
+    override open func viewWillAppear() {
         super.viewWillAppear()
         self.documentProvider?.getDocument()?.send(IdentificationStates.prepareUserCreation)
-        self.allowPasswordSyndicationCheckBox.state = Bartleby.configuration.SUPPORTS_PASSWORD_SYNDICATION_BY_DEFAULT ? 1 : 0
+        self.allowPasswordSyndicationCheckBox.state = Bartleby.configuration.SUPPORTS_PASSWORD_SYNDICATION_BY_DEFAULT ?  NSControl.StateValue.on :  NSControl.StateValue.off
         self.messageTextField.stringValue=""
         self.explanationsTextField.stringValue=NSLocalizedString("We need a valid email and a valid phone number. You can reuse previous identifications or create a new one for this document.", comment: "We need a valid email and a valid phone number. You can reuse previous identifications or create a new one for this document.")
         if let document=self.documentProvider?.getDocument(){
@@ -50,9 +50,9 @@ import BartlebyKit
                 self.emailComboBox.addItem(withObjectValue: identification.email)
                 self.phoneNumberComboBox.addItem(withObjectValue: identification.phoneNumber)
                 if identification.supportsPasswordSyndication{
-                     self.allowPasswordSyndicationCheckBox.state=1
+                     self.allowPasswordSyndicationCheckBox.state = NSControl.StateValue.on
                 }else{
-                    self.allowPasswordSyndicationCheckBox.state=0
+                    self.allowPasswordSyndicationCheckBox.state =  NSControl.StateValue.off
                 }
             }
             self.emailComboBox.addItem(withObjectValue:NSLocalizedString("Add your Email", comment: "Add your Email"))
@@ -110,9 +110,12 @@ import BartlebyKit
         }
     }
 
-    override func proceedToValidation(){
+
+
+    override open func proceedToValidation(){
         super.proceedToValidation()
         self.messageTextField.stringValue=""
+
         if let _ = self.documentProvider?.getDocument(){
             let email=self.emailComboBox.stringValue
 
@@ -120,26 +123,30 @@ import BartlebyKit
             if let match = self.phoneCountryCodeComboBox.stringValue.range(of:"(?<=\\()[^()]{1,10}(?=\\))", options: .regularExpression) {
                 prefix=self.phoneCountryCodeComboBox.stringValue.substring(with: match)
             }
+
             let phoneNumber=prefix+self.phoneNumberComboBox.stringValue
             if HTTPManager.isValidEmail(email){
                 if HTTPManager.isValidPhoneNumber(phoneNumber){
-                    var id=Identification()
-                    id.email=email
-                    id.phoneCountryCode=self.phoneCountryCodeComboBox.stringValue
-                    id.phoneNumber=self.phoneNumberComboBox.stringValue
-                    id.supportsPasswordSyndication=(self.allowPasswordSyndicationCheckBox.state==1)
+                    let identification=Identification.newIdentification()
+                    identification.email=email
+                    identification.phoneCountryCode=self.phoneCountryCodeComboBox.stringValue
+                    identification.phoneNumber=self.phoneNumberComboBox.stringValue
+                    identification.supportsPasswordSyndication=(self.allowPasswordSyndicationCheckBox.state ==  NSControl.StateValue.on)
                     // We store the prepared identification
-                    self.identityWindowController?.identification=id
+                    self.identityWindowController?.identification=identification
                     self.documentProvider?.getDocument()?.send(IdentificationStates.userCreationHasBeenPrepared)
                     self.stepDelegate?.didValidateStep(self.stepIndex)
+
                 }else{
                     self.messageTextField.stringValue=NSLocalizedString("Invalid phone number!", comment: "Invalid phone number!")
                 }
             }else{
                 self.messageTextField.stringValue=NSLocalizedString("Invalid email!", comment: "Invalid email!")
             }
+
         }
+
     }
     
-    
+
 }

@@ -28,7 +28,7 @@ public class AppHelper:NSObject,NSSharingServiceDelegate {
     ///
     /// - returns: the MetricsDetailsViewController
     public func getMetricsDetailsViewController(for metrics:[Metrics])->MetricsDetailsViewController{
-        let metricsViewController=MetricsDetailsViewController(nibName: "MetricsDetailsViewController", bundle:  Bundle(for: MetricsDetailsViewController.self))!
+        let metricsViewController=MetricsDetailsViewController(nibName: NSNib.Name("MetricsDetailsViewController"), bundle:  Bundle(for: MetricsDetailsViewController.self))
         metricsViewController.arrayOfmetrics=metrics
         return metricsViewController
     }
@@ -47,7 +47,7 @@ public class AppHelper:NSObject,NSSharingServiceDelegate {
                                          asPopoverRelativeTo: frame,
                                          of: sender,
                                          preferredEdge:NSRectEdge(rawValue: 1)!,
-                                         behavior: NSPopoverBehavior.transient)
+                                         behavior: NSPopover.Behavior.transient)
 
     }
 
@@ -66,17 +66,19 @@ public class AppHelper:NSObject,NSSharingServiceDelegate {
         report.logs=document.logs
         report.metrics=document.metrics
         let recipientsList=recipients.components(separatedBy: ",")
-        if let  json = report.toJSONString(){
-            if crypted{
-                if let cryptedJson = try? Bartleby.cryptoDelegate.encryptString(json,useKey:Bartleby.configuration.KEY){
-                    let string="\(body)\n\n\(AppHelper.copyFlag)\(cryptedJson)\(AppHelper.copyFlag)\n"
-                    if let sharingService=NSSharingService.init(named: NSSharingServiceNameComposeEmail) {
-                        sharingService.delegate=self
-                        sharingService.subject=title
-                        sharingService.recipients=recipientsList
-                        sharingService.perform(withItems: [string])
-                    } else {
-                        return
+        if let  data = try? JSONEncoder().encode(report){
+            if let json = data.optionalString(using:Default.STRING_ENCODING){
+                if crypted{
+                    if let cryptedJson = try? Bartleby.cryptoDelegate.encryptString(json,useKey:Bartleby.configuration.KEY){
+                        let string="\(body)\n\n\(AppHelper.copyFlag)\(cryptedJson)\(AppHelper.copyFlag)\n"
+                        if let sharingService=NSSharingService.init(named: NSSharingService.Name.composeEmail) {
+                            sharingService.delegate=self
+                            sharingService.subject=title
+                            sharingService.recipients=recipientsList
+                            sharingService.perform(withItems: [string])
+                        } else {
+                            return
+                        }
                     }
                 }
             }
@@ -84,12 +86,12 @@ public class AppHelper:NSObject,NSSharingServiceDelegate {
     }
 
     public func unAcceptableActionFeedBack(){
-        NSSound(named:"Basso")?.play()
+        NSSound(named:NSSound.Name(rawValue: "Basso"))?.play()
     }
 
 
     public func unAvailableActionFeedBack(){
-        NSSound(named:"Basso")?.play()
+        NSSound(named:NSSound.Name(rawValue: "Basso"))?.play()
     }
 
 
