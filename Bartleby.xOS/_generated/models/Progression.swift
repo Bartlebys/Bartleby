@@ -20,28 +20,28 @@ import Foundation
 	open var startTime:Double?
 
 	//Index of the task
-	dynamic open var currentTaskIndex:Int = 0
+	@objc dynamic open var currentTaskIndex:Int = 0
 
 	//Total number of tasks
-	dynamic open var totalTaskCount:Int = 0
+	@objc dynamic open var totalTaskCount:Int = 0
 
 	//0 to 100
-	dynamic open var currentPercentProgress:Double = 0
+	@objc dynamic open var currentPercentProgress:Double = 0
 
 	//The Message
-	dynamic open var message:String = ""
+	@objc dynamic open var message:String = ""
 
 	//The consolidated information (may include the message)
-	dynamic open var informations:String = ""
+	@objc dynamic open var informations:String = ""
 
 	//The associated data
-	dynamic open var data:Data?
+	@objc dynamic open var data:Data?
 
 	//A category to discriminate bunch of progression states
-	dynamic open var category:String = ""
+	@objc dynamic open var category:String = ""
 
 	//An external identifier
-	dynamic open var externalIdentifier:String = ""
+	@objc dynamic open var externalIdentifier:String = ""
 
 
     // MARK: - Codable

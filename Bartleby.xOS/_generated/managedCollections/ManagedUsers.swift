@@ -32,7 +32,7 @@ public extension Notification.Name {
 @objc(ManagedUsers) open class ManagedUsers : ManagedModel,IterableCollectibleCollection{
 
     // Staged "users" identifiers (used to determine what should be committed on the next loop)
-    fileprivate dynamic var _staged=[String]()
+    @objc fileprivate dynamic var _staged=[String]()
 
     // Store the  "users" identifiers to be deleted on the next loop
     fileprivate var _deleted=[String]()
@@ -41,7 +41,7 @@ public extension Notification.Name {
     fileprivate var _UIDS=[String]()
 
     // The underlining "users" list
-    fileprivate dynamic var _items=[User]()  {
+    @objc fileprivate dynamic var _items=[User]()  {
         didSet {
             if !self.wantsQuietChanges && _items != oldValue {
                 self.provisionChanges(forKey: "_items",oldValue: oldValue,newValue: _items)
@@ -552,7 +552,7 @@ public extension Notification.Name {
             //self.referentDocument?.setValue(self, forKey: "users")
             arrayController?.objectClass=User.self
             arrayController?.entityName=User.className()
-            arrayController?.bind("content", to: self, withKeyPath: "_items", options: nil)
+            arrayController?.bind(NSBindingName("content"), to: self, withKeyPath: "_items", options: nil)
             // Add observer
             arrayController?.addObserver(self, forKeyPath: "selectionIndexes", options: .new, context: &self._KVOContext)
             if let indexes=self.referentDocument?.metadata.stateDictionary[self.selectedUsersIndexesKey] as? [Int]{
@@ -596,7 +596,7 @@ public extension Notification.Name {
 
     open let selectedUsersIndexesKey="selectedUsersIndexesKey"
 
-    dynamic open var selectedUsers:[User]?{
+    @objc dynamic open var selectedUsers:[User]?{
         didSet{
             Bartleby.syncOnMain {
                 if let users = selectedUsers {

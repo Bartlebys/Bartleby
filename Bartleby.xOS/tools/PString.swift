@@ -41,7 +41,7 @@ public struct PString {
      */
     public static func ltrim(_ string: String, characterSet: CharacterSet=CharacterSet.whitespacesAndNewlines) -> String {
         if let range = string.rangeOfCharacter(from: characterSet.inverted) {
-            return string[range.lowerBound..<string.endIndex]
+            return String(string[range.lowerBound..<string.endIndex])
         }
         return string
     }
@@ -74,7 +74,7 @@ public struct PString {
 
     public static func rtrim(_ string: String, characterSet: CharacterSet=CharacterSet.whitespacesAndNewlines) -> String {
         if let range = string.rangeOfCharacter(from: characterSet.inverted, options: NSString.CompareOptions.backwards) {
-            return string[string.startIndex...range.lowerBound]
+            return String(string[string.startIndex...range.lowerBound])
         }
         return string
     }

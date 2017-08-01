@@ -17,22 +17,22 @@ import Foundation
 
 
 	//Success if set to true
-	dynamic open var success:Bool = true
+	@objc dynamic open var success:Bool = true
 
 	//The status
-	dynamic open var statusCode:Int = StatusOfCompletion.undefined.rawValue
+	@objc dynamic open var statusCode:Int = StatusOfCompletion.undefined.rawValue
 
 	//The Message
-	dynamic open var message:String = ""
+	@objc dynamic open var message:String = ""
 
 	//completion data
-	dynamic open var data:Data?
+	@objc dynamic open var data:Data?
 
 	//A category to discriminate bunch of completion states
-	dynamic open var category:String = ""
+	@objc dynamic open var category:String = ""
 
 	//An external identifier
-	dynamic open var externalIdentifier:String = ""
+	@objc dynamic open var externalIdentifier:String = ""
 
 
     // MARK: - Codable

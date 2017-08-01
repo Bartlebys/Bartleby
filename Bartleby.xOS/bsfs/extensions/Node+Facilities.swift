@@ -75,7 +75,7 @@ public extension Node{
     ///
     /// - Parameter category: the category to be consolidated
     /// - Returns: return the progression state.
-    override public func progressionState(for category:String)->Progression?{
+    @objc override public func progressionState(for category:String)->Progression?{
         if category==Default.CATEGORY_DOWNLOADS{
             if downloadInProgress{
                 return self.downloadProgression
@@ -94,7 +94,7 @@ public extension Node{
     ///
     /// - Parameter category: the category
     /// - Returns: the array of Progression states
-    override public func childrensProgression(for category:String)->[Progression]?{
+    @objc override public func childrensProgression(for category:String)->[Progression]?{
         var progressions=[Progression]()
         for node in self.blocks{
             node.consolidateProgression(for: category)

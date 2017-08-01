@@ -8,13 +8,13 @@
 
 import Foundation
 
-public struct Profile:Codable{
+open class Profile:Codable{
 
-    public var url:URL=Bartleby.configuration.API_BASE_URL
-    public var documentUID:String=Default.NO_UID
-    public var documentSpaceUID:String=Default.NO_UID
-    public var user:User?
-    public var requiresPatch=false
+    open var url:URL=Bartleby.configuration.API_BASE_URL
+    open var documentUID:String=Default.NO_UID
+    open var documentSpaceUID:String=Default.NO_UID
+    open var user:User?
+    open var requiresPatch=false
 
     public init() {}
 

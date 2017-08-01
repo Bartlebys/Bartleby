@@ -17,7 +17,7 @@ import Foundation
 
 
 	//The data value
-	dynamic open var value:Data?
+	@objc dynamic open var value:Data?
 
 
     // MARK: - Codable

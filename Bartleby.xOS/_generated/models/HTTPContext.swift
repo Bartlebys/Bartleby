@@ -17,25 +17,25 @@ import Foundation
 
 
 	//A descriptive string for developer to identify the calling context
-	dynamic open var caller:String = "\(Default.NO_NAME)"
+	@objc dynamic open var caller:String = "\(Default.NO_NAME)"
 
 	// A developer set code to provide filtering
-	dynamic open var code:Int = Default.MAX_INT
+	@objc dynamic open var code:Int = Default.MAX_INT
 
 	//The responded HTTP status code
-	dynamic open var httpStatusCode:Int = Default.MAX_INT
+	@objc dynamic open var httpStatusCode:Int = Default.MAX_INT
 
 	//The related url
-	dynamic open var relatedURL:URL?
+	@objc dynamic open var relatedURL:URL?
 
 	//The full http request
-	dynamic open var request:HTTPRequest?
+	@objc dynamic open var request:HTTPRequest?
 
 	//The responded data stringifyed
-	dynamic open var responseString:String?
+	@objc dynamic open var responseString:String?
 
 	//An optional message
-	dynamic open var message:String?
+	@objc dynamic open var message:String?
 
 
     // MARK: - Codable

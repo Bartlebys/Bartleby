@@ -35,7 +35,7 @@ public extension DocumentMetadata{
     }
 
 
-    public dynamic var currentUser:User?{
+    @objc public dynamic var currentUser:User?{
         get{
            return try? Bartleby.registredObjectByUID(self.currentUserUID)
         }

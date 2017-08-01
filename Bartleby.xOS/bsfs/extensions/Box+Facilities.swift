@@ -35,7 +35,7 @@ public extension Box{
     ///
     /// - Parameter category: the category to be consolidated
     /// - Returns: return the progression state.
-    override func progressionState(for category:String)->Progression?{
+    @objc override func progressionState(for category:String)->Progression?{
         if category==Default.CATEGORY_DOWNLOADS{
             if downloadInProgress{
                 return self.downloadProgression

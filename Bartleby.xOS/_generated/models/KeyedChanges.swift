@@ -17,13 +17,13 @@ import Foundation
 
 
 	//the elapsed time since the app has been launched
-	dynamic open var elapsed:Double = Bartleby.elapsedTime
+	@objc dynamic open var elapsed:Double = Bartleby.elapsedTime
 
 	//the key
-	dynamic open var key:String = "\(Default.NO_KEY)"
+	@objc dynamic open var key:String = "\(Default.NO_KEY)"
 
 	//A description of the changes that have occured
-	dynamic open var changes:String = "\(Default.NO_MESSAGE)"
+	@objc dynamic open var changes:String = "\(Default.NO_MESSAGE)"
 
 
     // MARK: - Codable

@@ -23,16 +23,16 @@ import Foundation
 	open var storage:Storage = .monolithicFileStorage
 
 	//The holding collection name
-	dynamic open var collectionName:String = "\(Default.NO_NAME)"
+	@objc dynamic open var collectionName:String = "\(Default.NO_NAME)"
 
 	//The proxy object (not serializable, not supervisable)
-	dynamic open var proxy:ManagedModel?
+	@objc dynamic open var proxy:ManagedModel?
 
 	//Allow distant persistency?
-	dynamic open var persistsDistantly:Bool = true
+	@objc dynamic open var persistsDistantly:Bool = true
 
 	//In Memory?
-	dynamic open var inMemory:Bool = true
+	@objc dynamic open var inMemory:Bool = true
 
 
     // MARK: - Codable

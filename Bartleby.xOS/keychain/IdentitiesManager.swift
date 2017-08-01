@@ -25,14 +25,14 @@ public enum IdentitiesManagerError:Error{
 ///
 /// When various users share the the same phone or email in different dataspace
 /// this class tries to synchronize the passwords, phone and email of matching users on all the registred collaborative servers.
-public struct IdentitiesManager {
+open class IdentitiesManager {
 
 
     /// Returns suggested profiles for the document.
     ///
     /// - Parameter document: the current document
     /// - Returns: the suggested profiles (can be used to propose a user account)
-    public static func suggestedIdentifications(forDocument document:BartlebyDocument)->[Identification]{
+    open static func suggestedIdentifications(forDocument document:BartlebyDocument)->[Identification]{
         var identifications=[Identification]()
         do{
             let allProfiles=try IdentitiesManager._suggestedProfiles(forDocument:document)
@@ -61,7 +61,7 @@ public struct IdentitiesManager {
 
 
     /// Dumps the Identities founds in the key Chain
-    public static func dumpKeyChainedProfiles(_ document:BartlebyDocument){
+    open static func dumpKeyChainedProfiles(_ document:BartlebyDocument){
         if Bartleby.configuration.DEVELOPER_MODE{
             do{
                 if document.metadata.appGroup != ""{
@@ -97,7 +97,7 @@ public struct IdentitiesManager {
     ///   - password: the current user password
     ///   - completed: this closure is called when all the syndicable update has been executed.
     ///
-    public static func synchronize(_ document:BartlebyDocument,password:String,completed:@escaping (Completion)->()){
+    open static func synchronize(_ document:BartlebyDocument,password:String,completed:@escaping (Completion)->()){
         if document.metadata.appGroup != ""{
             // We use the app Group has storage key
             Identities.storageKey="identities."+document.metadata.appGroup
@@ -129,7 +129,7 @@ public struct IdentitiesManager {
     }
 
 
-    public static func profileMatching(identification:Identification, inDocument document:BartlebyDocument)->Profile?{
+    open static func profileMatching(identification:Identification, inDocument document:BartlebyDocument)->Profile?{
         if document.metadata.appGroup != ""{
             let identities=try? Identities.loadFromKeyChain(accessGroup: document.metadata.appGroup)
             if let profiles=identities?.profiles{

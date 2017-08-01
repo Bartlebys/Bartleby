@@ -26,7 +26,7 @@ class TestObserver: NSObject, XCTestObservation {
         print("\n#### \(testCase.name) ####\n")
     }
 
-    func testCase(_ testCase: XCTestCase, didFailWithDescription description: String, inFile filePath: String?, atLine lineNumber: UInt) {
+    func testCase(_ testCase: XCTestCase, didFailWithDescription description: String, inFile filePath: String?, atLine lineNumber: Int) {
         self._failureCount += 1
     }
 }
@@ -106,7 +106,7 @@ class TestCase: XCTestCase {
 
         if TestsConfiguration.ENABLE_TEST_OBSERVATION{
             // Add test observer
-            XCTestObservationCenter.shared().addTestObserver(_testObserver)
+            XCTestObservationCenter.shared.addTestObserver(_testObserver)
         }
 
         // Purge cookie for the domain
@@ -130,7 +130,7 @@ class TestCase: XCTestCase {
 
         if  TestsConfiguration.ENABLE_TEST_OBSERVATION{
             // Remove test observer
-            XCTestObservationCenter.shared().removeTestObserver(_testObserver)
+            XCTestObservationCenter.shared.removeTestObserver(_testObserver)
 
             // Remove asset folder depending of the configuration
             if fm.fileExists(atPath: assetPath) && removeAsset != .never {

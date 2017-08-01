@@ -32,7 +32,7 @@ public extension Notification.Name {
 @objc(ManagedBlocks) open class ManagedBlocks : ManagedModel,IterableCollectibleCollection{
 
     // Staged "blocks" identifiers (used to determine what should be committed on the next loop)
-    fileprivate dynamic var _staged=[String]()
+    @objc fileprivate dynamic var _staged=[String]()
 
     // Store the  "blocks" identifiers to be deleted on the next loop
     fileprivate var _deleted=[String]()
@@ -41,7 +41,7 @@ public extension Notification.Name {
     fileprivate var _UIDS=[String]()
 
     // The underlining "blocks" list
-    fileprivate dynamic var _items=[Block]()  {
+    @objc fileprivate dynamic var _items=[Block]()  {
         didSet {
             if !self.wantsQuietChanges && _items != oldValue {
                 self.provisionChanges(forKey: "_items",oldValue: oldValue,newValue: _items)
@@ -553,7 +553,7 @@ public extension Notification.Name {
             //self.referentDocument?.setValue(self, forKey: "blocks")
             arrayController?.objectClass=Block.self
             arrayController?.entityName=Block.className()
-            arrayController?.bind("content", to: self, withKeyPath: "_items", options: nil)
+            arrayController?.bind(NSBindingName("content"), to: self, withKeyPath: "_items", options: nil)
             // Add observer
             arrayController?.addObserver(self, forKeyPath: "selectionIndexes", options: .new, context: &self._KVOContext)
             if let indexes=self.referentDocument?.metadata.stateDictionary[self.selectedBlocksIndexesKey] as? [Int]{
@@ -597,7 +597,7 @@ public extension Notification.Name {
 
     open let selectedBlocksIndexesKey="selectedBlocksIndexesKey"
 
-    dynamic open var selectedBlocks:[Block]?{
+    @objc dynamic open var selectedBlocks:[Block]?{
         didSet{
             Bartleby.syncOnMain {
                 if let blocks = selectedBlocks {

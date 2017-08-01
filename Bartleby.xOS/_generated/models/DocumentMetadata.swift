@@ -17,31 +17,31 @@ import Foundation
 
 
 	//The data space UID can be shared between multiple Docuemnt.
-	dynamic open var spaceUID:String = "\(Bartleby.createUID())"
+	@objc dynamic open var spaceUID:String = "\(Bartleby.createUID())"
 
 	//Defines the document UID.
-	dynamic open var persistentUID:String = "\(Bartleby.createUID())"
+	@objc dynamic open var persistentUID:String = "\(Bartleby.createUID())"
 
 	//The user UID currently associated to the local instance of the document
-	dynamic open var currentUserUID:String = "\(Default.NO_UID)"
+	@objc dynamic open var currentUserUID:String = "\(Default.NO_UID)"
 
 	//The current user email (to be displayed during identity control)
-	dynamic open var currentUserEmail:String = "\(Default.VOID_STRING)"
+	@objc dynamic open var currentUserEmail:String = "\(Default.VOID_STRING)"
 
 	//The current user full phone number including the prefix (to be displayed during identity control)
-	dynamic open var currentUserFullPhoneNumber:String = "\(Default.VOID_STRING)"
+	@objc dynamic open var currentUserFullPhoneNumber:String = "\(Default.VOID_STRING)"
 
 	//The sugar (not serialized but loaded from the Bowl)
-	dynamic open var sugar:String = "\(Default.VOID_STRING)"
+	@objc dynamic open var sugar:String = "\(Default.VOID_STRING)"
 
 	//The locker UID to be used by the user to obtain the sugar from the locker
-	dynamic open var lockerUID:String = "\(Default.NO_UID)"
+	@objc dynamic open var lockerUID:String = "\(Default.NO_UID)"
 
 	//Has the current user been controlled
-	dynamic open var userHasBeenControlled:Bool = false
+	@objc dynamic open var userHasBeenControlled:Bool = false
 
 	//If set to false the identification chain will by pass the second authentication factor
-	dynamic open var secondaryAuthFactorRequired:Bool = Bartleby.configuration.REDUCED_SECURITY_MODE
+	@objc dynamic open var secondaryAuthFactorRequired:Bool = Bartleby.configuration.REDUCED_SECURITY_MODE
 
 	//The identification method (By cookie or by Key - kvid)
 	public enum IdentificationMethod:String{
@@ -51,64 +51,64 @@ import Foundation
 	open var identificationMethod:IdentificationMethod = .key
 
 	//You can define a shared app group container identifier "group.myDomain.com.groupName")
-	dynamic open var appGroup:String = ""
+	@objc dynamic open var appGroup:String = ""
 
 	//The current kvid identification value (injected in HTTP headers)
-	dynamic open var identificationValue:String?
+	@objc dynamic open var identificationValue:String?
 
 	//The url of the collaboration server
-	dynamic open var collaborationServerURL:URL?
+	@objc dynamic open var collaborationServerURL:URL?
 
 	//Should be Set to true only when the document has been correctly registred on collaboration server
-	dynamic open var registred:Bool = false
+	@objc dynamic open var registred:Bool = false
 
 	//If the changes are inspectable all the changes are stored in KeyChanges objects
-	dynamic open var changesAreInspectables:Bool = Bartleby.configuration.CHANGES_ARE_INSPECTABLES_BY_DEFAULT
+	@objc dynamic open var changesAreInspectables:Bool = Bartleby.configuration.CHANGES_ARE_INSPECTABLES_BY_DEFAULT
 
 	//If set to true the boxes will be deleted when closing the document (Better security) 
-	dynamic open var cleanupBoxesWhenClosingDocument:Bool = true
+	@objc dynamic open var cleanupBoxesWhenClosingDocument:Bool = true
 
 	//A collection of CollectionMetadatum
-	dynamic open var collectionsMetadata:[CollectionMetadatum] = [CollectionMetadatum]()
+	@objc dynamic open var collectionsMetadata:[CollectionMetadatum] = [CollectionMetadatum]()
 
 	//The State dictionary to insure document persistency 
-	dynamic open var stateDictionary:[String:Any] = [String:AnyObject]()
+	@objc dynamic open var stateDictionary:[String:Any] = [String:AnyObject]()
 
 	//A collection of KeyedData
-	dynamic open var URLBookmarkData:[KeyedData] = [KeyedData]()
+	@objc dynamic open var URLBookmarkData:[KeyedData] = [KeyedData]()
 
 	//The preferred filename for this document
-	dynamic open var preferredFileName:String?
+	@objc dynamic open var preferredFileName:String?
 
 	//used for Core Debug , stores all the indexes by order of reception.
-	dynamic open var triggersIndexesDebugHistory:[Int] = [Int]()
+	@objc dynamic open var triggersIndexesDebugHistory:[Int] = [Int]()
 
 	//The persistentcollection of triggers indexes owned by the current user (allows local distinctive analytics even on cloned documents)
-	dynamic open var ownedTriggersIndexes:[Int] = [Int]()
+	@objc dynamic open var ownedTriggersIndexes:[Int] = [Int]()
 
 	//The index of the last trigger that has been integrated
 	open var lastIntegratedTriggerIndex:Int = -1
 
 	//A collection Triggers that are temporarly stored before data integration
-	dynamic open var receivedTriggers:[Trigger] = [Trigger]()
+	@objc dynamic open var receivedTriggers:[Trigger] = [Trigger]()
 
 	//A collection of PushOperations in Quarantine (check DataSynchronization.md "Faults" section for details) 
-	dynamic open var operationsQuarantine:[PushOperation] = [PushOperation]()
+	@objc dynamic open var operationsQuarantine:[PushOperation] = [PushOperation]()
 
 	//Do we have operations in progress in the current bunch ?
-	dynamic open var bunchInProgress:Bool = false
+	@objc dynamic open var bunchInProgress:Bool = false
 
 	//The highest number that we may have counted
 	open var totalNumberOfOperations:Int = 0
 
 	//The consolidated progression state of all pending operations
-	dynamic open var pendingOperationsProgressionState:Progression?
+	@objc dynamic open var pendingOperationsProgressionState:Progression?
 
 	//When monitoring reachability we need to know if we should be connected to Collaborative server
-	dynamic open var shouldBeOnline:Bool = Bartleby.configuration.ONLINE_BY_DEFAULT
+	@objc dynamic open var shouldBeOnline:Bool = Bartleby.configuration.ONLINE_BY_DEFAULT
 
 	//is the user performing Online
-	dynamic open var online:Bool = Bartleby.configuration.ONLINE_BY_DEFAULT
+	@objc dynamic open var online:Bool = Bartleby.configuration.ONLINE_BY_DEFAULT
 
 	//Is the document transitionning offToOn: offline > online, onToOff: online > offine
 	public enum Transition:String{
@@ -119,19 +119,19 @@ import Foundation
 	open var transition:Transition = .none
 
 	//If set to true committed object will be pushed as soon as possible.
-	dynamic open var pushOnChanges:Bool = Bartleby.configuration.ONLINE_BY_DEFAULT
+	@objc dynamic open var pushOnChanges:Bool = Bartleby.configuration.ONLINE_BY_DEFAULT
 
 	//Save the password or not?
-	dynamic open var saveThePassword:Bool = Bartleby.configuration.SAVE_PASSWORD_BY_DEFAULT
+	@objc dynamic open var saveThePassword:Bool = Bartleby.configuration.SAVE_PASSWORD_BY_DEFAULT
 
 	//The sum of all the metrics
-	dynamic open var cumulatedUpMetricsDuration:Double = 0
+	@objc dynamic open var cumulatedUpMetricsDuration:Double = 0
 
 	//Total number of metrics since the document creation
-	dynamic open var totalNumberOfUpMetrics:Int = 0
+	@objc dynamic open var totalNumberOfUpMetrics:Int = 0
 
 	//The qos Indice
-	dynamic open var qosIndice:Double = 0
+	@objc dynamic open var qosIndice:Double = 0
 
 
     // MARK: - Codable

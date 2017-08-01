@@ -15,18 +15,18 @@ public enum IdentitiesError:Error{
 }
 
 
-public struct Identities:Codable {
+open class Identities:Codable {
 
     // You should set your own storage key during Document initialization
-    public static var storageKey="identities.org.bartlebys"
+    open static var storageKey="identities.org.bartlebys"
 
-    var identifications:[Identification]=[Identification]()
-    var profiles:[Profile]=[Profile]()
+    open var identifications:[Identification]=[Identification]()
+    open var profiles:[Profile]=[Profile]()
 
     public init () {}
 
 
-    func saveToKeyChain(accessGroup:String)throws->(){
+    open func saveToKeyChain(accessGroup:String)throws->(){
         let json = try JSONEncoder().encode(self)
             let keyChainHelper=KeyChainHelper(accessGroup: accessGroup)
             // The identities are crypted in the KeyChain
@@ -36,7 +36,7 @@ public struct Identities:Codable {
 
     }
 
-    public static func loadFromKeyChain(accessGroup:String)throws->Identities{
+    open static func loadFromKeyChain(accessGroup:String)throws->Identities{
         let keyChainHelper=KeyChainHelper(accessGroup: accessGroup)
         if let cryptedJson=keyChainHelper.get(Identities.storageKey){
             // The identities are crypted in the KeyChain

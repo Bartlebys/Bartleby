@@ -17,31 +17,31 @@ import Foundation
 
 
 	//The referent document
-	dynamic open var referentDocument:BartlebyDocument?
+	@objc dynamic open var referentDocument:BartlebyDocument?
 
 	//The action name e.g: UpdateUser
-	dynamic open var operationName:String = "\(Default.NO_NAME)"
+	@objc dynamic open var operationName:String = "\(Default.NO_NAME)"
 
 	//The metrics entry counter
-	dynamic open var counter:Int = -1
+	@objc dynamic open var counter:Int = -1
 
 	//The elasped time since app started up.
-	dynamic open var elapsed:Double = 0
+	@objc dynamic open var elapsed:Double = 0
 
 	//The time interval in seconds from the time the request started to the initial response from the server.
-	dynamic open var latency:Double = 0
+	@objc dynamic open var latency:Double = 0
 
 	//The time interval in seconds from the time the request started to the time the request completed.
-	dynamic open var requestDuration:Double = 0
+	@objc dynamic open var requestDuration:Double = 0
 
 	// The time interval in seconds from the time the request completed to the time response serialization completed.
-	dynamic open var serializationDuration:Double = 0
+	@objc dynamic open var serializationDuration:Double = 0
 
 	//The time interval in seconds from the time the request started to the time response serialization completed.
-	dynamic open var totalDuration:Double = 0
+	@objc dynamic open var totalDuration:Double = 0
 
 	//The full http context
-	dynamic open var httpContext:HTTPContext?
+	@objc dynamic open var httpContext:HTTPContext?
 
 	//the verification method
 	public enum StreamOrientation:String{

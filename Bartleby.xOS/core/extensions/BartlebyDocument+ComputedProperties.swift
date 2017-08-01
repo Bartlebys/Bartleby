@@ -50,7 +50,7 @@ public extension BartlebyDocument{
     internal var _bsfsDataFileName: String { return "bsfs" + BartlebyDocument.DATA_EXTENSION }
 
     // The collection server base URL
-    public dynamic var baseURL:URL{
+    @objc public dynamic var baseURL:URL{
         return self.metadata.collaborationServerURL ?? Bartleby.configuration.API_BASE_URL
     }
     

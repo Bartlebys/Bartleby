@@ -17,19 +17,19 @@ import Foundation
 
 
 	//The url
-	dynamic open var url:URL?
+	@objc dynamic open var url:URL?
 
 	//The HTTP method
-	dynamic open var httpMethod:String = "GET"
+	@objc dynamic open var httpMethod:String = "GET"
 
 	//The Headers
-	dynamic open var headers:[String:Any]?
+	@objc dynamic open var headers:[String:Any]?
 
 	//This data is sent as the message body of the request
-	dynamic open var httpBody:Data?
+	@objc dynamic open var httpBody:Data?
 
 	//The timeout
-	dynamic open var timeout:Double = 10
+	@objc dynamic open var timeout:Double = 10
 
 
     // MARK: - Codable

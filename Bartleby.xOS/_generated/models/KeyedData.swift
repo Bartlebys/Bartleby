@@ -17,10 +17,10 @@ import Foundation
 
 
 	//The key
-	dynamic open var key:String = "\(Default.NO_KEY)"
+	@objc dynamic open var key:String = "\(Default.NO_KEY)"
 
 	//The Data
-	dynamic open var data:Data = Data()
+	@objc dynamic open var data:Data = Data()
 
 
     // MARK: - Codable

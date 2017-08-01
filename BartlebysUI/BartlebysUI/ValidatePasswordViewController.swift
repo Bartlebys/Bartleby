@@ -137,7 +137,8 @@ class ValidatePasswordViewController: IdentityStepViewController{
                                                                 // This approach bypasses the RecoverSugarViewController
                                                                 // and implements the same logic as RecoverSugarViewController.proceedToValidation
                                                                 if let string=context.responseString{
-                                                                        if let locker = Mapper <Locker>().map(JSONString:string){
+                                                                    if let data = string.data(using:Default.STRING_ENCODING){
+                                                                        if let locker = try? JSONDecoder().decode(Locker.self, from: data){
                                                                             // We have the locker
                                                                             let sugarCandidate=locker.gems
                                                                             document.metadata.sugar=sugarCandidate
@@ -152,8 +153,10 @@ class ValidatePasswordViewController: IdentityStepViewController{
                                                                             }catch{
                                                                                 self.identityWindowController?.activationMode=true
                                                                             }
-
                                                                         }
+                                                                    }
+                                                                }else{
+                                                                    self.messageTextField.stringValue=NSLocalizedString("Void Data", comment: "Void Data")
                                                                 }
                                                             }else{
                                                                 self.identityWindowController?.activationMode=true

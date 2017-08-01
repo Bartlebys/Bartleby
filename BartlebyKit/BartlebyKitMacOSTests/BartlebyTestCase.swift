@@ -33,7 +33,7 @@ public class BartlebyTestCase: XCTestCase {
         group.enter()
         let documentURL=urlByAppending(path:"testDocument\(documents.count+1).document")
         var catched:Error?=nil
-        document.save(to:documentURL , ofType: "", for: NSSaveOperationType.saveOperation, completionHandler: { error in
+        document.save(to:documentURL , ofType: "", for: NSDocument.SaveOperationType.saveOperation, completionHandler: { error in
             catched=error
             group.leave()
         })

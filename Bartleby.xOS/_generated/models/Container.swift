@@ -17,16 +17,16 @@ import Foundation
 
 
 	//You can setup a password
-	dynamic open var password:String?
+	@objc dynamic open var password:String?
 
 	//Boxes
-	dynamic open var boxes:[Box] = [Box]()
+	@objc dynamic open var boxes:[Box] = [Box]()
 
 	//Nodes
-	dynamic open var nodes:[Node] = [Node]()
+	@objc dynamic open var nodes:[Node] = [Node]()
 
 	//Blocks
-	dynamic open var blocks:[Block] = [Block]()
+	@objc dynamic open var blocks:[Block] = [Block]()
 
 
     // MARK: - Codable

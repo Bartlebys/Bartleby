@@ -64,7 +64,7 @@ extension BartlebyDocument{
      */
     open func hasChanged() -> () {
         #if os(OSX)
-            self.updateChangeCount(NSDocumentChangeType.changeDone)
+            self.updateChangeCount(NSDocument.ChangeType.changeDone)
         #else
             self.updateChangeCount(UIDocumentChangeKind.done)
         #endif

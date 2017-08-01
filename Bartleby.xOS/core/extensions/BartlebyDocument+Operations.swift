@@ -34,7 +34,7 @@ extension BartlebyDocument {
 
 
     // The push loop
-    internal func _pushLoop () -> () {
+    @objc internal func _pushLoop () -> () {
         if self.metadata.pushOnChanges{
             self.synchronizePendingOperations()
         }

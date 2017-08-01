@@ -32,7 +32,7 @@ public extension Notification.Name {
 @objc(ManagedPushOperations) open class ManagedPushOperations : ManagedModel,IterableCollectibleCollection{
 
     // Staged "pushOperations" identifiers (used to determine what should be committed on the next loop)
-    fileprivate dynamic var _staged=[String]()
+    @objc fileprivate dynamic var _staged=[String]()
 
     // Store the  "pushOperations" identifiers to be deleted on the next loop
     fileprivate var _deleted=[String]()
@@ -41,7 +41,7 @@ public extension Notification.Name {
     fileprivate var _UIDS=[String]()
 
     // The underlining "pushOperations" list
-    fileprivate dynamic var _items=[PushOperation]()  {
+    @objc fileprivate dynamic var _items=[PushOperation]()  {
         didSet {
             if !self.wantsQuietChanges && _items != oldValue {
                 self.provisionChanges(forKey: "_items",oldValue: oldValue,newValue: _items)
@@ -498,7 +498,7 @@ public extension Notification.Name {
             //self.referentDocument?.setValue(self, forKey: "pushOperations")
             arrayController?.objectClass=PushOperation.self
             arrayController?.entityName=PushOperation.className()
-            arrayController?.bind("content", to: self, withKeyPath: "_items", options: nil)
+            arrayController?.bind(NSBindingName("content"), to: self, withKeyPath: "_items", options: nil)
             // Add observer
             arrayController?.addObserver(self, forKeyPath: "selectionIndexes", options: .new, context: &self._KVOContext)
             if let indexes=self.referentDocument?.metadata.stateDictionary[self.selectedPushOperationsIndexesKey] as? [Int]{
@@ -542,7 +542,7 @@ public extension Notification.Name {
 
     open let selectedPushOperationsIndexesKey="selectedPushOperationsIndexesKey"
 
-    dynamic open var selectedPushOperations:[PushOperation]?{
+    @objc dynamic open var selectedPushOperations:[PushOperation]?{
         didSet{
             Bartleby.syncOnMain {
                 if let pushOperations = selectedPushOperations {

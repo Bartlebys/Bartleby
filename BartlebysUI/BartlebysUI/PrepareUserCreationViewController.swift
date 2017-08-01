@@ -10,11 +10,11 @@ import Cocoa
 import BartlebyKit
 
 // Creates potentialy a user.
-class PrepareUserCreationViewController: IdentityStepViewController{
+@objc class PrepareUserCreationViewController: IdentityStepViewController{
 
     override var nibName : String { return "PrepareUserCreationViewController" }
 
-    fileprivate var _suggestedIdentifications=[Identification]()
+    private var _suggestedIdentifications=[Identification]()
 
     @IBOutlet weak var box: NSBox!
 

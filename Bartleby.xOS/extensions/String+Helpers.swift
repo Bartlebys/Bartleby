@@ -75,6 +75,7 @@ public extension String {
         return NSRange(location: 0, length: self.characters.count)
     }
 
+    /*
     public func nsRange(from range: Range<String.Index>) -> NSRange {
         let utf16 = self.utf16
         let from = range.lowerBound.samePosition(in: utf16)
@@ -82,7 +83,7 @@ public extension String {
         return NSRange(location: utf16.distance(from: utf16.startIndex, to: from),
                        length: utf16.distance(from: from, to: to))
     }
-
+*/
 
     public func range(from nsRange: NSRange) -> Range<String.Index>? {
         let utf16 = self.utf16

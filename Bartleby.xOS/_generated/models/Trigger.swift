@@ -17,40 +17,40 @@ import Foundation
 
 
 	//The index is injected server side (each observationUID) has it own counter)
-	dynamic open var index:Int = -1
+	@objc dynamic open var index:Int = -1
 
 	//The dataSpace UID
-	dynamic open var spaceUID:String?
+	@objc dynamic open var spaceUID:String?
 
 	//The observation UID
-	dynamic open var observationUID:String?
+	@objc dynamic open var observationUID:String?
 
 	//The user.UID of the sender
-	dynamic open var senderUID:String?
+	@objc dynamic open var senderUID:String?
 
 	//The UID of the instance of Bartleby client that has created the trigger.
-	dynamic open var runUID:String?
+	@objc dynamic open var runUID:String?
 
 	//The action that has initiated the trigger
-	dynamic open var origin:String?
+	@objc dynamic open var origin:String?
 
 	//The targetted collection name
-	dynamic open var targetCollectionName:String = ""
+	@objc dynamic open var targetCollectionName:String = ""
 
 	//The server side creation date ( informative, use index for ranking)
-	dynamic open var creationDate:Date?
+	@objc dynamic open var creationDate:Date?
 
 	//The action name
-	dynamic open var action:String = ""
+	@objc dynamic open var action:String = ""
 
 	//A coma separated UIDS list
-	dynamic open var UIDS:String = ""
+	@objc dynamic open var UIDS:String = ""
 
 	//The sseDbProcessingDuration is computed server side in SSE context only not when calling Triggers endpoints (it can be used for QOS computation)
-	dynamic open var sseDbProcessingDuration:Double = -1
+	@objc dynamic open var sseDbProcessingDuration:Double = -1
 
 	//A collection of JSON payload
-	dynamic open var payloads:[[String:Any]]?
+	@objc dynamic open var payloads:[[String:Any]]?
 
 
     // MARK: - Codable

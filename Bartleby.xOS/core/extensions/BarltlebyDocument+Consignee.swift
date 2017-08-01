@@ -107,11 +107,11 @@ extension BartlebyDocument:ConcreteConsignee, ConcreteTracker, Consignation, Ada
                     alert.informativeText = body
                     alert.beginSheetModal( for: window, completionHandler: { (returnCode) -> Void in
                         switch returnCode {
-                        case NSAlertFirstButtonReturn:
+                        case NSApplication.ModalResponse.alertFirstButtonReturn:
                             onSelectedIndex(0)
-                        case NSAlertSecondButtonReturn:
+                        case NSApplication.ModalResponse.alertSecondButtonReturn:
                             onSelectedIndex(1)
-                        case NSAlertThirdButtonReturn:
+                        case NSApplication.ModalResponse.alertThirdButtonReturn:
                             onSelectedIndex(3)
                         default:
                             onSelectedIndex(0)

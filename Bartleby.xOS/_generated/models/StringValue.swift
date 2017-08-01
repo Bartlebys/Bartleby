@@ -17,7 +17,7 @@ import Foundation
 
 
 	//The value
-	dynamic open var value:String = ""
+	@objc dynamic open var value:String = ""
 
 
     // MARK: - Codable

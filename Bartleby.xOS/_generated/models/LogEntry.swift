@@ -17,31 +17,31 @@ import Foundation
 
 
 	//The print entry counter
-	dynamic open var counter:Int = -1
+	@objc dynamic open var counter:Int = -1
 
 	//The referent line
-	dynamic open var line:Int = -1
+	@objc dynamic open var line:Int = -1
 
 	//The elasped duration
-	dynamic open var elapsed:Double = -1
+	@objc dynamic open var elapsed:Double = -1
 
 	//the message
-	dynamic open var message:String = "no message"
+	@objc dynamic open var message:String = "no message"
 
 	//the file
-	dynamic open var file:String = "no file"
+	@objc dynamic open var file:String = "no file"
 
 	//the function
-	dynamic open var function:String = "no function"
+	@objc dynamic open var function:String = "no function"
 
 	//the category
-	dynamic open var category:String = "no category"
+	@objc dynamic open var category:String = "no category"
 
 	//Is the entry decorative or significant? decoration includes separators, etc...
-	dynamic open var decorative:Bool = false
+	@objc dynamic open var decorative:Bool = false
 
 	//Is the entry decorative or significant? decoration includes separators, etc...
-	dynamic private var _runUID:String = "\(Bartleby.runUID)"
+	@objc dynamic private var _runUID:String = "\(Bartleby.runUID)"
 
 
     // MARK: - Codable

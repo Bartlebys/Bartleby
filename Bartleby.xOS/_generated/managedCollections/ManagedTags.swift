@@ -32,7 +32,7 @@ public extension Notification.Name {
 @objc(ManagedTags) open class ManagedTags : ManagedModel,IterableCollectibleCollection{
 
     // Staged "tags" identifiers (used to determine what should be committed on the next loop)
-    fileprivate dynamic var _staged=[String]()
+    @objc fileprivate dynamic var _staged=[String]()
 
     // Store the  "tags" identifiers to be deleted on the next loop
     fileprivate var _deleted=[String]()
@@ -41,7 +41,7 @@ public extension Notification.Name {
     fileprivate var _UIDS=[String]()
 
     // The underlining "tags" list
-    fileprivate dynamic var _items=[Tag]()  {
+    @objc fileprivate dynamic var _items=[Tag]()  {
         didSet {
             if !self.wantsQuietChanges && _items != oldValue {
                 self.provisionChanges(forKey: "_items",oldValue: oldValue,newValue: _items)
@@ -553,7 +553,7 @@ public extension Notification.Name {
             //self.referentDocument?.setValue(self, forKey: "tags")
             arrayController?.objectClass=Tag.self
             arrayController?.entityName=Tag.className()
-            arrayController?.bind("content", to: self, withKeyPath: "_items", options: nil)
+            arrayController?.bind(NSBindingName("content"), to: self, withKeyPath: "_items", options: nil)
             // Add observer
             arrayController?.addObserver(self, forKeyPath: "selectionIndexes", options: .new, context: &self._KVOContext)
             if let indexes=self.referentDocument?.metadata.stateDictionary[self.selectedTagsIndexesKey] as? [Int]{
@@ -597,7 +597,7 @@ public extension Notification.Name {
 
     open let selectedTagsIndexesKey="selectedTagsIndexesKey"
 
-    dynamic open var selectedTags:[Tag]?{
+    @objc dynamic open var selectedTags:[Tag]?{
         didSet{
             Bartleby.syncOnMain {
                 if let tags = selectedTags {

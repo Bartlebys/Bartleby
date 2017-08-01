@@ -17,13 +17,13 @@ import Foundation
 
 
 	//The trigger index
-	dynamic open var triggerIndex:Int = -1
+	@objc dynamic open var triggerIndex:Int = -1
 
 	//The subjects UIDS
-	dynamic open var uids:[String] = [String]()
+	@objc dynamic open var uids:[String] = [String]()
 
 	//The triggerRelayDuration is computed server side it integrates the semaphore impact. (it can be used for QOS computation)
-	dynamic open var triggerRelayDuration:Double = 0
+	@objc dynamic open var triggerRelayDuration:Double = 0
 
 
     // MARK: - Codable

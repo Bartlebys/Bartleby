@@ -32,7 +32,7 @@ public extension Notification.Name {
 @objc(ManagedLockers) open class ManagedLockers : ManagedModel,IterableCollectibleCollection{
 
     // Staged "lockers" identifiers (used to determine what should be committed on the next loop)
-    fileprivate dynamic var _staged=[String]()
+    @objc fileprivate dynamic var _staged=[String]()
 
     // Store the  "lockers" identifiers to be deleted on the next loop
     fileprivate var _deleted=[String]()
@@ -41,7 +41,7 @@ public extension Notification.Name {
     fileprivate var _UIDS=[String]()
 
     // The underlining "lockers" list
-    fileprivate dynamic var _items=[Locker]()  {
+    @objc fileprivate dynamic var _items=[Locker]()  {
         didSet {
             if !self.wantsQuietChanges && _items != oldValue {
                 self.provisionChanges(forKey: "_items",oldValue: oldValue,newValue: _items)
@@ -553,7 +553,7 @@ public extension Notification.Name {
             //self.referentDocument?.setValue(self, forKey: "lockers")
             arrayController?.objectClass=Locker.self
             arrayController?.entityName=Locker.className()
-            arrayController?.bind("content", to: self, withKeyPath: "_items", options: nil)
+            arrayController?.bind(NSBindingName("content"), to: self, withKeyPath: "_items", options: nil)
             // Add observer
             arrayController?.addObserver(self, forKeyPath: "selectionIndexes", options: .new, context: &self._KVOContext)
             if let indexes=self.referentDocument?.metadata.stateDictionary[self.selectedLockersIndexesKey] as? [Int]{
@@ -597,7 +597,7 @@ public extension Notification.Name {
 
     open let selectedLockersIndexesKey="selectedLockersIndexesKey"
 
-    dynamic open var selectedLockers:[Locker]?{
+    @objc dynamic open var selectedLockers:[Locker]?{
         didSet{
             Bartleby.syncOnMain {
                 if let lockers = selectedLockers {

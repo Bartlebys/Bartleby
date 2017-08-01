@@ -12,9 +12,7 @@
 		E50805C11DF6C26F0085E5C3 /* Alamofire.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E50805BF1DF6C26F0085E5C3 /* Alamofire.framework */; };
 		E50805C51DF6C2E00085E5C3 /* Alamofire.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E50805C31DF6C2E00085E5C3 /* Alamofire.framework */; };
 		E50805CA1DF6C3CC0085E5C3 /* Alamofire.framework.dSYM in CopyFiles */ = {isa = PBXBuildFile; fileRef = E50805C81DF6C3CC0085E5C3 /* Alamofire.framework.dSYM */; };
-		E50805CB1DF6C3CC0085E5C3 /* ObjectMapper.framework.dSYM in CopyFiles */ = {isa = PBXBuildFile; fileRef = E50805C91DF6C3CC0085E5C3 /* ObjectMapper.framework.dSYM */; };
 		E50805CC1DF6C92D0085E5C3 /* Alamofire.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E50805BF1DF6C26F0085E5C3 /* Alamofire.framework */; };
-		E50805CD1DF6C92D0085E5C3 /* ObjectMapper.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E50805C01DF6C26F0085E5C3 /* ObjectMapper.framework */; };
 		E511D8DF1EF9609900E59CC3 /* NSRange+Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = E511D8DE1EF9609900E59CC3 /* NSRange+Helpers.swift */; };
 		E511D8E01EF9609900E59CC3 /* NSRange+Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = E511D8DE1EF9609900E59CC3 /* NSRange+Helpers.swift */; };
 		E51252751E8BAD7F00797254 /* BartlebyDocument.swift in Sources */ = {isa = PBXBuildFile; fileRef = E51251671E8BAD7F00797254 /* BartlebyDocument.swift */; };
@@ -544,7 +542,6 @@
 			dstSubfolderSpec = 16;
 			files = (
 				E50805CA1DF6C3CC0085E5C3 /* Alamofire.framework.dSYM in CopyFiles */,
-				E50805CB1DF6C3CC0085E5C3 /* ObjectMapper.framework.dSYM in CopyFiles */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -577,11 +574,8 @@
 		5BBF7D441CC8E4E400F2237B /* TransformTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TransformTests.swift; sourceTree = "<group>"; };
 		5BDEF70A1C9FE4A300D9FB70 /* AccessControlTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AccessControlTests.swift; sourceTree = "<group>"; };
 		E50805BF1DF6C26F0085E5C3 /* Alamofire.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Alamofire.framework; path = ../Carthage/Build/Mac/Alamofire.framework; sourceTree = "<group>"; };
-		E50805C01DF6C26F0085E5C3 /* ObjectMapper.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ObjectMapper.framework; path = ../Carthage/Build/Mac/ObjectMapper.framework; sourceTree = "<group>"; };
 		E50805C31DF6C2E00085E5C3 /* Alamofire.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Alamofire.framework; path = ../Carthage/Build/iOS/Alamofire.framework; sourceTree = "<group>"; };
-		E50805C41DF6C2E00085E5C3 /* ObjectMapper.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ObjectMapper.framework; path = ../Carthage/Build/iOS/ObjectMapper.framework; sourceTree = "<group>"; };
 		E50805C81DF6C3CC0085E5C3 /* Alamofire.framework.dSYM */ = {isa = PBXFileReference; lastKnownFileType = wrapper.dsym; name = Alamofire.framework.dSYM; path = ../Carthage/Build/Mac/Alamofire.framework.dSYM; sourceTree = "<group>"; };
-		E50805C91DF6C3CC0085E5C3 /* ObjectMapper.framework.dSYM */ = {isa = PBXFileReference; lastKnownFileType = wrapper.dsym; name = ObjectMapper.framework.dSYM; path = ../Carthage/Build/Mac/ObjectMapper.framework.dSYM; sourceTree = "<group>"; };
 		E51029171CB68FC50040FC2C /* BaseObjectTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BaseObjectTests.swift; sourceTree = "<group>"; };
 		E511D8DE1EF9609900E59CC3 /* NSRange+Helpers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSRange+Helpers.swift"; sourceTree = "<group>"; };
 		E51251671E8BAD7F00797254 /* BartlebyDocument.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BartlebyDocument.swift; sourceTree = "<group>"; };
@@ -873,7 +867,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				E50805CC1DF6C92D0085E5C3 /* Alamofire.framework in Frameworks */,
-				E50805CD1DF6C92D0085E5C3 /* ObjectMapper.framework in Frameworks */,
 				E577CA471CCFB31500756BDD /* BartlebyKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1376,11 +1369,8 @@
 			children = (
 				E56756B91E34B40F00E299F0 /* Security.framework */,
 				E50805C81DF6C3CC0085E5C3 /* Alamofire.framework.dSYM */,
-				E50805C91DF6C3CC0085E5C3 /* ObjectMapper.framework.dSYM */,
 				E50805C31DF6C2E00085E5C3 /* Alamofire.framework */,
-				E50805C41DF6C2E00085E5C3 /* ObjectMapper.framework */,
 				E50805BF1DF6C26F0085E5C3 /* Alamofire.framework */,
-				E50805C01DF6C26F0085E5C3 /* ObjectMapper.framework */,
 				E578DD071C3AC53300617627 /* AppKit.framework */,
 			);
 			name = Frameworks;
@@ -1555,7 +1545,7 @@
 					};
 					E56C00451C8ED4A800BB6B19 = {
 						CreatedOnToolsVersion = 7.2.1;
-						LastSwiftMigration = 0800;
+						LastSwiftMigration = 0900;
 					};
 				};
 			};
@@ -2223,7 +2213,8 @@
 				SDKROOT = macosx;
 				SKIP_INSTALL = YES;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
-				SWIFT_VERSION = 3.0;
+				SWIFT_SWIFT3_OBJC_INFERENCE = On;
+				SWIFT_VERSION = 4.0;
 				VERSIONING_SYSTEM = "apple-generic";
 				VERSION_INFO_PREFIX = "";
 			};
@@ -2284,7 +2275,8 @@
 				SDKROOT = macosx;
 				SKIP_INSTALL = YES;
 				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
-				SWIFT_VERSION = 3.0;
+				SWIFT_SWIFT3_OBJC_INFERENCE = On;
+				SWIFT_VERSION = 4.0;
 				VERSIONING_SYSTEM = "apple-generic";
 				VERSION_INFO_PREFIX = "";
 			};
@@ -2460,7 +2452,8 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = macosx;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
-				SWIFT_VERSION = 3.0;
+				SWIFT_SWIFT3_OBJC_INFERENCE = On;
+				SWIFT_VERSION = 4.0;
 			};
 			name = Debug;
 		};
@@ -2504,7 +2497,8 @@
 				PRODUCT_BUNDLE_IDENTIFIER = fr.chaosmos.BartlebyKitOSXTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = macosx;
-				SWIFT_VERSION = 3.0;
+				SWIFT_SWIFT3_OBJC_INFERENCE = On;
+				SWIFT_VERSION = 4.0;
 			};
 			name = Release;
 		};

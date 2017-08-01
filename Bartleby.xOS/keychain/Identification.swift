@@ -8,16 +8,16 @@
 
 import Foundation
 
-public struct Identification:Codable {
+open class Identification:Codable {
 
-    public var email:String=""
-    public var phoneCountryCode:String=""
-    public var phoneNumber:String=""
-    public var password:String=""
-    public var externalID:String=Default.NO_UID
-    public var supportsPasswordSyndication:Bool=Bartleby.configuration.SUPPORTS_PASSWORD_SYNDICATION_BY_DEFAULT
+    open var email:String=""
+    open var phoneCountryCode:String=""
+    open var phoneNumber:String=""
+    open var password:String=""
+    open var externalID:String=Default.NO_UID
+    open var supportsPasswordSyndication:Bool=Bartleby.configuration.SUPPORTS_PASSWORD_SYNDICATION_BY_DEFAULT
 
-    public static func identificationFrom(user:User)->Identification{
+    open static func identificationFrom(user:User)->Identification{
         var identification=Identification()
         identification.email=user.email
         identification.phoneCountryCode=user.phoneCountryCode
