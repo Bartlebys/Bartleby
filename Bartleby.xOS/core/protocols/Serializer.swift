@@ -47,7 +47,7 @@ public protocol Serializer {
     ///   - register: should we register to document and collection?
     /// - Returns: the deserialized object
     /// - Throws: Deserialization exceptions
-    func deserialize(_ data: Data,register:Bool) throws -> Serializable
+    func deserialize<T:Collectible>(_ data: Data,register:Bool) throws -> T
 
 
     /// Deserializes from an UTF8 string
@@ -56,31 +56,34 @@ public protocol Serializer {
     ///   - register: should we register to document and collection?
     /// - Returns: the deserialized object
     /// - Throws: Variable exception (serializer based)
-    func deserializeFromUTF8String(_ string:String,register:Bool)throws ->Serializable
+    func deserializeFromUTF8String<T:Collectible>(_ string:String,register:Bool)throws ->T
 
 
+    // #TODO needs to be deprecated to use Data by default
+/*
     /// Deserializes from a dictionary
     /// - Parameters:
     ///   - dictionary: the dictionary
     ///   - register: should we register to document and collection?
     /// - Returns: the deserialized object
     /// - Throws: Variable exception (serializer based)
-    func deserializeFromDictionary(_ dictionary: [String:Any],register:Bool)throws ->Serializable
-
+    func deserializeFromDictionary<T:Collectible>(_ dictionary: [String:Any],register:Bool)throws ->T
+*/
     // MARK: - Serialization
+
 
     ///  Serializes an instance
     ///
     /// - Parameter instance: the Serializable instance
     /// - Returns: the data
-    func serialize(_ instance: Serializable) -> Data
+    func serialize(_ instance: Collectible) -> Data
 
 
     /// Serializes the current instance to an UTF8 String
     ///
     /// - Parameter instance: the serializable instance
     /// - Returns: the UTF8 string
-    func serializeToUTF8String(_ instance: Serializable) -> String
+    func serializeToUTF8String(_ instance: Collectible) -> String
 
 
 }

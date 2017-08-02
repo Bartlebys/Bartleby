@@ -169,9 +169,11 @@ extension BartlebyDocument {
                 var collectibleItems=[Collectible]()
                 do {
                     for jsonDictionary in jsonDictionaries{
+                        // #TODO
+                        /*
                         if let collectible = try self.serializer.deserializeFromDictionary(jsonDictionary, register: false) as? Collectible{
                             collectibleItems.append(collectible)
-                        }
+                        }*/
                     }
                     if collectibleItems.count>0{
                         self.upsert(collectibleItems)
@@ -411,7 +413,9 @@ extension BartlebyDocument {
                                 trigger.action=action
                                 trigger.targetCollectionName=collectionName
                                 trigger.UIDS=uids
-                                trigger.payloads=payloads
+
+                                // #TODO
+                                //trigger.payloads=payloads
 
                                 // Optional data
                                 // That may be omitted on triggering

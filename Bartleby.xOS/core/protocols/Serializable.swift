@@ -24,7 +24,7 @@ public enum SerializableError: Error {
 /**
  *   Any object that is serializable can be serialized deserialized
  */
-public protocol Serializable:Initializable{
+public protocol Serializable:Initializable,Encodable,Decodable{
 
     /// Serialize the current object with its type
     ///

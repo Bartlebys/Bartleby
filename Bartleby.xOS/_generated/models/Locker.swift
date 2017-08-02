@@ -151,7 +151,7 @@ import Foundation
 		try super.init(from: decoder)
         try self.quietThrowingChanges {
 			let values = try decoder.container(keyedBy: LockerCodingKeys.self)
-			self.associatedDocumentUID = try values.decode(String.self,forKey:.associatedDocumentUID)
+			self.associatedDocumentUID = try values.decodeIfPresent(String.self,forKey:.associatedDocumentUID)
 			self.subjectUID = try values.decode(String.self,forKey:.subjectUID)
 			self.userUID = try values.decode(String.self,forKey:.userUID)
 			self.mode = Locker.Mode(rawValue: try values.decode(String.self,forKey:.mode)) ?? .autoDestructive
@@ -169,16 +169,16 @@ import Foundation
 		try super.encode(to:encoder)
 		var container = encoder.container(keyedBy: LockerCodingKeys.self)
 		try container.encodeIfPresent(self.associatedDocumentUID,forKey:.associatedDocumentUID)
-		try container.encodeIfPresent(self.subjectUID,forKey:.subjectUID)
-		try container.encodeIfPresent(self.userUID,forKey:.userUID)
-		try container.encodeIfPresent(self.mode.rawValue ,forKey:.mode)
-		try container.encodeIfPresent(self.verificationMethod.rawValue ,forKey:.verificationMethod)
-		try container.encodeIfPresent(self.security.rawValue ,forKey:.security)
-		try container.encodeIfPresent(self.code,forKey:.code)
-		try container.encodeIfPresent(self.numberOfAttempt,forKey:.numberOfAttempt)
-		try container.encodeIfPresent(self.startDate,forKey:.startDate)
-		try container.encodeIfPresent(self.endDate,forKey:.endDate)
-		try container.encodeIfPresent(self.gems,forKey:.gems)
+		try container.encode(self.subjectUID,forKey:.subjectUID)
+		try container.encode(self.userUID,forKey:.userUID)
+		try container.encode(self.mode.rawValue ,forKey:.mode)
+		try container.encode(self.verificationMethod.rawValue ,forKey:.verificationMethod)
+		try container.encode(self.security.rawValue ,forKey:.security)
+		try container.encode(self.code,forKey:.code)
+		try container.encode(self.numberOfAttempt,forKey:.numberOfAttempt)
+		try container.encode(self.startDate,forKey:.startDate)
+		try container.encode(self.endDate,forKey:.endDate)
+		try container.encode(self.gems,forKey:.gems)
     }
 
 

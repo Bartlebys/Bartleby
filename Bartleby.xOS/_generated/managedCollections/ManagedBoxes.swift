@@ -476,7 +476,7 @@ public extension Notification.Name {
     /// - Parameter data: the serialized Object
     open func addObjectFrom(_ data:Data){
         do{
-            if let box:Box = try self.referentDocument?.serializer.deserialize(data,register:true) as? Box {
+            if let box:Box = try self.referentDocument?.serializer.deserialize(data,register:true){
                 if let owners = Bartleby.registredManagedModelByUIDs(box.ownedBy){
                     for owner in owners{
                         // Re associate the relations.
@@ -604,9 +604,8 @@ public extension Notification.Name {
                      let indexes:[Int]=boxes.map({ (box) -> Int in
                         return boxes.index(where:{ return $0.UID == box.UID })!
                     })
-                    self.referentDocument?.metadata.stateDictionary[selectedBoxesIndexesKey]=indexes
-                }else{
-                    self.referentDocument?.metadata.stateDictionary[selectedBoxesIndexesKey]=[Int]()
+                    let encodedIndexes = try? JSONEncoder().encode(indexes) ?? "[]".data(using: Default.STRING_ENCODING)!
+                    self.referentDocument?.metadata.stateDictionary[selectedBoxesIndexesKey] = encodedIndexes
                 }
                 NotificationCenter.default.post(name:NSNotification.Name.Boxes.selectionChanged, object: nil)
             }

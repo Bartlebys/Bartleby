@@ -13,13 +13,19 @@ extension ManagedModel:JSONString{
     // MARK:-  JSONString
 
     open func toJSONString(_ prettyPrint:Bool)->String{
-        // #TODO
-        //if let j=Mapper().toJSONString(self, prettyPrint:prettyPrint) {
-        //    return j
-        //} else {
-            return "{}"
-        //}
+        self.serializeToUFf8String()
+        let encoder = JSONEncoder()
+        if prettyPrint{
+            encoder.outputFormatting = .prettyPrinted
+        }
+        do{
+            let data = try JSONEncoder().encode(self)
+            return data.optionalString(using: Default.STRING_ENCODING) ?? Default.DESERIALIZATION_HAS_FAILED
+        }catch{
+            return Default.DESERIALIZATION_HAS_FAILED
+        }
     }
+
 
     // MARK: - CustomStringConvertible
 

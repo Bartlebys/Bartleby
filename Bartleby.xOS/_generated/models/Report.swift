@@ -43,7 +43,7 @@ import Foundation
 		try super.init(from: decoder)
         try self.quietThrowingChanges {
 			let values = try decoder.container(keyedBy: ReportCodingKeys.self)
-			self.metadata = try values.decode(DocumentMetadata.self,forKey:.metadata)
+			self.metadata = try values.decodeIfPresent(DocumentMetadata.self,forKey:.metadata)
 			self.logs = try values.decode([LogEntry].self,forKey:.logs)
 			self.metrics = try values.decode([Metrics].self,forKey:.metrics)
         }
@@ -53,8 +53,8 @@ import Foundation
 		try super.encode(to:encoder)
 		var container = encoder.container(keyedBy: ReportCodingKeys.self)
 		try container.encodeIfPresent(self.metadata,forKey:.metadata)
-		try container.encodeIfPresent(self.logs,forKey:.logs)
-		try container.encodeIfPresent(self.metrics,forKey:.metrics)
+		try container.encode(self.logs,forKey:.logs)
+		try container.encode(self.metrics,forKey:.metrics)
     }
 
 

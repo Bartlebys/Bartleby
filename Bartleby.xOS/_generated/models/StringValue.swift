@@ -38,7 +38,7 @@ import Foundation
     override open func encode(to encoder: Encoder) throws {
 		try super.encode(to:encoder)
 		var container = encoder.container(keyedBy: StringValueCodingKeys.self)
-		try container.encodeIfPresent(self.value,forKey:.value)
+		try container.encode(self.value,forKey:.value)
     }
 
 

@@ -91,7 +91,7 @@ import Foundation
     override open func encode(to encoder: Encoder) throws {
 		try super.encode(to:encoder)
 		var container = encoder.container(keyedBy: payloadCodingKeys.self)
-		try container.encodeIfPresent(self._payload,forKey:._payload)
+		try container.encode(self._payload,forKey:._payload)
     }
 
 
@@ -123,7 +123,7 @@ import Foundation
 				Bartleby.markCommitted(locker.UID)
 
             }
-            pushOperation.toDictionary=operationInstance.dictionaryRepresentation()
+            pushOperation.serialized=operationInstance.serialize()
             ic.add(pushOperation, commit:false)
         }catch{
             document.dispatchAdaptiveMessage(context,

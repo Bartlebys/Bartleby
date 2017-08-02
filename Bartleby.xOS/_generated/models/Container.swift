@@ -43,7 +43,7 @@ import Foundation
 		try super.init(from: decoder)
         try self.quietThrowingChanges {
 			let values = try decoder.container(keyedBy: ContainerCodingKeys.self)
-			self.password = try values.decode(String.self,forKey:.password)
+			self.password = try values.decodeIfPresent(String.self,forKey:.password)
 			self.boxes = try values.decode([Box].self,forKey:.boxes)
 			self.nodes = try values.decode([Node].self,forKey:.nodes)
 			self.blocks = try values.decode([Block].self,forKey:.blocks)
@@ -54,9 +54,9 @@ import Foundation
 		try super.encode(to:encoder)
 		var container = encoder.container(keyedBy: ContainerCodingKeys.self)
 		try container.encodeIfPresent(self.password,forKey:.password)
-		try container.encodeIfPresent(self.boxes,forKey:.boxes)
-		try container.encodeIfPresent(self.nodes,forKey:.nodes)
-		try container.encodeIfPresent(self.blocks,forKey:.blocks)
+		try container.encode(self.boxes,forKey:.boxes)
+		try container.encode(self.nodes,forKey:.nodes)
+		try container.encode(self.blocks,forKey:.blocks)
     }
 
 

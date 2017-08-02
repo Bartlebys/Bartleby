@@ -48,9 +48,9 @@ import Foundation
     override open func encode(to encoder: Encoder) throws {
 		try super.encode(to:encoder)
 		var container = encoder.container(keyedBy: AcknowledgmentCodingKeys.self)
-		try container.encodeIfPresent(self.triggerIndex,forKey:.triggerIndex)
-		try container.encodeIfPresent(self.uids,forKey:.uids)
-		try container.encodeIfPresent(self.triggerRelayDuration,forKey:.triggerRelayDuration)
+		try container.encode(self.triggerIndex,forKey:.triggerIndex)
+		try container.encode(self.uids,forKey:.uids)
+		try container.encode(self.triggerRelayDuration,forKey:.triggerRelayDuration)
     }
 
 

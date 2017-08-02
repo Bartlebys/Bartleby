@@ -100,6 +100,8 @@ extension BartlebyDocument {
                                                 for itemRep in collectionDictionary{
                                                     if let itemRepDictionary = itemRep as? [String:Any]{
                                                         do {
+                                                            // #TODO
+                                                            /*
                                                             if let instance=try self.serializer.deserializeFromDictionary(itemRepDictionary, register: false) as? Collectible{
                                                                 if let user:User=instance as? User{
                                                                     // We donnot want to expose the document current user
@@ -110,7 +112,7 @@ extension BartlebyDocument {
                                                                     // We want to upsert any object
                                                                     proxy.upsert(instance,commit:false)
                                                                 }
-                                                            }
+                                                            }*/
                                                         }catch{
                                                             issues.append("\(error)")
                                                         }

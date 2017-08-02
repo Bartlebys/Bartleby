@@ -169,6 +169,7 @@ extension BartlebyDocument {
             self.metadata.bunchInProgress=true
 
             for operation in bunchOfOperations{
+                /*
                 if let serialized=operation.toDictionary {
                     if let o = try? self.serializer.deserializeFromDictionary(serialized,register: false) {
                         if let op=o as? BartlebyOperation {
@@ -226,7 +227,9 @@ extension BartlebyDocument {
                     self.log(completion, file: #file, function: #function, line: #line, category: "Operations")
                     handlers?.on(completion)
                 }
+  */
             }
+
         } else {
             let completion=Completion.successState()
             completion.message=NSLocalizedString("Void bunch of operations", tableName:"operations", comment: "Void bunch of operations")

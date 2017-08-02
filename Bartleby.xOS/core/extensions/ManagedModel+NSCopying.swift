@@ -8,14 +8,16 @@
 
 import Foundation
 
-
+// #TODO ???
+/*
 extension ManagedModel:NSCopying{
 
     open func copy(with zone: NSZone?) -> Any {
         if let document=self.referentDocument{
             let data: Data = document.serializer.serialize(self)
             do{
-                if let copied = try document.serializer.deserialize(data, register: false) as? ManagedModel{
+                let SerializableType = type(of:self)
+                if let copied = try document.serializer.deserialize(data, register: false) as? SerializableType{
                     // Reallocate the collection ? is equivalent to register
                     //copied.collection=self.collection
                     return copied as Any
@@ -29,3 +31,4 @@ extension ManagedModel:NSCopying{
     }
 
 }
+*/

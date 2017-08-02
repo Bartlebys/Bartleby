@@ -50,7 +50,7 @@ import Foundation
 	@objc dynamic open var sseDbProcessingDuration:Double = -1
 
 	//A collection of JSON payload
-	@objc dynamic open var payloads:[[String:Any]]?
+	@objc dynamic open var payloads:[Data]?
 
 
     // MARK: - Codable
@@ -76,34 +76,34 @@ import Foundation
         try self.quietThrowingChanges {
 			let values = try decoder.container(keyedBy: TriggerCodingKeys.self)
 			self.index = try values.decode(Int.self,forKey:.index)
-			self.spaceUID = try values.decode(String.self,forKey:.spaceUID)
+			self.spaceUID = try values.decodeIfPresent(String.self,forKey:.spaceUID)
 			self.observationUID = try values.decodeIfPresent(String.self,forKey:.observationUID)
-			self.senderUID = try values.decode(String.self,forKey:.senderUID)
-			self.runUID = try values.decode(String.self,forKey:.runUID)
+			self.senderUID = try values.decodeIfPresent(String.self,forKey:.senderUID)
+			self.runUID = try values.decodeIfPresent(String.self,forKey:.runUID)
 			self.origin = try values.decodeIfPresent(String.self,forKey:.origin)
 			self.targetCollectionName = try values.decode(String.self,forKey:.targetCollectionName)
 			self.creationDate = try values.decodeIfPresent(Date.self,forKey:.creationDate)
 			self.action = try values.decode(String.self,forKey:.action)
 			self.UIDS = try values.decode(String.self,forKey:.UIDS)
 			self.sseDbProcessingDuration = try values.decode(Double.self,forKey:.sseDbProcessingDuration)
-			self.payloads = try values.decode([[String:Any]].self,forKey:.payloads)
+			self.payloads = try values.decodeIfPresent([Data].self,forKey:.payloads)
         }
     }
 
     override open func encode(to encoder: Encoder) throws {
 		try super.encode(to:encoder)
 		var container = encoder.container(keyedBy: TriggerCodingKeys.self)
-		try container.encodeIfPresent(self.index,forKey:.index)
+		try container.encode(self.index,forKey:.index)
 		try container.encodeIfPresent(self.spaceUID,forKey:.spaceUID)
 		try container.encodeIfPresent(self.observationUID,forKey:.observationUID)
 		try container.encodeIfPresent(self.senderUID,forKey:.senderUID)
 		try container.encodeIfPresent(self.runUID,forKey:.runUID)
 		try container.encodeIfPresent(self.origin,forKey:.origin)
-		try container.encodeIfPresent(self.targetCollectionName,forKey:.targetCollectionName)
+		try container.encode(self.targetCollectionName,forKey:.targetCollectionName)
 		try container.encodeIfPresent(self.creationDate,forKey:.creationDate)
-		try container.encodeIfPresent(self.action,forKey:.action)
-		try container.encodeIfPresent(self.UIDS,forKey:.UIDS)
-		try container.encodeIfPresent(self.sseDbProcessingDuration,forKey:.sseDbProcessingDuration)
+		try container.encode(self.action,forKey:.action)
+		try container.encode(self.UIDS,forKey:.UIDS)
+		try container.encode(self.sseDbProcessingDuration,forKey:.sseDbProcessingDuration)
 		try container.encodeIfPresent(self.payloads,forKey:.payloads)
     }
 
@@ -171,7 +171,7 @@ import Foundation
                     self.sseDbProcessingDuration=casted
                 }
             case "payloads":
-                if let casted=value as? [[String:Any]]{
+                if let casted=value as? [Data]{
                     self.payloads=casted
                 }
             default:

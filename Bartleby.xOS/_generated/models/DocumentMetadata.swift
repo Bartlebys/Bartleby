@@ -71,8 +71,8 @@ import Foundation
 	//A collection of CollectionMetadatum
 	@objc dynamic open var collectionsMetadata:[CollectionMetadatum] = [CollectionMetadatum]()
 
-	//The State dictionary to insure document persistency 
-	@objc dynamic open var stateDictionary:[String:Any] = [String:AnyObject]()
+	//The State 'dictionary' to insure document persistency 
+	@objc dynamic open var stateDictionary:[String:Data] = [String:Data]()
 
 	//A collection of KeyedData
 	@objc dynamic open var URLBookmarkData:[KeyedData] = [KeyedData]()
@@ -189,13 +189,13 @@ import Foundation
 			self.secondaryAuthFactorRequired = try values.decode(Bool.self,forKey:.secondaryAuthFactorRequired)
 			self.identificationMethod = DocumentMetadata.IdentificationMethod(rawValue: try values.decode(String.self,forKey:.identificationMethod)) ?? .key
 			self.appGroup = try values.decode(String.self,forKey:.appGroup)
-			self.identificationValue = try values.decode(String.self,forKey:.identificationValue)
-			self.collaborationServerURL = try values.decode(URL.self,forKey:.collaborationServerURL)
+			self.identificationValue = try values.decodeIfPresent(String.self,forKey:.identificationValue)
+			self.collaborationServerURL = try values.decodeIfPresent(URL.self,forKey:.collaborationServerURL)
 			self.registred = try values.decode(Bool.self,forKey:.registred)
 			self.collectionsMetadata = try values.decode([CollectionMetadatum].self,forKey:.collectionsMetadata)
-			self.stateDictionary = try values.decode([String:Any].self,forKey:.stateDictionary)
+			self.stateDictionary = try values.decode([String:Data].self,forKey:.stateDictionary)
 			self.URLBookmarkData = try values.decode([KeyedData].self,forKey:.URLBookmarkData)
-			self.preferredFileName = try values.decode(String.self,forKey:.preferredFileName)
+			self.preferredFileName = try values.decodeIfPresent(String.self,forKey:.preferredFileName)
 			self.triggersIndexesDebugHistory = try values.decode([Int].self,forKey:.triggersIndexesDebugHistory)
 			self.ownedTriggersIndexes = try values.decode([Int].self,forKey:.ownedTriggersIndexes)
 			self.lastIntegratedTriggerIndex = try values.decode(Int.self,forKey:.lastIntegratedTriggerIndex)
@@ -214,34 +214,34 @@ import Foundation
     override open func encode(to encoder: Encoder) throws {
 		try super.encode(to:encoder)
 		var container = encoder.container(keyedBy: DocumentMetadataCodingKeys.self)
-		try container.encodeIfPresent(self.spaceUID,forKey:.spaceUID)
-		try container.encodeIfPresent(self.persistentUID,forKey:.persistentUID)
-		try container.encodeIfPresent(self.currentUserUID,forKey:.currentUserUID)
-		try container.encodeIfPresent(self.currentUserEmail,forKey:.currentUserEmail)
-		try container.encodeIfPresent(self.currentUserFullPhoneNumber,forKey:.currentUserFullPhoneNumber)
-		try container.encodeIfPresent(self.lockerUID,forKey:.lockerUID)
-		try container.encodeIfPresent(self.secondaryAuthFactorRequired,forKey:.secondaryAuthFactorRequired)
-		try container.encodeIfPresent(self.identificationMethod.rawValue ,forKey:.identificationMethod)
-		try container.encodeIfPresent(self.appGroup,forKey:.appGroup)
+		try container.encode(self.spaceUID,forKey:.spaceUID)
+		try container.encode(self.persistentUID,forKey:.persistentUID)
+		try container.encode(self.currentUserUID,forKey:.currentUserUID)
+		try container.encode(self.currentUserEmail,forKey:.currentUserEmail)
+		try container.encode(self.currentUserFullPhoneNumber,forKey:.currentUserFullPhoneNumber)
+		try container.encode(self.lockerUID,forKey:.lockerUID)
+		try container.encode(self.secondaryAuthFactorRequired,forKey:.secondaryAuthFactorRequired)
+		try container.encode(self.identificationMethod.rawValue ,forKey:.identificationMethod)
+		try container.encode(self.appGroup,forKey:.appGroup)
 		try container.encodeIfPresent(self.identificationValue,forKey:.identificationValue)
 		try container.encodeIfPresent(self.collaborationServerURL,forKey:.collaborationServerURL)
-		try container.encodeIfPresent(self.registred,forKey:.registred)
-		try container.encodeIfPresent(self.collectionsMetadata,forKey:.collectionsMetadata)
-		try container.encodeIfPresent(self.stateDictionary,forKey:.stateDictionary)
-		try container.encodeIfPresent(self.URLBookmarkData,forKey:.URLBookmarkData)
+		try container.encode(self.registred,forKey:.registred)
+		try container.encode(self.collectionsMetadata,forKey:.collectionsMetadata)
+		try container.encode(self.stateDictionary,forKey:.stateDictionary)
+		try container.encode(self.URLBookmarkData,forKey:.URLBookmarkData)
 		try container.encodeIfPresent(self.preferredFileName,forKey:.preferredFileName)
-		try container.encodeIfPresent(self.triggersIndexesDebugHistory,forKey:.triggersIndexesDebugHistory)
-		try container.encodeIfPresent(self.ownedTriggersIndexes,forKey:.ownedTriggersIndexes)
-		try container.encodeIfPresent(self.lastIntegratedTriggerIndex,forKey:.lastIntegratedTriggerIndex)
-		try container.encodeIfPresent(self.receivedTriggers,forKey:.receivedTriggers)
-		try container.encodeIfPresent(self.operationsQuarantine,forKey:.operationsQuarantine)
-		try container.encodeIfPresent(self.shouldBeOnline,forKey:.shouldBeOnline)
-		try container.encodeIfPresent(self.online,forKey:.online)
-		try container.encodeIfPresent(self.pushOnChanges,forKey:.pushOnChanges)
-		try container.encodeIfPresent(self.saveThePassword,forKey:.saveThePassword)
-		try container.encodeIfPresent(self.cumulatedUpMetricsDuration,forKey:.cumulatedUpMetricsDuration)
-		try container.encodeIfPresent(self.totalNumberOfUpMetrics,forKey:.totalNumberOfUpMetrics)
-		try container.encodeIfPresent(self.qosIndice,forKey:.qosIndice)
+		try container.encode(self.triggersIndexesDebugHistory,forKey:.triggersIndexesDebugHistory)
+		try container.encode(self.ownedTriggersIndexes,forKey:.ownedTriggersIndexes)
+		try container.encode(self.lastIntegratedTriggerIndex,forKey:.lastIntegratedTriggerIndex)
+		try container.encode(self.receivedTriggers,forKey:.receivedTriggers)
+		try container.encode(self.operationsQuarantine,forKey:.operationsQuarantine)
+		try container.encode(self.shouldBeOnline,forKey:.shouldBeOnline)
+		try container.encode(self.online,forKey:.online)
+		try container.encode(self.pushOnChanges,forKey:.pushOnChanges)
+		try container.encode(self.saveThePassword,forKey:.saveThePassword)
+		try container.encode(self.cumulatedUpMetricsDuration,forKey:.cumulatedUpMetricsDuration)
+		try container.encode(self.totalNumberOfUpMetrics,forKey:.totalNumberOfUpMetrics)
+		try container.encode(self.qosIndice,forKey:.qosIndice)
     }
 
 
@@ -332,7 +332,7 @@ import Foundation
                     self.collectionsMetadata=casted
                 }
             case "stateDictionary":
-                if let casted=value as? [String:Any]{
+                if let casted=value as? [String:Data]{
                     self.stateDictionary=casted
                 }
             case "URLBookmarkData":

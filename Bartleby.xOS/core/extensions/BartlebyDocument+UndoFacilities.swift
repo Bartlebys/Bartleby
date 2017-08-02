@@ -24,10 +24,11 @@ extension BartlebyDocument{
     ///   - serializedManagedModels: the serialized managed Models instances
     ///   - undoActionName: the name of the action to undo
     ///   - doAfterAction: a closure called after undo / redo (e.g to update the UI)
-    public func registerUndoChangesOn<TargetType>(withTarget target: TargetType,
-                                      serializedManagedModels:[Data],
-                                      undoActionName:String,
-                                      doAfterAction:@escaping(TargetType)->(Swift.Void)) where TargetType : AnyObject{
+    public func registerUndoChangesOn<TargetType,ModelType>(withTarget target: TargetType,
+                                                            modelType:ModelType,
+                                                            serializedManagedModels:[Data],
+                                                            undoActionName:String,
+                                                            doAfterAction:@escaping(TargetType)->(Swift.Void)) where TargetType : AnyObject , ModelType:Collectible {
         do{
             if let undoManager: UndoManager = self.undoManager{
                 if undoManager.groupingLevel > 0 {
@@ -38,14 +39,15 @@ extension BartlebyDocument{
                 }
                 var serializedData  = [Data]()
                 for data in serializedManagedModels{
-                    if let deserializedModel = try self.serializer.deserialize(data, register: false) as? ManagedModel{
-                        let currentModel:ManagedModel = try Bartleby.registredObjectByUID(deserializedModel.UID)
-                        serializedData.append(currentModel.serialize())
-                        try currentModel.mergeWith(deserializedModel)
-                    }
+                    let deserializedModel:ModelType = try self.serializer.deserialize(data, register: false)
+                    let currentModel:ManagedModel = try Bartleby.registredObjectByUID(deserializedModel.UID)
+                    serializedData.append(currentModel.serialize())
+                    try currentModel.mergeWith(deserializedModel)
+
                 }
                 undoManager.registerUndo(withTarget: self, handler: { (targetSelf) in
                     targetSelf.registerUndoChangesOn(withTarget:target,
+                                                     modelType:modelType,
                                                      serializedManagedModels:serializedData,
                                                      undoActionName: undoActionName,
                                                      doAfterAction: doAfterAction)

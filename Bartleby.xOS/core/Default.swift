@@ -214,4 +214,7 @@ public struct Default {
     // A bunch of char in wich to pick to compose a random password
     static public let DEFAULT_PASSWORD_CHAR_CART="123456789ABCDEFGHJKMNPQRSTUVWXYZ"
 
+
+    static public let DESERIALIZATION_HAS_FAILED = NSLocalizedString("Deserialization has failed", comment: "Deserialization has failed")
+
 }

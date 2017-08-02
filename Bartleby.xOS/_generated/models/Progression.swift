@@ -79,14 +79,14 @@ import Foundation
 		try super.encode(to:encoder)
 		var container = encoder.container(keyedBy: ProgressionCodingKeys.self)
 		try container.encodeIfPresent(self.startTime,forKey:.startTime)
-		try container.encodeIfPresent(self.currentTaskIndex,forKey:.currentTaskIndex)
-		try container.encodeIfPresent(self.totalTaskCount,forKey:.totalTaskCount)
-		try container.encodeIfPresent(self.currentPercentProgress,forKey:.currentPercentProgress)
-		try container.encodeIfPresent(self.message,forKey:.message)
-		try container.encodeIfPresent(self.informations,forKey:.informations)
+		try container.encode(self.currentTaskIndex,forKey:.currentTaskIndex)
+		try container.encode(self.totalTaskCount,forKey:.totalTaskCount)
+		try container.encode(self.currentPercentProgress,forKey:.currentPercentProgress)
+		try container.encode(self.message,forKey:.message)
+		try container.encode(self.informations,forKey:.informations)
 		try container.encodeIfPresent(self.data,forKey:.data)
-		try container.encodeIfPresent(self.category,forKey:.category)
-		try container.encodeIfPresent(self.externalIdentifier,forKey:.externalIdentifier)
+		try container.encode(self.category,forKey:.category)
+		try container.encode(self.externalIdentifier,forKey:.externalIdentifier)
     }
 
 

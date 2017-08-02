@@ -48,9 +48,9 @@ import Foundation
     override open func encode(to encoder: Encoder) throws {
 		try super.encode(to:encoder)
 		var container = encoder.container(keyedBy: KeyedChangesCodingKeys.self)
-		try container.encodeIfPresent(self.elapsed,forKey:.elapsed)
-		try container.encodeIfPresent(self.key,forKey:.key)
-		try container.encodeIfPresent(self.changes,forKey:.changes)
+		try container.encode(self.elapsed,forKey:.elapsed)
+		try container.encode(self.key,forKey:.key)
+		try container.encode(self.changes,forKey:.changes)
     }
 
 

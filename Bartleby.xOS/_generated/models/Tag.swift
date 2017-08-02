@@ -58,9 +58,9 @@ import Foundation
 		try super.init(from: decoder)
         try self.quietThrowingChanges {
 			let values = try decoder.container(keyedBy: TagCodingKeys.self)
-			self.creationDate = try values.decode(Date.self,forKey:.creationDate)
-			self.color = try values.decode(String.self,forKey:.color)
-			self.icon = try values.decode(String.self,forKey:.icon)
+			self.creationDate = try values.decodeIfPresent(Date.self,forKey:.creationDate)
+			self.color = try values.decodeIfPresent(String.self,forKey:.color)
+			self.icon = try values.decodeIfPresent(String.self,forKey:.icon)
         }
     }
 

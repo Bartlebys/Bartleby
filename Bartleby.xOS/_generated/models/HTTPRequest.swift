@@ -47,10 +47,10 @@ import Foundation
 		try super.init(from: decoder)
         try self.quietThrowingChanges {
 			let values = try decoder.container(keyedBy: HTTPRequestCodingKeys.self)
-			self.url = try values.decode(URL.self,forKey:.url)
+			self.url = try values.decodeIfPresent(URL.self,forKey:.url)
 			self.httpMethod = try values.decode(String.self,forKey:.httpMethod)
-			self.headers = try values.decode([String:Any].self,forKey:.headers)
-			self.httpBody = try values.decode(Data.self,forKey:.httpBody)
+			self.headers = try values.decodeIfPresent([String:Any].self,forKey:.headers)
+			self.httpBody = try values.decodeIfPresent(Data.self,forKey:.httpBody)
 			self.timeout = try values.decode(Double.self,forKey:.timeout)
         }
     }
@@ -59,10 +59,10 @@ import Foundation
 		try super.encode(to:encoder)
 		var container = encoder.container(keyedBy: HTTPRequestCodingKeys.self)
 		try container.encodeIfPresent(self.url,forKey:.url)
-		try container.encodeIfPresent(self.httpMethod,forKey:.httpMethod)
+		try container.encode(self.httpMethod,forKey:.httpMethod)
 		try container.encodeIfPresent(self.headers,forKey:.headers)
 		try container.encodeIfPresent(self.httpBody,forKey:.httpBody)
-		try container.encodeIfPresent(self.timeout,forKey:.timeout)
+		try container.encode(self.timeout,forKey:.timeout)
     }
 
 

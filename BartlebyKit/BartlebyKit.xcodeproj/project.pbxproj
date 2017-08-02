@@ -519,6 +519,7 @@
 		E5B129041D1C317300D61261 /* TestsConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = E52F94891D01C23A005BDA2D /* TestsConfiguration.swift */; };
 		E5C28EF41F2CE6B200138146 /* BartlebyDocument+UndoFacilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5C28EF31F2CE6B200138146 /* BartlebyDocument+UndoFacilities.swift */; };
 		E5C28EF51F2CE6B200138146 /* BartlebyDocument+UndoFacilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5C28EF31F2CE6B200138146 /* BartlebyDocument+UndoFacilities.swift */; };
+		E5C62B531F32174200C4BE3C /* DynamicDeserializer.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5C62B521F32174200C4BE3C /* DynamicDeserializer.swift */; };
 		E5EF6CFB1EE9B1B700990C48 /* String+Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5EF6CFA1EE9B1B700990C48 /* String+Helpers.swift */; };
 		E5EF6CFC1EE9B1B700990C48 /* String+Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5EF6CFA1EE9B1B700990C48 /* String+Helpers.swift */; };
 		E5F5384B1DEAE4EA008DEBF7 /* MultiDocumentsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5F5384A1DEAE4EA008DEBF7 /* MultiDocumentsTests.swift */; };
@@ -840,6 +841,7 @@
 		E58695981F309CFA003B30B8 /* Data+String.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Data+String.swift"; sourceTree = "<group>"; };
 		E590EB231D0EF8DC00150E0B /* UsersCreationLoadTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UsersCreationLoadTest.swift; sourceTree = "<group>"; };
 		E5C28EF31F2CE6B200138146 /* BartlebyDocument+UndoFacilities.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "BartlebyDocument+UndoFacilities.swift"; sourceTree = "<group>"; };
+		E5C62B521F32174200C4BE3C /* DynamicDeserializer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DynamicDeserializer.swift; sourceTree = "<group>"; };
 		E5CEFB511C3BFCBB00C36CBA /* BartlebyKit-Bridging-Header.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "BartlebyKit-Bridging-Header.h"; sourceTree = "<group>"; };
 		E5EF6CFA1EE9B1B700990C48 /* String+Helpers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "String+Helpers.swift"; sourceTree = "<group>"; };
 		E5F5384A1DEAE4EA008DEBF7 /* MultiDocumentsTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MultiDocumentsTests.swift; sourceTree = "<group>"; };
@@ -912,6 +914,7 @@
 				E51252601E8BAD7F00797254 /* keychain */,
 				E51252661E8BAD7F00797254 /* operations */,
 				E51252701E8BAD7F00797254 /* tools */,
+				E5C62B521F32174200C4BE3C /* DynamicDeserializer.swift */,
 			);
 			name = Bartleby.xOS;
 			path = ../Bartleby.xOS;
@@ -945,10 +948,10 @@
 		E51251701E8BAD7F00797254 /* models */ = {
 			isa = PBXGroup;
 			children = (
-				E5598ECD1F18FE7E000617C6 /* DataValue.swift */,
 				E5598ECE1F18FE7E000617C6 /* StringValue.swift */,
 				E51251711E8BAD7F00797254 /* Acknowledgment.swift */,
 				E51251721E8BAD7F00797254 /* Block.swift */,
+				E5598ECD1F18FE7E000617C6 /* DataValue.swift */,
 				E51251731E8BAD7F00797254 /* Box.swift */,
 				E51251741E8BAD7F00797254 /* CollectionMetadatum.swift */,
 				E51251751E8BAD7F00797254 /* Completion.swift */,
@@ -1764,6 +1767,7 @@
 				E51254331E8BAD7F00797254 /* ServerErrorCodes.swift in Sources */,
 				E51252A31E8BAD7F00797254 /* Metrics.swift in Sources */,
 				E51252FF1E8BAD7F00797254 /* ReadTagsByIds.swift in Sources */,
+				E5C62B531F32174200C4BE3C /* DynamicDeserializer.swift in Sources */,
 				E512531B1E8BAD7F00797254 /* UpdateTags.swift in Sources */,
 				E51252E11E8BAD7F00797254 /* DeleteUser.swift in Sources */,
 				E512543B1E8BAD7F00797254 /* URL+Utilities.swift in Sources */,

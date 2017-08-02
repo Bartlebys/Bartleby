@@ -23,8 +23,8 @@ import Foundation
 	//The unique identifier of the related Command
 	@objc dynamic open var commandUID:String?
 
-	//The dictionary representation of a serialized action call
-	@objc dynamic open var toDictionary:[String:Any]?
+	//The serialized action call
+	@objc dynamic open var serialized:Data?
 
 	//The last response serialized data
 	open var responseData:Data?
@@ -56,7 +56,7 @@ import Foundation
 
     enum PushOperationCodingKeys: String,CodingKey{
 		case commandUID
-		case toDictionary
+		case serialized
 		case responseData
 		case completionState
 		case status
@@ -69,14 +69,14 @@ import Foundation
 		try super.init(from: decoder)
         try self.quietThrowingChanges {
 			let values = try decoder.container(keyedBy: PushOperationCodingKeys.self)
-			self.commandUID = try values.decode(String.self,forKey:.commandUID)
-			self.toDictionary = try values.decode([String:Any].self,forKey:.toDictionary)
-			self.responseData = try values.decode(Data.self,forKey:.responseData)
-			self.completionState = try values.decode(Completion.self,forKey:.completionState)
+			self.commandUID = try values.decodeIfPresent(String.self,forKey:.commandUID)
+			self.serialized = try values.decodeIfPresent(Data.self,forKey:.serialized)
+			self.responseData = try values.decodeIfPresent(Data.self,forKey:.responseData)
+			self.completionState = try values.decodeIfPresent(Completion.self,forKey:.completionState)
 			self.status = PushOperation.Status(rawValue: try values.decode(String.self,forKey:.status)) ?? .none
 			self.counter = try values.decode(Int.self,forKey:.counter)
-			self.creationDate = try values.decode(Date.self,forKey:.creationDate)
-			self.lastInvocationDate = try values.decode(Date.self,forKey:.lastInvocationDate)
+			self.creationDate = try values.decodeIfPresent(Date.self,forKey:.creationDate)
+			self.lastInvocationDate = try values.decodeIfPresent(Date.self,forKey:.lastInvocationDate)
         }
     }
 
@@ -84,11 +84,11 @@ import Foundation
 		try super.encode(to:encoder)
 		var container = encoder.container(keyedBy: PushOperationCodingKeys.self)
 		try container.encodeIfPresent(self.commandUID,forKey:.commandUID)
-		try container.encodeIfPresent(self.toDictionary,forKey:.toDictionary)
+		try container.encodeIfPresent(self.serialized,forKey:.serialized)
 		try container.encodeIfPresent(self.responseData,forKey:.responseData)
 		try container.encodeIfPresent(self.completionState,forKey:.completionState)
-		try container.encodeIfPresent(self.status.rawValue ,forKey:.status)
-		try container.encodeIfPresent(self.counter,forKey:.counter)
+		try container.encode(self.status.rawValue ,forKey:.status)
+		try container.encode(self.counter,forKey:.counter)
 		try container.encodeIfPresent(self.creationDate,forKey:.creationDate)
 		try container.encodeIfPresent(self.lastInvocationDate,forKey:.lastInvocationDate)
     }
@@ -99,7 +99,7 @@ import Foundation
     /// Return all the exposed instance variables keys. (Exposed == public and modifiable).
     override  open var exposedKeys:[String] {
         var exposed=super.exposedKeys
-        exposed.append(contentsOf:["commandUID","toDictionary","responseData","completionState","status","counter","creationDate","lastInvocationDate"])
+        exposed.append(contentsOf:["commandUID","serialized","responseData","completionState","status","counter","creationDate","lastInvocationDate"])
         return exposed
     }
 
@@ -116,9 +116,9 @@ import Foundation
                 if let casted=value as? String{
                     self.commandUID=casted
                 }
-            case "toDictionary":
-                if let casted=value as? [String:Any]{
-                    self.toDictionary=casted
+            case "serialized":
+                if let casted=value as? Data{
+                    self.serialized=casted
                 }
             case "responseData":
                 if let casted=value as? Data{
@@ -161,8 +161,8 @@ import Foundation
         switch key {
             case "commandUID":
                return self.commandUID
-            case "toDictionary":
-               return self.toDictionary
+            case "serialized":
+               return self.serialized
             case "responseData":
                return self.responseData
             case "completionState":

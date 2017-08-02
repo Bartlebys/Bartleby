@@ -78,7 +78,7 @@ import Foundation
 			self.requestDuration = try values.decode(Double.self,forKey:.requestDuration)
 			self.serializationDuration = try values.decode(Double.self,forKey:.serializationDuration)
 			self.totalDuration = try values.decode(Double.self,forKey:.totalDuration)
-			self.httpContext = try values.decode(HTTPContext.self,forKey:.httpContext)
+			self.httpContext = try values.decodeIfPresent(HTTPContext.self,forKey:.httpContext)
 			self.streamOrientation = Metrics.StreamOrientation(rawValue: try values.decode(String.self,forKey:.streamOrientation)) ?? .upStream
         }
     }
@@ -86,15 +86,15 @@ import Foundation
     override open func encode(to encoder: Encoder) throws {
 		try super.encode(to:encoder)
 		var container = encoder.container(keyedBy: MetricsCodingKeys.self)
-		try container.encodeIfPresent(self.operationName,forKey:.operationName)
-		try container.encodeIfPresent(self.counter,forKey:.counter)
-		try container.encodeIfPresent(self.elapsed,forKey:.elapsed)
-		try container.encodeIfPresent(self.latency,forKey:.latency)
-		try container.encodeIfPresent(self.requestDuration,forKey:.requestDuration)
-		try container.encodeIfPresent(self.serializationDuration,forKey:.serializationDuration)
-		try container.encodeIfPresent(self.totalDuration,forKey:.totalDuration)
+		try container.encode(self.operationName,forKey:.operationName)
+		try container.encode(self.counter,forKey:.counter)
+		try container.encode(self.elapsed,forKey:.elapsed)
+		try container.encode(self.latency,forKey:.latency)
+		try container.encode(self.requestDuration,forKey:.requestDuration)
+		try container.encode(self.serializationDuration,forKey:.serializationDuration)
+		try container.encode(self.totalDuration,forKey:.totalDuration)
 		try container.encodeIfPresent(self.httpContext,forKey:.httpContext)
-		try container.encodeIfPresent(self.streamOrientation.rawValue ,forKey:.streamOrientation)
+		try container.encode(self.streamOrientation.rawValue ,forKey:.streamOrientation)
     }
 
 

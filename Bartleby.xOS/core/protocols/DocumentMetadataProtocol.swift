@@ -47,8 +47,8 @@ public protocol DocumentMetadataProtocol:  Codable {
     // We donnot want to store this user in the user collection ( to prevent its deletion and to mark its singularity)
     var currentUser: User? { get }
 
-    // The state dictionary
-    var stateDictionary: [String:Any] { get set }
+    // The state data dictionary
+    var stateDictionary: [String:Data] { get set }
 
     // Store the metadatum of each collection.
     var collectionsMetadata: [CollectionMetadatumType] { get }

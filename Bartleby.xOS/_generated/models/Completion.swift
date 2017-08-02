@@ -63,12 +63,12 @@ import Foundation
     override open func encode(to encoder: Encoder) throws {
 		try super.encode(to:encoder)
 		var container = encoder.container(keyedBy: CompletionCodingKeys.self)
-		try container.encodeIfPresent(self.success,forKey:.success)
-		try container.encodeIfPresent(self.statusCode,forKey:.statusCode)
-		try container.encodeIfPresent(self.message,forKey:.message)
+		try container.encode(self.success,forKey:.success)
+		try container.encode(self.statusCode,forKey:.statusCode)
+		try container.encode(self.message,forKey:.message)
 		try container.encodeIfPresent(self.data,forKey:.data)
-		try container.encodeIfPresent(self.category,forKey:.category)
-		try container.encodeIfPresent(self.externalIdentifier,forKey:.externalIdentifier)
+		try container.encode(self.category,forKey:.category)
+		try container.encode(self.externalIdentifier,forKey:.externalIdentifier)
     }
 
 

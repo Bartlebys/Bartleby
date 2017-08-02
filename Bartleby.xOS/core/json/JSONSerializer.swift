@@ -33,7 +33,7 @@ open class JSONSerializer: Serializer {
     ///   - register: should we register to document and collection?
     /// - Returns: the deserialized object
     /// - Throws: Deserialization exceptions
-    open func deserialize(_ data: Data,register:Bool) throws -> Serializable {
+    open func deserialize<T:Collectible>(_ data: Data,register:Bool) throws -> T {
         return try self._deserializeFromData(data,register:register)
     }
 
@@ -44,11 +44,20 @@ open class JSONSerializer: Serializer {
     ///   - register: should we register to document and collection?
     /// - Returns: the Serializable instance
     /// - Throws: SerializableError and CryptoError
-    fileprivate func _deserializeFromData(_ data: Data,register:Bool) throws -> Serializable{
-        if let JSONDictionary = try JSONSerialization.jsonObject(with: data, options:JSONSerialization.ReadingOptions.allowFragments) as? [String:AnyObject] {
-            return try self.deserializeFromDictionary(JSONDictionary, register: register)
+    fileprivate func _deserializeFromData<T:Collectible>(_ data: Data,register:Bool) throws -> T{
+        var instance = try JSONDecoder().decode(T.self,from:data)
+        // Set up the runtime references.
+        if register{
+            if (instance is BartlebyCollection) || (instance is BartlebyOperation){
+                // Add the document reference
+                instance.referentDocument=self.document
+            }else{
+                // Add the collection reference
+                // Calls the Bartleby.register(self)
+                instance.collection=self.document.collectionByName(instance.d_collectionName)
+            }
         }
-        throw SerializableError.unableToTransformDataToDictionary
+        return instance
     }
 
     /// Deserializes from an UTF8 string
@@ -57,7 +66,7 @@ open class JSONSerializer: Serializer {
     ///   - register: should we register to document and collection?
     /// - Returns: the deserialized object
     /// - Throws: Variable exception (serializer based)
-    open  func deserializeFromUTF8String(_ string: String,register:Bool) throws -> Serializable {
+    open  func deserializeFromUTF8String<T:Collectible>(_ string: String,register:Bool) throws -> T {
         if let data=string.data(using: .utf8){
             return try self._deserializeFromData(data,register:register)
         }
@@ -65,13 +74,15 @@ open class JSONSerializer: Serializer {
     }
 
 
+
+/*
     /// Deserializes from a dictionary
     /// - Parameters:
     ///   - dictionary: the dictionary
     ///   - register: should we register to document and collection?
     /// - Returns: the deserialized object
     /// - Throws: Variable exception (serializer based)
-    open func deserializeFromDictionary(_ dictionary: [String:Any],register:Bool) throws -> Serializable {
+    open func deserializeFromDictionary<T:Serializable>(_ dictionary: [String:Any],register:Bool) throws -> T {
         if let typeName = dictionary[Default.TYPE_NAME_KEY] as? String {
             if let Reference = NSClassFromString(typeName) as? NSObject.Type {
                 if  let instance = Reference.init() as? ManagedModel {
@@ -80,6 +91,8 @@ open class JSONSerializer: Serializer {
                         // We provide a mutable copy only if necessary (for performance purposes)
                         var mutableDictionary=dictionary
                         mutableDictionary.removeValue(forKey: Default.UID_KEY)
+
+
                         //#TODO
                         // Create the Map
                         //let map=Map(mappingType: .fromJSON, JSON : mutableDictionary)
@@ -114,7 +127,7 @@ open class JSONSerializer: Serializer {
         } else {
             throw SerializableError.typeNameUndefined
         }
-    }
+    }*/
 
     // MARK: - Serialization
 
@@ -122,7 +135,7 @@ open class JSONSerializer: Serializer {
     ///
     /// - Parameter instance: the Serializable instance
     /// - Returns: the data
-    open func serialize(_ instance: Serializable) -> Data {
+    open func serialize(_ instance: Collectible) -> Data {
         return instance.serialize() as Data
     }
 
@@ -131,7 +144,7 @@ open class JSONSerializer: Serializer {
     ///
     /// - Parameter instance: the serializable instance
     /// - Returns: the UTF8 string
-    open func serializeToUTF8String(_ instance: Serializable) -> String{
+    open func serializeToUTF8String(_ instance: Collectible) -> String{
         return instance.serializeToUFf8String()
     }
     

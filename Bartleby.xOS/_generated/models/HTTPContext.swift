@@ -58,19 +58,19 @@ import Foundation
 			self.caller = try values.decode(String.self,forKey:.caller)
 			self.code = try values.decode(Int.self,forKey:.code)
 			self.httpStatusCode = try values.decode(Int.self,forKey:.httpStatusCode)
-			self.relatedURL = try values.decode(URL.self,forKey:.relatedURL)
-			self.request = try values.decode(HTTPRequest.self,forKey:.request)
-			self.responseString = try values.decode(String.self,forKey:.responseString)
-			self.message = try values.decode(String.self,forKey:.message)
+			self.relatedURL = try values.decodeIfPresent(URL.self,forKey:.relatedURL)
+			self.request = try values.decodeIfPresent(HTTPRequest.self,forKey:.request)
+			self.responseString = try values.decodeIfPresent(String.self,forKey:.responseString)
+			self.message = try values.decodeIfPresent(String.self,forKey:.message)
         }
     }
 
     override open func encode(to encoder: Encoder) throws {
 		try super.encode(to:encoder)
 		var container = encoder.container(keyedBy: HTTPContextCodingKeys.self)
-		try container.encodeIfPresent(self.caller,forKey:.caller)
-		try container.encodeIfPresent(self.code,forKey:.code)
-		try container.encodeIfPresent(self.httpStatusCode,forKey:.httpStatusCode)
+		try container.encode(self.caller,forKey:.caller)
+		try container.encode(self.code,forKey:.code)
+		try container.encode(self.httpStatusCode,forKey:.httpStatusCode)
 		try container.encodeIfPresent(self.relatedURL,forKey:.relatedURL)
 		try container.encodeIfPresent(self.request,forKey:.request)
 		try container.encodeIfPresent(self.responseString,forKey:.responseString)

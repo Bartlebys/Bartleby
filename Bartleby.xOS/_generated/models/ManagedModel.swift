@@ -133,6 +133,8 @@ import Foundation
 		case _quietChanges
 		case _autoCommitIsEnabled
 		case commitCounter
+		case typeName = "typeName"
+		case _id = "_id"
     }
 
     required public init(from decoder: Decoder) throws{
@@ -143,21 +145,26 @@ import Foundation
 			self.creatorUID = try values.decode(String.self,forKey:.creatorUID)
 			self.ownedBy = try values.decode([String].self,forKey:.ownedBy)
 			self.freeRelations = try values.decode([String].self,forKey:.freeRelations)
-			self.summary = try values.decode(String.self,forKey:.summary)
+			self.summary = try values.decodeIfPresent(String.self,forKey:.summary)
 			self.ephemeral = try values.decode(Bool.self,forKey:.ephemeral)
 			self.commitCounter = try values.decode(Int.self,forKey:.commitCounter)
+            self._typeName = try values.decode(String.self,forKey:.typeName)
+            self._id = try values.decode(String.self,forKey:._id)
         }
     }
 
     open func encode(to encoder: Encoder) throws {
 		var container = encoder.container(keyedBy: ManagedModelCodingKeys.self)
-		try container.encodeIfPresent(self.externalID,forKey:.externalID)
-		try container.encodeIfPresent(self.creatorUID,forKey:.creatorUID)
-		try container.encodeIfPresent(self.ownedBy,forKey:.ownedBy)
-		try container.encodeIfPresent(self.freeRelations,forKey:.freeRelations)
+		try container.encode(self.externalID,forKey:.externalID)
+		try container.encode(self.creatorUID,forKey:.creatorUID)
+		try container.encode(self.ownedBy,forKey:.ownedBy)
+		try container.encode(self.freeRelations,forKey:.freeRelations)
 		try container.encodeIfPresent(self.summary,forKey:.summary)
-		try container.encodeIfPresent(self.ephemeral,forKey:.ephemeral)
-		try container.encodeIfPresent(self.commitCounter,forKey:.commitCounter)
+		try container.encode(self.ephemeral,forKey:.ephemeral)
+		try container.encode(self.commitCounter,forKey:.commitCounter)
+        try container.encode(self._typeName,forKey:.typeName)
+        try container.encode(self._id,forKey:._id)
+        
     }
 
 

@@ -78,15 +78,15 @@ import Foundation
     override open func encode(to encoder: Encoder) throws {
 		try super.encode(to:encoder)
 		var container = encoder.container(keyedBy: LogEntryCodingKeys.self)
-		try container.encodeIfPresent(self.counter,forKey:.counter)
-		try container.encodeIfPresent(self.line,forKey:.line)
-		try container.encodeIfPresent(self.elapsed,forKey:.elapsed)
-		try container.encodeIfPresent(self.message,forKey:.message)
-		try container.encodeIfPresent(self.file,forKey:.file)
-		try container.encodeIfPresent(self.function,forKey:.function)
-		try container.encodeIfPresent(self.category,forKey:.category)
-		try container.encodeIfPresent(self.decorative,forKey:.decorative)
-		try container.encodeIfPresent(self._runUID,forKey:._runUID)
+		try container.encode(self.counter,forKey:.counter)
+		try container.encode(self.line,forKey:.line)
+		try container.encode(self.elapsed,forKey:.elapsed)
+		try container.encode(self.message,forKey:.message)
+		try container.encode(self.file,forKey:.file)
+		try container.encode(self.function,forKey:.function)
+		try container.encode(self.category,forKey:.category)
+		try container.encode(self.decorative,forKey:.decorative)
+		try container.encode(self._runUID,forKey:._runUID)
     }
 
 

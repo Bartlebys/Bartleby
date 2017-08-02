@@ -96,7 +96,7 @@ import Foundation
 		try super.init(from: decoder)
         try self.quietThrowingChanges {
 			let values = try decoder.container(keyedBy: CodingKeys.self)
-			self.result_fields = try values.decode([String].self,forKey:.result_fields)
+			self.result_fields = try values.decodeIfPresent([String].self,forKey:.result_fields)
 			self.sort = try values.decodeIfPresent([String:Any].self,forKey:.sort)
 			self.query = try values.decodeIfPresent([String:Any].self,forKey:.query)
         }

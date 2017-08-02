@@ -94,13 +94,13 @@ import Foundation
     override open func encode(to encoder: Encoder) throws {
 		try super.encode(to:encoder)
 		var container = encoder.container(keyedBy: BlockCodingKeys.self)
-		try container.encodeIfPresent(self.digest,forKey:.digest)
-		try container.encodeIfPresent(self.rank,forKey:.rank)
-		try container.encodeIfPresent(self.startsAt,forKey:.startsAt)
-		try container.encodeIfPresent(self.size,forKey:.size)
-		try container.encodeIfPresent(self.priority,forKey:.priority)
-		try container.encodeIfPresent(self.compressed,forKey:.compressed)
-		try container.encodeIfPresent(self.crypted,forKey:.crypted)
+		try container.encode(self.digest,forKey:.digest)
+		try container.encode(self.rank,forKey:.rank)
+		try container.encode(self.startsAt,forKey:.startsAt)
+		try container.encode(self.size,forKey:.size)
+		try container.encode(self.priority,forKey:.priority)
+		try container.encode(self.compressed,forKey:.compressed)
+		try container.encode(self.crypted,forKey:.crypted)
     }
 
 

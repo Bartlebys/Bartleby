@@ -476,7 +476,7 @@ public extension Notification.Name {
     /// - Parameter data: the serialized Object
     open func addObjectFrom(_ data:Data){
         do{
-            if let locker:Locker = try self.referentDocument?.serializer.deserialize(data,register:true) as? Locker {
+            if let locker:Locker = try self.referentDocument?.serializer.deserialize(data,register:true){
                 if let owners = Bartleby.registredManagedModelByUIDs(locker.ownedBy){
                     for owner in owners{
                         // Re associate the relations.
@@ -604,9 +604,8 @@ public extension Notification.Name {
                      let indexes:[Int]=lockers.map({ (locker) -> Int in
                         return lockers.index(where:{ return $0.UID == locker.UID })!
                     })
-                    self.referentDocument?.metadata.stateDictionary[selectedLockersIndexesKey]=indexes
-                }else{
-                    self.referentDocument?.metadata.stateDictionary[selectedLockersIndexesKey]=[Int]()
+                    let encodedIndexes = try? JSONEncoder().encode(indexes) ?? "[]".data(using: Default.STRING_ENCODING)!
+                    self.referentDocument?.metadata.stateDictionary[selectedLockersIndexesKey] = encodedIndexes
                 }
                 NotificationCenter.default.post(name:NSNotification.Name.Lockers.selectionChanged, object: nil)
             }

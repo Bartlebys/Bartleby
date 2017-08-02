@@ -13,13 +13,8 @@ import Foundation
 extension ManagedModel:Serializable{
 
     open func serialize() -> Data {
-        let dictionaryRepresentation = self.dictionaryRepresentation()
         do {
-            if Bartleby.configuration.HUMAN_FORMATTED_SERIALIZATON_FORMAT {
-                return try JSONSerialization.data(withJSONObject: dictionaryRepresentation, options:[JSONSerialization.WritingOptions.prettyPrinted])
-            } else {
-                return try JSONSerialization.data(withJSONObject: dictionaryRepresentation, options:[])
-            }
+          return try JSONEncoder().encode(self)
         } catch {
             return Data()
         }
@@ -34,20 +29,14 @@ extension ManagedModel:Serializable{
     }
 
     open func updateData(_ data: Data,provisionChanges:Bool) throws -> Serializable {
-        if var JSONDictionary = try JSONSerialization.jsonObject(with: data, options:JSONSerialization.ReadingOptions.allowFragments) as? [String:AnyObject] {
-            // Remove the UID_KEY if set to nil or NO_UID
-            if JSONDictionary[Default.UID_KEY] == nil || JSONDictionary[Default.UID_KEY] as? String == Default.NO_UID{
-                JSONDictionary.removeValue(forKey: Default.UID_KEY)
-            }
-
-           //#TODO
-            //let map=Map(mappingType: .fromJSON, JSON: JSONDictionary)
-            //self.mapping(map: map)
-
-
+        do {
+            let deserialized = try JSONDecoder().decode(type(of: self), from: data)
+            try self.mergeWith(deserialized)
             if provisionChanges && self.isInspectable {
                 self.provisionChanges(forKey: "*", oldValue: self, newValue: self)
             }
+        }catch{
+            // Silent
         }
         return self
     }

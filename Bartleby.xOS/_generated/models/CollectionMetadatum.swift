@@ -60,10 +60,10 @@ import Foundation
     override open func encode(to encoder: Encoder) throws {
 		try super.encode(to:encoder)
 		var container = encoder.container(keyedBy: CollectionMetadatumCodingKeys.self)
-		try container.encodeIfPresent(self.storage.rawValue ,forKey:.storage)
-		try container.encodeIfPresent(self.collectionName,forKey:.collectionName)
-		try container.encodeIfPresent(self.persistsDistantly,forKey:.persistsDistantly)
-		try container.encodeIfPresent(self.inMemory,forKey:.inMemory)
+		try container.encode(self.storage.rawValue ,forKey:.storage)
+		try container.encode(self.collectionName,forKey:.collectionName)
+		try container.encode(self.persistsDistantly,forKey:.persistsDistantly)
+		try container.encode(self.inMemory,forKey:.inMemory)
     }
 
 
