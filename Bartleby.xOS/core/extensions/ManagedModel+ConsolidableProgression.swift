@@ -8,6 +8,9 @@
 
 import Foundation
 
+ // #TODO Remove..?
+/*
+
 extension ManagedModel:ConsolidableProgression{
 
 
@@ -60,4 +63,4 @@ extension ManagedModel:ConsolidableProgression{
     }
     
 }
-
+*/

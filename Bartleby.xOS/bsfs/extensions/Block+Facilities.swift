@@ -8,7 +8,7 @@
 
 import Foundation
 
-public extension Block{
+extension Block:ConsolidableProgression{
 
 
     public var node:Node?{
@@ -39,11 +39,13 @@ public extension Block{
     }
 
 
+    // MARK: - ConsolidableProgression
+
     /// Return it own progression State
     ///
     /// - Parameter category: the category to be consolidated
     /// - Returns: return the progression state.
-    @objc override func progressionState(for category:String)->Progression?{
+    public func progressionState(for category:String)->Progression?{
         if category==Default.CATEGORY_DOWNLOADS{
             if downloadInProgress{
                 return self.downloadProgression
@@ -55,5 +57,45 @@ public extension Block{
         }
         return nil
     }
+
+
+    /// Return all the children Progression states to be consolidated
+    ///
+    /// - Parameter category: the category
+    /// - Returns: the array of Progression states
+    public func childrensProgression(for category:String)->[Progression]?{
+        return nil
+    }
+
+    /// Consolidate the progressions of children progression state by category
+    /// Each unique task is responsible to compute a consistent currentPercentProgress
+    ///
+    /// - Parameter category: the category to be consolidated
+    public func consolidateProgression(for category:String){
+        if let progression = self.progressionState(for: category){
+            if let childrensProgressions=self.childrensProgression(for: category){
+                var counter=0
+                var currentPercent:Double=0
+                var currentTaskIndex=0
+                var totalTaskCount=0
+                for childProgression in childrensProgressions{
+                    counter += 1
+                    currentPercent += childProgression.currentPercentProgress
+                    currentTaskIndex += childProgression.currentTaskIndex
+                    totalTaskCount += childProgression.totalTaskCount
+                    // If there is nothing to do let's say it's done :)
+                    if childProgression.currentTaskIndex==0 && childProgression.totalTaskCount==0{
+                        currentPercent += 100
+                    }
+                }
+                progression.quietChanges{
+                    progression.currentTaskIndex=currentTaskIndex/counter
+                    progression.totalTaskCount=totalTaskCount/counter
+                }
+                progression.currentPercentProgress=currentPercent/Double(counter)
+            }
+        }
+    }
+
     
 }

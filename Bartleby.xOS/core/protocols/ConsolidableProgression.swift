@@ -9,7 +9,7 @@
 import Foundation
 
 
-protocol ConsolidableProgression {
+public protocol ConsolidableProgression {
 
 
     /// Consolidate the progressions of children progression state by category in its own progression State
