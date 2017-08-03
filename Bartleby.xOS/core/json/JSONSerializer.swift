@@ -74,61 +74,6 @@ open class JSONSerializer: Serializer {
     }
 
 
-
-/*
-    /// Deserializes from a dictionary
-    /// - Parameters:
-    ///   - dictionary: the dictionary
-    ///   - register: should we register to document and collection?
-    /// - Returns: the deserialized object
-    /// - Throws: Variable exception (serializer based)
-    open func deserializeFromDictionary<T:Serializable>(_ dictionary: [String:Any],register:Bool) throws -> T {
-        if let typeName = dictionary[Default.TYPE_NAME_KEY] as? String {
-            if let Reference = NSClassFromString(typeName) as? NSObject.Type {
-                if  let instance = Reference.init() as? ManagedModel {
-                    // Remove the UID_KEY if set to nil or NO_UID
-                    if dictionary[Default.UID_KEY] == nil || dictionary[Default.UID_KEY] as? String == Default.NO_UID{
-                        // We provide a mutable copy only if necessary (for performance purposes)
-                        var mutableDictionary=dictionary
-                        mutableDictionary.removeValue(forKey: Default.UID_KEY)
-
-
-                        //#TODO
-                        // Create the Map
-                        //let map=Map(mappingType: .fromJSON, JSON : mutableDictionary)
-                        // Proceed to Mapping
-                        //instance.mapping(map: map)
-                    }else{
-                        //#TODO
-                        // Create the Map
-                        //let map=Map(mappingType: .fromJSON, JSON : dictionary)
-                        // Proceed to Mapping
-                        //instance.mapping(map: map)
-                    }
-                    // Set up the runtime references.
-                        if register{
-                            if (instance is BartlebyCollection) || (instance is BartlebyOperation){
-                                // Add the document reference
-                                instance.referentDocument=self.document
-                            }else{
-                                // Add the collection reference
-                                // Calls the Bartleby.register(self)
-                                instance.collection=self.document.collectionByName(instance.d_collectionName)
-                            }
-                        }
-                        return instance
-
-                } else {
-                    throw SerializableError.typeMissmatch
-                }
-            } else {
-                throw SerializableError.typeMissmatch
-            }
-        } else {
-            throw SerializableError.typeNameUndefined
-        }
-    }*/
-
     // MARK: - Serialization
 
     ///  Serializes an instance
