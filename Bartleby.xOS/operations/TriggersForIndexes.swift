@@ -66,7 +66,7 @@ open class TriggersForIndexes {
                     } else {
                         if 200...299 ~= statusCode {
                             if let data = response.data{
-                                if let instance = try? JSONDecoder().decode([Trigger].self,from:data){
+                                if let instance = try? JSON.decoder.decode([Trigger].self,from:data){
                                     success(instance)
                                 }else{
                                     let failureReaction =  Reaction.dispatchAdaptiveMessage(

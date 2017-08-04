@@ -66,7 +66,7 @@ public class AppHelper:NSObject,NSSharingServiceDelegate {
         report.logs=document.logs
         report.metrics=document.metrics
         let recipientsList=recipients.components(separatedBy: ",")
-        if let  data = try? JSONEncoder().encode(report){
+        if let  data = try? JSON.encoder.encode(report){
             if let json = data.optionalString(using:Default.STRING_ENCODING){
                 if crypted{
                     if let cryptedJson = try? Bartleby.cryptoDelegate.encryptString(json,useKey:Bartleby.configuration.KEY){

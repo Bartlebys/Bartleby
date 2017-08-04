@@ -135,7 +135,7 @@ class ValidatePasswordViewController: IdentityStepViewController{
                                                             // and implements the same logic as RecoverSugarViewController.proceedToValidation
                                                             if let string=context.responseString{
                                                                 if let data = string.data(using:Default.STRING_ENCODING){
-                                                                    if let locker = try? JSONDecoder().decode(Locker.self, from: data){
+                                                                    if let locker = try? JSON.decoder.decode(Locker.self, from: data){
                                                                         // We have the locker
                                                                         let sugarCandidate=locker.gems
                                                                         document.metadata.sugar=sugarCandidate

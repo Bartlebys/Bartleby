@@ -72,9 +72,7 @@ open class MetricsDetailsViewController: NSViewController,Editor,Identifiable,NS
                 self.responseString="no response"
             }
             if let request=metrics?.httpContext?.request{
-                let encoder = JSONEncoder()
-                encoder.outputFormatting = .prettyPrinted
-                let data = try? encoder.encode(request)
+                let data = try? JSON.prettyEncoder.encode(request)
                 if let string = data?.optionalString(using:Default.STRING_ENCODING){
                     self.requestString = string
                 }else{
@@ -118,9 +116,7 @@ open class MetricsDetailsViewController: NSViewController,Editor,Identifiable,NS
 
     @IBAction func copyAllToPasteBoard(_ sender: Any) {
         var stringifyedMetrics = Default.NO_MESSAGE
-        let encoder = JSONEncoder()
-        encoder.outputFormatting = .prettyPrinted
-        let data = try? encoder.encode(self.metrics)
+        let data = try? JSON.prettyEncoder.encode(self.metrics)
         if let string = data?.optionalString(using:Default.STRING_ENCODING){
             stringifyedMetrics=string
         }
@@ -134,9 +130,7 @@ open class MetricsDetailsViewController: NSViewController,Editor,Identifiable,NS
 
     @IBAction func copyToPasteBoard(_ sender: AnyObject) {
         var stringifyedMetrics = Default.NO_MESSAGE
-        let encoder = JSONEncoder()
-        encoder.outputFormatting = .prettyPrinted
-        let data = try? encoder.encode(self.arrayOfmetrics)
+        let data = try? JSON.prettyEncoder.encode(self.arrayOfmetrics)
         if let string = data?.optionalString(using:Default.STRING_ENCODING){
             stringifyedMetrics=string
         }

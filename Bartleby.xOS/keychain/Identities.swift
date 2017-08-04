@@ -27,7 +27,7 @@ open class Identities:Codable {
 
 
     open func saveToKeyChain(accessGroup:String)throws->(){
-        let json = try JSONEncoder().encode(self)
+        let json = try JSON.encoder.encode(self)
             let keyChainHelper=KeyChainHelper(accessGroup: accessGroup)
             // The identities are crypted in the KeyChain
             let jsonString =  try json.string(using: Default.STRING_ENCODING)
@@ -42,7 +42,7 @@ open class Identities:Codable {
             // The identities are crypted in the KeyChain
             let json = try Bartleby.cryptoDelegate.decryptString(cryptedJson,useKey:Bartleby.configuration.KEY)
             if let jsonData = json.data(using: Default.STRING_ENCODING){
-                let instance = try JSONDecoder().decode(Identities.self, from: jsonData)
+                let instance = try JSON.decoder.decode(Identities.self, from: jsonData)
                 return instance
             }else{
                 throw IdentitiesError.missingData

@@ -492,6 +492,7 @@
 		E538D6A51F338BB80008A047 /* BartlebysDynamicDeserializer.swift in Sources */ = {isa = PBXBuildFile; fileRef = E538D6A41F338BB70008A047 /* BartlebysDynamicDeserializer.swift */; };
 		E538D6A61F338BB80008A047 /* BartlebysDynamicDeserializer.swift in Sources */ = {isa = PBXBuildFile; fileRef = E538D6A41F338BB70008A047 /* BartlebysDynamicDeserializer.swift */; };
 		E53E2C3C1DD358920040E32B /* PStringTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E53E2C3B1DD358920040E32B /* PStringTests.swift */; };
+		E53F333F1F34AC040042CCC3 /* JSON.swift in Sources */ = {isa = PBXBuildFile; fileRef = E53F333E1F34AC040042CCC3 /* JSON.swift */; };
 		E54999701C3A7E2A00C52A9D /* Bartleby.h in Headers */ = {isa = PBXBuildFile; fileRef = E549996E1C3A7E2A00C52A9D /* Bartleby.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		E5499AB01C3A7F5100C52A9D /* Bartleby.h in Headers */ = {isa = PBXBuildFile; fileRef = E549996E1C3A7E2A00C52A9D /* Bartleby.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		E54BAEB51EF96BFB006204C8 /* RangeAndStringTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E54BAEB41EF96BFB006204C8 /* RangeAndStringTests.swift */; };
@@ -826,6 +827,7 @@
 		E538D6A11F338B500008A047 /* DynamicDeserializer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DynamicDeserializer.swift; sourceTree = "<group>"; };
 		E538D6A41F338BB70008A047 /* BartlebysDynamicDeserializer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BartlebysDynamicDeserializer.swift; sourceTree = "<group>"; };
 		E53E2C3B1DD358920040E32B /* PStringTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PStringTests.swift; sourceTree = "<group>"; };
+		E53F333E1F34AC040042CCC3 /* JSON.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = JSON.swift; sourceTree = "<group>"; };
 		E54999581C3A7D0100C52A9D /* BartlebyKit.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = BartlebyKit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		E54999651C3A7D1B00C52A9D /* BartlebyKit.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = BartlebyKit.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		E549996E1C3A7E2A00C52A9D /* Bartleby.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Bartleby.h; sourceTree = "<group>"; };
@@ -1182,6 +1184,7 @@
 				E512525A1E8BAD7F00797254 /* StatusOfCompletion.swift */,
 				E512525B1E8BAD7F00797254 /* UnManagedModel.swift */,
 				E5E541CA1F3463DB001010AD /* SerializedEntity.swift */,
+				E53F333E1F34AC040042CCC3 /* JSON.swift */,
 			);
 			path = core;
 			sourceTree = "<group>";
@@ -1650,6 +1653,7 @@
 				E51252E31E8BAD7F00797254 /* DeleteUsers.swift in Sources */,
 				E51252C51E8BAD7F00797254 /* CreateTag.swift in Sources */,
 				E51252A11E8BAD7F00797254 /* ManagedModel.swift in Sources */,
+				E53F333F1F34AC040042CCC3 /* JSON.swift in Sources */,
 				E512532D1E8BAD7F00797254 /* Chunker.swift in Sources */,
 				E512541D1E8BAD7F00797254 /* RelationsResolution.swift in Sources */,
 				E51253831E8BAD7F00797254 /* BartlebyDocument+Operations.swift in Sources */,

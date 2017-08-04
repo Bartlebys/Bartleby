@@ -178,7 +178,7 @@ import Foundation
                           if 200...299 ~= statusCode {
 	                        do{
 	                            if let data = response.data{
-	                                let instance = try JSONDecoder().decode([Tag].self,from:data)
+	                                let instance = try JSON.decoder.decode([Tag].self,from:data)
 	                                success(instance)
 	                              }else{
 	                                throw BartlebyOperationError.dataNotFound

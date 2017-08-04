@@ -428,7 +428,7 @@ struct Flocker{
     fileprivate func _writeContainerIntoFlock( handle: FileHandle,
                                                container: Container)throws->(){
         try autoreleasepool { () -> Void in
-            var data = try JSONEncoder().encode(container)
+            var data = try JSON.encoder.encode(container)
             data = try data.compress(algorithm: .lz4)
             data = try self._cryptoHelper.encryptData(data,useKey:self._key)
             var cryptedSize:UInt64=UInt64(data.count)
@@ -582,7 +582,7 @@ struct Flocker{
                     var data=fileHandle.readData(ofLength: Int(footerSize))
                     data = try self._cryptoHelper.decryptData(data,useKey: self._key)
                     data = try data.decompress(algorithm: .lz4)
-                    container = try JSONDecoder().decode(Container.self, from: data)
+                    container = try JSON.decoder.decode(Container.self, from: data)
                 }catch let e{
                     error=e
                 }

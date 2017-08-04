@@ -51,7 +51,7 @@ extension BartlebyDocument {
             let triggerMetrics=Metrics()
             triggerMetrics.streamOrientation = .downStream
             triggerMetrics.operationName = trigger.action + "SSE"
-            let data = try? JSONEncoder().encode(trigger)
+            let data = try? JSON.encoder.encode(trigger)
             let s = (data != nil ) ? (data!.optionalString(using: Default.STRING_ENCODING) ?? "") : ""
             triggerMetrics.httpContext = HTTPContext(code: 0, caller: "TriggerHasBeenReceived", relatedURL: self.sseURL, httpStatusCode: 0, responseString: s)
             if let p=trigger.payloads {
@@ -285,9 +285,7 @@ extension BartlebyDocument {
         informations += "\n"
         informations += "Triggers to be integrated (\(self.metadata.receivedTriggers.count)):\n"
         for trigger in self.metadata.receivedTriggers {
-            let encoder = JSONEncoder()
-            encoder.outputFormatting = .prettyPrinted
-            if let data = try? encoder.encode(trigger){
+            if let data = try? JSON.prettyEncoder.encode(trigger){
                 if let s = data.optionalString(using: Default.STRING_ENCODING){
                     let n = s.characters.count// We can  the trigger envelop.
                     informations += "\(trigger.index) [\(n) Bytes] \(trigger.action) \(trigger.origin ?? "" ) \(trigger.UIDS)\n"

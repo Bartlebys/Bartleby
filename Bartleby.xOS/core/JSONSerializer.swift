@@ -45,7 +45,7 @@ open class JSONSerializer: Serializer {
     /// - Returns: the Serializable instance
     /// - Throws: SerializableError and CryptoError
     fileprivate func _deserializeFromData<T:Collectible>(_ data: Data,register:Bool) throws -> T{
-        var instance = try JSONDecoder().decode(T.self,from:data)
+        var instance = try JSON.decoder.decode(T.self,from:data)
         // Set up the runtime references.
         if register{
             if (instance is BartlebyCollection) || (instance is BartlebyOperation){

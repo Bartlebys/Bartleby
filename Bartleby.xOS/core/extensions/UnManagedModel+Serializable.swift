@@ -11,7 +11,7 @@ extension UnManagedModel:Serializable{
 
     open func serialize() -> Data {
         do {
-            return try JSONEncoder().encode(self)
+            return try JSON.encoder.encode(self)
         } catch {
             return Data()
         }

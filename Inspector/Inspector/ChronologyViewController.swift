@@ -80,9 +80,7 @@ class ChronologyViewController: NSViewController ,DocumentDependent,NSTableViewD
         if self.arrayController.selectedObjects.count>0{
             // Take the selection
             if let m=self.arrayController.selectedObjects as? [Metrics]{
-                let encoder = JSONEncoder()
-                encoder.outputFormatting = .prettyPrinted
-                let data = try? encoder.encode(m)
+                let data = try? JSON.prettyEncoder.encode(m)
                 if let string = data?.optionalString(using:Default.STRING_ENCODING){
                     stringifyedMetrics=string
                 }
@@ -90,9 +88,7 @@ class ChronologyViewController: NSViewController ,DocumentDependent,NSTableViewD
         }else{
             // Take all the metricss
             if let m=self.arrayController.arrangedObjects as? [Metrics]{
-                let encoder = JSONEncoder()
-                encoder.outputFormatting = .prettyPrinted
-                let data = try? encoder.encode(m)
+                let data = try? JSON.prettyEncoder.encode(m)
                 if let string = data?.optionalString(using:Default.STRING_ENCODING){
                     stringifyedMetrics=string
                 }

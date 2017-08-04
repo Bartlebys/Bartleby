@@ -67,7 +67,7 @@ open class IdentitiesManager {
                 if document.metadata.appGroup != ""{
                     let identities=try Identities.loadFromKeyChain(accessGroup: document.metadata.appGroup)
                     for profile in identities.profiles{
-                        let jsonProfileData : Data =  try JSONEncoder().encode(profile)
+                        let jsonProfileData : Data =  try JSON.encoder.encode(profile)
                         let jsonProfileString = String.init(data: jsonProfileData, encoding: Default.STRING_ENCODING)
                         document.log("\(jsonProfileString ?? "NO PROFILE" )", file: #file, function: #function, line: #line, category: Default.LOG_SECURITY, decorative: false)
                     }

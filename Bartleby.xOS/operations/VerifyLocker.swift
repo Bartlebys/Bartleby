@@ -158,7 +158,7 @@ open class VerifyLocker {
                     } else {
                         if 200...299 ~= statusCode {
                             if let data = response.data{
-                                if let instance = try? JSONDecoder().decode(Locker.self, from: data){
+                                if let instance = try? JSON.decoder.decode(Locker.self, from: data){
                                     success(instance)
                                 }else{
                                     let failureReaction =  Reaction.dispatchAdaptiveMessage(

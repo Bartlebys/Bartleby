@@ -15,7 +15,7 @@ extension DocumentMetadata:DocumentMetadataProtocol {
 
     // Data Serialization
     public func toCryptedData() throws -> Data{
-        if let metadataString = try JSONEncoder().encode(self).optionalString(using: Default.STRING_ENCODING){
+        if let metadataString = try JSON.encoder.encode(self).optionalString(using: Default.STRING_ENCODING){
             let crypted = try Bartleby.cryptoDelegate.encryptString(metadataString,useKey:Bartleby.configuration.KEY)
             if let metadataData = crypted.data(using:Default.STRING_ENCODING){
                    return metadataData
@@ -30,7 +30,7 @@ extension DocumentMetadata:DocumentMetadataProtocol {
             let decrypted = try Bartleby.cryptoDelegate.decryptString(cryptedJson,useKey:Bartleby.configuration.KEY)
             if let decryptedData = decrypted.data(using:Default.STRING_ENCODING){
                 //let decodedDictionary = try? JSONSerialization.jsonObject(with: decryptedData) as? [String:Any]
-                let metadata = try JSONDecoder().decode(DocumentMetadata.self, from: decryptedData)
+                let metadata = try JSON.decoder.decode(DocumentMetadata.self, from: decryptedData)
                 return metadata
             }
         }

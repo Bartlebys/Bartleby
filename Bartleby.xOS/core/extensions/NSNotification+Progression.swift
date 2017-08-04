@@ -15,14 +15,14 @@ extension Notification {
 
 
     public init(progressionState: Progression, object: AnyObject?) {
-        let data = (try? JSONEncoder().encode(progressionState)) ?? Data()
+        let data = (try? JSON.encoder.encode(progressionState)) ?? Data()
         self.init(name: Notification.Name(rawValue: BARTLEBYS_COMPLETION_NOTIFICATION_NAME), object: object, userInfo:["data":data])
     }
 
     public func getProgressionState() -> Progression? {
         if let dictionary=(self as NSNotification).userInfo as? [String:AnyObject] {
             if let data = dictionary["data"] as? Data{
-                return try? JSONDecoder().decode(Progression.self, from: data)
+                return try? JSON.decoder.decode(Progression.self, from: data)
             }
         }
         return nil

@@ -115,9 +115,7 @@ class LogsViewController: NSViewController,DocumentDependent{
         var stringifyedMetrics=Default.NO_MESSAGE
         // Take all the Log entries
         if let m=self.arrayController.arrangedObjects as? [LogEntry]{
-            let encoder = JSONEncoder()
-            encoder.outputFormatting = .prettyPrinted
-            let data = try? encoder.encode(m)
+            let data = try? JSON.prettyEncoder.encode(m)
             if let string = data?.optionalString(using:Default.STRING_ENCODING){
                 stringifyedMetrics = string
             }else{

@@ -557,7 +557,7 @@ public extension Notification.Name {
             // Add observer
             arrayController?.addObserver(self, forKeyPath: "selectionIndexes", options: .new, context: &self._KVOContext)
             if let data = self.referentDocument?.metadata.stateDictionary[self.selectedBlocksIndexesKey]{
-                if let indexes = try? JSONDecoder().decode([Int].self, from: data){
+                if let indexes = try? JSON.decoder.decode([Int].self, from: data){
                     let indexesSet = NSMutableIndexSet()
                     indexes.forEach{ indexesSet.add($0) }
                     arrayController?.setSelectionIndexes(indexesSet as IndexSet)
@@ -606,7 +606,7 @@ public extension Notification.Name {
                      let indexes:[Int]=blocks.map({ (block) -> Int in
                         return blocks.index(where:{ return $0.UID == block.UID })!
                     })
-                    let encodedIndexes = (try? JSONEncoder().encode(indexes)) ?? "[]".data(using: Default.STRING_ENCODING)!
+                    let encodedIndexes = (try? JSON.encoder.encode(indexes)) ?? "[]".data(using: Default.STRING_ENCODING)!
                     self.referentDocument?.metadata.stateDictionary[selectedBlocksIndexesKey] = encodedIndexes
                 }
                 NotificationCenter.default.post(name:NSNotification.Name.Blocks.selectionChanged, object: nil)

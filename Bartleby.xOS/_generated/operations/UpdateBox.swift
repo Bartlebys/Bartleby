@@ -106,7 +106,7 @@ import Foundation
         operationInstance.referentDocument = document
         let context=Context(code:512285073, caller: "\(operationInstance.runTimeTypeName()).commit")
         do{
-            operationInstance._payload = try JSONEncoder().encode(box.self)
+            operationInstance._payload = try JSON.encoder.encode(box.self)
             let ic:ManagedPushOperations = try document.getCollection()
             // Create the pushOperation
             let pushOperation = PushOperation()
@@ -140,7 +140,7 @@ import Foundation
     open func push(sucessHandler success:@escaping (_ context:HTTPContext)->(),
         failureHandler failure:@escaping (_ context:HTTPContext)->()){
             do{
-                let box = try JSONDecoder().decode(Box.self, from:self._payload ?? Data())
+                let box = try JSON.decoder.decode(Box.self, from:self._payload ?? Data())
                 // The unitary operation are not always idempotent
                 // so we do not want to push multiple times unintensionnaly.
                 // Check BartlebyDocument+Operations.swift to understand Operation status
@@ -153,7 +153,7 @@ import Foundation
                         sucessHandler: { (context: HTTPContext) -> () in
                             pushOperation.counter=pushOperation.counter+1
                             pushOperation.status=PushOperation.Status.completed
-                            pushOperation.responseData = try? JSONEncoder().encode(context)
+                            pushOperation.responseData = try? JSON.encoder.encode(context)
                             pushOperation.lastInvocationDate=Date()
                             let completion=Completion.successStateFromHTTPContext(context)
                             completion.setResult(context)
@@ -163,7 +163,7 @@ import Foundation
                         failureHandler: {(context: HTTPContext) -> () in
                             pushOperation.counter=pushOperation.counter+1
                             pushOperation.status=PushOperation.Status.completed
-                            pushOperation.responseData = try? JSONEncoder().encode(context)
+                            pushOperation.responseData = try? JSON.encoder.encode(context)
                             pushOperation.lastInvocationDate=Date()
                             let completion=Completion.failureStateFromHTTPContext(context)
                             completion.setResult(context)

@@ -79,7 +79,7 @@ import Foundation
                           if 200...299 ~= statusCode {
 	                       do{
 	                            if let data = response.data{
-	                                let instance = try JSONDecoder().decode(Locker.self,from:data)
+	                                let instance = try JSON.decoder.decode(Locker.self,from:data)
 	                                success(instance)
 	                              }else{
 	                                throw BartlebyOperationError.dataNotFound

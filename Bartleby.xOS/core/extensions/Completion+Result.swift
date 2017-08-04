@@ -21,7 +21,7 @@ public extension Completion {
     ///
     /// - Parameter result: the serializable result
     func setResult<T: Codable>(_ result: T) {
-        self.data = try? JSONEncoder().encode(result)
+        self.data = try? JSON.encoder.encode(result)
     }
 
 
@@ -31,7 +31,7 @@ public extension Completion {
     /// - Returns: the deserialized result
     func getResult<T: Codable>() -> T? {
         if let data=self.data {
-            return try? JSONDecoder().decode(T.self, from: data)
+            return try? JSON.decoder.decode(T.self, from: data)
         }
         return nil
     }
@@ -45,7 +45,7 @@ public extension Completion {
     func setExternalReferenceResult<T: Collectible>(from ref:T) {
         let externalRef=StringValue()
         externalRef.value=ref.UID
-        self.data = try? JSONEncoder().encode(externalRef)
+        self.data = try? JSON.encoder.encode(externalRef)
     }
 
 
@@ -54,7 +54,7 @@ public extension Completion {
     /// - Returns: the external reference UID
     func getResultExternalReference() ->String? {
         if let data = self.data{
-            let stringValue =  try? JSONDecoder().decode(StringValue.self, from: data)
+            let stringValue =  try? JSON.decoder.decode(StringValue.self, from: data)
             return stringValue?.value
         }
         return nil
