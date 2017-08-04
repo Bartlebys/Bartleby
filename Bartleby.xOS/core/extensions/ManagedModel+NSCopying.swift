@@ -8,20 +8,18 @@
 
 import Foundation
 
-// #TODO ???
+// This implementation works
+// But is currently suspended
 /*
 extension ManagedModel:NSCopying{
 
     open func copy(with zone: NSZone?) -> Any {
         if let document=self.referentDocument{
-            let data: Data = document.serializer.serialize(self)
+            let data: Data = self.serialize()
+            let typeName = type(of: self).typeName()
             do{
-                let SerializableType = type(of:self)
-                if let copied = try document.serializer.deserialize(data, register: false) as? SerializableType{
-                    // Reallocate the collection ? is equivalent to register
-                    //copied.collection=self.collection
-                    return copied as Any
-                }
+                // We must use dynamic deserialization
+                return try document.dynamicDeserializer.deserialize(className:typeName ,data: data, document: nil)
             }catch{
                 self.log("ERROR with Copy with zone on \(String(describing: self._runTimeTypeName)) \(self.UID) \(error)" as AnyObject, file:#file, function:#function, line:#line,category:Default.LOG_DEFAULT)
             }

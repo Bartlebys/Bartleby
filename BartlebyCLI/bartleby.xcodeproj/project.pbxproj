@@ -176,7 +176,6 @@
 		E538D84E1F3390BF0008A047 /* KeyedData+Conveniences.swift in Sources */ = {isa = PBXBuildFile; fileRef = E538D74F1F3390BF0008A047 /* KeyedData+Conveniences.swift */; };
 		E538D84F1F3390BF0008A047 /* LogEntry+Conveniences.swift in Sources */ = {isa = PBXBuildFile; fileRef = E538D7501F3390BF0008A047 /* LogEntry+Conveniences.swift */; };
 		E538D8501F3390BF0008A047 /* ManagedModel+Committable.swift in Sources */ = {isa = PBXBuildFile; fileRef = E538D7511F3390BF0008A047 /* ManagedModel+Committable.swift */; };
-		E538D8511F3390BF0008A047 /* ManagedModel+ConsolidableProgression.swift in Sources */ = {isa = PBXBuildFile; fileRef = E538D7521F3390BF0008A047 /* ManagedModel+ConsolidableProgression.swift */; };
 		E538D8521F3390BF0008A047 /* ManagedModel+DictionaryRepresentation.swift in Sources */ = {isa = PBXBuildFile; fileRef = E538D7531F3390BF0008A047 /* ManagedModel+DictionaryRepresentation.swift */; };
 		E538D8531F3390BF0008A047 /* ManagedModel+Equatable.swift in Sources */ = {isa = PBXBuildFile; fileRef = E538D7541F3390BF0008A047 /* ManagedModel+Equatable.swift */; };
 		E538D8541F3390BF0008A047 /* ManagedModel+Erasure.swift in Sources */ = {isa = PBXBuildFile; fileRef = E538D7551F3390BF0008A047 /* ManagedModel+Erasure.swift */; };
@@ -463,7 +462,6 @@
 		E538D74F1F3390BF0008A047 /* KeyedData+Conveniences.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "KeyedData+Conveniences.swift"; sourceTree = "<group>"; };
 		E538D7501F3390BF0008A047 /* LogEntry+Conveniences.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "LogEntry+Conveniences.swift"; sourceTree = "<group>"; };
 		E538D7511F3390BF0008A047 /* ManagedModel+Committable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "ManagedModel+Committable.swift"; sourceTree = "<group>"; };
-		E538D7521F3390BF0008A047 /* ManagedModel+ConsolidableProgression.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "ManagedModel+ConsolidableProgression.swift"; sourceTree = "<group>"; };
 		E538D7531F3390BF0008A047 /* ManagedModel+DictionaryRepresentation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "ManagedModel+DictionaryRepresentation.swift"; sourceTree = "<group>"; };
 		E538D7541F3390BF0008A047 /* ManagedModel+Equatable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "ManagedModel+Equatable.swift"; sourceTree = "<group>"; };
 		E538D7551F3390BF0008A047 /* ManagedModel+Erasure.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "ManagedModel+Erasure.swift"; sourceTree = "<group>"; };
@@ -960,7 +958,6 @@
 				E538D74F1F3390BF0008A047 /* KeyedData+Conveniences.swift */,
 				E538D7501F3390BF0008A047 /* LogEntry+Conveniences.swift */,
 				E538D7511F3390BF0008A047 /* ManagedModel+Committable.swift */,
-				E538D7521F3390BF0008A047 /* ManagedModel+ConsolidableProgression.swift */,
 				E538D7531F3390BF0008A047 /* ManagedModel+DictionaryRepresentation.swift */,
 				E538D7541F3390BF0008A047 /* ManagedModel+Equatable.swift */,
 				E538D7551F3390BF0008A047 /* ManagedModel+Erasure.swift */,
@@ -1409,7 +1406,6 @@
 				E538D7F51F3390BF0008A047 /* ReadBoxById.swift in Sources */,
 				E538D8411F3390BF0008A047 /* BartlebyDocument+Reachability.swift in Sources */,
 				E538D87B1F3390BF0008A047 /* DynamicDeserializer.swift in Sources */,
-				E538D8511F3390BF0008A047 /* ManagedModel+ConsolidableProgression.swift in Sources */,
 				E538D8B01F3390C00008A047 /* PString.swift in Sources */,
 				E538D8551F3390BF0008A047 /* ManagedModel+Extended.swift in Sources */,
 				E538D7EF1F3390BF0008A047 /* DeleteTags.swift in Sources */,

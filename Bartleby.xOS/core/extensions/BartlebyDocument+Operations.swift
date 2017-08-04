@@ -169,19 +169,19 @@ extension BartlebyDocument {
             self.metadata.bunchInProgress=true
 
             for operation in bunchOfOperations{
-                /*
-                if let serialized=operation.toDictionary {
-                    if let o = try? self.serializer.deserializeFromDictionary(serialized,register: false) {
-                        if let op=o as? BartlebyOperation {
-                           Bartleby.syncOnMain{
-                                // Push the command.
-                                op.push(sucessHandler: {  (context) in
-                                    //////////////////////////////////////////////////
-                                    // Delete the operation from self.pushOperations
-                                    //////////////////////////////////////////////////
-                                    self.delete(operation)
-                                    // Update the completion / Progression
-                                    self._onCompletion(operation, within: bunchOfOperations, handlers: handlers,identity:self.metadata.pendingOperationsProgressionState!.externalIdentifier)
+                if let serialized=operation.serialized {
+                    do{
+                            let o = try self.dynamicDeserializer.deserialize(className: operation.operationName, data: serialized, document: nil)
+                            if let op=o as? BartlebyOperation {
+                                Bartleby.syncOnMain{
+                                    // Push the command.
+                                    op.push(sucessHandler: {  (context) in
+                                        //////////////////////////////////////////////////
+                                        // Delete the operation from self.pushOperations
+                                        //////////////////////////////////////////////////
+                                        self.delete(operation)
+                                        // Update the completion / Progression
+                                        self._onCompletion(operation, within: bunchOfOperations, handlers: handlers,identity:self.metadata.pendingOperationsProgressionState!.externalIdentifier)
                                     }, failureHandler: { (context) in
 
                                         let statusCode=context.httpStatusCode
@@ -206,18 +206,18 @@ extension BartlebyDocument {
                                                 self.delete(operation)
                                             }
                                         }
-
                                         // Update the completion / Progression
                                         self._onCompletion(operation, within: bunchOfOperations, handlers: handlers,identity:self.metadata.pendingOperationsProgressionState!.externalIdentifier)
 
-                                })
+                                    })
+                                }
+                            } else {
+                                let completion=Completion.failureState(NSLocalizedString("Error of operation casting", tableName:"operations", comment: "Error of operation casting"), statusCode: StatusOfCompletion.expectation_Failed)
+                                self.log(completion, file: #file, function: #function, line: #line, category: "Operations")
+                                handlers?.on(completion)
                             }
-                        } else {
-                            let completion=Completion.failureState(NSLocalizedString("Error of operation casting", tableName:"operations", comment: "Error of operation casting"), statusCode: StatusOfCompletion.expectation_Failed)
-                            self.log(completion, file: #file, function: #function, line: #line, category: "Operations")
-                            handlers?.on(completion)
-                        }
-                    } else {
+
+                    } catch {
                         let completion=Completion.failureState(NSLocalizedString( "Error on operation deserialization", tableName:"operations", comment:  "Error on operation deserialization"), statusCode: StatusOfCompletion.expectation_Failed)
                         self.log(completion, file: #file, function: #function, line: #line, category: "Operations")
                         handlers?.on(completion)
@@ -227,7 +227,7 @@ extension BartlebyDocument {
                     self.log(completion, file: #file, function: #function, line: #line, category: "Operations")
                     handlers?.on(completion)
                 }
-  */
+
             }
 
         } else {

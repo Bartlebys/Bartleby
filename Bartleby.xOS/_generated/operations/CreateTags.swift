@@ -102,7 +102,7 @@ import Foundation
     - parameter document:     the document
     */
     static func commit(_ tags:[Tag], in document:BartlebyDocument){
-        let operationInstance=CreateTags()
+        let operationInstance = CreateTags()
         operationInstance.referentDocument = document
         let context=Context(code:3106518963, caller: "\(operationInstance.runTimeTypeName()).commit")
         do{
@@ -111,22 +111,23 @@ import Foundation
             // Create the pushOperation
             let pushOperation = PushOperation()
             pushOperation.quietChanges{
-                pushOperation.commandUID=operationInstance.UID
+                pushOperation.commandUID = operationInstance.UID
                 pushOperation.collection = ic
                 pushOperation.counter += 1
-                pushOperation.status=PushOperation.Status.pending
-                pushOperation.creationDate=Date()
+                pushOperation.status = PushOperation.Status.pending
+                pushOperation.creationDate = Date()
 				let stringIDS=PString.ltrim(tags.reduce("", { $0+","+$1.UID }),characters:",")
 				pushOperation.summary="\(operationInstance.runTimeTypeName())(\(stringIDS))"
-                pushOperation.creatorUID=document.metadata.currentUserUID
-                operationInstance.creatorUID=document.metadata.currentUserUID
+                pushOperation.creatorUID = document.metadata.currentUserUID
+                operationInstance.creatorUID = document.metadata.currentUserUID
                 
 				for item in tags{
 					Bartleby.markCommitted(item.UID)
 				}
 
             }
-            pushOperation.serialized=operationInstance.serialize()
+            pushOperation.operationName = CreateTags.typeName()
+            pushOperation.serialized = operationInstance.serialize()
             ic.add(pushOperation, commit:false)
         }catch{
             document.dispatchAdaptiveMessage(context,

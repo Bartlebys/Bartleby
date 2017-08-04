@@ -102,7 +102,7 @@ import Foundation
     - parameter document:     the document
     */
     static func commit(_ block:Block, from document:BartlebyDocument){
-        let operationInstance=DeleteBlock()
+        let operationInstance = DeleteBlock()
         operationInstance.referentDocument = document
         let context=Context(code:1882299827, caller: "\(operationInstance.runTimeTypeName()).commit")
         do{
@@ -111,17 +111,18 @@ import Foundation
             // Create the pushOperation
             let pushOperation = PushOperation()
             pushOperation.quietChanges{
-                pushOperation.commandUID=operationInstance.UID
+                pushOperation.commandUID = operationInstance.UID
                 pushOperation.collection = ic
                 pushOperation.counter += 1
-                pushOperation.status=PushOperation.Status.pending
-                pushOperation.creationDate=Date()
+                pushOperation.status = PushOperation.Status.pending
+                pushOperation.creationDate = Date()
 				pushOperation.summary="\(operationInstance.runTimeTypeName())(\(block.UID))"
-                pushOperation.creatorUID=document.metadata.currentUserUID
-                operationInstance.creatorUID=document.metadata.currentUserUID
+                pushOperation.creatorUID = document.metadata.currentUserUID
+                operationInstance.creatorUID = document.metadata.currentUserUID
                 
             }
-            pushOperation.serialized=operationInstance.serialize()
+            pushOperation.operationName = DeleteBlock.typeName()
+            pushOperation.serialized = operationInstance.serialize()
             ic.add(pushOperation, commit:false)
         }catch{
             document.dispatchAdaptiveMessage(context,

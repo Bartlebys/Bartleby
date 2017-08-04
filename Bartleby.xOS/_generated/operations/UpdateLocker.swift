@@ -102,7 +102,7 @@ import Foundation
     - parameter document:     the document
     */
     static func commit(_ locker:Locker, in document:BartlebyDocument){
-        let operationInstance=UpdateLocker()
+        let operationInstance = UpdateLocker()
         operationInstance.referentDocument = document
         let context=Context(code:1710194365, caller: "\(operationInstance.runTimeTypeName()).commit")
         do{
@@ -111,19 +111,20 @@ import Foundation
             // Create the pushOperation
             let pushOperation = PushOperation()
             pushOperation.quietChanges{
-                pushOperation.commandUID=operationInstance.UID
+                pushOperation.commandUID = operationInstance.UID
                 pushOperation.collection = ic
                 pushOperation.counter += 1
-                pushOperation.status=PushOperation.Status.pending
-                pushOperation.creationDate=Date()
+                pushOperation.status = PushOperation.Status.pending
+                pushOperation.creationDate = Date()
 				pushOperation.summary="\(operationInstance.runTimeTypeName())(\(locker.UID))"
-                pushOperation.creatorUID=document.metadata.currentUserUID
-                operationInstance.creatorUID=document.metadata.currentUserUID
+                pushOperation.creatorUID = document.metadata.currentUserUID
+                operationInstance.creatorUID = document.metadata.currentUserUID
                 
 				Bartleby.markCommitted(locker.UID)
 
             }
-            pushOperation.serialized=operationInstance.serialize()
+            pushOperation.operationName = UpdateLocker.typeName()
+            pushOperation.serialized = operationInstance.serialize()
             ic.add(pushOperation, commit:false)
         }catch{
             document.dispatchAdaptiveMessage(context,

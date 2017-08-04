@@ -309,8 +309,6 @@
 		E51253A41E8BAD7F00797254 /* LogEntry+Conveniences.swift in Sources */ = {isa = PBXBuildFile; fileRef = E512520E1E8BAD7F00797254 /* LogEntry+Conveniences.swift */; };
 		E51253A51E8BAD7F00797254 /* ManagedModel+Committable.swift in Sources */ = {isa = PBXBuildFile; fileRef = E512520F1E8BAD7F00797254 /* ManagedModel+Committable.swift */; };
 		E51253A61E8BAD7F00797254 /* ManagedModel+Committable.swift in Sources */ = {isa = PBXBuildFile; fileRef = E512520F1E8BAD7F00797254 /* ManagedModel+Committable.swift */; };
-		E51253A71E8BAD7F00797254 /* ManagedModel+ConsolidableProgression.swift in Sources */ = {isa = PBXBuildFile; fileRef = E51252101E8BAD7F00797254 /* ManagedModel+ConsolidableProgression.swift */; };
-		E51253A81E8BAD7F00797254 /* ManagedModel+ConsolidableProgression.swift in Sources */ = {isa = PBXBuildFile; fileRef = E51252101E8BAD7F00797254 /* ManagedModel+ConsolidableProgression.swift */; };
 		E51253A91E8BAD7F00797254 /* ManagedModel+DictionaryRepresentation.swift in Sources */ = {isa = PBXBuildFile; fileRef = E51252111E8BAD7F00797254 /* ManagedModel+DictionaryRepresentation.swift */; };
 		E51253AA1E8BAD7F00797254 /* ManagedModel+DictionaryRepresentation.swift in Sources */ = {isa = PBXBuildFile; fileRef = E51252111E8BAD7F00797254 /* ManagedModel+DictionaryRepresentation.swift */; };
 		E51253AB1E8BAD7F00797254 /* ManagedModel+Equatable.swift in Sources */ = {isa = PBXBuildFile; fileRef = E51252121E8BAD7F00797254 /* ManagedModel+Equatable.swift */; };
@@ -729,7 +727,6 @@
 		E512520D1E8BAD7F00797254 /* KeyedData+Conveniences.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "KeyedData+Conveniences.swift"; sourceTree = "<group>"; };
 		E512520E1E8BAD7F00797254 /* LogEntry+Conveniences.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "LogEntry+Conveniences.swift"; sourceTree = "<group>"; };
 		E512520F1E8BAD7F00797254 /* ManagedModel+Committable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "ManagedModel+Committable.swift"; sourceTree = "<group>"; };
-		E51252101E8BAD7F00797254 /* ManagedModel+ConsolidableProgression.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "ManagedModel+ConsolidableProgression.swift"; sourceTree = "<group>"; };
 		E51252111E8BAD7F00797254 /* ManagedModel+DictionaryRepresentation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "ManagedModel+DictionaryRepresentation.swift"; sourceTree = "<group>"; };
 		E51252121E8BAD7F00797254 /* ManagedModel+Equatable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "ManagedModel+Equatable.swift"; sourceTree = "<group>"; };
 		E51252131E8BAD7F00797254 /* ManagedModel+Erasure.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "ManagedModel+Erasure.swift"; sourceTree = "<group>"; };
@@ -1212,7 +1209,6 @@
 				E512520D1E8BAD7F00797254 /* KeyedData+Conveniences.swift */,
 				E512520E1E8BAD7F00797254 /* LogEntry+Conveniences.swift */,
 				E512520F1E8BAD7F00797254 /* ManagedModel+Committable.swift */,
-				E51252101E8BAD7F00797254 /* ManagedModel+ConsolidableProgression.swift */,
 				E51252111E8BAD7F00797254 /* ManagedModel+DictionaryRepresentation.swift */,
 				E51252121E8BAD7F00797254 /* ManagedModel+Equatable.swift */,
 				E51252131E8BAD7F00797254 /* ManagedModel+Erasure.swift */,
@@ -1850,7 +1846,6 @@
 				E512543D1E8BAD7F00797254 /* User+Auth.swift in Sources */,
 				E51253451E8BAD7F00797254 /* CompressionError.swift in Sources */,
 				E51253F71E8BAD7F00797254 /* DocumentDependent.swift in Sources */,
-				E51253A71E8BAD7F00797254 /* ManagedModel+ConsolidableProgression.swift in Sources */,
 				E51252B51E8BAD7F00797254 /* CreateBlock.swift in Sources */,
 				E58695991F309CFA003B30B8 /* Data+String.swift in Sources */,
 				E512530F1E8BAD7F00797254 /* UpdateBoxes.swift in Sources */,
@@ -2104,7 +2099,6 @@
 				E512543E1E8BAD7F00797254 /* User+Auth.swift in Sources */,
 				E51253461E8BAD7F00797254 /* CompressionError.swift in Sources */,
 				E51253F81E8BAD7F00797254 /* DocumentDependent.swift in Sources */,
-				E51253A81E8BAD7F00797254 /* ManagedModel+ConsolidableProgression.swift in Sources */,
 				E51252B61E8BAD7F00797254 /* CreateBlock.swift in Sources */,
 				E51253101E8BAD7F00797254 /* UpdateBoxes.swift in Sources */,
 				E51252AC1E8BAD7F00797254 /* Report.swift in Sources */,

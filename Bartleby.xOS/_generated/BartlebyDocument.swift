@@ -81,7 +81,7 @@ import Foundation
     // The document shared Serializer
     open lazy var serializer:Serializer=JSONSerializer(document: self)
 
-    // You should override bartlebys default to use your own dynamic deserializer
+    // This deserializer is replaced by your `AppDynamicDeserializer` in app contexts.
     open lazy var dynamicDeserializer:DynamicDeserializer=BartlebysDynamicDeserializer()
 
     // Keep a reference to the document file Wrapper

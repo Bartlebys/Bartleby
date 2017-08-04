@@ -20,6 +20,9 @@ import Foundation
         return "PushOperation"
     }
 
+	//The store type of the operation 
+	@objc dynamic open var operationName:String = "\(Default.NO_NAME)"
+
 	//The unique identifier of the related Command
 	@objc dynamic open var commandUID:String?
 
@@ -55,6 +58,7 @@ import Foundation
 
 
     enum PushOperationCodingKeys: String,CodingKey{
+		case operationName
 		case commandUID
 		case serialized
 		case responseData
@@ -69,6 +73,7 @@ import Foundation
 		try super.init(from: decoder)
         try self.quietThrowingChanges {
 			let values = try decoder.container(keyedBy: PushOperationCodingKeys.self)
+			self.operationName = try values.decode(String.self,forKey:.operationName)
 			self.commandUID = try values.decodeIfPresent(String.self,forKey:.commandUID)
 			self.serialized = try values.decodeIfPresent(Data.self,forKey:.serialized)
 			self.responseData = try values.decodeIfPresent(Data.self,forKey:.responseData)
@@ -83,6 +88,7 @@ import Foundation
     override open func encode(to encoder: Encoder) throws {
 		try super.encode(to:encoder)
 		var container = encoder.container(keyedBy: PushOperationCodingKeys.self)
+		try container.encode(self.operationName,forKey:.operationName)
 		try container.encodeIfPresent(self.commandUID,forKey:.commandUID)
 		try container.encodeIfPresent(self.serialized,forKey:.serialized)
 		try container.encodeIfPresent(self.responseData,forKey:.responseData)
@@ -99,7 +105,7 @@ import Foundation
     /// Return all the exposed instance variables keys. (Exposed == public and modifiable).
     override  open var exposedKeys:[String] {
         var exposed=super.exposedKeys
-        exposed.append(contentsOf:["commandUID","serialized","responseData","completionState","status","counter","creationDate","lastInvocationDate"])
+        exposed.append(contentsOf:["operationName","commandUID","serialized","responseData","completionState","status","counter","creationDate","lastInvocationDate"])
         return exposed
     }
 
@@ -112,6 +118,10 @@ import Foundation
     /// - throws: throws an Exception when the key is not exposed
     override  open func setExposedValue(_ value:Any?, forKey key: String) throws {
         switch key {
+            case "operationName":
+                if let casted=value as? String{
+                    self.operationName=casted
+                }
             case "commandUID":
                 if let casted=value as? String{
                     self.commandUID=casted
@@ -159,6 +169,8 @@ import Foundation
     /// - returns: returns the value
     override  open func getExposedValueForKey(_ key:String) throws -> Any?{
         switch key {
+            case "operationName":
+               return self.operationName
             case "commandUID":
                return self.commandUID
             case "serialized":
