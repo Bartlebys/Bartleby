@@ -20,7 +20,11 @@ import Foundation
 // ` if let deserializedTimedText = try d.deserialize(className: TimedText.typeName(), data: data, document: nil) as? TimedText{
 //      ...
 // }`
-class BartlebysDynamicDeserializer:DynamicDeserializer{
+open class BartlebysDynamicDeserializer:DynamicDeserializer{
+
+    public init(){
+        
+    }
 
     /// Deserializes dynamically an entity based on its Class name.
     ///
@@ -29,7 +33,7 @@ class BartlebysDynamicDeserializer:DynamicDeserializer{
     ///   - data: the encoded data
     ///   - document: the document to register In the instance (if set to nil the instance will not be registred
     /// - Returns: the dynamic instance that you cast..?
-    func deserialize(className:String,data:Data,document:BartlebyDocument?)throws->Any{
+    open func deserialize(className:String,data:Data,document:BartlebyDocument?)throws->Any{
 
         var instance : Decodable!
 

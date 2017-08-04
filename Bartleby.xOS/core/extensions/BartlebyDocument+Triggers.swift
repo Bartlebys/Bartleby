@@ -140,8 +140,6 @@ extension BartlebyDocument {
                 }
             }
         }
-
-
     }
 
 

@@ -64,41 +64,46 @@ extension BartlebyDocument{
     #endif
 
     private func _read(from fileWrapper:FileWrapper) throws {
-        if let fileWrappers=fileWrapper.fileWrappers {
+        do{
+            if let fileWrappers=fileWrapper.fileWrappers {
 
-            // ##############
-            // # Metadata
-            // ##############
+                // ##############
+                // # Metadata
+                // ##############
 
-            if let wrapper=fileWrappers[_metadataFileName] {
-                if let metadataData=wrapper.regularFileContents {
+                if let wrapper=fileWrappers[_metadataFileName] {
+                    if let metadataData=wrapper.regularFileContents {
 
-                    // What is the proxy UID?
-                    let proxyDocumentUID=self.UID
+                        // What is the proxy UID?
+                        let proxyDocumentUID=self.UID
 
-                    let metadata = try DocumentMetadata.fromCryptedData(metadataData)
-                    self.metadata = metadata
-                    self.metadata.currentUser?.referentDocument=self
+                        let metadata = try DocumentMetadata.fromCryptedData(metadataData)
+                        self.metadata = metadata
+                        self.metadata.currentUser?.referentDocument=self
 
-                    // We load the sugar (if there is one in the bowl)
-                    try? self.metadata.loadSugar()
+                        // We load the sugar (if there is one in the bowl)
+                        try? self.metadata.loadSugar()
 
-                    // Replace the document proxy declared document UID
-                    // By the persistent UID
-                    Bartleby.sharedInstance.replaceDocumentUID(proxyDocumentUID, by: self.metadata.persistentUID)
+                        // Replace the document proxy declared document UID
+                        // By the persistent UID
+                        Bartleby.sharedInstance.replaceDocumentUID(proxyDocumentUID, by: self.metadata.persistentUID)
+                    }
+                } else {
+                    // ERROR
                 }
-            } else {
-                // ERROR
+                try self._loadCollectionData(from:fileWrappers)
+                // Store the reference
+                self.documentFileWrapper=fileWrapper
+                Bartleby.syncOnMain {
+                    self.send(DocumentStates.collectionsDataHasBeenDecrypted)
+                }
+            }else{
+                // Store the reference
+                self.documentFileWrapper=fileWrapper
             }
-            try self._loadCollectionData(from:fileWrappers)
-            // Store the reference
-            self.documentFileWrapper=fileWrapper
-            Bartleby.syncOnMain {
-                self.send(DocumentStates.collectionsDataHasBeenDecrypted)
-            }
-        }else{
-            // Store the reference
-            self.documentFileWrapper=fileWrapper
+        }catch{
+            Swift.print("\(error)")
+            throw error
         }
     }
 
@@ -112,70 +117,75 @@ extension BartlebyDocument{
 
 
     fileprivate func _loadCollectionData(from fileWrappers: [String : FileWrapper])throws{
+        do{
+            // We load the data if the sugar is defined
+            if self.metadata.sugar != Default.VOID_STRING{
 
-        // We load the data if the sugar is defined
-        if self.metadata.sugar != Default.VOID_STRING{
+                // ##############
+                // # BSFS DATA
+                // ##############
 
-            // ##############
-            // # BSFS DATA
-            // ##############
-
-            if let wrapper=fileWrappers[_bsfsDataFileName] {
-                if var data=wrapper.regularFileContents {
-                    data = try Bartleby.cryptoDelegate.decryptData(data,useKey:self.metadata.sugar)
-                    try self.bsfs.restoreStateFrom(data: data)
-                }
-            } else {
-                // ERROR
-            }
-
-            // ##############
-            // # Collections
-            // ##############
-
-            for metadatum in self.metadata.collectionsMetadata {
-                // MONOLITHIC STORAGE
-                if metadatum.storage == CollectionMetadatum.Storage.monolithicFileStorage {
-                    let names=self._collectionFileNames(metadatum)
-                    if let wrapper=fileWrappers[names.crypted] ?? fileWrappers[names.notCrypted] {
-                        let filename=wrapper.filename
-                        if var collectionData=wrapper.regularFileContents {
-                            if let proxy=self.collectionByName(metadatum.collectionName) {
-                                if let path=filename {
-                                    if let ext=path.components(separatedBy: ".").last {
-                                        let pathExtension="."+ext
-                                        if  pathExtension == BartlebyDocument.DATA_EXTENSION {
-                                            // Use the faster possible approach.
-                                            // The resulting data is not a valid String check CryptoDelegate for details.
-                                            let collectionString = try Bartleby.cryptoDelegate.decryptStringFromData(collectionData,useKey:self.metadata.sugar)
-                                            collectionData = collectionString.data(using:.utf8) ?? Data()
-                                        }
-                                    }
-                                    let _ = try proxy.updateData(collectionData,provisionChanges: false)
-                                }
-                            } else {
-                                throw DocumentError.attemptToLoadAnNonSupportedCollection(collectionName:metadatum.collectionName)
-                            }
-                        }
-                    } else {
-                        // ERROR
+                if let wrapper=fileWrappers[_bsfsDataFileName] {
+                    if var data=wrapper.regularFileContents {
+                        data = try Bartleby.cryptoDelegate.decryptData(data,useKey:self.metadata.sugar)
+                        try self.bsfs.restoreStateFrom(data: data)
                     }
                 } else {
-                    // INCREMENTAL STORAGE CURRENTLY NOT SUPPORTED
+                    // ERROR
                 }
-            }
 
-            // # Optimization
-            // We call the  proxy.propagate() after full deserialization.
-            // It allows for example to reduce deferredOwnerships rebuilding
-            for metadatum in self.metadata.collectionsMetadata {
-                if let proxy=self.collectionByName(metadatum.collectionName) {
-                    proxy.propagate()
+                // ##############
+                // # Collections
+                // ##############
+
+                for metadatum in self.metadata.collectionsMetadata {
+                    // MONOLITHIC STORAGE
+                    if metadatum.storage == CollectionMetadatum.Storage.monolithicFileStorage {
+                        let names=self._collectionFileNames(metadatum)
+                        if let wrapper=fileWrappers[names.crypted] ?? fileWrappers[names.notCrypted] {
+                            let filename=wrapper.filename
+                            if var collectionData=wrapper.regularFileContents {
+                                if let proxy=self.collectionByName(metadatum.collectionName) {
+                                    if let path=filename {
+                                        if let ext=path.components(separatedBy: ".").last {
+                                            let pathExtension="."+ext
+                                            if  pathExtension == BartlebyDocument.DATA_EXTENSION {
+                                                // Use the faster possible approach.
+                                                // The resulting data is not a valid String check CryptoDelegate for details.
+                                                let collectionString = try Bartleby.cryptoDelegate.decryptStringFromData(collectionData,useKey:self.metadata.sugar)
+                                                collectionData = collectionString.data(using:.utf8) ?? Data()
+                                            }
+                                        }
+                                        let _ = try proxy.updateData(collectionData,provisionChanges: false)
+                                    }
+                                } else {
+                                    throw DocumentError.attemptToLoadAnNonSupportedCollection(collectionName:metadatum.collectionName)
+                                }
+                            }
+                        } else {
+                            // ERROR
+                        }
+                    } else {
+                        // INCREMENTAL STORAGE CURRENTLY NOT SUPPORTED
+                    }
                 }
+
+                // # Optimization
+                // We call the  proxy.propagate() after full deserialization.
+                // It allows for example to reduce deferredOwnerships rebuilding
+                for metadatum in self.metadata.collectionsMetadata {
+                    if let proxy=self.collectionByName(metadatum.collectionName) {
+                        proxy.propagate()
+                    }
+                }
+            }else{
+                self.log("Sugar is undefined", file: #file, function: #function, line: #line, category: Default.LOG_DEFAULT, decorative: false)
             }
-        }else{
-             self.log("Sugar is undefined", file: #file, function: #function, line: #line, category: Default.LOG_DEFAULT, decorative: false)
+        }catch{
+            Swift.print("\(error)")
+            throw error
         }
+
 
     }
 

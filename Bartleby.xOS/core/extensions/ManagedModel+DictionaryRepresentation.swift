@@ -11,17 +11,15 @@ import Foundation
 extension ManagedModel:DictionaryRepresentation {
 
     open func dictionaryRepresentation() -> [String : Any] {
-        var dictionary = [String:Any]()
-        for key in self.exposedKeys{
-            if let value = try? self.getExposedValueForKey(key){
-                if let convertibleValue = value as? DictionaryRepresentation{
-                    dictionary[key] = convertibleValue.dictionaryRepresentation()
-                }else{
-                    dictionary[key] = value
-                }
+        do{
+            let data = try JSONEncoder().encode(self)
+            if let dictionary = try JSONSerialization.jsonObject(with: data, options:.allowFragments) as? [String : Any]{
+                return dictionary
             }
+        }catch{
+            // Silent catch
         }
-        return dictionary
+        return [String:Any]()
     }
 
 }

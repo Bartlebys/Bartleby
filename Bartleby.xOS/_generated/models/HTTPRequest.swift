@@ -28,7 +28,7 @@ import Foundation
 	@objc dynamic open var httpMethod:String = "GET"
 
 	//The Headers
-	@objc dynamic open var headers:[String:Any]?
+	@objc dynamic open var headers:[String:String]?
 
 	//This data is sent as the message body of the request
 	@objc dynamic open var httpBody:Data?
@@ -54,7 +54,7 @@ import Foundation
 			let values = try decoder.container(keyedBy: HTTPRequestCodingKeys.self)
 			self.url = try values.decodeIfPresent(URL.self,forKey:.url)
 			self.httpMethod = try values.decode(String.self,forKey:.httpMethod)
-			self.headers = try values.decodeIfPresent([String:Any].self,forKey:.headers)
+			self.headers = try values.decodeIfPresent([String:String].self,forKey:.headers)
 			self.httpBody = try values.decodeIfPresent(Data.self,forKey:.httpBody)
 			self.timeout = try values.decode(Double.self,forKey:.timeout)
         }
@@ -98,7 +98,7 @@ import Foundation
                     self.httpMethod=casted
                 }
             case "headers":
-                if let casted=value as? [String:Any]{
+                if let casted=value as? [String:String]{
                     self.headers=casted
                 }
             case "httpBody":

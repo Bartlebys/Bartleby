@@ -76,7 +76,7 @@ import Foundation
 	//A collection of CollectionMetadatum
 	@objc dynamic open var collectionsMetadata:[CollectionMetadatum] = [CollectionMetadatum]()
 
-	//The State 'dictionary' to insure document persistency 
+	//The State data 'dictionary' to insure document persistency 
 	@objc dynamic open var stateDictionary:[String:Data] = [String:Data]()
 
 	//A collection of KeyedData
