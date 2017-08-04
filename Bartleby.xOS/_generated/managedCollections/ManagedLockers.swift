@@ -604,7 +604,7 @@ public extension Notification.Name {
                      let indexes:[Int]=lockers.map({ (locker) -> Int in
                         return lockers.index(where:{ return $0.UID == locker.UID })!
                     })
-                    let encodedIndexes = try? JSONEncoder().encode(indexes) ?? "[]".data(using: Default.STRING_ENCODING)!
+                    let encodedIndexes = (try? JSONEncoder().encode(indexes)) ?? "[]".data(using: Default.STRING_ENCODING)!
                     self.referentDocument?.metadata.stateDictionary[selectedLockersIndexesKey] = encodedIndexes
                 }
                 NotificationCenter.default.post(name:NSNotification.Name.Lockers.selectionChanged, object: nil)

@@ -603,7 +603,7 @@ public extension Notification.Name {
                      let indexes:[Int]=users.map({ (user) -> Int in
                         return users.index(where:{ return $0.UID == user.UID })!
                     })
-                    let encodedIndexes = try? JSONEncoder().encode(indexes) ?? "[]".data(using: Default.STRING_ENCODING)!
+                    let encodedIndexes = (try? JSONEncoder().encode(indexes)) ?? "[]".data(using: Default.STRING_ENCODING)!
                     self.referentDocument?.metadata.stateDictionary[selectedUsersIndexesKey] = encodedIndexes
                 }
                 NotificationCenter.default.post(name:NSNotification.Name.Users.selectionChanged, object: nil)

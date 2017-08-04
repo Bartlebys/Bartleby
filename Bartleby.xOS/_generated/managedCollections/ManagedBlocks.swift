@@ -604,7 +604,7 @@ public extension Notification.Name {
                      let indexes:[Int]=blocks.map({ (block) -> Int in
                         return blocks.index(where:{ return $0.UID == block.UID })!
                     })
-                    let encodedIndexes = try? JSONEncoder().encode(indexes) ?? "[]".data(using: Default.STRING_ENCODING)!
+                    let encodedIndexes = (try? JSONEncoder().encode(indexes)) ?? "[]".data(using: Default.STRING_ENCODING)!
                     self.referentDocument?.metadata.stateDictionary[selectedBlocksIndexesKey] = encodedIndexes
                 }
                 NotificationCenter.default.post(name:NSNotification.Name.Blocks.selectionChanged, object: nil)
