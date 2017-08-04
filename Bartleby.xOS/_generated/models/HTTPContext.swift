@@ -15,6 +15,11 @@ import Foundation
 // MARK: Bartleby's Core: an object that encapsulate the whole http context , request, response
 @objc(HTTPContext) open class HTTPContext : UnManagedModel, Consignable {
 
+    // DeclaredTypeName support
+    override open class func typeName() -> String {
+        return "HTTPContext"
+    }
+
 
 	//A descriptive string for developer to identify the calling context
 	@objc dynamic open var caller:String = "\(Default.NO_NAME)"

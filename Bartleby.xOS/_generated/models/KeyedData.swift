@@ -15,6 +15,11 @@ import Foundation
 // MARK: A simple wrapper to associate a key and a Data
 @objc(KeyedData) open class KeyedData : UnManagedModel {
 
+    // DeclaredTypeName support
+    override open class func typeName() -> String {
+        return "KeyedData"
+    }
+
 
 	//The key
 	@objc dynamic open var key:String = "\(Default.NO_KEY)"

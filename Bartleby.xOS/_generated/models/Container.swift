@@ -15,6 +15,11 @@ import Foundation
 // MARK: Bartleby's Synchronized File System: A container to store Boxes,Nodes,Blocks
 @objc(Container) open class Container : UnManagedModel {
 
+    // DeclaredTypeName support
+    override open class func typeName() -> String {
+        return "Container"
+    }
+
 
 	//You can setup a password
 	@objc dynamic open var password:String?

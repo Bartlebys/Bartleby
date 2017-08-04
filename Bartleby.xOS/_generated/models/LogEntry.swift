@@ -15,6 +15,11 @@ import Foundation
 // MARK: Bartleby's Core: A single print entry
 @objc(LogEntry) open class LogEntry : UnManagedModel {
 
+    // DeclaredTypeName support
+    override open class func typeName() -> String {
+        return "LogEntry"
+    }
+
 
 	//The print entry counter
 	@objc dynamic open var counter:Int = -1

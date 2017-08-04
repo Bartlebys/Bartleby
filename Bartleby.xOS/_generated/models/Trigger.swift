@@ -15,6 +15,11 @@ import Foundation
 // MARK: Bartleby's Core: a Trigger encapsulates a bunch of that's modelizes a state transformation
 @objc(Trigger) open class Trigger : UnManagedModel {
 
+    // DeclaredTypeName support
+    override open class func typeName() -> String {
+        return "Trigger"
+    }
+
 
 	//The index is injected server side (each observationUID) has it own counter)
 	@objc dynamic open var index:Int = -1

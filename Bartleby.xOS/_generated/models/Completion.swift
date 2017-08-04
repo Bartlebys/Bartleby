@@ -15,6 +15,11 @@ import Foundation
 // MARK: Bartleby's Commons: A completion state
 @objc(Completion) open class Completion : UnManagedModel {
 
+    // DeclaredTypeName support
+    override open class func typeName() -> String {
+        return "Completion"
+    }
+
 
 	//Success if set to true
 	@objc dynamic open var success:Bool = true

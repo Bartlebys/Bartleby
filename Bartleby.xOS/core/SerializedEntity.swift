@@ -16,9 +16,38 @@ public struct SerializedEntity:Codable {
 
 }
 
-extension ManagedModel{
+// MARK: - ToSerializedEntity
+
+public protocol ToSerializedEntity{
+    /// Creates a `Codable` entity that encapsulates the serialized self and its typeName
+    /// This entity is suitable for DynamicDeserialization
+    ///
+    /// - Returns: the serialized entity
+    func toSerializedEntity()->SerializedEntity
+
+}
+
+
+// MARK: - Managed and UnManaged models adopts ToSerializedEntity
+
+extension ManagedModel:ToSerializedEntity{
 
     
+    /// Creates a `Codable` entity that encapsulates the serialized self and its typeName
+    /// This entity is suitable for DynamicDeserialization
+    ///
+    /// - Returns: the serialized entity
+    open func toSerializedEntity()->SerializedEntity{
+        let data = self.serialize()
+        let typeName = type(of: self).typeName()
+        return SerializedEntity(data:data,typeName:typeName)
+    }
+
+}
+
+
+extension UnManagedModel:ToSerializedEntity{
+
     /// Creates a `Codable` entity that encapsulates the serialized self and its typeName
     /// This entity is suitable for DynamicDeserialization
     ///

@@ -15,6 +15,11 @@ import Foundation
 // MARK: A simple String UnManagedModel
 @objc(DataValue) open class DataValue : UnManagedModel {
 
+    // DeclaredTypeName support
+    override open class func typeName() -> String {
+        return "DataValue"
+    }
+
 
 	//The data value
 	@objc dynamic open var value:Data?

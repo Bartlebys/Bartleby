@@ -1,20 +1,17 @@
 //
-//  ManagedModel+Serializable.swift
-//  BartlebyKit
+//  UnManagedModel+Serializable.swift
+//  Bartleby macOS
 //
-//  Created by Benoit Pereira da silva on 24/11/2016.
-//
+//  Created by Benoit Pereira da silva on 04/08/2017.
 //
 
 import Foundation
 
-// MARK: - Serializable
-
-extension ManagedModel:Serializable{
+extension UnManagedModel:Serializable{
 
     open func serialize() -> Data {
         do {
-          return try JSONEncoder().encode(self)
+            return try JSONEncoder().encode(self)
         } catch {
             return Data()
         }
@@ -29,4 +26,3 @@ extension ManagedModel:Serializable{
     }
 
 }
-

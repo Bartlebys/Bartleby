@@ -23,6 +23,7 @@ public enum SerializableError: Error {
 
 /**
  *   Any object that is serializable can be serialized deserialized
+ *   We use Swift 4 `Codable` mechanism
  */
 public protocol Serializable:Initializable,Encodable,Decodable{
 

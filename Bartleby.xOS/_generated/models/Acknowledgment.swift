@@ -15,6 +15,11 @@ import Foundation
 // MARK: Bartleby's Core: an object used to Acknowledge a Trigger
 @objc(Acknowledgment) open class Acknowledgment : Metrics {
 
+    // DeclaredTypeName support
+    override open class func typeName() -> String {
+        return "Acknowledgment"
+    }
+
 
 	//The trigger index
 	@objc dynamic open var triggerIndex:Int = -1

@@ -15,6 +15,11 @@ import Foundation
 // MARK: Bartleby's Core: an object that encapsulate the URL Request information
 @objc(HTTPRequest) open class HTTPRequest : UnManagedModel {
 
+    // DeclaredTypeName support
+    override open class func typeName() -> String {
+        return "HTTPRequest"
+    }
+
 
 	//The url
 	@objc dynamic open var url:URL?

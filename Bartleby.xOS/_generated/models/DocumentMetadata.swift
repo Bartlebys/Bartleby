@@ -15,6 +15,11 @@ import Foundation
 // MARK: Bartleby's Core: Complete implementation in DocumentMetadata.
 @objc(DocumentMetadata) open class DocumentMetadata : UnManagedModel {
 
+    // DeclaredTypeName support
+    override open class func typeName() -> String {
+        return "DocumentMetadata"
+    }
+
 
 	//The data space UID can be shared between multiple Docuemnt.
 	@objc dynamic open var spaceUID:String = "\(Bartleby.createUID())"

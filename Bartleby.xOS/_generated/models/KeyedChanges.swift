@@ -15,6 +15,11 @@ import Foundation
 // MARK: Bartleby's Core: used to keep track of changes in memory when inspecting an App (Value Object)
 @objc(KeyedChanges) open class KeyedChanges : UnManagedModel {
 
+    // DeclaredTypeName support
+    override open class func typeName() -> String {
+        return "KeyedChanges"
+    }
+
 
 	//the elapsed time since the app has been launched
 	@objc dynamic open var elapsed:Double = Bartleby.elapsedTime

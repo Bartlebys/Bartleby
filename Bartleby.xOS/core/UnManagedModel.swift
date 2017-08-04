@@ -11,8 +11,11 @@ import Foundation
 // Models can be :
 // - ManagedModel ( fully managed models)
 // - UnManagedModel (no supervision, no change provisionning )
-@objc(UnManagedModel) open class UnManagedModel: NSObject,Codable,Exposed {
+@objc(UnManagedModel) open class UnManagedModel: NSObject,Codable,Exposed,DeclaredTypeName {
 
+    open class func typeName() -> String {
+        return "UnManagedModel"
+    }
 
     required public override init() {
         super.init()
@@ -106,5 +109,7 @@ extension UnManagedModel:JSONString{
     }
 
 }
+
+
 
 

@@ -15,6 +15,11 @@ import Foundation
 // MARK: Bartleby's Commons: A progression state
 @objc(Progression) open class Progression : UnManagedModel {
 
+    // DeclaredTypeName support
+    override open class func typeName() -> String {
+        return "Progression"
+    }
+
 
 	//The start time of the progression state
 	open var startTime:Double?
