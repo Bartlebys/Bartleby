@@ -13,7 +13,6 @@ extension ManagedModel:JSONString{
     // MARK:-  JSONString
 
     open func toJSONString(_ prettyPrint:Bool)->String{
-        self.serializeToUFf8String()
         let encoder = JSONEncoder()
         if prettyPrint{
             encoder.outputFormatting = .prettyPrinted
