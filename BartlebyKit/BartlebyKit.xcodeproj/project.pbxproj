@@ -323,8 +323,6 @@
 		E51253B41E8BAD7F00797254 /* ManagedModel+Logs.swift in Sources */ = {isa = PBXBuildFile; fileRef = E51252161E8BAD7F00797254 /* ManagedModel+Logs.swift */; };
 		E51253B51E8BAD7F00797254 /* ManagedModel+Mergeable.swift in Sources */ = {isa = PBXBuildFile; fileRef = E51252171E8BAD7F00797254 /* ManagedModel+Mergeable.swift */; };
 		E51253B61E8BAD7F00797254 /* ManagedModel+Mergeable.swift in Sources */ = {isa = PBXBuildFile; fileRef = E51252171E8BAD7F00797254 /* ManagedModel+Mergeable.swift */; };
-		E51253B71E8BAD7F00797254 /* ManagedModel+NSCopying.swift in Sources */ = {isa = PBXBuildFile; fileRef = E51252181E8BAD7F00797254 /* ManagedModel+NSCopying.swift */; };
-		E51253B81E8BAD7F00797254 /* ManagedModel+NSCopying.swift in Sources */ = {isa = PBXBuildFile; fileRef = E51252181E8BAD7F00797254 /* ManagedModel+NSCopying.swift */; };
 		E51253B91E8BAD7F00797254 /* ManagedModel+ProvisionChanges.swift in Sources */ = {isa = PBXBuildFile; fileRef = E51252191E8BAD7F00797254 /* ManagedModel+ProvisionChanges.swift */; };
 		E51253BA1E8BAD7F00797254 /* ManagedModel+ProvisionChanges.swift in Sources */ = {isa = PBXBuildFile; fileRef = E51252191E8BAD7F00797254 /* ManagedModel+ProvisionChanges.swift */; };
 		E51253BB1E8BAD7F00797254 /* ManagedModel+QuietChanges.swift in Sources */ = {isa = PBXBuildFile; fileRef = E512521A1E8BAD7F00797254 /* ManagedModel+QuietChanges.swift */; };
@@ -351,8 +349,6 @@
 		E51253D01E8BAD7F00797254 /* Global.swift in Sources */ = {isa = PBXBuildFile; fileRef = E51252241E8BAD7F00797254 /* Global.swift */; };
 		E51253D11E8BAD7F00797254 /* Handlers.swift in Sources */ = {isa = PBXBuildFile; fileRef = E51252251E8BAD7F00797254 /* Handlers.swift */; };
 		E51253D21E8BAD7F00797254 /* Handlers.swift in Sources */ = {isa = PBXBuildFile; fileRef = E51252251E8BAD7F00797254 /* Handlers.swift */; };
-		E51253D31E8BAD7F00797254 /* JSONSerializer.swift in Sources */ = {isa = PBXBuildFile; fileRef = E51252271E8BAD7F00797254 /* JSONSerializer.swift */; };
-		E51253D41E8BAD7F00797254 /* JSONSerializer.swift in Sources */ = {isa = PBXBuildFile; fileRef = E51252271E8BAD7F00797254 /* JSONSerializer.swift */; };
 		E51253D71E8BAD7F00797254 /* ManagedModelError.swift in Sources */ = {isa = PBXBuildFile; fileRef = E512522A1E8BAD7F00797254 /* ManagedModelError.swift */; };
 		E51253D81E8BAD7F00797254 /* ManagedModelError.swift in Sources */ = {isa = PBXBuildFile; fileRef = E512522A1E8BAD7F00797254 /* ManagedModelError.swift */; };
 		E51253D91E8BAD7F00797254 /* ObjectExpositionError.swift in Sources */ = {isa = PBXBuildFile; fileRef = E512522B1E8BAD7F00797254 /* ObjectExpositionError.swift */; };
@@ -521,6 +517,10 @@
 		E5B129041D1C317300D61261 /* TestsConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = E52F94891D01C23A005BDA2D /* TestsConfiguration.swift */; };
 		E5C28EF41F2CE6B200138146 /* BartlebyDocument+UndoFacilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5C28EF31F2CE6B200138146 /* BartlebyDocument+UndoFacilities.swift */; };
 		E5C28EF51F2CE6B200138146 /* BartlebyDocument+UndoFacilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5C28EF31F2CE6B200138146 /* BartlebyDocument+UndoFacilities.swift */; };
+		E5E541CB1F3463DB001010AD /* SerializedEntity.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5E541CA1F3463DB001010AD /* SerializedEntity.swift */; };
+		E5E541CC1F3463DB001010AD /* SerializedEntity.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5E541CA1F3463DB001010AD /* SerializedEntity.swift */; };
+		E5E541CE1F34644A001010AD /* JSONSerializer.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5E541CD1F34644A001010AD /* JSONSerializer.swift */; };
+		E5E541CF1F34644A001010AD /* JSONSerializer.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5E541CD1F34644A001010AD /* JSONSerializer.swift */; };
 		E5EF6CFB1EE9B1B700990C48 /* String+Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5EF6CFA1EE9B1B700990C48 /* String+Helpers.swift */; };
 		E5EF6CFC1EE9B1B700990C48 /* String+Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5EF6CFA1EE9B1B700990C48 /* String+Helpers.swift */; };
 		E5F5384B1DEAE4EA008DEBF7 /* MultiDocumentsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5F5384A1DEAE4EA008DEBF7 /* MultiDocumentsTests.swift */; };
@@ -734,7 +734,6 @@
 		E51252151E8BAD7F00797254 /* ManagedModel+JSONString.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "ManagedModel+JSONString.swift"; sourceTree = "<group>"; };
 		E51252161E8BAD7F00797254 /* ManagedModel+Logs.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "ManagedModel+Logs.swift"; sourceTree = "<group>"; };
 		E51252171E8BAD7F00797254 /* ManagedModel+Mergeable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "ManagedModel+Mergeable.swift"; sourceTree = "<group>"; };
-		E51252181E8BAD7F00797254 /* ManagedModel+NSCopying.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "ManagedModel+NSCopying.swift"; sourceTree = "<group>"; };
 		E51252191E8BAD7F00797254 /* ManagedModel+ProvisionChanges.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "ManagedModel+ProvisionChanges.swift"; sourceTree = "<group>"; };
 		E512521A1E8BAD7F00797254 /* ManagedModel+QuietChanges.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "ManagedModel+QuietChanges.swift"; sourceTree = "<group>"; };
 		E512521B1E8BAD7F00797254 /* ManagedModel+Relational.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "ManagedModel+Relational.swift"; sourceTree = "<group>"; };
@@ -748,7 +747,6 @@
 		E51252231E8BAD7F00797254 /* PushOperation+Conveniences.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "PushOperation+Conveniences.swift"; sourceTree = "<group>"; };
 		E51252241E8BAD7F00797254 /* Global.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Global.swift; sourceTree = "<group>"; };
 		E51252251E8BAD7F00797254 /* Handlers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Handlers.swift; sourceTree = "<group>"; };
-		E51252271E8BAD7F00797254 /* JSONSerializer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JSONSerializer.swift; sourceTree = "<group>"; };
 		E512522A1E8BAD7F00797254 /* ManagedModelError.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ManagedModelError.swift; sourceTree = "<group>"; };
 		E512522B1E8BAD7F00797254 /* ObjectExpositionError.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ObjectExpositionError.swift; sourceTree = "<group>"; };
 		E512522D1E8BAD7F00797254 /* BartlebyCollection.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BartlebyCollection.swift; sourceTree = "<group>"; };
@@ -844,6 +842,8 @@
 		E590EB231D0EF8DC00150E0B /* UsersCreationLoadTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UsersCreationLoadTest.swift; sourceTree = "<group>"; };
 		E5C28EF31F2CE6B200138146 /* BartlebyDocument+UndoFacilities.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "BartlebyDocument+UndoFacilities.swift"; sourceTree = "<group>"; };
 		E5CEFB511C3BFCBB00C36CBA /* BartlebyKit-Bridging-Header.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "BartlebyKit-Bridging-Header.h"; sourceTree = "<group>"; };
+		E5E541CA1F3463DB001010AD /* SerializedEntity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SerializedEntity.swift; sourceTree = "<group>"; };
+		E5E541CD1F34644A001010AD /* JSONSerializer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JSONSerializer.swift; sourceTree = "<group>"; };
 		E5EF6CFA1EE9B1B700990C48 /* String+Helpers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "String+Helpers.swift"; sourceTree = "<group>"; };
 		E5F5384A1DEAE4EA008DEBF7 /* MultiDocumentsTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MultiDocumentsTests.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -1166,8 +1166,8 @@
 				E51251F51E8BAD7F00797254 /* extensions */,
 				E51252241E8BAD7F00797254 /* Global.swift */,
 				E51252251E8BAD7F00797254 /* Handlers.swift */,
-				E51252261E8BAD7F00797254 /* json */,
 				E512522A1E8BAD7F00797254 /* ManagedModelError.swift */,
+				E5E541CD1F34644A001010AD /* JSONSerializer.swift */,
 				E512522B1E8BAD7F00797254 /* ObjectExpositionError.swift */,
 				E512522C1E8BAD7F00797254 /* protocols */,
 				E51252571E8BAD7F00797254 /* Reaction.swift */,
@@ -1175,6 +1175,7 @@
 				E51252591E8BAD7F00797254 /* ServerErrorCodes.swift */,
 				E512525A1E8BAD7F00797254 /* StatusOfCompletion.swift */,
 				E512525B1E8BAD7F00797254 /* UnManagedModel.swift */,
+				E5E541CA1F3463DB001010AD /* SerializedEntity.swift */,
 			);
 			path = core;
 			sourceTree = "<group>";
@@ -1216,7 +1217,6 @@
 				E51252151E8BAD7F00797254 /* ManagedModel+JSONString.swift */,
 				E51252161E8BAD7F00797254 /* ManagedModel+Logs.swift */,
 				E51252171E8BAD7F00797254 /* ManagedModel+Mergeable.swift */,
-				E51252181E8BAD7F00797254 /* ManagedModel+NSCopying.swift */,
 				E51252191E8BAD7F00797254 /* ManagedModel+ProvisionChanges.swift */,
 				E512521A1E8BAD7F00797254 /* ManagedModel+QuietChanges.swift */,
 				E512521B1E8BAD7F00797254 /* ManagedModel+Relational.swift */,
@@ -1230,14 +1230,6 @@
 				E51252231E8BAD7F00797254 /* PushOperation+Conveniences.swift */,
 			);
 			path = extensions;
-			sourceTree = "<group>";
-		};
-		E51252261E8BAD7F00797254 /* json */ = {
-			isa = PBXGroup;
-			children = (
-				E51252271E8BAD7F00797254 /* JSONSerializer.swift */,
-			);
-			path = json;
 			sourceTree = "<group>";
 		};
 		E512522C1E8BAD7F00797254 /* protocols */ = {
@@ -1718,6 +1710,7 @@
 				E51252BD1E8BAD7F00797254 /* CreateLocker.swift in Sources */,
 				E51253551E8BAD7F00797254 /* Data+HMAC.swift in Sources */,
 				E51253151E8BAD7F00797254 /* UpdateNode.swift in Sources */,
+				E5E541CE1F34644A001010AD /* JSONSerializer.swift in Sources */,
 				E51252951E8BAD7F00797254 /* HTTPContext.swift in Sources */,
 				E51253AB1E8BAD7F00797254 /* ManagedModel+Equatable.swift in Sources */,
 				E512531F1E8BAD7F00797254 /* UpdateUsers.swift in Sources */,
@@ -1727,7 +1720,6 @@
 				E51253171E8BAD7F00797254 /* UpdateNodes.swift in Sources */,
 				E512542D1E8BAD7F00797254 /* UserProtocol.swift in Sources */,
 				E512535B1E8BAD7F00797254 /* NoCrypto.swift in Sources */,
-				E51253D31E8BAD7F00797254 /* JSONSerializer.swift in Sources */,
 				E51252D11E8BAD7F00797254 /* DeleteBox.swift in Sources */,
 				E51252BF1E8BAD7F00797254 /* CreateLockers.swift in Sources */,
 				E51253FB1E8BAD7F00797254 /* DocumentProvider.swift in Sources */,
@@ -1741,6 +1733,7 @@
 				E512528F1E8BAD7F00797254 /* Container.swift in Sources */,
 				E51252771E8BAD7F00797254 /* ManagedBlocks.swift in Sources */,
 				E51253CD1E8BAD7F00797254 /* PushOperation+Conveniences.swift in Sources */,
+				E5E541CB1F3463DB001010AD /* SerializedEntity.swift in Sources */,
 				E51254211E8BAD7F00797254 /* Serializer.swift in Sources */,
 				E51253811E8BAD7F00797254 /* BartlebyDocument+Metrics.swift in Sources */,
 				E51252FB1E8BAD7F00797254 /* ReadNodesByQuery.swift in Sources */,
@@ -1786,7 +1779,6 @@
 				E51253511E8BAD7F00797254 /* CryptoHelper.swift in Sources */,
 				E51253ED1E8BAD7F00797254 /* ConsolidableProgression.swift in Sources */,
 				E51253C11E8BAD7F00797254 /* ManagedModel+Serializable.swift in Sources */,
-				E51253B71E8BAD7F00797254 /* ManagedModel+NSCopying.swift in Sources */,
 				E51252971E8BAD7F00797254 /* HTTPRequest.swift in Sources */,
 				E51253DD1E8BAD7F00797254 /* BartlebyFileIO.swift in Sources */,
 				E512532F1E8BAD7F00797254 /* DeltaAnalyzer.swift in Sources */,
@@ -1983,7 +1975,6 @@
 				E51253181E8BAD7F00797254 /* UpdateNodes.swift in Sources */,
 				E512542E1E8BAD7F00797254 /* UserProtocol.swift in Sources */,
 				E512535C1E8BAD7F00797254 /* NoCrypto.swift in Sources */,
-				E51253D41E8BAD7F00797254 /* JSONSerializer.swift in Sources */,
 				E51252D21E8BAD7F00797254 /* DeleteBox.swift in Sources */,
 				E51252C01E8BAD7F00797254 /* CreateLockers.swift in Sources */,
 				E51253FC1E8BAD7F00797254 /* DocumentProvider.swift in Sources */,
@@ -2039,10 +2030,10 @@
 				E51253521E8BAD7F00797254 /* CryptoHelper.swift in Sources */,
 				E51253EE1E8BAD7F00797254 /* ConsolidableProgression.swift in Sources */,
 				E51253C21E8BAD7F00797254 /* ManagedModel+Serializable.swift in Sources */,
-				E51253B81E8BAD7F00797254 /* ManagedModel+NSCopying.swift in Sources */,
 				E51252981E8BAD7F00797254 /* HTTPRequest.swift in Sources */,
 				E51253DE1E8BAD7F00797254 /* BartlebyFileIO.swift in Sources */,
 				E51253301E8BAD7F00797254 /* DeltaAnalyzer.swift in Sources */,
+				E5E541CF1F34644A001010AD /* JSONSerializer.swift in Sources */,
 				E512537C1E8BAD7F00797254 /* BartlebyDocument+DotBart.swift in Sources */,
 				E51254441E8BAD7F00797254 /* IdentitiesManager.swift in Sources */,
 				E51254241E8BAD7F00797254 /* StateMessage.swift in Sources */,
@@ -2077,6 +2068,7 @@
 				E51252A01E8BAD7F00797254 /* LogEntry.swift in Sources */,
 				E51253381E8BAD7F00797254 /* FileReference.swift in Sources */,
 				E51252FE1E8BAD7F00797254 /* ReadTagById.swift in Sources */,
+				E5E541CC1F3463DB001010AD /* SerializedEntity.swift in Sources */,
 				E51252C81E8BAD7F00797254 /* CreateTags.swift in Sources */,
 				E51254501E8BAD7F00797254 /* PatchUser.swift in Sources */,
 				E51254481E8BAD7F00797254 /* Profile.swift in Sources */,
@@ -2537,6 +2529,7 @@
 				OTHER_SWIFT_FLAGS = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "Support-Files/BartlebyKit-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_SWIFT3_OBJC_INFERENCE = Off;
 			};
 			name = Debug;
 		};
@@ -2567,6 +2560,7 @@
 				OTHER_SWIFT_FLAGS = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "Support-Files/BartlebyKit-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
+				SWIFT_SWIFT3_OBJC_INFERENCE = Off;
 			};
 			name = Release;
 		};

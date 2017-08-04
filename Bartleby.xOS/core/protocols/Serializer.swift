@@ -59,16 +59,6 @@ public protocol Serializer {
     func deserializeFromUTF8String<T:Collectible>(_ string:String,register:Bool)throws ->T
 
 
-    // #TODO needs to be deprecated to use Data by default
-/*
-    /// Deserializes from a dictionary
-    /// - Parameters:
-    ///   - dictionary: the dictionary
-    ///   - register: should we register to document and collection?
-    /// - Returns: the deserialized object
-    /// - Throws: Variable exception (serializer based)
-    func deserializeFromDictionary<T:Collectible>(_ dictionary: [String:Any],register:Bool)throws ->T
-*/
     // MARK: - Serialization
 
 

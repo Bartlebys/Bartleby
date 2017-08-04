@@ -92,6 +92,11 @@ extension BartlebyDocument {
                         if let statusCode=httpResponse?.statusCode {
                             if 200...299 ~= statusCode {
                                 var issues=[String]()
+
+                                // #TODO We should use the collections name
+                                // And directly deserialize with the dynamic deserializer
+
+                                /*
                                 if let dictionary=result.value as? [String:Any]{
                                     if let collections=dictionary["collections"] as? [String:Any] {
                                         for (collectionName,collectionData) in collections{
@@ -100,8 +105,6 @@ extension BartlebyDocument {
                                                 for itemRep in collectionDictionary{
                                                     if let itemRepDictionary = itemRep as? [String:Any]{
                                                         do {
-                                                            // #TODO
-                                                            /*
                                                             if let instance=try self.serializer.deserializeFromDictionary(itemRepDictionary, register: false) as? Collectible{
                                                                 if let user:User=instance as? User{
                                                                     // We donnot want to expose the document current user
@@ -112,7 +115,7 @@ extension BartlebyDocument {
                                                                     // We want to upsert any object
                                                                     proxy.upsert(instance,commit:false)
                                                                 }
-                                                            }*/
+                                                            }
                                                         }catch{
                                                             issues.append("\(error)")
                                                         }
@@ -122,6 +125,7 @@ extension BartlebyDocument {
                                         }
                                     }
                                 }
+                                 */
                                 if issues.count==0{
                                     handlers.on(Completion.successState())
                                 }else{

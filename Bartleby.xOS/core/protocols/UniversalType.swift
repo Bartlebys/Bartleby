@@ -16,13 +16,15 @@
  E.g `class MyClass<T:AnyProtocol> ` is not possible to keep the support of NSSecureCoding
 
  */
-public protocol UniversalType {
 
+public protocol DeclaredTypeName{
     // The class or struct universal name is used to serialize the instance
     static func typeName() -> String
+}
+
+public protocol UniversalType:DeclaredTypeName{
 
     // The run time type name used to deserialize an instance
     func runTimeTypeName() -> String
-
 
 }

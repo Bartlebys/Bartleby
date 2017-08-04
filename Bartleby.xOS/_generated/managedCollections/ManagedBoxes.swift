@@ -556,11 +556,13 @@ public extension Notification.Name {
             arrayController?.bind(NSBindingName("content"), to: self, withKeyPath: "_items", options: nil)
             // Add observer
             arrayController?.addObserver(self, forKeyPath: "selectionIndexes", options: .new, context: &self._KVOContext)
-            if let indexes=self.referentDocument?.metadata.stateDictionary[self.selectedBoxesIndexesKey] as? [Int]{
-                let indexesSet = NSMutableIndexSet()
-                indexes.forEach{ indexesSet.add($0) }
-                arrayController?.setSelectionIndexes(indexesSet as IndexSet)
-             }
+            if let data = self.referentDocument?.metadata.stateDictionary[self.selectedBoxesIndexesKey]{
+                if let indexes = try? JSONDecoder().decode([Int].self, from: data){
+                    let indexesSet = NSMutableIndexSet()
+                    indexes.forEach{ indexesSet.add($0) }
+                    arrayController?.setSelectionIndexes(indexesSet as IndexSet)
+                }
+            }
         }
     }
 

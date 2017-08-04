@@ -12,6 +12,15 @@ import Foundation
 extension ManagedModel{
 
 
+    /// You may want in very special circomstancies want to replace the UID of a ManagedModel
+    /// for example before decrypting the Document in BartlebysUI to authenticate
+    /// USE WITH CAUTION (!)
+    ///
+    /// - Parameter newUID: the new UID
+    open func replaceUID(_ newUID:String){
+        self._id = newUID
+    }
+
     /// Return true if the inspector has been openned.
     open var isInspectable:Bool{
         get{

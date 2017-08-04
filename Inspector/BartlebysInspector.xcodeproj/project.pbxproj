@@ -10,8 +10,6 @@
 		E50CD6511E40A1DF009B5981 /* BSFSViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E50CD64F1E40A1DF009B5981 /* BSFSViewController.swift */; };
 		E50CD6521E40A1DF009B5981 /* BSFSViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = E50CD6501E40A1DF009B5981 /* BSFSViewController.xib */; };
 		E53094891E4B5A1E0068D7EC /* BartlebysUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E53094881E4B5A1E0068D7EC /* BartlebysUI.framework */; };
-		E53F0B7D1DF96319003301DD /* BartlebysInspector.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E53F0B731DF96319003301DD /* BartlebysInspector.framework */; };
-		E53F0B821DF96319003301DD /* InspectorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E53F0B811DF96319003301DD /* InspectorTests.swift */; };
 		E53F0B841DF96319003301DD /* Inspector.h in Headers */ = {isa = PBXBuildFile; fileRef = E53F0B761DF96319003301DD /* Inspector.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		E53F0BB41DF9639C003301DD /* AppHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = E53F0B971DF9639C003301DD /* AppHelper.swift */; };
 		E53F0BB51DF9639C003301DD /* ChangesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E53F0B981DF9639C003301DD /* ChangesViewController.swift */; };
@@ -46,16 +44,6 @@
 		E53F0BD61DF964D2003301DD /* Alamofire.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E53F0BD41DF964D2003301DD /* Alamofire.framework */; };
 /* End PBXBuildFile section */
 
-/* Begin PBXContainerItemProxy section */
-		E53F0B7E1DF96319003301DD /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = E53F0B6A1DF96319003301DD /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = E53F0B721DF96319003301DD;
-			remoteInfo = Inspector;
-		};
-/* End PBXContainerItemProxy section */
-
 /* Begin PBXFileReference section */
 		E50CD64F1E40A1DF009B5981 /* BSFSViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BSFSViewController.swift; sourceTree = "<group>"; };
 		E50CD6501E40A1DF009B5981 /* BSFSViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = BSFSViewController.xib; sourceTree = "<group>"; };
@@ -63,9 +51,6 @@
 		E53F0B731DF96319003301DD /* BartlebysInspector.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = BartlebysInspector.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		E53F0B761DF96319003301DD /* Inspector.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Inspector.h; sourceTree = "<group>"; };
 		E53F0B771DF96319003301DD /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		E53F0B7C1DF96319003301DD /* BartlebysInspectorTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = BartlebysInspectorTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		E53F0B811DF96319003301DD /* InspectorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InspectorTests.swift; sourceTree = "<group>"; };
-		E53F0B831DF96319003301DD /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		E53F0B971DF9639C003301DD /* AppHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppHelper.swift; sourceTree = "<group>"; };
 		E53F0B981DF9639C003301DD /* ChangesViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChangesViewController.swift; sourceTree = "<group>"; };
 		E53F0B991DF9639C003301DD /* ChangesViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ChangesViewController.xib; sourceTree = "<group>"; };
@@ -97,7 +82,6 @@
 		E53F0BB31DF9639C003301DD /* WebStack.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = WebStack.xib; sourceTree = "<group>"; };
 		E53F0BD21DF963C0003301DD /* BartlebyKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = BartlebyKit.framework; path = "../../../../../../../../Library/Developer/Xcode/DerivedData/Bartleby-gnbycabytonvqxecnlfitmgmkmiu/Build/Products/Debug/BartlebyKit.framework"; sourceTree = "<group>"; };
 		E53F0BD41DF964D2003301DD /* Alamofire.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Alamofire.framework; path = ../Carthage/Build/iOS/Alamofire.framework; sourceTree = "<group>"; };
-		E53F0BD51DF964D2003301DD /* ObjectMapper.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ObjectMapper.framework; path = ../Carthage/Build/iOS/ObjectMapper.framework; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -111,14 +95,6 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		E53F0B791DF96319003301DD /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				E53F0B7D1DF96319003301DD /* BartlebysInspector.framework in Frameworks */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
@@ -126,7 +102,6 @@
 			isa = PBXGroup;
 			children = (
 				E53F0B751DF96319003301DD /* Inspector */,
-				E53F0B801DF96319003301DD /* InspectorTests */,
 				E53F0B741DF96319003301DD /* Products */,
 				E53F0BD11DF963C0003301DD /* Frameworks */,
 			);
@@ -136,7 +111,6 @@
 			isa = PBXGroup;
 			children = (
 				E53F0B731DF96319003301DD /* BartlebysInspector.framework */,
-				E53F0B7C1DF96319003301DD /* BartlebysInspectorTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -180,15 +154,6 @@
 			path = Inspector;
 			sourceTree = "<group>";
 		};
-		E53F0B801DF96319003301DD /* InspectorTests */ = {
-			isa = PBXGroup;
-			children = (
-				E53F0B811DF96319003301DD /* InspectorTests.swift */,
-				E53F0B831DF96319003301DD /* Info.plist */,
-			);
-			path = InspectorTests;
-			sourceTree = "<group>";
-		};
 		E53F0B961DF9637E003301DD /* SupportFiles */ = {
 			isa = PBXGroup;
 			children = (
@@ -203,7 +168,6 @@
 			children = (
 				E53094881E4B5A1E0068D7EC /* BartlebysUI.framework */,
 				E53F0BD41DF964D2003301DD /* Alamofire.framework */,
-				E53F0BD51DF964D2003301DD /* ObjectMapper.framework */,
 				E53F0BD21DF963C0003301DD /* BartlebyKit.framework */,
 			);
 			name = Frameworks;
@@ -241,24 +205,6 @@
 			productReference = E53F0B731DF96319003301DD /* BartlebysInspector.framework */;
 			productType = "com.apple.product-type.framework";
 		};
-		E53F0B7B1DF96319003301DD /* BartlebysInspectorTests */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = E53F0B8A1DF96319003301DD /* Build configuration list for PBXNativeTarget "BartlebysInspectorTests" */;
-			buildPhases = (
-				E53F0B781DF96319003301DD /* Sources */,
-				E53F0B791DF96319003301DD /* Frameworks */,
-				E53F0B7A1DF96319003301DD /* Resources */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-				E53F0B7F1DF96319003301DD /* PBXTargetDependency */,
-			);
-			name = BartlebysInspectorTests;
-			productName = InspectorTests;
-			productReference = E53F0B7C1DF96319003301DD /* BartlebysInspectorTests.xctest */;
-			productType = "com.apple.product-type.bundle.unit-test";
-		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -273,11 +219,6 @@
 						CreatedOnToolsVersion = 8.1;
 						DevelopmentTeam = 984ZD3F8L6;
 						LastSwiftMigration = 0900;
-						ProvisioningStyle = Automatic;
-					};
-					E53F0B7B1DF96319003301DD = {
-						CreatedOnToolsVersion = 8.1;
-						DevelopmentTeam = 984ZD3F8L6;
 						ProvisioningStyle = Automatic;
 					};
 				};
@@ -295,7 +236,6 @@
 			projectRoot = "";
 			targets = (
 				E53F0B721DF96319003301DD /* BartlebysInspector */,
-				E53F0B7B1DF96319003301DD /* BartlebysInspectorTests */,
 			);
 		};
 /* End PBXProject section */
@@ -320,13 +260,6 @@
 				E50CD6521E40A1DF009B5981 /* BSFSViewController.xib in Resources */,
 				E53F0BC11DF9639C003301DD /* LogsViewController.xib in Resources */,
 				E53F0BCE1DF9639C003301DD /* SourceEditor.xib in Resources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		E53F0B7A1DF96319003301DD /* Resources */ = {
-			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -356,23 +289,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		E53F0B781DF96319003301DD /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				E53F0B821DF96319003301DD /* InspectorTests.swift in Sources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 /* End PBXSourcesBuildPhase section */
-
-/* Begin PBXTargetDependency section */
-		E53F0B7F1DF96319003301DD /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = E53F0B721DF96319003301DD /* BartlebysInspector */;
-			targetProxy = E53F0B7E1DF96319003301DD /* PBXContainerItemProxy */;
-		};
-/* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
 		E53F0B851DF96319003301DD /* Debug */ = {
@@ -524,34 +441,6 @@
 			};
 			name = Release;
 		};
-		E53F0B8B1DF96319003301DD /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
-				COMBINE_HIDPI_IMAGES = YES;
-				DEVELOPMENT_TEAM = 984ZD3F8L6;
-				INFOPLIST_FILE = InspectorTests/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = org.bartlebys.InspectorTests;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 3.0;
-			};
-			name = Debug;
-		};
-		E53F0B8C1DF96319003301DD /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
-				COMBINE_HIDPI_IMAGES = YES;
-				DEVELOPMENT_TEAM = 984ZD3F8L6;
-				INFOPLIST_FILE = InspectorTests/Info.plist;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = org.bartlebys.InspectorTests;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 3.0;
-			};
-			name = Release;
-		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -569,15 +458,6 @@
 			buildConfigurations = (
 				E53F0B881DF96319003301DD /* Debug */,
 				E53F0B891DF96319003301DD /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
-		E53F0B8A1DF96319003301DD /* Build configuration list for PBXNativeTarget "BartlebysInspectorTests" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				E53F0B8B1DF96319003301DD /* Debug */,
-				E53F0B8C1DF96319003301DD /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
