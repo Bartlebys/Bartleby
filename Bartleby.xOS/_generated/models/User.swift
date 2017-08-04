@@ -212,7 +212,7 @@ import Foundation
 			self.pseudo = try values.decode(String.self,forKey:.pseudo)
 			self.phoneCountryCode = try values.decode(String.self,forKey:.phoneCountryCode)
 			self.phoneNumber = try values.decode(String.self,forKey:.phoneNumber)
-			self.password = try values.decode(String.self,forKey:.password)
+			self.password = try self.decodeCryptedString(codingKey: .password, from: values)
 			self.status = User.Status(rawValue: try values.decode(String.self,forKey:.status)) ?? .new
 			self.notes = try values.decodeIfPresent(String.self,forKey:.notes)
 			self.supportsPasswordMemorization = try values.decode(Bool.self,forKey:.supportsPasswordMemorization)
@@ -234,7 +234,7 @@ import Foundation
 		try container.encode(self.pseudo,forKey:.pseudo)
 		try container.encode(self.phoneCountryCode,forKey:.phoneCountryCode)
 		try container.encode(self.phoneNumber,forKey:.phoneNumber)
-		try container.encode(self.password,forKey:.password)
+		try self.encodeCryptedString(value: self.password, codingKey: .password, container: &container)
 		try container.encode(self.status.rawValue ,forKey:.status)
 		try container.encodeIfPresent(self.notes,forKey:.notes)
 		try container.encode(self.supportsPasswordMemorization,forKey:.supportsPasswordMemorization)

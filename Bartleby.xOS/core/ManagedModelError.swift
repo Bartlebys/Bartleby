@@ -9,5 +9,5 @@
 import Foundation
 
 enum ManagedModelError:Error{
-    case illegalAttemptToReplaceUID
+    case referentDocumentNotFound
 }

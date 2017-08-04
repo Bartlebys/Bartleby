@@ -161,7 +161,7 @@ import Foundation
 			self.numberOfAttempt = try values.decode(Int.self,forKey:.numberOfAttempt)
 			self.startDate = try values.decode(Date.self,forKey:.startDate)
 			self.endDate = try values.decode(Date.self,forKey:.endDate)
-			self.gems = try values.decode(String.self,forKey:.gems)
+			self.gems = try self.decodeCryptedString(codingKey: .gems, from: values)
         }
     }
 
@@ -178,7 +178,7 @@ import Foundation
 		try container.encode(self.numberOfAttempt,forKey:.numberOfAttempt)
 		try container.encode(self.startDate,forKey:.startDate)
 		try container.encode(self.endDate,forKey:.endDate)
-		try container.encode(self.gems,forKey:.gems)
+		try self.encodeCryptedString(value: self.gems, codingKey: .gems, container: &container)
     }
 
 
