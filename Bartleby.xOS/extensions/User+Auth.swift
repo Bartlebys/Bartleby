@@ -26,7 +26,7 @@ extension User {
     /// Returns an encrypted hashed version of the password
     open var cryptoPassword:String{
         do{
-            let encrypted=try Bartleby.cryptoDelegate.encryptString(self.password,useKey:Bartleby.configuration.KEY)
+            let encrypted=try Bartleby.cryptoDelegate.encryptString(self.password ?? Default.NO_PASSWORD,useKey:Bartleby.configuration.KEY)
             return encrypted
         }catch{
             return  "CRYPTO_ERROR"

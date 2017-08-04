@@ -71,6 +71,13 @@ extension ManagedModel{
        try container.encode(crypted, forKey: codingKey)
     }
 
+    open func encodeCryptedStringIfPresent<Key>(value:String?, codingKey:Key, container : inout KeyedEncodingContainer<Key>)throws{
+        if let string = value{
+            let crypted = try Bartleby.cryptoDelegate.encryptString(string,useKey:Bartleby.configuration.KEY)
+            try container.encodeIfPresent(crypted, forKey: codingKey)
+        }
+    }
+
     open func decodeCryptedString<Key>(codingKey:Key,from container : KeyedDecodingContainer<Key>) throws ->String{
         let crypted = try container.decode(String.self, forKey:codingKey)
         let decrypted = try Bartleby.cryptoDelegate.decryptString(crypted,useKey:Bartleby.configuration.KEY)

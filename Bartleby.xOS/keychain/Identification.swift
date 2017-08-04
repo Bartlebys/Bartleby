@@ -29,7 +29,7 @@ open class Identification:Codable {
         identification.email=user.email
         identification.phoneCountryCode=user.phoneCountryCode
         identification.phoneNumber=user.phoneNumber
-        identification.password=user.password
+        identification.password=user.password ?? Default.NO_PASSWORD
         identification.externalID=user.externalID
         identification.supportsPasswordSyndication=user.supportsPasswordSyndication
         return identification

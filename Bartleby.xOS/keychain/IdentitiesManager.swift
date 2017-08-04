@@ -236,7 +236,7 @@ open class IdentitiesManager {
                     identification.email=currentUser.email
                     identification.phoneCountryCode=currentUser.phoneCountryCode
                     identification.phoneNumber=currentUser.phoneNumber
-                    identification.password=currentUser.password
+                    identification.password=currentUser.password ?? Default.NO_PASSWORD
                     identification.externalID=currentUser.externalID
                 }
                 newUser=false

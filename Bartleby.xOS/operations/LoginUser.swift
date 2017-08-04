@@ -27,7 +27,7 @@ open class LoginUser {
             do {
                 let r=try JSONEncoding().encode(urlRequest,with:dictionary)
 
-                request(r).validate().responseJSON(completionHandler: { (response) in
+                request(r).validate().responseData(completionHandler: { (response) in
 
                     let request=response.request
                     let result=response.result
@@ -82,10 +82,12 @@ open class LoginUser {
                                 document.currentUser.loginHasSucceed=true
                             }
                             if document.metadata.identificationMethod == .key{
-                                if let kvids = result.value as? [String]{
-                                    if kvids.count>=2{
-                                        document.metadata.identificationValue=kvids[1]
-                                        document.log("Login kvids \(kvids[0]):\(kvids[1]) ", file: #file, function: #function, line: #line, category: "Credentials", decorative: false)
+                                if let data = response.data{
+                                    if let kvids = try? JSON.decoder.decode([String].self, from: data){
+                                        if kvids.count>=2{
+                                            document.metadata.identificationValue=kvids[1]
+                                            document.log("Login kvids \(kvids[0]):\(kvids[1]) ", file: #file, function: #function, line: #line, category: "Credentials", decorative: false)
+                                        }
                                     }
                                 }
                             }
