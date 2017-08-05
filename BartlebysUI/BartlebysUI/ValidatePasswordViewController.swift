@@ -68,7 +68,7 @@ class ValidatePasswordViewController: IdentityStepViewController{
             if document.metadata.saveThePassword == true && supportsPasswordMemorization{
                 self.memorizePasswordCheckBox.state = NSControl.StateValue.on
                 let password=document.currentUser.password
-                self.passwordTextField.stringValue=password
+                self.passwordTextField.stringValue=password ?? Default.NO_PASSWORD
             }else{
                 self.passwordTextField.stringValue=""
             }
@@ -87,7 +87,7 @@ class ValidatePasswordViewController: IdentityStepViewController{
 
             if documentSugar != Default.VOID_STRING {
                 let currentPassword=PString.trim(self.passwordTextField.stringValue)
-                let documentPassword=PString.trim(document.currentUser.password)
+                let documentPassword=PString.trim(document.currentUser.password ?? Default.NO_PASSWORD)
                 if currentPassword == documentPassword{
                     document.send(IdentificationStates.passwordsAreMatching)
                     document.metadata.saveThePassword=(self.memorizePasswordCheckBox.state == NSControl.StateValue.on )

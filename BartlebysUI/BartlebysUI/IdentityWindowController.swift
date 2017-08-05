@@ -236,7 +236,7 @@ public class IdentityWindowController: NSWindowController,DocumentProvider,Ident
                         // It permits to use PERMISSION_BY_IDENTIFICATION_AND_ACTIVATION
                         // for the majority of the CRUD/URD calls
                         document.currentUser.status = .actived
-                        IdentitiesManager.synchronize(document,password:document.currentUser.password, completed: { (completion) in
+                        IdentitiesManager.synchronize(document,password:document.currentUser.password ?? Default.NO_PASSWORD, completed: { (completion) in
                             if completion.success{
                                 document.online=true
                                 self.identificationIsValid=true

@@ -12,7 +12,7 @@ import Foundation
 #if !USE_EMBEDDED_MODULES
 	import Alamofire
 #endif
-@objc(ReadNodesByQueryParameters) public class ReadNodesByQueryParameters : ManagedModel {
+@objc public class ReadNodesByQueryParameters : ManagedModel {
 		// Universal type support
 	override open class func typeName() -> String {
 		 return "ReadNodesByQueryParameters"

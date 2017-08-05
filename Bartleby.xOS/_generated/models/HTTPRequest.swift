@@ -13,7 +13,7 @@ import Foundation
 #endif
 
 // MARK: Bartleby's Core: an object that encapsulate the URL Request information
-@objc(HTTPRequest) open class HTTPRequest : UnManagedModel {
+@objc open class HTTPRequest : UnManagedModel {
 
     // DeclaredTypeName support
     override open class func typeName() -> String {

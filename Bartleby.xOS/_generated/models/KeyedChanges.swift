@@ -13,7 +13,7 @@ import Foundation
 #endif
 
 // MARK: Bartleby's Core: used to keep track of changes in memory when inspecting an App (Value Object)
-@objc(KeyedChanges) open class KeyedChanges : UnManagedModel {
+@objc open class KeyedChanges : UnManagedModel {
 
     // DeclaredTypeName support
     override open class func typeName() -> String {

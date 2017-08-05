@@ -13,7 +13,7 @@ import Foundation
 #endif
 
 // MARK: Bartleby's Core: Collection Metadatum. Complete implementation in CollectionMetadatum
-@objc(CollectionMetadatum) open class CollectionMetadatum : UnManagedModel {
+@objc open class CollectionMetadatum : UnManagedModel {
 
     // DeclaredTypeName support
     override open class func typeName() -> String {

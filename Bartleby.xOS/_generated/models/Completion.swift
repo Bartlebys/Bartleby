@@ -13,7 +13,7 @@ import Foundation
 #endif
 
 // MARK: Bartleby's Commons: A completion state
-@objc(Completion) open class Completion : UnManagedModel {
+@objc open class Completion : UnManagedModel {
 
     // DeclaredTypeName support
     override open class func typeName() -> String {

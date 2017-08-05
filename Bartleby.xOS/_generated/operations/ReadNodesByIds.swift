@@ -12,7 +12,7 @@ import Foundation
 #if !USE_EMBEDDED_MODULES
 	import Alamofire
 #endif
-@objc(ReadNodesByIdsParameters) public class ReadNodesByIdsParameters : ManagedModel {
+@objc public class ReadNodesByIdsParameters : ManagedModel {
 		// Universal type support
 	override open class func typeName() -> String {
 		 return "ReadNodesByIdsParameters"

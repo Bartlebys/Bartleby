@@ -7,21 +7,27 @@
 
 import Foundation
 
-public enum DynamicDeserializerError:Error{
-    case classNotFound
+public enum DynamicsError:Error{
+    case typeNotFound
 }
 
 // We use dynamic deserialization to handle triggers, operation provisionning and Server sent events.
 // Everywhere else you should use the standard Serializer
-public protocol DynamicDeserializer{
+public protocol Dynamics{
 
     /// Deserializes dynamically an entity based on its Class name.
     ///
     /// - Parameters:
-    ///   - className: the className
+    ///   - typeName: the typeName
     ///   - data: the encoded data
     ///   - document: the document to register In the instance (if set to nil the instance will not be registred
     /// - Returns: the dynamic instance that you cast..?
-    func deserialize(className:String,data:Data,document:BartlebyDocument?)throws->Any
+    func deserialize(typeName:String,data:Data,document:BartlebyDocument?)throws->Any
+
+    /// This is a Dyamic Factory
+    ///
+    /// - Parameter typeName: the class name
+    /// - Returns: the new instance
+    func newInstanceOf(_ typeName:String)throws->Any
 
 }

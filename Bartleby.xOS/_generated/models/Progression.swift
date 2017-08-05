@@ -13,7 +13,7 @@ import Foundation
 #endif
 
 // MARK: Bartleby's Commons: A progression state
-@objc(Progression) open class Progression : UnManagedModel {
+@objc open class Progression : UnManagedModel {
 
     // DeclaredTypeName support
     override open class func typeName() -> String {

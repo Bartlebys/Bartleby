@@ -13,7 +13,7 @@ import Foundation
 #endif
 
 // MARK: Bartleby's Core: A single print entry
-@objc(LogEntry) open class LogEntry : UnManagedModel {
+@objc open class LogEntry : UnManagedModel {
 
     // DeclaredTypeName support
     override open class func typeName() -> String {

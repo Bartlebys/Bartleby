@@ -51,7 +51,7 @@ open class LoginUser {
                     if let data = response.data, let utf8Text = String(data: data, encoding: .utf8) {
                         context.responseString=utf8Text
                         if Bartleby.configuration.DEVELOPER_MODE{
-                             print("Login \(user.UID) \n\(user.email) \n\(String(describing:request?.url)) \npassword:\(user.password) \ncryptoPassword:\(user.cryptoPassword) \nResult: \(utf8Text)")
+                             print("Login \(user.UID) \n\(user.email) \n\(String(describing:request?.url)) \npassword:\(user.password ?? Default.NO_PASSWORD) \ncryptoPassword:\(user.cryptoPassword) \nResult: \(utf8Text)")
                         }
                     }
                     metrics.httpContext=context

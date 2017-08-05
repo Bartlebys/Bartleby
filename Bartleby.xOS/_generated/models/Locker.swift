@@ -13,7 +13,7 @@ import Foundation
 #endif
 
 // MARK: Bartleby's Core: a locker
-@objc(Locker) open class Locker : ManagedModel{
+@objc open class Locker : ManagedModel{
 
     // Universal type support
     override open class func typeName() -> String {

@@ -13,7 +13,7 @@ import Foundation
 #endif
 
 // MARK: A simple String UnManagedModel
-@objc(StringValue) open class StringValue : UnManagedModel {
+@objc open class StringValue : UnManagedModel {
 
     // DeclaredTypeName support
     override open class func typeName() -> String {

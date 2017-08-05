@@ -35,9 +35,7 @@ extension HTTPRequest{
             r.httpMethod=self.httpMethod
             if let h=self.headers{
                 for (k,v) in h {
-                    if let s = v as? String{
-                        r.addValue(s, forHTTPHeaderField: k)
-                    }
+                    r.addValue(v, forHTTPHeaderField: k)
                 }
             }
             r.httpBody=self.httpBody

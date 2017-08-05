@@ -13,7 +13,7 @@ import Foundation
 #endif
 
 // MARK: Bartleby's Synchronized File System: a block references bytes
-@objc(Block) open class Block : ManagedModel{
+@objc open class Block : ManagedModel{
 
     // Universal type support
     override open class func typeName() -> String {

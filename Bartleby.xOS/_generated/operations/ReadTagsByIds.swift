@@ -12,7 +12,7 @@ import Foundation
 #if !USE_EMBEDDED_MODULES
 	import Alamofire
 #endif
-@objc(ReadTagsByIdsParameters) public class ReadTagsByIdsParameters : ManagedModel {
+@objc public class ReadTagsByIdsParameters : ManagedModel {
 		// Universal type support
 	override open class func typeName() -> String {
 		 return "ReadTagsByIdsParameters"

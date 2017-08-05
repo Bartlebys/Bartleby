@@ -29,7 +29,7 @@ public extension Notification.Name {
 
 // This controller implements data automation features.
 
-@objc(ManagedTags) open class ManagedTags : ManagedModel,IterableCollectibleCollection{
+@objc open class ManagedTags : ManagedModel,IterableCollectibleCollection{
 
     // Staged "tags" identifiers (used to determine what should be committed on the next loop)
     @objc fileprivate dynamic var _staged=[String]()

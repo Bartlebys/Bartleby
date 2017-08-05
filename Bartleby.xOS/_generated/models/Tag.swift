@@ -13,7 +13,7 @@ import Foundation
 #endif
 
 // MARK: Bartleby's Core: a tag can be used to classify instances (The tag are set using relationships)
-@objc(Tag) open class Tag : ManagedModel{
+@objc open class Tag : ManagedModel{
 
     // Universal type support
     override open class func typeName() -> String {

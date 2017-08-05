@@ -171,7 +171,7 @@ extension BartlebyDocument {
             for operation in bunchOfOperations{
                 if let serialized=operation.serialized {
                     do{
-                            let o = try self.dynamicDeserializer.deserialize(className: operation.operationName, data: serialized, document: nil)
+                            let o = try self.dynamics.deserialize(typeName: operation.operationName, data: serialized, document: nil)
                             if let op=o as? BartlebyOperation {
                                 Bartleby.syncOnMain{
                                     // Push the command.

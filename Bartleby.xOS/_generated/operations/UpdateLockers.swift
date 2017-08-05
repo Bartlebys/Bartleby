@@ -12,7 +12,7 @@ import Foundation
 	import Alamofire
 #endif
 
-@objc(UpdateLockers) public class UpdateLockers : ManagedModel,BartlebyOperation{
+@objc public class UpdateLockers : ManagedModel,BartlebyOperation{
 
     // Universal type support
     override open class func typeName() -> String {

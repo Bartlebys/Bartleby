@@ -13,7 +13,7 @@ import Foundation
 #endif
 
 // MARK: Bartleby's Core: Complete implementation in DocumentMetadata.
-@objc(DocumentMetadata) open class DocumentMetadata : UnManagedModel {
+@objc open class DocumentMetadata : UnManagedModel {
 
     // DeclaredTypeName support
     override open class func typeName() -> String {

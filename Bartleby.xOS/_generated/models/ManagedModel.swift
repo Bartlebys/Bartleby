@@ -13,7 +13,7 @@ import Foundation
 #endif
 
 // MARK: Bartleby's Core: The base of any ManagedModel
-@objc(ManagedModel) open class ManagedModel : NSObject, Collectible, Codable{
+@objc open class ManagedModel : NSObject, Collectible, Codable{
 
     // Universal type support
     open class func typeName() -> String {

@@ -13,7 +13,7 @@ import Foundation
 #endif
 
 // MARK: Bartleby's Synchronized File System: a node references a collection of blocks that compose a files, or an alias or a folder
-@objc(Node) open class Node : ManagedModel{
+@objc open class Node : ManagedModel{
 
     // Universal type support
     override open class func typeName() -> String {

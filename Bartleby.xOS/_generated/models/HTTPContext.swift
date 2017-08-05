@@ -13,7 +13,7 @@ import Foundation
 #endif
 
 // MARK: Bartleby's Core: an object that encapsulate the whole http context , request, response
-@objc(HTTPContext) open class HTTPContext : UnManagedModel, Consignable {
+@objc open class HTTPContext : UnManagedModel, Consignable {
 
     // DeclaredTypeName support
     override open class func typeName() -> String {

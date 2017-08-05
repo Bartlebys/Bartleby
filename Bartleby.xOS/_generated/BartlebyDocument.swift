@@ -81,8 +81,8 @@ import Foundation
     // The document shared Serializer
     open lazy var serializer:Serializer=JSONSerializer(document: self)
 
-    // This deserializer is replaced by your `AppDynamicDeserializer` in app contexts.
-    open lazy var dynamicDeserializer:DynamicDeserializer=BartlebysDynamicDeserializer()
+    // This deserializer is replaced by your `AppDynamics` in app contexts.
+    open lazy var dynamics:Dynamics=BartlebysDynamics()
 
     // Keep a reference to the document file Wrapper
     open lazy var documentFileWrapper:FileWrapper=FileWrapper(directoryWithFileWrappers:[:])
@@ -392,18 +392,30 @@ import Foundation
     /// - Parameter commit: should we commit the entity
     /// - Returns: a Collectible Model
     open func newManagedModel<T:Collectible>(commit:Bool=true)->T{
-        // User as a special factory Method
+
+        // User as a special Method
         if T.typeName()=="User"{
             return self._newUser(commit:commit) as! T
         }
-        var instance = T.init()
+
+        // Generated UnaManaged and ManagedModel are supported
+        // We prefer to crash if some tries to inject another collectible
+        var instance = try! self.dynamics.newInstanceOf(T.typeName()) as! T
+
+        // Do we have a collection ?
         if let collection=self.collectionByName(instance.d_collectionName){
             collection.add(instance, commit: false)
         }
+
+        // Set up the creator
         instance.creatorUID = self.metadata.currentUserUID
+
+        // We defer the commit to the next synchronization loop
+        // to allow post instantiation modification
         if commit{
-            instance.needsToBeCommitted()// We defer the commit to the next synchronization loop
+            instance.needsToBeCommitted()
         }
+
         self.didCreate(instance)
         return  instance
     }

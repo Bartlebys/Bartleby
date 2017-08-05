@@ -13,7 +13,7 @@ import Foundation
 #endif
 
 // MARK: Bartleby's Core: a Report object that can be used for analytics and support purposes
-@objc(Report) open class Report : ManagedModel{
+@objc open class Report : ManagedModel{
 
     // Universal type support
     override open class func typeName() -> String {

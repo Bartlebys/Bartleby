@@ -29,7 +29,7 @@ public extension Notification.Name {
 
 // This controller implements data automation features.
 
-@objc(ManagedLockers) open class ManagedLockers : ManagedModel,IterableCollectibleCollection{
+@objc open class ManagedLockers : ManagedModel,IterableCollectibleCollection{
 
     // Staged "lockers" identifiers (used to determine what should be committed on the next loop)
     @objc fileprivate dynamic var _staged=[String]()

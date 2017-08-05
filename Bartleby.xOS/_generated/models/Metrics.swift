@@ -13,7 +13,7 @@ import Foundation
 #endif
 
 // MARK: Bartleby's Core: a value object used to record metrics
-@objc(Metrics) open class Metrics : UnManagedModel {
+@objc open class Metrics : UnManagedModel {
 
     // DeclaredTypeName support
     override open class func typeName() -> String {
