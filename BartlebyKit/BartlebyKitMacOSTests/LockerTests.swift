@@ -315,17 +315,22 @@ class LockerTests: XCTestCase {
     }
 
     func test402_DeleteLocker() {
+        if LockerTests._locker == nil{
+            XCTFail("LockerTests._locker is void")
+        }else{
+            let expectation = self.expectation(description: "DeleteLocker should respond")
 
-        let expectation = self.expectation(description: "DeleteLocker should respond")
+            DeleteLocker.execute(LockerTests._locker!, from: LockerTests._document.UID, sucessHandler: { (context) in
+                expectation.fulfill()
+            }) { (context) in
+                expectation.fulfill()
+                XCTFail("\(context)")
+            }
 
-        DeleteLocker.execute(LockerTests._locker!, from: LockerTests._document.UID, sucessHandler: { (context) in
-            expectation.fulfill()
-        }) { (context) in
-            expectation.fulfill()
-            XCTFail("\(context)")
+            waitForExpectations(timeout: TestsConfiguration.TIME_OUT_DURATION, handler: nil)
         }
 
-        waitForExpectations(timeout: TestsConfiguration.TIME_OUT_DURATION, handler: nil)
+
     }
 
     func test403_DeleteUser_Consumer() {
