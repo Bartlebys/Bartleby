@@ -25,7 +25,7 @@ import Foundation
 	@objc dynamic open var referentDocument:BartlebyDocument?
 
 	//The action name e.g: UpdateUser
-	@objc dynamic open var operationName:String = "\(Default.NO_NAME)"
+	@objc dynamic open var operationName:String = Default.NO_NAME
 
 	//The metrics entry counter
 	@objc dynamic open var counter:Int = -1

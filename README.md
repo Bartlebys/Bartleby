@@ -22,7 +22,7 @@ Bartleby
 Bartleby Major version should increment each 24 months. 
 
 ## Bartleby Stack 1.x
-Publicly available this fall (Q1 2017).
+Publicly available this fall (Q4 2017 / Q1 2018).
 [bartlebys.org](https://bartlebys.org)
 
 ## Contact 

@@ -22,7 +22,7 @@ import Foundation
 
 
 	//A descriptive string for developer to identify the calling context
-	@objc dynamic open var caller:String = "\(Default.NO_NAME)"
+	@objc dynamic open var caller:String = Default.NO_NAME
 
 	// A developer set code to provide filtering
 	@objc dynamic open var code:Int = Default.MAX_INT

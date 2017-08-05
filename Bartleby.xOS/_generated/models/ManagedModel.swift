@@ -20,8 +20,11 @@ import Foundation
         return "ManagedModel"
     }
 
+	//The object unique Identifier it is named _id to gains native support in MongoDB - UID 
+	@objc dynamic open var _id:String = Bartleby.createUID()
+
 	//An external unique identifier
-	@objc dynamic open var externalID:String = ""{
+	@objc dynamic open var externalID:String = "" {
 	    didSet { 
 	       if !self.wantsQuietChanges && externalID != oldValue {
 	            self.provisionChanges(forKey: "externalID",oldValue: oldValue,newValue: externalID) 
@@ -30,7 +33,7 @@ import Foundation
 	}
 
 	//Collectible protocol: The Creator UID - Can be used for ACL purposes automatically injected in new entities Factories
-	@objc dynamic open var creatorUID:String = "\(Default.NO_UID)"
+	@objc dynamic open var creatorUID:String = Default.NO_UID
 
 	//The UIDS of the owners
 	@objc dynamic open var ownedBy:[String] = [String]()  {
@@ -100,13 +103,6 @@ import Foundation
         }
     }
 
-    // The internal _id
-    internal lazy var _id: String = Bartleby.createUID()
-
-    // Returns the UID
-    public var UID: String { return  self._id }
-
-
     //The supervisers container
     internal var _supervisers=[String:SupervisionClosure]()
     // MARK: UniversalType
@@ -117,11 +113,14 @@ import Foundation
     // The Run time Type name (can be different to typeName)
     internal var _runTimeTypeName: String?
 
+    open var UID:String { get{ return self._id } set{  self._id = UID } }
+
 
     // MARK: - Codable
 
 
     enum ManagedModelCodingKeys: String,CodingKey{
+		case _id
 		case externalID
 		case creatorUID
 		case ownedBy
@@ -133,14 +132,14 @@ import Foundation
 		case _quietChanges
 		case _autoCommitIsEnabled
 		case commitCounter
-		case typeName = "typeName"
-		case _id = "_id"
+		case typeName
     }
 
     required public init(from decoder: Decoder) throws{
 		super.init()
         try self.quietThrowingChanges {
 			let values = try decoder.container(keyedBy: ManagedModelCodingKeys.self)
+			self._id = try values.decode(String.self,forKey:._id)
 			self.externalID = try values.decode(String.self,forKey:.externalID)
 			self.creatorUID = try values.decode(String.self,forKey:.creatorUID)
 			self.ownedBy = try values.decode([String].self,forKey:.ownedBy)
@@ -149,12 +148,12 @@ import Foundation
 			self.ephemeral = try values.decode(Bool.self,forKey:.ephemeral)
 			self.commitCounter = try values.decode(Int.self,forKey:.commitCounter)
             self._typeName = try values.decode(String.self,forKey:.typeName)
-            self._id = try values.decode(String.self,forKey:._id)
         }
     }
 
     open func encode(to encoder: Encoder) throws {
 		var container = encoder.container(keyedBy: ManagedModelCodingKeys.self)
+		try container.encode(self._id,forKey:._id)
 		try container.encode(self.externalID,forKey:.externalID)
 		try container.encode(self.creatorUID,forKey:.creatorUID)
 		try container.encode(self.ownedBy,forKey:.ownedBy)
@@ -163,7 +162,6 @@ import Foundation
 		try container.encode(self.ephemeral,forKey:.ephemeral)
 		try container.encode(self.commitCounter,forKey:.commitCounter)
         try container.encode(self._typeName,forKey:.typeName)
-        try container.encode(self._id,forKey:._id)
         
     }
 
@@ -173,7 +171,7 @@ import Foundation
     /// Return all the exposed instance variables keys. (Exposed == public and modifiable).
      open var exposedKeys:[String] {
         var exposed=[String]()
-        exposed.append(contentsOf:["externalID","creatorUID","ownedBy","freeRelations","owns","summary","ephemeral","changedKeys","commitCounter"])
+        exposed.append(contentsOf:["_id","externalID","creatorUID","ownedBy","freeRelations","owns","summary","ephemeral","changedKeys","commitCounter"])
         return exposed
     }
 
@@ -186,6 +184,10 @@ import Foundation
     /// - throws: throws an Exception when the key is not exposed
      open func setExposedValue(_ value:Any?, forKey key: String) throws {
         switch key {
+            case "_id":
+                if let casted=value as? String{
+                    self._id=casted
+                }
             case "externalID":
                 if let casted=value as? String{
                     self.externalID=casted
@@ -237,6 +239,8 @@ import Foundation
     /// - returns: returns the value
      open func getExposedValueForKey(_ key:String) throws -> Any?{
         switch key {
+            case "_id":
+               return self._id
             case "externalID":
                return self.externalID
             case "creatorUID":

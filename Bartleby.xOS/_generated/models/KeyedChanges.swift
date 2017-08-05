@@ -25,10 +25,10 @@ import Foundation
 	@objc dynamic open var elapsed:Double = Bartleby.elapsedTime
 
 	//the key
-	@objc dynamic open var key:String = "\(Default.NO_KEY)"
+	@objc dynamic open var key:String = Default.NO_KEY
 
 	//A description of the changes that have occured
-	@objc dynamic open var changes:String = "\(Default.NO_MESSAGE)"
+	@objc dynamic open var changes:String = Default.NO_MESSAGE
 
 
     // MARK: - Codable

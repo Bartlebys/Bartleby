@@ -9,9 +9,9 @@
 //
 import Foundation
 
-// We try to reduce the usage of Objc Dynamics, and the Objc() name mangling.
+// We try to reduce the usage of Objc Dynamic and the Objc() name mangling to prevent intermodule conflicts
 // We still use NSObject for ManagedModel to be able to use Cocoa Bindings, KVO, KVC.
-// But we want to be able to drop that dependencie in future versions of the Bartleby's stack.
+// But we want to be able to drop that dependencies in future versions of Bartleby's stack.
 //
 // #TODO
 // THIS IMPLEMENTION IS CURRENTLY NON OPTIMIZED

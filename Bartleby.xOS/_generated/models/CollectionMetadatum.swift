@@ -28,7 +28,7 @@ import Foundation
 	open var storage:Storage = .monolithicFileStorage
 
 	//The holding collection name
-	@objc dynamic open var collectionName:String = "\(Default.NO_NAME)"
+	@objc dynamic open var collectionName:String = Default.NO_NAME
 
 	//The proxy object (not serializable, not supervisable)
 	@objc dynamic open var proxy:ManagedModel?

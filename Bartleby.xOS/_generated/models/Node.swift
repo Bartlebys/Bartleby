@@ -21,7 +21,7 @@ import Foundation
     }
 
 	//The type of node is a classifier equivalent to a file extension.
-	@objc dynamic open var type:String = ""{
+	@objc dynamic open var type:String = "" {
 	    didSet { 
 	       if !self.wantsQuietChanges && type != oldValue {
 	            self.provisionChanges(forKey: "type",oldValue: oldValue,newValue: type) 
@@ -30,7 +30,7 @@ import Foundation
 	}
 
 	//The relative path inside the box
-	@objc dynamic open var relativePath:String = "\(Default.NO_PATH)"
+	@objc dynamic open var relativePath:String = Default.NO_PATH
 
 	//A relative path for a proxy file (And the resolved path if nature==.alias)
 	@objc dynamic open var proxyPath:String?
@@ -69,7 +69,7 @@ import Foundation
 	@objc dynamic open var size:Int = Default.MAX_INT
 
 	//The SHA1 digest of the node is the digest of all its blocks digest.
-	@objc dynamic open var digest:String = "\(Default.NO_DIGEST)"{
+	@objc dynamic open var digest:String = Default.NO_DIGEST {
 	    didSet { 
 	       if !self.wantsQuietChanges && digest != oldValue {
 	            self.provisionChanges(forKey: "digest",oldValue: oldValue,newValue: digest) 

@@ -21,7 +21,7 @@ import Foundation
     }
 
 	//The SHA1 digest of the block
-	@objc dynamic open var digest:String = "\(Default.NO_DIGEST)"{
+	@objc dynamic open var digest:String = Default.NO_DIGEST {
 	    didSet { 
 	       if !self.wantsQuietChanges && digest != oldValue {
 	            self.provisionChanges(forKey: "digest",oldValue: oldValue,newValue: digest) 

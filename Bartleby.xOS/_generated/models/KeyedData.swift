@@ -22,7 +22,7 @@ import Foundation
 
 
 	//The key
-	@objc dynamic open var key:String = "\(Default.NO_KEY)"
+	@objc dynamic open var key:String = Default.NO_KEY
 
 	//The Data
 	@objc dynamic open var data:Data = Data()

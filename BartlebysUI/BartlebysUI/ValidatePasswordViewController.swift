@@ -107,7 +107,7 @@ class ValidatePasswordViewController: IdentityStepViewController{
                         let password = try Bartleby.cryptoDelegate.encryptString(self.passwordTextField.stringValue, useKey: Bartleby.configuration.KEY)
 
                         let tempUser = User()
-                        tempUser.replaceUID(document.metadata.currentUserUID)
+                        tempUser.UID = document.metadata.currentUserUID
                         tempUser.email = self.emailTextField.stringValue
                         tempUser.password = password
 

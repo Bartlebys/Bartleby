@@ -22,25 +22,25 @@ import Foundation
 
 
 	//The data space UID can be shared between multiple Docuemnt.
-	@objc dynamic open var spaceUID:String = "\(Bartleby.createUID())"
+	@objc dynamic open var spaceUID:String = Bartleby.createUID()
 
 	//Defines the document UID.
-	@objc dynamic open var persistentUID:String = "\(Bartleby.createUID())"
+	@objc dynamic open var persistentUID:String = Bartleby.createUID()
 
 	//The user UID currently associated to the local instance of the document
-	@objc dynamic open var currentUserUID:String = "\(Default.NO_UID)"
+	@objc dynamic open var currentUserUID:String = Default.NO_UID
 
 	//The current user email (to be displayed during identity control)
-	@objc dynamic open var currentUserEmail:String = "\(Default.VOID_STRING)"
+	@objc dynamic open var currentUserEmail:String = Default.VOID_STRING
 
 	//The current user full phone number including the prefix (to be displayed during identity control)
-	@objc dynamic open var currentUserFullPhoneNumber:String = "\(Default.VOID_STRING)"
+	@objc dynamic open var currentUserFullPhoneNumber:String = Default.VOID_STRING
 
 	//The sugar (not serialized but loaded from the Bowl)
-	@objc dynamic open var sugar:String = "\(Default.VOID_STRING)"
+	@objc dynamic open var sugar:String = Default.VOID_STRING
 
 	//The locker UID to be used by the user to obtain the sugar from the locker
-	@objc dynamic open var lockerUID:String = "\(Default.NO_UID)"
+	@objc dynamic open var lockerUID:String = Default.NO_UID
 
 	//Has the current user been controlled
 	@objc dynamic open var userHasBeenControlled:Bool = false
@@ -76,8 +76,8 @@ import Foundation
 	//A collection of CollectionMetadatum
 	@objc dynamic open var collectionsMetadata:[CollectionMetadatum] = [CollectionMetadatum]()
 
-	//The State data 'dictionary' to insure document persistency 
-	@objc dynamic open var stateDictionary:[String:Data] = [String:Data]()
+	//The States data 'dictionary' to insure document persistency 
+	@objc dynamic open var statesDictionary:[String:Data] = [String:Data]()
 
 	//A collection of KeyedData
 	@objc dynamic open var URLBookmarkData:[KeyedData] = [KeyedData]()
@@ -160,7 +160,7 @@ import Foundation
 		case changesAreInspectables
 		case cleanupBoxesWhenClosingDocument
 		case collectionsMetadata
-		case stateDictionary
+		case statesDictionary
 		case URLBookmarkData
 		case preferredFileName
 		case triggersIndexesDebugHistory
@@ -198,7 +198,7 @@ import Foundation
 			self.collaborationServerURL = try values.decodeIfPresent(URL.self,forKey:.collaborationServerURL)
 			self.registred = try values.decode(Bool.self,forKey:.registred)
 			self.collectionsMetadata = try values.decode([CollectionMetadatum].self,forKey:.collectionsMetadata)
-			self.stateDictionary = try values.decode([String:Data].self,forKey:.stateDictionary)
+			self.statesDictionary = try values.decode([String:Data].self,forKey:.statesDictionary)
 			self.URLBookmarkData = try values.decode([KeyedData].self,forKey:.URLBookmarkData)
 			self.preferredFileName = try values.decodeIfPresent(String.self,forKey:.preferredFileName)
 			self.triggersIndexesDebugHistory = try values.decode([Int].self,forKey:.triggersIndexesDebugHistory)
@@ -232,7 +232,7 @@ import Foundation
 		try container.encodeIfPresent(self.collaborationServerURL,forKey:.collaborationServerURL)
 		try container.encode(self.registred,forKey:.registred)
 		try container.encode(self.collectionsMetadata,forKey:.collectionsMetadata)
-		try container.encode(self.stateDictionary,forKey:.stateDictionary)
+		try container.encode(self.statesDictionary,forKey:.statesDictionary)
 		try container.encode(self.URLBookmarkData,forKey:.URLBookmarkData)
 		try container.encodeIfPresent(self.preferredFileName,forKey:.preferredFileName)
 		try container.encode(self.triggersIndexesDebugHistory,forKey:.triggersIndexesDebugHistory)
@@ -255,7 +255,7 @@ import Foundation
     /// Return all the exposed instance variables keys. (Exposed == public and modifiable).
     override  open var exposedKeys:[String] {
         var exposed=super.exposedKeys
-        exposed.append(contentsOf:["spaceUID","persistentUID","currentUserUID","currentUserEmail","currentUserFullPhoneNumber","sugar","lockerUID","userHasBeenControlled","secondaryAuthFactorRequired","identificationMethod","appGroup","identificationValue","collaborationServerURL","registred","changesAreInspectables","cleanupBoxesWhenClosingDocument","collectionsMetadata","stateDictionary","URLBookmarkData","preferredFileName","triggersIndexesDebugHistory","ownedTriggersIndexes","lastIntegratedTriggerIndex","receivedTriggers","operationsQuarantine","bunchInProgress","totalNumberOfOperations","pendingOperationsProgressionState","shouldBeOnline","online","transition","pushOnChanges","saveThePassword","cumulatedUpMetricsDuration","totalNumberOfUpMetrics","qosIndice"])
+        exposed.append(contentsOf:["spaceUID","persistentUID","currentUserUID","currentUserEmail","currentUserFullPhoneNumber","sugar","lockerUID","userHasBeenControlled","secondaryAuthFactorRequired","identificationMethod","appGroup","identificationValue","collaborationServerURL","registred","changesAreInspectables","cleanupBoxesWhenClosingDocument","collectionsMetadata","statesDictionary","URLBookmarkData","preferredFileName","triggersIndexesDebugHistory","ownedTriggersIndexes","lastIntegratedTriggerIndex","receivedTriggers","operationsQuarantine","bunchInProgress","totalNumberOfOperations","pendingOperationsProgressionState","shouldBeOnline","online","transition","pushOnChanges","saveThePassword","cumulatedUpMetricsDuration","totalNumberOfUpMetrics","qosIndice"])
         return exposed
     }
 
@@ -336,9 +336,9 @@ import Foundation
                 if let casted=value as? [CollectionMetadatum]{
                     self.collectionsMetadata=casted
                 }
-            case "stateDictionary":
+            case "statesDictionary":
                 if let casted=value as? [String:Data]{
-                    self.stateDictionary=casted
+                    self.statesDictionary=casted
                 }
             case "URLBookmarkData":
                 if let casted=value as? [KeyedData]{
@@ -461,8 +461,8 @@ import Foundation
                return self.cleanupBoxesWhenClosingDocument
             case "collectionsMetadata":
                return self.collectionsMetadata
-            case "stateDictionary":
-               return self.stateDictionary
+            case "statesDictionary":
+               return self.statesDictionary
             case "URLBookmarkData":
                return self.URLBookmarkData
             case "preferredFileName":

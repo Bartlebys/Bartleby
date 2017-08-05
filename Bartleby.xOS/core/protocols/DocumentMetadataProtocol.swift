@@ -48,7 +48,7 @@ public protocol DocumentMetadataProtocol:  Codable {
     var currentUser: User? { get }
 
     // The state data dictionary
-    var stateDictionary: [String:Data] { get set }
+    var statesDictionary: [String:Data] { get set }
 
     // Store the metadatum of each collection.
     var collectionsMetadata: [CollectionMetadatumType] { get }

@@ -46,7 +46,7 @@ import Foundation
 	@objc dynamic open var decorative:Bool = false
 
 	//Is the entry decorative or significant? decoration includes separators, etc...
-	@objc dynamic private var _runUID:String = "\(Bartleby.runUID)"
+	@objc dynamic private var _runUID:String = Bartleby.runUID
 
 
     // MARK: - Codable

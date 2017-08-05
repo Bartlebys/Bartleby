@@ -21,7 +21,7 @@ import Foundation
     }
 
 	//The spaceUID. A user with the same credentials can exists within multiple Data space.
-	@objc dynamic open var spaceUID:String = "\(Bartleby.createUID())"{
+	@objc dynamic open var spaceUID:String = Bartleby.createUID() {
 	    didSet { 
 	       if !self.wantsQuietChanges && spaceUID != oldValue {
 	            self.provisionChanges(forKey: "spaceUID",oldValue: oldValue,newValue: spaceUID) 
@@ -44,7 +44,7 @@ import Foundation
 	}
 
 	//The localAssociationID is an UID used to group accounts that are stored in the KeyChain. The first Created Account determines that UID
-	@objc dynamic open var localAssociationID:String = "\(Default.NO_UID)"{
+	@objc dynamic open var localAssociationID:String = Default.NO_UID {
 	    didSet { 
 	       if !self.wantsQuietChanges && localAssociationID != oldValue {
 	            self.provisionChanges(forKey: "localAssociationID",oldValue: oldValue,newValue: localAssociationID) 
@@ -52,7 +52,7 @@ import Foundation
 	    }
 	}
 
-	@objc dynamic open var firstname:String = "\(Bartleby.randomStringWithLength(5))"{
+	@objc dynamic open var firstname:String = Bartleby.randomStringWithLength(5) {
 	    didSet { 
 	       if !self.wantsQuietChanges && firstname != oldValue {
 	            self.provisionChanges(forKey: "firstname",oldValue: oldValue,newValue: firstname) 
@@ -60,7 +60,7 @@ import Foundation
 	    }
 	}
 
-	@objc dynamic open var lastname:String = "\(Bartleby.randomStringWithLength(5))"{
+	@objc dynamic open var lastname:String = Bartleby.randomStringWithLength(5) {
 	    didSet { 
 	       if !self.wantsQuietChanges && lastname != oldValue {
 	            self.provisionChanges(forKey: "lastname",oldValue: oldValue,newValue: lastname) 
@@ -69,7 +69,7 @@ import Foundation
 	}
 
 	//The user's email. 
-	@objc dynamic open var email:String = ""{
+	@objc dynamic open var email:String = "" {
 	    didSet { 
 	       if !self.wantsQuietChanges && email != oldValue {
 	            self.provisionChanges(forKey: "email",oldValue: oldValue,newValue: email) 
@@ -78,7 +78,7 @@ import Foundation
 	}
 
 	//The user's pseudo
-	@objc dynamic open var pseudo:String = ""{
+	@objc dynamic open var pseudo:String = "" {
 	    didSet { 
 	       if !self.wantsQuietChanges && pseudo != oldValue {
 	            self.provisionChanges(forKey: "pseudo",oldValue: oldValue,newValue: pseudo) 
@@ -87,7 +87,7 @@ import Foundation
 	}
 
 	//The user's phone country code
-	@objc dynamic open var phoneCountryCode:String = ""{
+	@objc dynamic open var phoneCountryCode:String = "" {
 	    didSet { 
 	       if !self.wantsQuietChanges && phoneCountryCode != oldValue {
 	            self.provisionChanges(forKey: "phoneCountryCode",oldValue: oldValue,newValue: phoneCountryCode) 
@@ -96,7 +96,7 @@ import Foundation
 	}
 
 	//The user's phone number
-	@objc dynamic open var phoneNumber:String = ""{
+	@objc dynamic open var phoneNumber:String = "" {
 	    didSet { 
 	       if !self.wantsQuietChanges && phoneNumber != oldValue {
 	            self.provisionChanges(forKey: "phoneNumber",oldValue: oldValue,newValue: phoneNumber) 

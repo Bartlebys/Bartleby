@@ -21,7 +21,7 @@ import Foundation
     }
 
 	//The store type of the operation 
-	@objc dynamic open var operationName:String = "\(Default.NO_NAME)"
+	@objc dynamic open var operationName:String = Default.NO_NAME
 
 	//The unique identifier of the related Command
 	@objc dynamic open var commandUID:String?

@@ -30,7 +30,7 @@ import Foundation
 	}
 
 	//The subject UID you want to lock
-	@objc dynamic open var subjectUID:String = "\(Default.NO_UID)"{
+	@objc dynamic open var subjectUID:String = Default.NO_UID {
 	    didSet { 
 	       if !self.wantsQuietChanges && subjectUID != oldValue {
 	            self.provisionChanges(forKey: "subjectUID",oldValue: oldValue,newValue: subjectUID) 
@@ -39,7 +39,7 @@ import Foundation
 	}
 
 	//The userUID that can unlock the locker
-	@objc dynamic open var userUID:String = "\(Default.NO_UID)"{
+	@objc dynamic open var userUID:String = Default.NO_UID {
 	    didSet { 
 	       if !self.wantsQuietChanges && userUID != oldValue {
 	            self.provisionChanges(forKey: "userUID",oldValue: oldValue,newValue: userUID) 
@@ -87,7 +87,7 @@ import Foundation
 	}
 
 	//This code should be cryptable / decryptable
-	@objc dynamic open var code:String = "\(Bartleby.randomStringWithLength(6,signs:"0123456789ABCDEFGHJKMNPQRZTUVW"))"{
+	@objc dynamic open var code:String = Bartleby.randomStringWithLength(6,signs:"0123456789ABCDEFGHJKMNPQRZTUVW") {
 	    didSet { 
 	       if !self.wantsQuietChanges && code != oldValue {
 	            self.provisionChanges(forKey: "code",oldValue: oldValue,newValue: code) 
@@ -121,7 +121,7 @@ import Foundation
 	}
 
 	//Thoses data gems will be return on success (the gems are crypted client side)
-	@objc dynamic open var gems:String = "\(Default.NO_GEM)"{
+	@objc dynamic open var gems:String = Default.NO_GEM {
 	    didSet { 
 	       if !self.wantsQuietChanges && gems != oldValue {
 	            self.provisionChanges(forKey: "gems",oldValue: oldValue,newValue: gems) 
