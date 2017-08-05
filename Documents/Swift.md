@@ -7,5 +7,5 @@ You need perform `carthage update` before to be able to build.
 
 ## Components 
 
-+ **BartlebyKit**: A Swift 3 client Framework for (OSX, iOS, ... ).
-+ **BartlebyCLI**: Bartleby's command line tool to create / update apps and modules (written in Swift 3) 
++ **BartlebyKit**: A Swift 4.x client Framework for (OSX, iOS, ... ).
++ **BartlebyCLI**: Bartleby's command line tool to create / update apps and modules (written in Swift 4) 
