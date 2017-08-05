@@ -20,7 +20,7 @@ import Foundation
         return "ManagedModel"
     }
 
-	//The object unique Identifier it is named _id to gains native support in MongoDB - UID 
+	//The object unique Identifier is named _id to gains native support in MongoDB - you can use UID as accessor 
 	@objc dynamic open var _id:String = Bartleby.createUID()
 
 	//An external unique identifier
@@ -113,7 +113,7 @@ import Foundation
     // The Run time Type name (can be different to typeName)
     internal var _runTimeTypeName: String?
 
-    open var UID:String { get{ return self._id } set{  self._id = UID } }
+    @objc open dynamic var UID:String { get{ return self._id } set{  self._id = UID } }
 
 
     // MARK: - Codable
