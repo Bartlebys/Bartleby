@@ -104,7 +104,7 @@ import Foundation
 	@objc dynamic open var bunchInProgress:Bool = false
 
 	//The highest number that we may have counted
-	open var totalNumberOfOperations:Int = 0
+	@objc dynamic open var totalNumberOfOperations:Int = 0
 
 	//The consolidated progression state of all pending operations
 	@objc dynamic open var pendingOperationsProgressionState:Progression?
