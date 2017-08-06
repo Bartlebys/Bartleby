@@ -163,11 +163,10 @@ extension BartlebyDocument{
                                         ///When appending the content of the collection we set `commit`and `isUndoable` to false
                                         let typeName = type(of:proxy).typeName()
                                         let collection = try self.dynamics.deserialize(typeName: typeName, data: collectionData, document: nil)
+
                                         // We need to cast the dynamic type to ManagedModel & BartlebyCollection (BartlebyCollection alone is not enough)
                                         if let bartlebyCollection = collection as? ManagedModel & BartlebyCollection{
-                                            bartlebyCollection.superIterate({ (item) in
-                                                bartlebyCollection.add(item, commit: false, isUndoable: false)
-                                            })
+                                            proxy.append(bartlebyCollection.getItems(), commit: false, isUndoable: false)
                                         }else{
                                             throw DocumentError.collectionProxyTypeError
                                         }
