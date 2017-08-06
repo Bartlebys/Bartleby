@@ -125,7 +125,7 @@ import Foundation
             }
             pushOperation.operationName = CreateUser.typeName()
             pushOperation.serialized = operationInstance.serialize()
-            ic.add(pushOperation, commit:false)
+            ic.add(pushOperation, commit:false, isUndoable:false)
         }catch{
             document.dispatchAdaptiveMessage(context,
                                              title: "Structural Error",

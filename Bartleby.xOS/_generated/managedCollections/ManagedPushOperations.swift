@@ -81,6 +81,15 @@ public extension Notification.Name {
         self.referentDocument?.hasChanged()
     }
 
+    /// Returns the collected items
+    /// You should not normally use this method directly
+    /// We use this to offer better performances during collection proxy deserialization phase
+    /// This method may be removed in next versions
+    /// - Returns: the collected items
+    open func getItems()->[Collectible]{
+        return self._items
+    }
+
     // Used to determine if the wrapper should be saved.
     open var shouldBeSaved:Bool=false
 
@@ -310,6 +319,11 @@ public extension Notification.Name {
     // MARK: - Upsert
 
 
+    /// Updates or creates an item
+    ///
+    /// - Parameters:
+    ///   - item: the PushOperation    ///   - commit: should we commit the `Upsertion`?
+    /// - Returns: N/A
     open func upsert(_ item: Collectible, commit:Bool=true){
         do{
             if self._UIDS.contains(item.UID){
@@ -337,7 +351,7 @@ public extension Notification.Name {
                 }
             }else{
                 // It is a creation
-                self.add(item, commit:commit)
+                self.add(item, commit:commit,isUndoable:false)
             }
         }catch{
             self.referentDocument?.log("\(error)", file: #file, function: #function, line: #line, category: Default.LOG_DEFAULT, decorative: false)
@@ -347,21 +361,57 @@ public extension Notification.Name {
 
     // MARK: Add
 
-
-    open func add(_ item:Collectible, commit:Bool=true){
-        self.insertObject(item, inItemsAtIndex: _storage.count, commit:commit)
+    /// Ads an PushOperation    ///
+    /// - Parameters:
+    ///   - item: the PushOperation    ///   - commit: should we commit the addition?
+    ///   - isUndoable: is the addition reversible by the undo manager?
+    /// - Returns: N/A
+    open func add(_ item:Collectible, commit:Bool=true,isUndoable:Bool){
+        self.insertObject(item, inItemsAtIndex: _storage.count, commit:commit,isUndoable:isUndoable)
     }
+
+
+    /// Ads some items
+    ///
+    /// - Parameters:
+    ///   - items: the collectible items to add
+    ///   - commit: should we commit the additions?
+    ///   - isUndoable: are the additions reversible by the undo manager?
+    /// - Returns: N/A
+    open func append(_ items:[Collectible],commit:Bool, isUndoable:Bool){
+        if let items  = items as? [PushOperation] {
+            self._items.append(contentsOf:items)
+            for item in items{
+                item.collection = self
+                self._UIDS.append(item.UID)
+                self._storage[item.UID]=item
+            }
+            #if os(OSX) && !USE_EMBEDDED_MODULES
+            if let arrayController = self.arrayController{
+                // Re-arrange (in case the user has sorted a column)
+                arrayController.rearrangeObjects()
+            }
+            #endif
+
+            // Commit is ignored because
+            // Distant persistency is not allowed for PushOperations
+                        self.shouldBeSaved = true
+        }
+    }
+
+
 
     // MARK: Insert
 
-    /**
-    Inserts an object at a given index into the collection.
-
-    - parameter item:   the item
-    - parameter index:  the index in the collection (not the ArrayController arranged object)
-    - parameter commit: should we commit the insertion?
-    */
-    open func insertObject(_ item: Collectible, inItemsAtIndex index: Int, commit:Bool=true) {
+    ///  Insert an item at a given index.
+    ///
+    /// - Parameters:
+    ///   - item: the collectible item
+    ///   - index: the index
+    ///   - commit: should we commit the addition?
+    ///   - isUndoable: is the addition reversible by the undo manager?
+    /// - Returns: N/A
+    open func insertObject(_ item: Collectible, inItemsAtIndex index: Int, commit:Bool=true,isUndoable:Bool) {
         if let item = item as? PushOperation{
             item.collection = self
             self._UIDS.insert(item.UID, at: index)
@@ -437,7 +487,7 @@ public extension Notification.Name {
                         }
                     }
                 }
-                self.add(pushOperation, commit: true)
+                self.add(pushOperation, commit: true, isUndoable:false)
             }
         }catch{
             self.referentDocument?.log("\(error)")

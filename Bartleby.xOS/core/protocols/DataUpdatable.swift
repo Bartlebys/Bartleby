@@ -8,7 +8,7 @@
 
 import Foundation
 
-// #Todo Delete and reimplement Inspector section
+
 public protocol DataUpdatable{
 
     /// Update an existing instance

@@ -157,23 +157,22 @@ extension BartlebyDocument{
                                             }
                                         }
 
+                                        // Proxy update
                                         // We Update the proxy (that's required to preserve UI bindings)
-                                        // We donnot register the instances that why we set document to `nil`
+                                        // We donnot register the instances that why we set `document` to `nil`
+                                        ///When appending the content of the collection we set `commit`and `isUndoable` to false
                                         let typeName = type(of:proxy).typeName()
                                         let collection = try self.dynamics.deserialize(typeName: typeName, data: collectionData, document: nil)
                                         // We need to cast the dynamic type to ManagedModel & BartlebyCollection (BartlebyCollection alone is not enough)
                                         if let bartlebyCollection = collection as? ManagedModel & BartlebyCollection{
-
-                                            // 1- #TODO create collection add(contentOF:[T]) Insert .... & delete ...
-                                            // Avec possibilité de ne enregistrer le UNDO
                                             bartlebyCollection.superIterate({ (item) in
-                                                proxy.add(item, commit: false)
+                                                bartlebyCollection.add(item, commit: false, isUndoable: false)
                                             })
-                                            // self._collections[metadatum.collectionName] = bartlebyCollection
-                                            Swift.print("\(metadatum.collectionName) \(bartlebyCollection.count)")
                                         }else{
                                             throw DocumentError.collectionProxyTypeError
                                         }
+
+
                                     }
                                 } else {
                                     throw DocumentError.attemptToLoadAnNonSupportedCollection(collectionName:metadatum.collectionName)

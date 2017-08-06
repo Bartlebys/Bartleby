@@ -358,16 +358,19 @@ import Foundation
 
    // MARK: -  Entities factories
 
+
     /// Model Factory
     /// Usage:
     /// let user=document.newManagedModel() a
-    /// - Parameter commit: should we commit the entity
+    /// - Parameters
+    ///     commit: should we commit the entity ?
+    ///     isUndoable: is that creation undoable  ?
     /// - Returns: a Collectible Model
-    open func newManagedModel<T:Collectible>(commit:Bool=true)->T{
+    open func newManagedModel<T:Collectible>(commit:Bool=true, isUndoable:Bool=true)->T{
 
         // User as a special Method
         if T.typeName()=="User"{
-            return self._newUser(commit:commit) as! T
+            return self._newUser(commit:commit,isUndoable: isUndoable) as! T
         }
 
         // Generated UnaManaged and ManagedModel are supported
@@ -376,7 +379,7 @@ import Foundation
 
         // Do we have a collection ?
         if let collection=self.collectionByName(instance.d_collectionName){
-            collection.add(instance, commit: false)
+            collection.add(instance, commit: false, isUndoable:isUndoable)
         }
 
         // Set up the creator
@@ -418,7 +421,7 @@ import Foundation
         }
     }
 
-    internal func _newUser(commit:Bool=true) -> User {
+    internal func _newUser(commit:Bool=true,isUndoable:Bool) -> User {
         let user=User()
         user.quietChanges {
             user.password=Bartleby.randomStringWithLength(8,signs:Bartleby.configuration.PASSWORD_CHAR_CART)
@@ -429,7 +432,7 @@ import Foundation
                 user.creatorUID = user.UID
             }
             user.spaceUID = self.metadata.spaceUID
-            self.users.add(user, commit:false)
+            self.users.add(user, commit:false,isUndoable:isUndoable )
         }
         if commit{
             user.needsToBeCommitted()
@@ -437,6 +440,7 @@ import Foundation
         self.didCreate(user)
         return user
     }
+
 
 
 

@@ -61,7 +61,7 @@ class SetupCollaborativeServerViewController: IdentityStepViewController{
                                     PString.trim(document.baseURL.absoluteString) == PString.trim(matchingProfile.url.absoluteString){
                                     if let user = matchingProfile.user {
                                         // We should reuse the user.
-                                        document.users.add(user, commit: false)
+                                        document.users.add(user, commit: false,isUndoable: false)
                                         document.metadata.memorizeUser(user)
                                         userHasBeenFound=true
                                     }

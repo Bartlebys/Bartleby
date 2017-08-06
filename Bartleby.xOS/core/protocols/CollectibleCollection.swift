@@ -38,29 +38,54 @@ public protocol CollectibleCollection: Collectible,ProvisionChanges {
     // Should be called to propagat references (Collection, ReferentDocument, Owned relations)
     func propagate()
 
-    /**
-     Update or create an item
 
-     - parameter item: the collectible item
-     */
+    /// Returns the collected items
+    /// You should not normally use this method directly
+    /// We use this to offer better performances during collection proxy deserialization phase
+    /// This method may be removed in next versions
+    /// - Returns: the collected items
+    func getItems()->[Collectible]
+
+    /// Updates or creates an item
+    ///
+    /// - Parameters:
+    ///   - item: the item
+    ///   - commit: should we commit the `Upsertion`?
+    /// - Returns: N/A
     func upsert(_ item: Collectible, commit:Bool)
 
 
-    /**
-     Adds an item
 
-     - parameter item: the collectible item
-     */
-    func add(_ item: Collectible,commit:Bool)
+    /// Ads an item
+    ///
+    /// - Parameters:
+    ///   - item: the collectible item
+    ///   - commit: should we commit the addition?
+    ///   - isUndoable: is the addition reversible by the undo manager?
+    /// - Returns: N/A
+    func add(_ item: Collectible,commit:Bool, isUndoable:Bool)
 
 
-    /**
-     Insert an item at a given index.
 
-     - parameter item:  the collectible item
-     - parameter index: the insertion index
-     */
-    func insertObject(_ item: Collectible, inItemsAtIndex index: Int,commit:Bool)
+    /// Appends some items
+    ///
+    /// - Parameters:
+    ///   - items: the collectible items to add
+    ///   - commit: should we commit the additions?
+    ///   - isUndoable: are the additions reversible by the undo manager?
+    /// - Returns: N/A
+    func append(_ items:[Collectible],commit:Bool, isUndoable:Bool)
+
+
+    ///  Insert an item at a given index.
+    ///
+    /// - Parameters:
+    ///   - item: the collectible item
+    ///   - index: the index
+    ///   - commit: should we commit the addition?
+    ///   - isUndoable: is the addition reversible by the undo manager?
+    /// - Returns: N/A
+    func insertObject(_ item: Collectible, inItemsAtIndex index: Int,commit:Bool, isUndoable:Bool)
 
 
     /**

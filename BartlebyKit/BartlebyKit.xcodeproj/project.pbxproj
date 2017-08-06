@@ -520,6 +520,8 @@
 		E5C28EF51F2CE6B200138146 /* BartlebyDocument+UndoFacilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5C28EF31F2CE6B200138146 /* BartlebyDocument+UndoFacilities.swift */; };
 		E5C9AF8A1F35C42800BF4CD2 /* BartlebysDynamics.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5C9AF891F35C42700BF4CD2 /* BartlebysDynamics.swift */; };
 		E5C9AF8B1F35C42800BF4CD2 /* BartlebysDynamics.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5C9AF891F35C42700BF4CD2 /* BartlebysDynamics.swift */; };
+		E5E4AE8B1F371B4900B84064 /* DataUpdatable.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5E4AE8A1F371B4800B84064 /* DataUpdatable.swift */; };
+		E5E4AE8C1F371B5100B84064 /* DataUpdatable.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5E4AE8A1F371B4800B84064 /* DataUpdatable.swift */; };
 		E5E541CB1F3463DB001010AD /* SerializedEntity.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5E541CA1F3463DB001010AD /* SerializedEntity.swift */; };
 		E5E541CC1F3463DB001010AD /* SerializedEntity.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5E541CA1F3463DB001010AD /* SerializedEntity.swift */; };
 		E5E541CE1F34644A001010AD /* JSONSerializer.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5E541CD1F34644A001010AD /* JSONSerializer.swift */; };
@@ -847,6 +849,7 @@
 		E5C28EF31F2CE6B200138146 /* BartlebyDocument+UndoFacilities.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "BartlebyDocument+UndoFacilities.swift"; sourceTree = "<group>"; };
 		E5C9AF891F35C42700BF4CD2 /* BartlebysDynamics.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BartlebysDynamics.swift; sourceTree = "<group>"; };
 		E5CEFB511C3BFCBB00C36CBA /* BartlebyKit-Bridging-Header.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "BartlebyKit-Bridging-Header.h"; sourceTree = "<group>"; };
+		E5E4AE8A1F371B4800B84064 /* DataUpdatable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DataUpdatable.swift; sourceTree = "<group>"; };
 		E5E541CA1F3463DB001010AD /* SerializedEntity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SerializedEntity.swift; sourceTree = "<group>"; };
 		E5E541CD1F34644A001010AD /* JSONSerializer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JSONSerializer.swift; sourceTree = "<group>"; };
 		E5EF6CFA1EE9B1B700990C48 /* String+Helpers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "String+Helpers.swift"; sourceTree = "<group>"; };
@@ -1243,6 +1246,7 @@
 		E512522C1E8BAD7F00797254 /* protocols */ = {
 			isa = PBXGroup;
 			children = (
+				E5E4AE8A1F371B4800B84064 /* DataUpdatable.swift */,
 				E512522D1E8BAD7F00797254 /* BartlebyCollection.swift */,
 				E512522E1E8BAD7F00797254 /* BartlebyFileIO.swift */,
 				E512522F1E8BAD7F00797254 /* BartlebyOperation.swift */,
@@ -1630,6 +1634,7 @@
 				E51253311E8BAD7F00797254 /* Block+Facilities.swift in Sources */,
 				E51253991E8BAD7F00797254 /* DocumentMetadata+Protocol.swift in Sources */,
 				E51252811E8BAD7F00797254 /* ManagedTags.swift in Sources */,
+				E5E4AE8B1F371B4900B84064 /* DataUpdatable.swift in Sources */,
 				E51252E91E8BAD7F00797254 /* ReadBlocksByQuery.swift in Sources */,
 				E51252B91E8BAD7F00797254 /* CreateBox.swift in Sources */,
 				E51252871E8BAD7F00797254 /* Block.swift in Sources */,
@@ -2016,6 +2021,7 @@
 				E512540A1E8BAD7F00797254 /* LogCategorizable.swift in Sources */,
 				E51253D21E8BAD7F00797254 /* Handlers.swift in Sources */,
 				E51254421E8BAD7F00797254 /* Identities.swift in Sources */,
+				E5E4AE8C1F371B5100B84064 /* DataUpdatable.swift in Sources */,
 				E512542A1E8BAD7F00797254 /* TriggerHook.swift in Sources */,
 				E512544E1E8BAD7F00797254 /* LogoutUser.swift in Sources */,
 				E511D8E01EF9609900E59CC3 /* NSRange+Helpers.swift in Sources */,
