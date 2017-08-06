@@ -166,9 +166,6 @@ extension BartlebyDocument{
 
                                             // 1- #TODO create collection add(contentOF:[T]) Insert .... & delete ...
                                             // Avec possibilité de ne enregistrer le UNDO
-
-                                            // 2- RETIRER DataUpdatable
-                                            // Et réimpléemnter le patch dans l'inspecteurs
                                             bartlebyCollection.superIterate({ (item) in
                                                 proxy.add(item, commit: false)
                                             })

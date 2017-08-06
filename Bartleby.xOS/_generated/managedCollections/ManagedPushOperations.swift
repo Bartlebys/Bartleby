@@ -32,7 +32,7 @@ public extension Notification.Name {
 @objc open class ManagedPushOperations : ManagedModel,IterableCollectibleCollection{
 
     // Staged "pushOperations" identifiers (used to determine what should be committed on the next loop)
-    @objc fileprivate dynamic var _staged=[String]()
+    fileprivate var _staged=[String]()
 
     // Store the  "pushOperations" identifiers to be deleted on the next loop
     fileprivate var _deleted=[String]()
@@ -40,7 +40,7 @@ public extension Notification.Name {
     // Ordered UIDS
     fileprivate var _UIDS=[String]()
 
-    // The underlining "pushOperations" list
+    // The "pushOperations" list (computed by _rebuildFromStorage and on operations)
     @objc fileprivate dynamic var _items=[PushOperation]()  {
         didSet {
             if !self.wantsQuietChanges && _items != oldValue {
@@ -49,7 +49,14 @@ public extension Notification.Name {
         }
     }
 
-    // The underlining "pushOperations" storage
+    // The underlining "pushOperations" storage (serialized)
+    // We cannot use the `Collected` generic type for _items and set `@objc dynamic` at the same time
+    // `@objc dynamic` is required to be able to use KVO and `CocoaBindings`
+    // May be we will stop using KVO and Cocoa Bindings in the future when Apple will give use alternative dynamic approach.
+    // Refer to Apple documentation for more explanation.
+    // https://developer.apple.com/library/content/documentation/Swift/Conceptual/BuildingCocoaApps/AdoptingCocoaDesignPatterns.html
+    // So we use a strongly typed `PushOperation for the storage
+    // While the API deals with `Collectible` instances.
     fileprivate var _storage=[String:PushOperation]()
 
     fileprivate func _rebuildFromStorage(){

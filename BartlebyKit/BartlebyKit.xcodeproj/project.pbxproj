@@ -375,8 +375,6 @@
 		E51253EE1E8BAD7F00797254 /* ConsolidableProgression.swift in Sources */ = {isa = PBXBuildFile; fileRef = E51252361E8BAD7F00797254 /* ConsolidableProgression.swift */; };
 		E51253EF1E8BAD7F00797254 /* CryptoDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E51252371E8BAD7F00797254 /* CryptoDelegate.swift */; };
 		E51253F01E8BAD7F00797254 /* CryptoDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = E51252371E8BAD7F00797254 /* CryptoDelegate.swift */; };
-		E51253F11E8BAD7F00797254 /* DataUpdatable.swift in Sources */ = {isa = PBXBuildFile; fileRef = E51252381E8BAD7F00797254 /* DataUpdatable.swift */; };
-		E51253F21E8BAD7F00797254 /* DataUpdatable.swift in Sources */ = {isa = PBXBuildFile; fileRef = E51252381E8BAD7F00797254 /* DataUpdatable.swift */; };
 		E51253F31E8BAD7F00797254 /* Descriptible.swift in Sources */ = {isa = PBXBuildFile; fileRef = E51252391E8BAD7F00797254 /* Descriptible.swift */; };
 		E51253F41E8BAD7F00797254 /* Descriptible.swift in Sources */ = {isa = PBXBuildFile; fileRef = E51252391E8BAD7F00797254 /* Descriptible.swift */; };
 		E51253F51E8BAD7F00797254 /* DictionaryRepresentation.swift in Sources */ = {isa = PBXBuildFile; fileRef = E512523A1E8BAD7F00797254 /* DictionaryRepresentation.swift */; };
@@ -765,7 +763,6 @@
 		E51252351E8BAD7F00797254 /* Committable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Committable.swift; sourceTree = "<group>"; };
 		E51252361E8BAD7F00797254 /* ConsolidableProgression.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ConsolidableProgression.swift; sourceTree = "<group>"; };
 		E51252371E8BAD7F00797254 /* CryptoDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CryptoDelegate.swift; sourceTree = "<group>"; };
-		E51252381E8BAD7F00797254 /* DataUpdatable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DataUpdatable.swift; sourceTree = "<group>"; };
 		E51252391E8BAD7F00797254 /* Descriptible.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Descriptible.swift; sourceTree = "<group>"; };
 		E512523A1E8BAD7F00797254 /* DictionaryRepresentation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DictionaryRepresentation.swift; sourceTree = "<group>"; };
 		E512523B1E8BAD7F00797254 /* DocumentDependent.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DocumentDependent.swift; sourceTree = "<group>"; };
@@ -1257,7 +1254,6 @@
 				E51252351E8BAD7F00797254 /* Committable.swift */,
 				E51252361E8BAD7F00797254 /* ConsolidableProgression.swift */,
 				E51252371E8BAD7F00797254 /* CryptoDelegate.swift */,
-				E51252381E8BAD7F00797254 /* DataUpdatable.swift */,
 				E51252391E8BAD7F00797254 /* Descriptible.swift */,
 				E512523A1E8BAD7F00797254 /* DictionaryRepresentation.swift */,
 				E512523B1E8BAD7F00797254 /* DocumentDependent.swift */,
@@ -1696,7 +1692,6 @@
 				E512539B1E8BAD7F00797254 /* DocumentMetadata+Sugar.swift in Sources */,
 				E51252D31E8BAD7F00797254 /* DeleteBoxes.swift in Sources */,
 				E51253BF1E8BAD7F00797254 /* ManagedModel+RelationsResolution.swift in Sources */,
-				E51253F11E8BAD7F00797254 /* DataUpdatable.swift in Sources */,
 				E51253951E8BAD7F00797254 /* Completion+Result.swift in Sources */,
 				E512537F1E8BAD7F00797254 /* BartlebyDocument+Logs.swift in Sources */,
 				E51253731E8BAD7F00797254 /* BarltlebyDocument+Consignee.swift in Sources */,
@@ -1955,7 +1950,6 @@
 				E512539C1E8BAD7F00797254 /* DocumentMetadata+Sugar.swift in Sources */,
 				E51252D41E8BAD7F00797254 /* DeleteBoxes.swift in Sources */,
 				E51253C01E8BAD7F00797254 /* ManagedModel+RelationsResolution.swift in Sources */,
-				E51253F21E8BAD7F00797254 /* DataUpdatable.swift in Sources */,
 				E51253961E8BAD7F00797254 /* Completion+Result.swift in Sources */,
 				E51253801E8BAD7F00797254 /* BartlebyDocument+Logs.swift in Sources */,
 				E51253741E8BAD7F00797254 /* BarltlebyDocument+Consignee.swift in Sources */,
