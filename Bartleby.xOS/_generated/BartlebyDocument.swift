@@ -262,41 +262,13 @@ import Foundation
     // The initial instances are proxies
     // On document deserialization the collection are populated.
 
-	@objc open dynamic var blocks=ManagedBlocks(){
-	    didSet {
-	        blocks.referentDocument = self
-	    } 
-	}
-	@objc open dynamic var boxes=ManagedBoxes(){
-	    didSet {
-	        boxes.referentDocument = self
-	    } 
-	}
-	@objc open dynamic var lockers=ManagedLockers(){
-	    didSet {
-	        lockers.referentDocument = self
-	    } 
-	}
-	@objc open dynamic var nodes=ManagedNodes(){
-	    didSet {
-	        nodes.referentDocument = self
-	    } 
-	}
-	@objc open dynamic var pushOperations=ManagedPushOperations(){
-	    didSet {
-	        pushOperations.referentDocument = self
-	    } 
-	}
-	@objc open dynamic var tags=ManagedTags(){
-	    didSet {
-	        tags.referentDocument = self
-	    } 
-	}
-	@objc open dynamic var users=ManagedUsers(){
-	    didSet {
-	        users.referentDocument = self
-	    } 
-	}
+	@objc open dynamic var blocks=ManagedBlocks()
+	@objc open dynamic var boxes=ManagedBoxes()
+	@objc open dynamic var lockers=ManagedLockers()
+	@objc open dynamic var nodes=ManagedNodes()
+	@objc open dynamic var pushOperations=ManagedPushOperations()
+	@objc open dynamic var tags=ManagedTags()
+	@objc open dynamic var users=ManagedUsers()
 
     // MARK: - Schemas
 

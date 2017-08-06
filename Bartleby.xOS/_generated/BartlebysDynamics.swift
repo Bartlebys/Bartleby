@@ -115,17 +115,22 @@ open class BartlebysDynamics:Dynamics{
         if typeName == "UpdateBlock"{ instance = try JSON.decoder.decode(UpdateBlock.self, from: data); return instance }
         if typeName == "CreateBlock"{ instance = try JSON.decoder.decode(CreateBlock.self, from: data); return instance }
         if typeName == "ReadBlockById"{ instance = try JSON.decoder.decode(ReadBlockById.self, from: data); return instance }
+        if typeName == "ManagedUsers"{ instance = try JSON.decoder.decode(ManagedUsers.self, from: data); return instance }
         if typeName == "User"{ instance = try JSON.decoder.decode(User.self, from: data); return instance }
         if typeName == "Trigger"{ instance = try JSON.decoder.decode(Trigger.self, from: data); return instance }
+        if typeName == "ManagedTags"{ instance = try JSON.decoder.decode(ManagedTags.self, from: data); return instance }
         if typeName == "Tag"{ instance = try JSON.decoder.decode(Tag.self, from: data); return instance }
         if typeName == "StringValue"{ instance = try JSON.decoder.decode(StringValue.self, from: data); return instance }
         if typeName == "Report"{ instance = try JSON.decoder.decode(Report.self, from: data); return instance }
+        if typeName == "ManagedPushOperations"{ instance = try JSON.decoder.decode(ManagedPushOperations.self, from: data); return instance }
         if typeName == "PushOperation"{ instance = try JSON.decoder.decode(PushOperation.self, from: data); return instance }
         if typeName == "Progression"{ instance = try JSON.decoder.decode(Progression.self, from: data); return instance }
+        if typeName == "ManagedNodes"{ instance = try JSON.decoder.decode(ManagedNodes.self, from: data); return instance }
         if typeName == "Node"{ instance = try JSON.decoder.decode(Node.self, from: data); return instance }
         if typeName == "Metrics"{ instance = try JSON.decoder.decode(Metrics.self, from: data); return instance }
         if typeName == "ManagedModel"{ instance = try JSON.decoder.decode(ManagedModel.self, from: data); return instance }
         if typeName == "LogEntry"{ instance = try JSON.decoder.decode(LogEntry.self, from: data); return instance }
+        if typeName == "ManagedLockers"{ instance = try JSON.decoder.decode(ManagedLockers.self, from: data); return instance }
         if typeName == "Locker"{ instance = try JSON.decoder.decode(Locker.self, from: data); return instance }
         if typeName == "KeyedData"{ instance = try JSON.decoder.decode(KeyedData.self, from: data); return instance }
         if typeName == "KeyedChanges"{ instance = try JSON.decoder.decode(KeyedChanges.self, from: data); return instance }
@@ -136,7 +141,9 @@ open class BartlebysDynamics:Dynamics{
         if typeName == "Container"{ instance = try JSON.decoder.decode(Container.self, from: data); return instance }
         if typeName == "Completion"{ instance = try JSON.decoder.decode(Completion.self, from: data); return instance }
         if typeName == "CollectionMetadatum"{ instance = try JSON.decoder.decode(CollectionMetadatum.self, from: data); return instance }
+        if typeName == "ManagedBoxes"{ instance = try JSON.decoder.decode(ManagedBoxes.self, from: data); return instance }
         if typeName == "Box"{ instance = try JSON.decoder.decode(Box.self, from: data); return instance }
+        if typeName == "ManagedBlocks"{ instance = try JSON.decoder.decode(ManagedBlocks.self, from: data); return instance }
         if typeName == "Block"{ instance = try JSON.decoder.decode(Block.self, from: data); return instance }
         if typeName == "Acknowledgment"{ instance = try JSON.decoder.decode(Acknowledgment.self, from: data); return instance }
         throw DynamicsError.typeNotFound
@@ -203,17 +210,22 @@ open class BartlebysDynamics:Dynamics{
         if typeName == "UpdateBlock"{ return UpdateBlock() }
         if typeName == "CreateBlock"{ return CreateBlock() }
         if typeName == "ReadBlockById"{ return ReadBlockById() }
+        if typeName == "ManagedUsers"{ return ManagedUsers() }
         if typeName == "User"{ return User() }
         if typeName == "Trigger"{ return Trigger() }
+        if typeName == "ManagedTags"{ return ManagedTags() }
         if typeName == "Tag"{ return Tag() }
         if typeName == "StringValue"{ return StringValue() }
         if typeName == "Report"{ return Report() }
+        if typeName == "ManagedPushOperations"{ return ManagedPushOperations() }
         if typeName == "PushOperation"{ return PushOperation() }
         if typeName == "Progression"{ return Progression() }
+        if typeName == "ManagedNodes"{ return ManagedNodes() }
         if typeName == "Node"{ return Node() }
         if typeName == "Metrics"{ return Metrics() }
         if typeName == "ManagedModel"{ return ManagedModel() }
         if typeName == "LogEntry"{ return LogEntry() }
+        if typeName == "ManagedLockers"{ return ManagedLockers() }
         if typeName == "Locker"{ return Locker() }
         if typeName == "KeyedData"{ return KeyedData() }
         if typeName == "KeyedChanges"{ return KeyedChanges() }
@@ -224,7 +236,9 @@ open class BartlebysDynamics:Dynamics{
         if typeName == "Container"{ return Container() }
         if typeName == "Completion"{ return Completion() }
         if typeName == "CollectionMetadatum"{ return CollectionMetadatum() }
+        if typeName == "ManagedBoxes"{ return ManagedBoxes() }
         if typeName == "Box"{ return Box() }
+        if typeName == "ManagedBlocks"{ return ManagedBlocks() }
         if typeName == "Block"{ return Block() }
         if typeName == "Acknowledgment"{ return Acknowledgment() }
         throw DynamicsError.typeNotFound
