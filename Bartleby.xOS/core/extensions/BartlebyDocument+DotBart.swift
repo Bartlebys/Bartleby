@@ -92,40 +92,29 @@ extension BartlebyDocument {
                         if let statusCode=httpResponse?.statusCode {
                             if 200...299 ~= statusCode {
                                 var issues=[String]()
-
-                                // #TODO We should use the collections name
-                                // And directly deserialize with the dynamic deserializer
-
-                                /*
                                 if let dictionary=result.value as? [String:Any]{
                                     if let collections=dictionary["collections"] as? [String:Any] {
-                                        for (collectionName,collectionData) in collections{
+                                        for (collectionName,collectionDictionary) in collections{
                                             if let proxy=self.collectionByName(collectionName),
-                                                let collectionDictionary=collectionData as? [Any]{
-                                                for itemRep in collectionDictionary{
-                                                    if let itemRepDictionary = itemRep as? [String:Any]{
-                                                        do {
-                                                            if let instance=try self.serializer.deserializeFromDictionary(itemRepDictionary, register: false) as? Collectible{
-                                                                if let user:User=instance as? User{
-                                                                    // We donnot want to expose the document current user
-                                                                    if user.creatorUID != user.UID{
-                                                                        proxy.upsert(instance,commit:false)
-                                                                    }
-                                                                }else{
-                                                                    // We want to upsert any object
-                                                                    proxy.upsert(instance,commit:false)
-                                                                }
-                                                            }
-                                                        }catch{
-                                                            issues.append("\(error)")
-                                                        }
+                                                let collectionDictionary=collectionDictionary as? [String:Any] {
+                                                do{
+                                                    let jsonData = try JSONSerialization.data(withJSONObject: collectionDictionary, options:[])
+                                                    // Use the dynamics
+                                                    let collection=try self.dynamics.deserialize(typeName: collectionName, data: jsonData, document: nil)
+                                                    // We need to cast the dynamic type to ManagedModel & BartlebyCollection (BartlebyCollection alone is not enough)
+                                                    if let bartlebyCollection = collection as? ManagedModel & BartlebyCollection{
+                                                        proxy.append(bartlebyCollection.getItems(), commit: false, isUndoable: false)
+                                                    }else{
+                                                        throw DocumentError.collectionProxyTypeError
                                                     }
+
+                                                }catch{
+                                                    issues.append("\(error)")
                                                 }
                                             }
                                         }
                                     }
                                 }
-                                 */
                                 if issues.count==0{
                                     handlers.on(Completion.successState())
                                 }else{
@@ -140,6 +129,7 @@ extension BartlebyDocument {
                             }
                         }
                     }
+
                 })
             }catch{
                 handlers.on(Completion.failureStateFromError(error))
