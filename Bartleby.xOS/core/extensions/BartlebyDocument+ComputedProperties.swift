@@ -29,7 +29,7 @@ public extension BartlebyDocument{
 
 
     /// The current document user
-    public var currentUser: User {
+    @objc dynamic public var currentUser: User {
         get {
             if let currentUser=self.metadata.currentUser {
                 return currentUser
