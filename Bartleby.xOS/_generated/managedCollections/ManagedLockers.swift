@@ -31,6 +31,8 @@ public extension Notification.Name {
 
 @objc open class ManagedLockers : ManagedModel,IterableCollectibleCollection{
 
+    open var collectedType:Collectible.Type { return Locker.self }
+
     // Staged "lockers" identifiers (used to determine what should be committed on the next loop)
     fileprivate var _staged=[String]()
 

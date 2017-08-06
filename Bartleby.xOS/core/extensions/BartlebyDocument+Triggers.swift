@@ -162,19 +162,17 @@ extension BartlebyDocument {
             let UIDS=trigger.UIDS.components(separatedBy: ",")
             self.deleteByIds(UIDS)
         }else{
-            // it is a creation or un update
-            if let jsonDictionaries=trigger.payloads{
-                var collectibleItems=[Collectible]()
+
+            // it is a creation or an update
+            // We gonna upsert in the collection
+            if let dataPayloads=trigger.payloads,
+                let collection = self.collectionByName(trigger.targetCollectionName){
                 do {
-                    for jsonDictionary in jsonDictionaries{
-                        // #TODO
-                        /*
-                        if let collectible = try self.serializer.deserializeFromDictionary(jsonDictionary, register: false) as? Collectible{
-                            collectibleItems.append(collectible)
-                        }*/
-                    }
-                    if collectibleItems.count>0{
-                        self.upsert(collectibleItems)
+                    for payload in dataPayloads{
+                        let typeName = collection.collectedType.typeName()
+                        if let collectible = try self.dynamics.deserialize(typeName: typeName, data: payload, document: nil) as? Collectible{
+                             collection.upsert(collectible, commit:false)
+                        }
                     }
                 }catch{
                     self.log("Deserialization exception \(error)", file: #file, function: #function, line: #line, category: logsCategoryFor(Trigger.self), decorative: false)
@@ -410,8 +408,19 @@ extension BartlebyDocument {
                                 trigger.targetCollectionName=collectionName
                                 trigger.UIDS=uids
 
-                                // #TODO
-                                //trigger.payloads=payloads
+                                // Payloads are void on Deletion
+                                if let notVoidPayloads = payloads{
+                                    //We transform the dictionary payload to Data
+                                    let dataPayloads:[Data] = notVoidPayloads.map({ (dictionary) -> Data in
+                                        do{
+                                            return try JSONSerialization.data(withJSONObject: dictionary, options: [])
+                                        }catch{
+                                            self.log("\(error) on \(dictionary) ",category: "SSE")
+                                            return Data()
+                                        }
+                                    })
+                                    trigger.payloads = dataPayloads
+                                }
 
                                 // Optional data
                                 // That may be omitted on triggering

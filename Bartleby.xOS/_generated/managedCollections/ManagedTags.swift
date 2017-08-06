@@ -31,6 +31,8 @@ public extension Notification.Name {
 
 @objc open class ManagedTags : ManagedModel,IterableCollectibleCollection{
 
+    open var collectedType:Collectible.Type { return Tag.self }
+
     // Staged "tags" identifiers (used to determine what should be committed on the next loop)
     fileprivate var _staged=[String]()
 

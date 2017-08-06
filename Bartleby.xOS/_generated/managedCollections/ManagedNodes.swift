@@ -31,6 +31,8 @@ public extension Notification.Name {
 
 @objc open class ManagedNodes : ManagedModel,IterableCollectibleCollection{
 
+    open var collectedType:Collectible.Type { return Node.self }
+
     // Staged "nodes" identifiers (used to determine what should be committed on the next loop)
     fileprivate var _staged=[String]()
 

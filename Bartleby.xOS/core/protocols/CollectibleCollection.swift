@@ -17,6 +17,8 @@ import Cocoa
 // The collection behavior is generated using flexions.
 public protocol CollectibleCollection: Collectible,ProvisionChanges {
 
+    var collectedType:Collectible.Type { get }
+
     // Used to determine if the wrapper should be saved.
     var shouldBeSaved:Bool { get set }
 
