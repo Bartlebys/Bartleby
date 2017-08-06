@@ -25,7 +25,7 @@ extension BartlebyDocument{
     ///   - undoActionName: the name of the action to undo
     ///   - doAfterAction: a closure called after undo / redo (e.g to update the UI)
     public func registerUndoChangesOn<TargetType,ModelType>(withTarget target: TargetType,
-                                                            modelType:ModelType,
+                                                            modelType:ModelType.Type,
                                                             serializedManagedModels:[Data],
                                                             undoActionName:String,
                                                             doAfterAction:@escaping(TargetType)->(Swift.Void)) where TargetType : AnyObject , ModelType:Collectible {
@@ -62,5 +62,4 @@ extension BartlebyDocument{
             self.log("\(error)")
         }
     }
-
 }
