@@ -62,7 +62,7 @@ class SetupCollaborativeServerViewController: IdentityStepViewController{
                                     if let user = matchingProfile.user {
                                         // We should reuse the user.
                                         document.users.add(user, commit: false,isUndoable: false)
-                                        document.metadata.memorizeUser(user)
+                                        document.metadata.configureCurrentUser(user)
                                         userHasBeenFound=true
                                     }
                                 }
@@ -94,7 +94,7 @@ class SetupCollaborativeServerViewController: IdentityStepViewController{
                                         }
                                     }
                                 }
-                                document.metadata.memorizeUser(user)
+                                document.metadata.configureCurrentUser(user)
                             }
 
                             func __postCreationPhase(user:User){

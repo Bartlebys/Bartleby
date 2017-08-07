@@ -41,7 +41,7 @@ class BasicApiTests: TestCase {
 
         // Store the current user
         BasicApiTests._createdUser = user
-        BasicApiTests.document.metadata.memorizeUser(user)
+        BasicApiTests.document.metadata.configureCurrentUser(user)
 
         CreateUser.execute(user,
                            in:TestCase.document.UID,

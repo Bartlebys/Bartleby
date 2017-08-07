@@ -47,7 +47,7 @@ class LockerTests: XCTestCase {
         LockerTests._spaceUID = document.spaceUID
         LockerTests._creatorUser = document.newManagedModel() as User
         if let user =  LockerTests._creatorUser {
-            document.metadata.memorizeUser(user)
+            document.metadata.configureCurrentUser(user)
         }
 
     }
@@ -196,7 +196,7 @@ class LockerTests: XCTestCase {
         if let consumerUser = LockerTests._consumerUser {
 
             // (!) TO BECOME THE MAIN USER
-            LockerTests._document.metadata.memorizeUser(consumerUser)
+            LockerTests._document.metadata.configureCurrentUser(consumerUser)
 
             consumerUser.login(sucessHandler: { () -> () in
                         expectation.fulfill()

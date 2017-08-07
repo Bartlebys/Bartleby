@@ -44,7 +44,7 @@ public extension DocumentMetadata{
     ///
     ///
     /// - Parameter user: the current user to memorize in the document metadata
-    public func memorizeUser(_ user:User){
+    public func configureCurrentUser(_ user:User){
         /// Stores the current user UID
         self.currentUserUID=user.UID
         // Store the email and Phonenumber into the metadata

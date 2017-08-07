@@ -103,22 +103,28 @@ class ValidatePasswordViewController: IdentityStepViewController{
                     self.messageTextField.stringValue=NSLocalizedString("Invalid Password", comment: "Invalid Password")
                 }
             }else{
+                if Bartleby.configuration.DEVELOPER_MODE{
+                    print("Using baseURL: \(document.baseURL)")
+                }
                 HTTPManager.apiIsReachable(document.baseURL, successHandler: {
                     do{
+
                         /// We create a temporary user
                         /// We create a temporary user to authenticate
                         /// Note that the real user is serialized within the collections (with the sugar)
-                        /// We never store the directly the passwords (on login we use user.cryptoPassword)
-                        let password = try Bartleby.cryptoDelegate.encryptString(self.passwordTextField.stringValue, useKey: Bartleby.configuration.KEY)
+                        /// We never store the clearly the password (on login we use user.cryptoPassword)
+                        /// Even locally the password is crypted on serialization
+                        let password = self.passwordTextField.stringValue
+                        let tempUser:User = User()
+                        tempUser.quietChanges {
+                            tempUser.UID = document.metadata.currentUserUID
+                            tempUser.email = self.emailTextField.stringValue
+                            tempUser.password = password
+                            tempUser.creatorUID=tempUser.UID
+                            tempUser.referentDocument=document
+                            document.metadata.configureCurrentUser(tempUser)
+                        }
 
-                        let tempUser = User()
-                        tempUser.UID = document.metadata.currentUserUID
-                        tempUser.email = self.emailTextField.stringValue
-                        tempUser.password = password
-
-                        tempUser.creatorUID=tempUser.UID
-                        tempUser.referentDocument=document
-                        document.metadata.memorizeUser(tempUser)  // Will be replaced by deserialized occurence after decrypting
                         tempUser.login(sucessHandler: {
 
                             /// Find the locker to be verifyed
