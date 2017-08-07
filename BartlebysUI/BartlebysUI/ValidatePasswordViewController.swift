@@ -143,7 +143,7 @@ class ValidatePasswordViewController: IdentityStepViewController{
                                                             // IMPORTANT :
                                                             // Normally we should recover the sugar by calling VerifyLocker
                                                             // This approach bypasses the RecoverSugarViewController
-                                                            // and implements the same logic as RecoverSugarViewController.proceedToValidation
+                                                            // and implement the same logic as RecoverSugarViewController.proceedToValidation
                                                             if let string=context.responseString{
                                                                 if let data = string.data(using:Default.STRING_ENCODING){
                                                                     if let locker = try? JSON.decoder.decode(Locker.self, from: data){
@@ -158,18 +158,32 @@ class ValidatePasswordViewController: IdentityStepViewController{
                                                                             document.send(IdentificationStates.sugarHasBeenRecovered)
                                                                             self.identityWindowController?.identificationIsValid=true
                                                                             self.stepDelegate?.didValidateStep( self.stepIndex)
+                                                                            return
                                                                         }catch{
+                                                                            self.messageTextField.stringValue=NSLocalizedString("Unexpected Error: ", comment:"Unexpected Error:") + "\(error)"
                                                                             self.identityWindowController?.activationMode=true
                                                                         }
+                                                                    }else{
+                                                                        // This certainly means that the locker was not configured to by pass the secondary auth factor
+                                                                        self.messageTextField.stringValue=NSLocalizedString("Unable to get the Locker", comment: "Unable to get the Locker")
+                                                                        // So we will display the activation view controller after 3 seconds.
+                                                                        // And print the call result
+                                                                        // And the SMS layer is disabled by configuration we will receive its text HERE
+                                                                        Async.main(after: 3, { () -> () in
+                                                                             print(string)
+                                                                            self.identityWindowController?.activationMode=true
+                                                                        })
                                                                     }
                                                                 }
                                                             }else{
                                                                 self.messageTextField.stringValue=NSLocalizedString("Void Data", comment: "Void Data")
                                                             }
                                                         }else{
+                                                            // We use the secondaryAuthFactorRequired
                                                             self.identityWindowController?.activationMode=true
                                                         }
 
+                                                        
 
                             }, failureHandler: { (context) in
                                 self.messageTextField.stringValue=NSLocalizedString("We are unable to activate this account", comment: "We are unable to activate this account")
