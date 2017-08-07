@@ -15,7 +15,7 @@ class LogsViewController: NSViewController,DocumentDependent{
     override var nibName : NSNib.Name { return NSNib.Name("LogsViewController")}
 
     @IBOutlet weak var messageColumn: NSTableColumn!
-    var font:NSFont=NSFont.systemFont(ofSize: NSFont.smallSystemFontSize)
+    @objc dynamic var font:NSFont=NSFont.systemFont(ofSize: NSFont.smallSystemFontSize)
 
     fileprivate var _document:BartlebyDocument?
 
@@ -148,8 +148,8 @@ extension LogsViewController:NSTableViewDelegate{
         let width=self.messageColumn.width-80;
         let constraintRect = CGSize(width: width, height: CGFloat.greatestFiniteMagnitude)
         let paragraphStyle = NSMutableParagraphStyle()
-        paragraphStyle.lineBreakMode = NSParagraphStyle.LineBreakMode.byCharWrapping;
-        let attributes = [NSAttributedStringKey.font.rawValue:font, NSAttributedStringKey.paragraphStyle:paragraphStyle] as! [NSAttributedStringKey : Any]
+        paragraphStyle.lineBreakMode = .byCharWrapping
+        let attributes = [NSAttributedStringKey.font:self.font, NSAttributedStringKey.paragraphStyle:paragraphStyle] as [NSAttributedStringKey : Any]
         let boundingBox = item.message.boundingRect(with: constraintRect, options: NSString.DrawingOptions.usesLineFragmentOrigin, attributes: attributes, context: nil)
         return boundingBox.height + 20
     }
