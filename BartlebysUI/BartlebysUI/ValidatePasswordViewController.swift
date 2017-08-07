@@ -34,6 +34,11 @@ class ValidatePasswordViewController: IdentityStepViewController{
     override func viewWillAppear() {
         super.viewWillAppear()
         if let document = self.documentProvider?.getDocument(){
+
+            if Bartleby.configuration.DEVELOPER_MODE{
+                print("Using currentUserUID: \(document.metadata.currentUserUID)")
+            }
+
             document.send(IdentificationStates.validatePassword)
             self.emailTextField.stringValue = document.metadata.currentUserEmail
             if document.metadata.currentUserFullPhoneNumber.characters.count > 3{

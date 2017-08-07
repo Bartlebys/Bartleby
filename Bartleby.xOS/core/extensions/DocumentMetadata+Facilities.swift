@@ -39,13 +39,14 @@ public extension DocumentMetadata{
 
 
     /// Store the user's UID, its email and computed Phone number.
+    /// Those properties are used before full decryption
+    ///  - to perform authentication and ask for an activation code.
+    ///
     ///
     /// - Parameter user: the current user to memorize in the document metadata
     public func memorizeUser(_ user:User){
-
         /// Stores the current user UID
         self.currentUserUID=user.UID
-
         // Store the email and Phonenumber into the metadata
         // For user clarity purposes
         self.currentUserEmail=user.email

@@ -115,7 +115,7 @@ import Foundation
 
     // The UID is stored in _id to match MongoDB convention so we use a computed property
     // UID is a dynamic @objc to be available for cocoa bindings
-    @objc open dynamic var UID:String { get{ return self._id } set{  self._id = UID } }
+    @objc open dynamic var UID:String { get{ return self._id } set{  self._id = newValue } }
 
 
     // MARK: - Codable
