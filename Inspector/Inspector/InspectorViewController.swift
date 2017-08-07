@@ -414,22 +414,18 @@ class CollectionListDelegate:NSObject,NSOutlineViewDelegate,NSOutlineViewDataSou
         return false
     }
 
-    /*
-     NOTE: Returning nil indicates that the item's state will not be persisted.
-     */
     func outlineView(_ outlineView: NSOutlineView, persistentObjectForItem item: Any?) -> Any? {
         if let object=item as? ManagedModel {
-            return object.alias()
+            return object.alias().serialize()
         }
         return nil
     }
-
-    /*
-     NOTE: Returning nil indicates the item no longer exists, and won't be re-expanded.
-     */
+    
     func outlineView(_ outlineView: NSOutlineView, itemForPersistentObject object: Any) -> Any? {
-        if let alias = object as? Alias {
-            return Bartleby.instance(from:alias)
+        if let data = object as? Data{
+            if let alias = try? Alias.deserialize(from:data) {
+                return Bartleby.instance(from:alias)
+            }
         }
         return nil
     }

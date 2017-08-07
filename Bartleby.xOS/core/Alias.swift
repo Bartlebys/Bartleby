@@ -9,7 +9,17 @@ import Foundation
 
 /// The alias struct
 public struct Alias:Codable{
+
     let UID:String
+
+    public func serialize()->Data{
+        return try! JSON.encoder.encode(self)
+    }
+
+    public static func deserialize(from data:Data) throws ->Alias{
+        return try JSON.decoder.decode(Alias.self, from: data)
+    }
+
 }
 
 // MARK: - Aliasable
