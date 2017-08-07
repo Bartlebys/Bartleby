@@ -436,10 +436,10 @@ public extension Notification.Name {
                     }
                 }
             }
-            
             if commit==true {
                CreateBlocks.commit(items, in:self.referentDocument!)
             }
+
             self.shouldBeSaved = true
         }
     }

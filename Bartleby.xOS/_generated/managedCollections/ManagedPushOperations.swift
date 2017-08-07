@@ -397,7 +397,7 @@ public extension Notification.Name {
 
             // Commit is ignored because
             // Distant persistency is not allowed for PushOperations
-                        self.shouldBeSaved = true
+            self.shouldBeSaved = true
         }
     }
 

@@ -170,7 +170,8 @@ extension BartlebyDocument {
                 do {
                     for payload in dataPayloads{
                         let typeName = collection.collectedType.typeName()
-                        if let collectible = try self.dynamics.deserialize(typeName: typeName, data: payload, document: nil) as? Collectible{
+                         // We need to cast the dynamic type to ManagedModel & BartlebyCollection (Collectible alone is not enough)
+                        if let collectible = try self.dynamics.deserialize(typeName: typeName, data: payload, document: nil) as? ManagedModel & Collectible{
                              collection.upsert(collectible, commit:false)
                         }
                     }

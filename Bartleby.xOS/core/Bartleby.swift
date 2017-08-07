@@ -123,7 +123,10 @@ open class Bartleby:NSObject,AliasResolver {
      - returns: the document
      */
     open func getDocumentByUID(_ UID:UID) -> BartlebyDocument?{
-        return self._documents[UID]
+        if let document = self._documents[UID]{
+            return document
+        }
+        return nil
     }
     /**
      Registers a document

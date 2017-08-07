@@ -436,10 +436,10 @@ public extension Notification.Name {
                     }
                 }
             }
-            
             if commit==true {
                CreateTags.commit(items, in:self.referentDocument!)
             }
+
             self.shouldBeSaved = true
         }
     }

@@ -102,14 +102,17 @@ import Foundation
     - parameter document:     the document
     */
     static func commit(_ block:Block, in document:BartlebyDocument){
+        // The operation instance is serialized in a pushOperation
+        // That's why we donnot use the document factory to create this instance.
         let operationInstance = UpdateBlock()
+        operationInstance.UID = Bartleby.createUID()
         operationInstance.referentDocument = document
         let context=Context(code:2874210455, caller: "\(operationInstance.runTimeTypeName()).commit")
         do{
             operationInstance._payload = try JSON.encoder.encode(block.self)
             let ic:ManagedPushOperations = try document.getCollection()
             // Create the pushOperation
-            let pushOperation = PushOperation()
+            let pushOperation:PushOperation = document.newManagedModel(commit: false, isUndoable: false)
             pushOperation.quietChanges{
                 pushOperation.commandUID = operationInstance.UID
                 pushOperation.collection = ic
@@ -125,7 +128,7 @@ import Foundation
             }
             pushOperation.operationName = UpdateBlock.typeName()
             pushOperation.serialized = operationInstance.serialize()
-            ic.add(pushOperation, commit:false, isUndoable:false)
+            //ic.add(pushOperation, commit:false, isUndoable:false)
         }catch{
             document.dispatchAdaptiveMessage(context,
                                              title: "Structural Error",
@@ -172,7 +175,7 @@ import Foundation
                         }
                     )
                 }else{
-                    glog("Operation can't be pushed \(pushOperation.status)", file: #file, function: #function, line: #line, category: Default.LOG_FAULT, decorative: false)
+                    self.referentDocument?.log("UpdateBlock can't be pushed \(pushOperation.status)", file: #file, function: #function, line: #line, category: Default.LOG_FAULT, decorative: false)
                 }
             }catch{
                 let context = HTTPContext( code:3 ,
@@ -181,7 +184,7 @@ import Foundation
                 httpStatusCode:StatusOfCompletion.undefined.rawValue)
                 context.message="\(error)"
                 failure(context)
-                glog("\(error)", file: #file, function: #function, line: #line, category: Default.LOG_WARNING, decorative: false)
+                self.referentDocument?.log("\(error)", file: #file, function: #function, line: #line, category: Default.LOG_WARNING, decorative: false)
             }
 
     }
@@ -191,9 +194,9 @@ import Foundation
             if let idx=document.pushOperations.index(where: { $0.commandUID==self.UID }){
                 return document.pushOperations[idx]
             }
-            throw BartlebyOperationError.operationNotFound(UID:self.UID)
+            throw BartlebyOperationError.operationNotFound(UID:"UpdateBlock: \(self.UID)")
         }
-        throw BartlebyOperationError.documentNotFound(documentUID:self.documentUID)
+        throw BartlebyOperationError.documentNotFound(documentUID:"UpdateBlock: \(self.documentUID)")
     }
 
     

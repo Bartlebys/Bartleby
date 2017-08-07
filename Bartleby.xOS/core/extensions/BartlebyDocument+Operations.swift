@@ -172,7 +172,10 @@ extension BartlebyDocument {
                 if let serialized=operation.serialized {
                     do{
                             let o = try self.dynamics.deserialize(typeName: operation.operationName, data: serialized, document: nil)
-                            if let op=o as? BartlebyOperation {
+                            // #TODO why is it necessary to cast to ManagedModel?
+                            // If we set to BartlebyOperation it fails
+                            if let op=o as? ManagedModel & BartlebyOperation {
+                                op.referentDocument = self
                                 Bartleby.syncOnMain{
                                     // Push the command.
                                     op.push(sucessHandler: {  (context) in

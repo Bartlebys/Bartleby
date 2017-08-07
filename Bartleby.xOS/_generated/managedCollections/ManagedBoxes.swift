@@ -436,10 +436,10 @@ public extension Notification.Name {
                     }
                 }
             }
-            
             if commit==true {
                CreateBoxes.commit(items, in:self.referentDocument!)
             }
+
             self.shouldBeSaved = true
         }
     }
