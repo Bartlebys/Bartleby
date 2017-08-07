@@ -8,7 +8,7 @@
 import Foundation
 
 
-/// A data container that facilitate dynamic deserialization
+/// A data container that can facilitate dynamic deserialization
 public struct SerializedEntity:Codable {
 
     public var data:Data

@@ -495,6 +495,8 @@
 		E55934361DEDD1B7001DE10F /* BartlebyTestCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = E55934351DEDD1B7001DE10F /* BartlebyTestCase.swift */; };
 		E5598ECF1F18FE7E000617C6 /* DataValue.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5598ECD1F18FE7E000617C6 /* DataValue.swift */; };
 		E5598ED01F18FE7E000617C6 /* StringValue.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5598ECE1F18FE7E000617C6 /* StringValue.swift */; };
+		E55C65161F385BC90046740F /* Alias.swift in Sources */ = {isa = PBXBuildFile; fileRef = E55C65151F385BC90046740F /* Alias.swift */; };
+		E55C65171F385BC90046740F /* Alias.swift in Sources */ = {isa = PBXBuildFile; fileRef = E55C65151F385BC90046740F /* Alias.swift */; };
 		E55D61441DE9F79800BF63B6 /* BlocksTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E55D61431DE9F79800BF63B6 /* BlocksTests.swift */; };
 		E55E71851F346F3B005F31E2 /* UnManagedModel+Serializable.swift in Sources */ = {isa = PBXBuildFile; fileRef = E55E71841F346F3B005F31E2 /* UnManagedModel+Serializable.swift */; };
 		E55E71871F346F98005F31E2 /* ManagedModel+DatatUpdatable.swift in Sources */ = {isa = PBXBuildFile; fileRef = E55E71861F346F98005F31E2 /* ManagedModel+DatatUpdatable.swift */; };
@@ -834,6 +836,7 @@
 		E55934351DEDD1B7001DE10F /* BartlebyTestCase.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BartlebyTestCase.swift; sourceTree = "<group>"; };
 		E5598ECD1F18FE7E000617C6 /* DataValue.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DataValue.swift; sourceTree = "<group>"; };
 		E5598ECE1F18FE7E000617C6 /* StringValue.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StringValue.swift; sourceTree = "<group>"; };
+		E55C65151F385BC90046740F /* Alias.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Alias.swift; sourceTree = "<group>"; };
 		E55D61431DE9F79800BF63B6 /* BlocksTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BlocksTests.swift; sourceTree = "<group>"; };
 		E55E71841F346F3B005F31E2 /* UnManagedModel+Serializable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UnManagedModel+Serializable.swift"; sourceTree = "<group>"; };
 		E55E71861F346F98005F31E2 /* ManagedModel+DatatUpdatable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ManagedModel+DatatUpdatable.swift"; sourceTree = "<group>"; };
@@ -1163,6 +1166,7 @@
 		E51251EC1E8BAD7F00797254 /* core */ = {
 			isa = PBXGroup;
 			children = (
+				E55C65151F385BC90046740F /* Alias.swift */,
 				E51251ED1E8BAD7F00797254 /* Bartleby.swift */,
 				E51251EE1E8BAD7F00797254 /* BXDocument.swift */,
 				E51251EF1E8BAD7F00797254 /* Consignation.swift */,
@@ -1180,10 +1184,10 @@
 				E512522C1E8BAD7F00797254 /* protocols */,
 				E51252571E8BAD7F00797254 /* Reaction.swift */,
 				E51252581E8BAD7F00797254 /* RelationShip.swift */,
+				E5E541CA1F3463DB001010AD /* SerializedEntity.swift */,
 				E51252591E8BAD7F00797254 /* ServerErrorCodes.swift */,
 				E512525A1E8BAD7F00797254 /* StatusOfCompletion.swift */,
 				E512525B1E8BAD7F00797254 /* UnManagedModel.swift */,
-				E5E541CA1F3463DB001010AD /* SerializedEntity.swift */,
 				E53F333E1F34AC040042CCC3 /* JSON.swift */,
 			);
 			path = core;
@@ -1665,6 +1669,7 @@
 				E51254571E8BAD7F00797254 /* TriggersForIndexes.swift in Sources */,
 				E51253211E8BAD7F00797254 /* UIX.swift in Sources */,
 				E512544B1E8BAD7F00797254 /* LoginUser.swift in Sources */,
+				E55C65161F385BC90046740F /* Alias.swift in Sources */,
 				E51253B31E8BAD7F00797254 /* ManagedModel+Logs.swift in Sources */,
 				E51254371E8BAD7F00797254 /* UnManagedModel.swift in Sources */,
 				E51253251E8BAD7F00797254 /* BSFS.swift in Sources */,
@@ -1928,6 +1933,7 @@
 				E51253041E8BAD7F00797254 /* ReadUserById.swift in Sources */,
 				E512528E1E8BAD7F00797254 /* Completion.swift in Sources */,
 				E51252A61E8BAD7F00797254 /* Node.swift in Sources */,
+				E55C65171F385BC90046740F /* Alias.swift in Sources */,
 				E51253761E8BAD7F00797254 /* BartlebyDocument+Blocks.swift in Sources */,
 				E51253A01E8BAD7F00797254 /* HTTPRequest+URLRequest.swift in Sources */,
 				E512544A1E8BAD7F00797254 /* GetActivationCode.swift in Sources */,

@@ -19,7 +19,7 @@ import Foundation
 //MARK: - Bartleby
 
 // Bartleby's 1.0 approach is suitable for data set that can stored in memory.
-open class Bartleby:NSObject {
+open class Bartleby:NSObject,AliasResolver {
 
     /// The standard singleton shared instance
     open static let sharedInstance: Bartleby = {
@@ -370,6 +370,15 @@ open class Bartleby:NSObject {
      */
     open static func collectibleInstanceByUID(_ UID: UID) -> Collectible? {
         return self._instancesByUID[UID]
+    }
+
+
+    /// Resolve the alias
+    ///
+    /// - Parameter alias: the alias
+    /// - Returns: the reference
+    open static func instance(from alias:Alias)->Aliasable?{
+        return registredManagedModelByUID(alias.UID)
     }
 
 
