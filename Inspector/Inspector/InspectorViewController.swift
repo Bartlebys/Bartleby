@@ -419,7 +419,7 @@ class CollectionListDelegate:NSObject,NSOutlineViewDelegate,NSOutlineViewDataSou
      */
     func outlineView(_ outlineView: NSOutlineView, persistentObjectForItem item: Any?) -> Any? {
         if let object=item as? ManagedModel {
-            return object.toSerializedEntity()
+            return object.alias()
         }
         return nil
     }
@@ -428,13 +428,8 @@ class CollectionListDelegate:NSObject,NSOutlineViewDelegate,NSOutlineViewDataSou
      NOTE: Returning nil indicates the item no longer exists, and won't be re-expanded.
      */
     func outlineView(_ outlineView: NSOutlineView, itemForPersistentObject object: Any) -> Any? {
-        if let deserializable = object as? SerializedEntity {
-            do {
-                let o = try self._documentReference.dynamics.deserialize(typeName: deserializable.typeName, data: deserializable.data, document: nil)
-                return o
-            } catch {
-                glog("Outline deserialization issue on \(object) \(error)", file:#file, function:#function, line:#line)
-            }
+        if let alias = object as? Alias {
+            return Bartleby.instance(from:alias)
         }
         return nil
     }
