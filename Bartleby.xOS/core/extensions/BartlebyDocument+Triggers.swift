@@ -54,9 +54,12 @@ extension BartlebyDocument {
             let data = try? JSON.encoder.encode(trigger)
             let s = (data != nil ) ? (data!.optionalString(using: Default.STRING_ENCODING) ?? "") : ""
             triggerMetrics.httpContext = HTTPContext(code: 0, caller: "TriggerHasBeenReceived", relatedURL: self.sseURL, httpStatusCode: 0, responseString: s)
-            if let p=trigger.payloads {
-                if let d=try? JSONSerialization.data(withJSONObject: p, options: JSONSerialization.WritingOptions.prettyPrinted){
-                    triggerMetrics.httpContext!.responseString=String(data: d, encoding: .utf8)
+            triggerMetrics.httpContext!.responseString = ""
+            // Not sure it is required...
+            // To be controlled.
+            if let payloads = trigger.payloads {
+                for (idx , payload) in payloads.enumerated() {
+                    triggerMetrics.httpContext!.responseString! += ((idx > 0) ? "," : "") + (payload.optionalString(using: Default.STRING_ENCODING) ?? Default.NO_MESSAGE)
                 }
             }
             self.report(triggerMetrics)
