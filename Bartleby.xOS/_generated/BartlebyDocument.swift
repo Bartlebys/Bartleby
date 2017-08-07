@@ -355,8 +355,7 @@ import Foundation
         }
     }
     
-
-   // MARK: -  Entities factories
+    // MARK: -  Entities factories
 
 
     /// Model Factory
@@ -368,7 +367,7 @@ import Foundation
     /// - Returns: a Collectible Model
     open func newManagedModel<T:Collectible>(commit:Bool=true, isUndoable:Bool=true)->T{
 
-        // User as a special Method
+        // User factory relies on as a special Method
         if T.typeName()=="User"{
             return self._newUser(commit:commit,isUndoable: isUndoable) as! T
         }
@@ -376,23 +375,50 @@ import Foundation
         // Generated UnaManaged and ManagedModel are supported
         // We prefer to crash if some tries to inject another collectible
         var instance = try! self.dynamics.newInstanceOf(T.typeName()) as! T
+        instance.quietChanges{
+            instance.UID = Bartleby.createUID()
+            // Do we have a collection ?
+            if let collection=self.collectionByName(instance.d_collectionName){
+                collection.add(instance, commit: false, isUndoable:isUndoable)
+            }
 
-        // Do we have a collection ?
-        if let collection=self.collectionByName(instance.d_collectionName){
-            collection.add(instance, commit: false, isUndoable:isUndoable)
+            // Set up the creator
+            instance.creatorUID = self.metadata.currentUserUID
+
+            // We defer the commit to the next synchronization loop
+            // to allow post instantiation modification
+            if commit{
+                instance.needsToBeCommitted()
+            }
         }
-
-        // Set up the creator
-        instance.creatorUID = self.metadata.currentUserUID
-
-        // We defer the commit to the next synchronization loop
-        // to allow post instantiation modification
-        if commit{
-            instance.needsToBeCommitted()
-        }
-
         self.didCreate(instance)
         return  instance
+    }
+        /// The user factory
+        ///
+        /// - Parameters:
+        ///   - commit: should we commit the user?
+        ///   - isUndoable: is its creation undoable?
+        /// - Returns: the created user
+        internal func _newUser(commit:Bool=true,isUndoable:Bool) -> User {
+        let user=User()
+        user.quietChanges {
+            user._id = Bartleby.createUID()
+            user.password=Bartleby.randomStringWithLength(8,signs:Bartleby.configuration.PASSWORD_CHAR_CART)
+            if let creator=self.metadata.currentUser {
+                user.creatorUID = creator.UID
+            }else{
+                // Autopoiesis.
+                user.creatorUID = user.UID
+            }
+            user.spaceUID = self.metadata.spaceUID
+            self.users.add(user, commit:false,isUndoable:isUndoable )
+        }
+        if commit{
+            user.needsToBeCommitted()
+        }
+        self.didCreate(user)
+        return user
     }
 
     /// Called just after Factory Method
@@ -420,28 +446,5 @@ import Foundation
             self.bsfs.deleteBlockFile(o)
         }
     }
-
-    internal func _newUser(commit:Bool=true,isUndoable:Bool) -> User {
-        let user=User()
-        user.quietChanges {
-            user.password=Bartleby.randomStringWithLength(8,signs:Bartleby.configuration.PASSWORD_CHAR_CART)
-            if let creator=self.metadata.currentUser {
-                user.creatorUID = creator.UID
-            }else{
-                // Autopoiesis.
-                user.creatorUID = user.UID
-            }
-            user.spaceUID = self.metadata.spaceUID
-            self.users.add(user, commit:false,isUndoable:isUndoable )
-        }
-        if commit{
-            user.needsToBeCommitted()
-        }
-        self.didCreate(user)
-        return user
-    }
-
-
-
 
 }

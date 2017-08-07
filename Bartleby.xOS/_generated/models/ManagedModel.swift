@@ -21,7 +21,7 @@ import Foundation
     }
 
 	//The object unique Identifier is named _id to gains native support in MongoDB - you can use UID as accessor 
-	@objc dynamic open var _id:String = Bartleby.createUID()
+	@objc dynamic open var _id:String = Default.NO_UID
 
 	//An external unique identifier
 	@objc dynamic open var externalID:String = "" {
@@ -113,6 +113,8 @@ import Foundation
     // The Run time Type name (can be different to typeName)
     internal var _runTimeTypeName: String?
 
+    // The UID is stored in _id to match MongoDB convention so we use a computed property
+    // UID is a dynamic @objc to be available for cocoa bindings
     @objc open dynamic var UID:String { get{ return self._id } set{  self._id = UID } }
 
 

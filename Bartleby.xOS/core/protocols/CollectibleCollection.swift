@@ -15,7 +15,7 @@ import Cocoa
 
 // Protocol to mark that a class is a generated collection.
 // The collection behavior is generated using flexions.
-public protocol CollectibleCollection: Collectible,ProvisionChanges {
+public protocol CollectibleCollection: Collectible {
 
     var collectedType:Collectible.Type { get }
 

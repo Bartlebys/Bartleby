@@ -92,7 +92,7 @@ import Foundation
 	@objc dynamic open var ownedTriggersIndexes:[Int] = [Int]()
 
 	//The index of the last trigger that has been integrated
-	open var lastIntegratedTriggerIndex:Int = -1
+	@objc dynamic open var lastIntegratedTriggerIndex:Int = -1
 
 	//A collection Triggers that are temporarly stored before data integration
 	@objc dynamic open var receivedTriggers:[Trigger] = [Trigger]()

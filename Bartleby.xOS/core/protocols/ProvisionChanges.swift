@@ -22,4 +22,16 @@ public protocol ProvisionChanges {
      */
     func provisionChanges(forKey key:String,oldValue:Any?,newValue:Any?)
 
+
+    /// Performs the deserialization without invoking provisionChanges
+    ///
+    /// - parameter changes: the changes closure
+    func quietChanges(_  changes:()->())
+
+
+    /// Performs the deserialization without invoking provisionChanges
+    ///
+    /// - parameter changes: the changes closure
+    func quietThrowingChanges(_ changes:()throws->())rethrows
+
 }
