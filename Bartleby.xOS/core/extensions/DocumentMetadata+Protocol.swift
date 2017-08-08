@@ -29,7 +29,8 @@ extension DocumentMetadata:DocumentMetadataProtocol {
         if let cryptedJson = String(data: data, encoding:Default.STRING_ENCODING){
             let decrypted = try Bartleby.cryptoDelegate.decryptString(cryptedJson,useKey:Bartleby.configuration.KEY)
             if let decryptedData = decrypted.data(using:Default.STRING_ENCODING){
-                let metadata = try document.dynamics.deserialize(typeName: DocumentMetadata.typeName(), data: data, document: nil) as! DocumentMetadata
+                // We use the dynamics to be able to migrate DocumentMetadata model if necessary
+                let metadata = try document.dynamics.deserialize(typeName: DocumentMetadata.typeName(), data: decryptedData, document: nil) as! DocumentMetadata
                 return metadata
             }
         }

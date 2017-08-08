@@ -145,7 +145,7 @@ import Foundation
     // MARK: - Codable
 
 
-    enum DocumentMetadataCodingKeys: String,CodingKey{
+    public enum DocumentMetadataCodingKeys: String,CodingKey{
 		case version
 		case spaceUID
 		case persistentUID

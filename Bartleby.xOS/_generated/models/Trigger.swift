@@ -61,7 +61,7 @@ import Foundation
     // MARK: - Codable
 
 
-    enum TriggerCodingKeys: String,CodingKey{
+    public enum TriggerCodingKeys: String,CodingKey{
 		case index
 		case spaceUID
 		case observationUID

@@ -37,7 +37,7 @@ import Foundation
     // MARK: - Codable
 
 
-    enum ContainerCodingKeys: String,CodingKey{
+    public enum ContainerCodingKeys: String,CodingKey{
 		case password
 		case boxes
 		case nodes

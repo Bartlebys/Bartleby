@@ -40,7 +40,7 @@ import Foundation
     // MARK: - Codable
 
 
-    enum HTTPRequestCodingKeys: String,CodingKey{
+    public enum HTTPRequestCodingKeys: String,CodingKey{
 		case url
 		case httpMethod
 		case headers

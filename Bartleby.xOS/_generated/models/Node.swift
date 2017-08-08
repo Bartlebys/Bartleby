@@ -102,7 +102,7 @@ import Foundation
     // MARK: - Codable
 
 
-    enum NodeCodingKeys: String,CodingKey{
+    public enum NodeCodingKeys: String,CodingKey{
 		case type
 		case relativePath
 		case proxyPath

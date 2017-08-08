@@ -59,7 +59,7 @@ import Foundation
     // MARK: - Codable
 
 
-    enum MetricsCodingKeys: String,CodingKey{
+    public enum MetricsCodingKeys: String,CodingKey{
 		case referentDocument
 		case operationName
 		case counter

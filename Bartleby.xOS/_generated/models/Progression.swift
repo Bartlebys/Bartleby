@@ -52,7 +52,7 @@ import Foundation
     // MARK: - Codable
 
 
-    enum ProgressionCodingKeys: String,CodingKey{
+    public enum ProgressionCodingKeys: String,CodingKey{
 		case startTime
 		case currentTaskIndex
 		case totalTaskCount

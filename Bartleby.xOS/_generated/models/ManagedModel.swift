@@ -121,7 +121,7 @@ import Foundation
     // MARK: - Codable
 
 
-    enum ManagedModelCodingKeys: String,CodingKey{
+    public enum ManagedModelCodingKeys: String,CodingKey{
 		case _id
 		case externalID
 		case creatorUID

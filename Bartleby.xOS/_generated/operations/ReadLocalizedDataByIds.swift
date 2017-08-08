@@ -86,7 +86,7 @@ import Foundation
     // MARK: - Codable
 
 
-    enum CodingKeys: String,CodingKey{
+    public enum CodingKeys: String,CodingKey{
 		case ids
 		case result_fields
 		case sort

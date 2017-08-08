@@ -179,7 +179,7 @@ import Foundation
     // MARK: - Codable
 
 
-    enum UserCodingKeys: String,CodingKey{
+    public enum UserCodingKeys: String,CodingKey{
 		case spaceUID
 		case verificationMethod
 		case localAssociationID

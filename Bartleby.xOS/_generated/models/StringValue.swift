@@ -28,7 +28,7 @@ import Foundation
     // MARK: - Codable
 
 
-    enum StringValueCodingKeys: String,CodingKey{
+    public enum StringValueCodingKeys: String,CodingKey{
 		case value
     }
 

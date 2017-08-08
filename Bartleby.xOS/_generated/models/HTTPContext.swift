@@ -46,7 +46,7 @@ import Foundation
     // MARK: - Codable
 
 
-    enum HTTPContextCodingKeys: String,CodingKey{
+    public enum HTTPContextCodingKeys: String,CodingKey{
 		case caller
 		case code
 		case httpStatusCode

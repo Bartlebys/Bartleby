@@ -48,7 +48,7 @@ import Foundation
     // MARK: - Codable
 
 
-    enum BoxCodingKeys: String,CodingKey{
+    public enum BoxCodingKeys: String,CodingKey{
 		case isMounted
 		case assemblyInProgress
 		case volatile

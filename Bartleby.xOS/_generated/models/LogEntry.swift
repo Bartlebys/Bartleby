@@ -52,7 +52,7 @@ import Foundation
     // MARK: - Codable
 
 
-    enum LogEntryCodingKeys: String,CodingKey{
+    public enum LogEntryCodingKeys: String,CodingKey{
 		case counter
 		case line
 		case elapsed

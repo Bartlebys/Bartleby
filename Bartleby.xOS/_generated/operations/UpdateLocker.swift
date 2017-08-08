@@ -76,7 +76,7 @@ import Foundation
     // MARK: - Codable
 
 
-    enum payloadCodingKeys: String,CodingKey{
+    public enum payloadCodingKeys: String,CodingKey{
 		case _payload
     }
 

@@ -33,7 +33,7 @@ import Foundation
     // MARK: - Codable
 
 
-    enum ReportCodingKeys: String,CodingKey{
+    public enum ReportCodingKeys: String,CodingKey{
 		case metadata
 		case logs
 		case metrics

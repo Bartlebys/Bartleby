@@ -57,7 +57,7 @@ import Foundation
     // MARK: - Codable
 
 
-    enum PushOperationCodingKeys: String,CodingKey{
+    public enum PushOperationCodingKeys: String,CodingKey{
 		case operationName
 		case commandUID
 		case serialized

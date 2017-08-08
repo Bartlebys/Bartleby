@@ -60,7 +60,7 @@ import Foundation
     // MARK: - Codable
 
 
-    enum LocalizedDatumCodingKeys: String,CodingKey{
+    public enum LocalizedDatumCodingKeys: String,CodingKey{
 		case languageCode
 		case key
 		case stringValue

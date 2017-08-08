@@ -34,7 +34,7 @@ import Foundation
     // MARK: - Codable
 
 
-    enum KeyedChangesCodingKeys: String,CodingKey{
+    public enum KeyedChangesCodingKeys: String,CodingKey{
 		case elapsed
 		case key
 		case changes

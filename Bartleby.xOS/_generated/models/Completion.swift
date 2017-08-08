@@ -43,7 +43,7 @@ import Foundation
     // MARK: - Codable
 
 
-    enum CompletionCodingKeys: String,CodingKey{
+    public enum CompletionCodingKeys: String,CodingKey{
 		case success
 		case statusCode
 		case message

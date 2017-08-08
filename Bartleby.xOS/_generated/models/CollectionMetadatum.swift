@@ -43,7 +43,7 @@ import Foundation
     // MARK: - Codable
 
 
-    enum CollectionMetadatumCodingKeys: String,CodingKey{
+    public enum CollectionMetadatumCodingKeys: String,CodingKey{
 		case storage
 		case collectionName
 		case proxy

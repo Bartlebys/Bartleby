@@ -63,7 +63,7 @@ import Foundation
     // MARK: - Codable
 
 
-    enum BlockCodingKeys: String,CodingKey{
+    public enum BlockCodingKeys: String,CodingKey{
 		case digest
 		case rank
 		case startsAt

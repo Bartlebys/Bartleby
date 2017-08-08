@@ -34,7 +34,7 @@ import Foundation
     // MARK: - Codable
 
 
-    enum AcknowledgmentCodingKeys: String,CodingKey{
+    public enum AcknowledgmentCodingKeys: String,CodingKey{
 		case triggerIndex
 		case uids
 		case triggerRelayDuration

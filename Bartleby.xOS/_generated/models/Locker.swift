@@ -133,7 +133,7 @@ import Foundation
     // MARK: - Codable
 
 
-    enum LockerCodingKeys: String,CodingKey{
+    public enum LockerCodingKeys: String,CodingKey{
 		case associatedDocumentUID
 		case subjectUID
 		case userUID
