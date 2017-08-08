@@ -107,96 +107,89 @@ class ValidatePasswordViewController: IdentityStepViewController{
                     print("Using baseURL: \(document.baseURL)")
                 }
                 HTTPManager.apiIsReachable(document.baseURL, successHandler: {
-                    do{
 
-                        /// We create a temporary user
-                        /// We create a temporary user to authenticate
-                        /// Note that the real user is serialized within the collections (with the sugar)
-                        /// We never store the clearly the password (on login we use user.cryptoPassword)
-                        /// Even locally the password is crypted on serialization
-                        let password = self.passwordTextField.stringValue
-                        let tempUser:User = User()
-                        tempUser.quietChanges {
-                            tempUser.UID = document.metadata.currentUserUID
-                            tempUser.email = self.emailTextField.stringValue
-                            tempUser.password = password
-                            tempUser.creatorUID=tempUser.UID
-                            tempUser.referentDocument=document
-                            document.metadata.configureCurrentUser(tempUser)
-                        }
+                    /// We create a temporary user
+                    /// We create a temporary user to authenticate
+                    /// Note that the real user is serialized within the collections (with the sugar)
+                    /// We never store the clearly the password (on login we use user.cryptoPassword)
+                    /// Even locally the password is crypted on serialization
+                    let password = self.passwordTextField.stringValue
+                    let tempUser:User = User()
+                    tempUser.quietChanges {
+                        tempUser.UID = document.metadata.currentUserUID
+                        tempUser.email = self.emailTextField.stringValue
+                        tempUser.password = password
+                        tempUser.creatorUID=tempUser.UID
+                        tempUser.referentDocument=document
+                        document.metadata.configureCurrentUser(tempUser)
+                    }
 
-                        tempUser.login(sucessHandler: {
+                    tempUser.login(sucessHandler: {
 
-                            /// Find the locker to be verifyed
-                            let lockerUID=document.metadata.lockerUID
+                        /// Find the locker to be verifyed
+                        let lockerUID=document.metadata.lockerUID
 
-                            /// GetActivationCode(for :lockerUID)
-                            /// -> Will verify the user ID and use the found user PhoneNumber to send the activation code.
+                        /// GetActivationCode(for :lockerUID)
+                        /// -> Will verify the user ID and use the found user PhoneNumber to send the activation code.
 
-                            GetActivationCode.execute(baseURL: document.baseURL,
-                                                      documentUID: document.UID,
-                                                      lockerUID: lockerUID,
-                                                      title: "",
-                                                      body: NSLocalizedString("Your activation code is: \n$code", comment: "Your activation code is"),
-                                                      sucessHandler: { (context) in
-                                                        if !document.metadata.secondaryAuthFactorRequired{
-                                                            // IMPORTANT :
-                                                            // Normally we should recover the sugar by calling VerifyLocker
-                                                            // This approach bypasses the RecoverSugarViewController
-                                                            // and implement the same logic as RecoverSugarViewController.proceedToValidation
-                                                            if let string=context.responseString{
-                                                                if let data = string.data(using:Default.STRING_ENCODING){
-                                                                    if let locker = try? JSON.decoder.decode(Locker.self, from: data){
-                                                                        // We have the locker
-                                                                        let sugarCandidate=locker.gems
-                                                                        document.metadata.sugar=sugarCandidate
-                                                                        document.currentUser.status = .actived
-                                                                        do{
-                                                                            /// When the locker is verifyed use the sugar to retrieve the Collections and blocks data
-                                                                            try document.reloadCollectionData()
-                                                                            try document.metadata.putSomeSugarInYourBowl() // Save the key
-                                                                            document.send(IdentificationStates.sugarHasBeenRecovered)
-                                                                            self.identityWindowController?.identificationIsValid=true
-                                                                            self.stepDelegate?.didValidateStep( self.stepIndex)
-                                                                            return
-                                                                        }catch{
-                                                                            self.messageTextField.stringValue=NSLocalizedString("Unexpected Error: ", comment:"Unexpected Error:") + "\(error)"
-                                                                            self.identityWindowController?.activationMode=true
-                                                                        }
-                                                                    }else{
-                                                                        // This certainly means that the locker was not configured to by pass the secondary auth factor
-                                                                        self.messageTextField.stringValue=NSLocalizedString("Unable to get the Locker", comment: "Unable to get the Locker")
-                                                                        // So we will display the activation view controller after 3 seconds.
-                                                                        // And print the call result
-                                                                        // And the SMS layer is disabled by configuration we will receive its text HERE
-                                                                        Async.main(after: 3, { () -> () in
-                                                                             print(string)
-                                                                            self.identityWindowController?.activationMode=true
-                                                                        })
+                        GetActivationCode.execute(baseURL: document.baseURL,
+                                                  documentUID: document.UID,
+                                                  lockerUID: lockerUID,
+                                                  title: "",
+                                                  body: NSLocalizedString("Your activation code is: \n$code", comment: "Your activation code is"),
+                                                  sucessHandler: { (context) in
+                                                    if !document.metadata.secondaryAuthFactorRequired{
+                                                        // IMPORTANT :
+                                                        // Normally we should recover the sugar by calling VerifyLocker
+                                                        // This approach bypasses the RecoverSugarViewController
+                                                        // and implement the same logic as RecoverSugarViewController.proceedToValidation
+                                                        if let string=context.responseString{
+                                                            if let data = string.data(using:Default.STRING_ENCODING){
+                                                                if let locker = try? JSON.decoder.decode(Locker.self, from: data){
+                                                                    // We have the locker
+                                                                    let sugarCandidate=locker.gems
+                                                                    document.metadata.sugar=sugarCandidate
+                                                                    document.currentUser.status = .actived
+                                                                    do{
+                                                                        /// When the locker is verifyed use the sugar to retrieve the Collections and blocks data
+                                                                        try document.reloadCollectionData()
+                                                                        try document.metadata.putSomeSugarInYourBowl() // Save the key
+                                                                        document.send(IdentificationStates.sugarHasBeenRecovered)
+                                                                        self.identityWindowController?.identificationIsValid=true
+                                                                        self.stepDelegate?.didValidateStep( self.stepIndex)
+                                                                        return
+                                                                    }catch{
+                                                                        self.messageTextField.stringValue=NSLocalizedString("Unexpected Error: ", comment:"Unexpected Error:") + "\(error)"
+                                                                        self.identityWindowController?.activationMode=true
                                                                     }
+                                                                }else{
+                                                                    // This certainly means that the locker was not configured to by pass the secondary auth factor
+                                                                    self.messageTextField.stringValue=NSLocalizedString("Unable to get the Locker", comment: "Unable to get the Locker")
+                                                                    // So we will display the activation view controller after 3 seconds.
+                                                                    // And print the call result
+                                                                    // And the SMS layer is disabled by configuration we will receive its text HERE
+                                                                    Async.main(after: 3, { () -> () in
+                                                                        print(string)
+                                                                        self.identityWindowController?.activationMode=true
+                                                                    })
                                                                 }
-                                                            }else{
-                                                                self.messageTextField.stringValue=NSLocalizedString("Void Data", comment: "Void Data")
                                                             }
                                                         }else{
-                                                            // We use the secondaryAuthFactorRequired
-                                                            self.identityWindowController?.activationMode=true
+                                                            self.messageTextField.stringValue=NSLocalizedString("Void Data", comment: "Void Data")
                                                         }
+                                                    }else{
+                                                        // We use the secondaryAuthFactorRequired
+                                                        self.identityWindowController?.activationMode=true
+                                                    }
 
-                                                        
-
-                            }, failureHandler: { (context) in
-                                self.messageTextField.stringValue=NSLocalizedString("We are unable to activate this account", comment: "We are unable to activate this account")
-
-                            })
                         }, failureHandler: { (context) in
-                            self.messageTextField.stringValue=NSLocalizedString("The login has failed", comment: "The login has failed")
-                        })
+                            self.messageTextField.stringValue=NSLocalizedString("We are unable to activate this account", comment: "We are unable to activate this account")
 
-                    }catch{
-                        self.messageTextField.stringValue="\(error)"
-                        document.log("\(error)", file: #file, function: #function, line: #line, category: Default.LOG_DEFAULT, decorative: false)
-                    }
+                        })
+                    }, failureHandler: { (context) in
+                        self.messageTextField.stringValue=NSLocalizedString("The login has failed", comment: "The login has failed")
+                    })
+
                     
                 }, failureHandler: { (context) in
                     self.messageTextField.stringValue=NSLocalizedString("The server is not Reachable", comment: "The server is not Reachable")
