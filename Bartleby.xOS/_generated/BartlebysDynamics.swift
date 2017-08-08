@@ -88,6 +88,13 @@ open class BartlebysDynamics:Dynamics{
         if typeName == "UpdateLocker"{ instance = try JSON.decoder.decode(UpdateLocker.self, from: data); return instance }
         if typeName == "CreateLocker"{ instance = try JSON.decoder.decode(CreateLocker.self, from: data); return instance }
         if typeName == "ReadLockerById"{ instance = try JSON.decoder.decode(ReadLockerById.self, from: data); return instance }
+        if typeName == "ReadLocalizedDataByQuery"{ instance = try JSON.decoder.decode(ReadLocalizedDataByQuery.self, from: data); return instance }
+        if typeName == "DeleteLocalizedData"{ instance = try JSON.decoder.decode(DeleteLocalizedData.self, from: data); return instance }
+        if typeName == "ReadLocalizedDataByIds"{ instance = try JSON.decoder.decode(ReadLocalizedDataByIds.self, from: data); return instance }
+        if typeName == "UpsertLocalizedData"{ instance = try JSON.decoder.decode(UpsertLocalizedData.self, from: data); return instance }
+        if typeName == "DeleteLocalizedDatum"{ instance = try JSON.decoder.decode(DeleteLocalizedDatum.self, from: data); return instance }
+        if typeName == "UpsertLocalizedDatum"{ instance = try JSON.decoder.decode(UpsertLocalizedDatum.self, from: data); return instance }
+        if typeName == "ReadLocalizedDatumById"{ instance = try JSON.decoder.decode(ReadLocalizedDatumById.self, from: data); return instance }
         if typeName == "ReadBoxesByQuery"{ instance = try JSON.decoder.decode(ReadBoxesByQuery.self, from: data); return instance }
         if typeName == "DeleteBoxes"{ instance = try JSON.decoder.decode(DeleteBoxes.self, from: data); return instance }
         if typeName == "UpdateBoxes"{ instance = try JSON.decoder.decode(UpdateBoxes.self, from: data); return instance }
@@ -121,6 +128,8 @@ open class BartlebysDynamics:Dynamics{
         if typeName == "LogEntry"{ instance = try JSON.decoder.decode(LogEntry.self, from: data); return instance }
         if typeName == "ManagedLockers"{ instance = try JSON.decoder.decode(ManagedLockers.self, from: data); return instance }
         if typeName == "Locker"{ instance = try JSON.decoder.decode(Locker.self, from: data); return instance }
+        if typeName == "ManagedLocalizedData"{ instance = try JSON.decoder.decode(ManagedLocalizedData.self, from: data); return instance }
+        if typeName == "LocalizedDatum"{ instance = try JSON.decoder.decode(LocalizedDatum.self, from: data); return instance }
         if typeName == "KeyedData"{ instance = try JSON.decoder.decode(KeyedData.self, from: data); return instance }
         if typeName == "KeyedChanges"{ instance = try JSON.decoder.decode(KeyedChanges.self, from: data); return instance }
         if typeName == "HTTPRequest"{ instance = try JSON.decoder.decode(HTTPRequest.self, from: data); return instance }
@@ -172,6 +181,13 @@ open class BartlebysDynamics:Dynamics{
         if typeName == "UpdateLocker"{ return UpdateLocker() }
         if typeName == "CreateLocker"{ return CreateLocker() }
         if typeName == "ReadLockerById"{ return ReadLockerById() }
+        if typeName == "ReadLocalizedDataByQuery"{ return ReadLocalizedDataByQuery() }
+        if typeName == "DeleteLocalizedData"{ return DeleteLocalizedData() }
+        if typeName == "ReadLocalizedDataByIds"{ return ReadLocalizedDataByIds() }
+        if typeName == "UpsertLocalizedData"{ return UpsertLocalizedData() }
+        if typeName == "DeleteLocalizedDatum"{ return DeleteLocalizedDatum() }
+        if typeName == "UpsertLocalizedDatum"{ return UpsertLocalizedDatum() }
+        if typeName == "ReadLocalizedDatumById"{ return ReadLocalizedDatumById() }
         if typeName == "ReadBoxesByQuery"{ return ReadBoxesByQuery() }
         if typeName == "DeleteBoxes"{ return DeleteBoxes() }
         if typeName == "UpdateBoxes"{ return UpdateBoxes() }
@@ -205,6 +221,8 @@ open class BartlebysDynamics:Dynamics{
         if typeName == "LogEntry"{ return LogEntry() }
         if typeName == "ManagedLockers"{ return ManagedLockers() }
         if typeName == "Locker"{ return Locker() }
+        if typeName == "ManagedLocalizedData"{ return ManagedLocalizedData() }
+        if typeName == "LocalizedDatum"{ return LocalizedDatum() }
         if typeName == "KeyedData"{ return KeyedData() }
         if typeName == "KeyedChanges"{ return KeyedChanges() }
         if typeName == "HTTPRequest"{ return HTTPRequest() }

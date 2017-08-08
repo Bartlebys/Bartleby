@@ -264,6 +264,7 @@ import Foundation
 
 	@objc open dynamic var blocks=ManagedBlocks()
 	@objc open dynamic var boxes=ManagedBoxes()
+	@objc open dynamic var localizedData=ManagedLocalizedData()
 	@objc open dynamic var lockers=ManagedLockers()
 	@objc open dynamic var nodes=ManagedNodes()
 	@objc open dynamic var pushOperations=ManagedPushOperations()
@@ -293,6 +294,13 @@ import Foundation
         boxDefinition.storage = CollectionMetadatum.Storage.monolithicFileStorage
         boxDefinition.persistsDistantly = true
         boxDefinition.inMemory = false
+        
+        let localizedDatumDefinition = CollectionMetadatum()
+        localizedDatumDefinition.proxy = self.localizedData
+        localizedDatumDefinition.collectionName = LocalizedDatum.collectionName
+        localizedDatumDefinition.storage = CollectionMetadatum.Storage.monolithicFileStorage
+        localizedDatumDefinition.persistsDistantly = true
+        localizedDatumDefinition.inMemory = false
         
         let lockerDefinition = CollectionMetadatum()
         lockerDefinition.proxy = self.lockers
@@ -328,6 +336,7 @@ import Foundation
 
 			try self.metadata.configureSchema(blockDefinition)
 			try self.metadata.configureSchema(boxDefinition)
+			try self.metadata.configureSchema(localizedDatumDefinition)
 			try self.metadata.configureSchema(lockerDefinition)
 			try self.metadata.configureSchema(nodeDefinition)
 			try self.metadata.configureSchema(pushOperationDefinition)
