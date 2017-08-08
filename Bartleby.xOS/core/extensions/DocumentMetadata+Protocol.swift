@@ -25,12 +25,11 @@ extension DocumentMetadata:DocumentMetadataProtocol {
     }
 
     // Data DeSerialization
-    public static func fromCryptedData(_ data:Data) throws ->DocumentMetadata{
+    public static func fromCryptedData(_ data:Data,document:BartlebyDocument) throws ->DocumentMetadata{
         if let cryptedJson = String(data: data, encoding:Default.STRING_ENCODING){
             let decrypted = try Bartleby.cryptoDelegate.decryptString(cryptedJson,useKey:Bartleby.configuration.KEY)
             if let decryptedData = decrypted.data(using:Default.STRING_ENCODING){
-                //let decodedDictionary = try? JSONSerialization.jsonObject(with: decryptedData) as? [String:Any]
-                let metadata = try JSON.decoder.decode(DocumentMetadata.self, from: decryptedData)
+                let metadata = try document.dynamics.deserialize(typeName: DocumentMetadata.typeName(), data: data, document: nil) as! DocumentMetadata
                 return metadata
             }
         }

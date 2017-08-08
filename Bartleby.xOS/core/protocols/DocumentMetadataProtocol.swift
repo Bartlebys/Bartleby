@@ -34,7 +34,7 @@ public protocol DocumentMetadataProtocol:  Codable {
     func toCryptedData() throws -> Data
 
     // Data DeSerialization
-    static func fromCryptedData(_ data:Data) throws ->DocumentMetadata
+    static func fromCryptedData(_ data:Data,document:BartlebyDocument) throws ->DocumentMetadata
 
     //The data space UID can be shared between multiple Documents.
     var spaceUID: String { get set }

@@ -200,7 +200,7 @@ extension BartlebyDocument {
     
     
     fileprivate func _useSerializedMetadata(_ data:Data) throws {
-        self.metadata = try DocumentMetadata.fromCryptedData(data)
+        self.metadata = try DocumentMetadata.fromCryptedData(data,document: self)
     }
     
     

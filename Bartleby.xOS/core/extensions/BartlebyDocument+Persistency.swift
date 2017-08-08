@@ -77,7 +77,7 @@ extension BartlebyDocument{
                         // What is the proxy UID?
                         let proxyDocumentUID=self.UID
 
-                        let metadata = try DocumentMetadata.fromCryptedData(metadataData)
+                        let metadata = try DocumentMetadata.fromCryptedData(metadataData,document: self)
                         self.metadata = metadata
                         self.metadata.currentUser?.referentDocument=self
 
