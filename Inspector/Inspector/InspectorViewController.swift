@@ -357,7 +357,8 @@ class CollectionListDelegate:NSObject,NSOutlineViewDelegate,NSOutlineViewDataSou
     }
 
     func reloadData(){
-        Bartleby.syncOnMain{
+        // Data reload must be async to support deletions.
+        Async.main{
             var selectedIndexes=self._outlineView.selectedRowIndexes
             self._outlineView.reloadData()
             if selectedIndexes.count==0 && self._outlineView.numberOfRows > 0 {
