@@ -21,7 +21,10 @@ import Foundation
     }
 
 
-	//The data space UID can be shared between multiple Docuemnt.
+	//The document version. Allows to detect if migrations logic is required
+	@objc dynamic open var version:Int = 1
+
+	//The data space UID can be shared between multiple Documents.
 	@objc dynamic open var spaceUID:String = Bartleby.createUID()
 
 	//Defines the document UID.
@@ -143,6 +146,7 @@ import Foundation
 
 
     enum DocumentMetadataCodingKeys: String,CodingKey{
+		case version
 		case spaceUID
 		case persistentUID
 		case currentUserUID
@@ -185,6 +189,7 @@ import Foundation
 		try super.init(from: decoder)
         try self.quietThrowingChanges {
 			let values = try decoder.container(keyedBy: DocumentMetadataCodingKeys.self)
+			self.version = try values.decode(Int.self,forKey:.version)
 			self.spaceUID = try values.decode(String.self,forKey:.spaceUID)
 			self.persistentUID = try values.decode(String.self,forKey:.persistentUID)
 			self.currentUserUID = try values.decode(String.self,forKey:.currentUserUID)
@@ -219,6 +224,7 @@ import Foundation
     override open func encode(to encoder: Encoder) throws {
 		try super.encode(to:encoder)
 		var container = encoder.container(keyedBy: DocumentMetadataCodingKeys.self)
+		try container.encode(self.version,forKey:.version)
 		try container.encode(self.spaceUID,forKey:.spaceUID)
 		try container.encode(self.persistentUID,forKey:.persistentUID)
 		try container.encode(self.currentUserUID,forKey:.currentUserUID)
@@ -255,7 +261,7 @@ import Foundation
     /// Return all the exposed instance variables keys. (Exposed == public and modifiable).
     override  open var exposedKeys:[String] {
         var exposed=super.exposedKeys
-        exposed.append(contentsOf:["spaceUID","persistentUID","currentUserUID","currentUserEmail","currentUserFullPhoneNumber","sugar","lockerUID","userHasBeenControlled","secondaryAuthFactorRequired","identificationMethod","appGroup","identificationValue","collaborationServerURL","registred","changesAreInspectables","cleanupBoxesWhenClosingDocument","collectionsMetadata","statesDictionary","URLBookmarkData","preferredFileName","triggersIndexesDebugHistory","ownedTriggersIndexes","lastIntegratedTriggerIndex","receivedTriggers","operationsQuarantine","bunchInProgress","totalNumberOfOperations","pendingOperationsProgressionState","shouldBeOnline","online","transition","pushOnChanges","saveThePassword","cumulatedUpMetricsDuration","totalNumberOfUpMetrics","qosIndice"])
+        exposed.append(contentsOf:["version","spaceUID","persistentUID","currentUserUID","currentUserEmail","currentUserFullPhoneNumber","sugar","lockerUID","userHasBeenControlled","secondaryAuthFactorRequired","identificationMethod","appGroup","identificationValue","collaborationServerURL","registred","changesAreInspectables","cleanupBoxesWhenClosingDocument","collectionsMetadata","statesDictionary","URLBookmarkData","preferredFileName","triggersIndexesDebugHistory","ownedTriggersIndexes","lastIntegratedTriggerIndex","receivedTriggers","operationsQuarantine","bunchInProgress","totalNumberOfOperations","pendingOperationsProgressionState","shouldBeOnline","online","transition","pushOnChanges","saveThePassword","cumulatedUpMetricsDuration","totalNumberOfUpMetrics","qosIndice"])
         return exposed
     }
 
@@ -268,6 +274,10 @@ import Foundation
     /// - throws: throws an Exception when the key is not exposed
     override  open func setExposedValue(_ value:Any?, forKey key: String) throws {
         switch key {
+            case "version":
+                if let casted=value as? Int{
+                    self.version=casted
+                }
             case "spaceUID":
                 if let casted=value as? String{
                     self.spaceUID=casted
@@ -427,6 +437,8 @@ import Foundation
     /// - returns: returns the value
     override  open func getExposedValueForKey(_ key:String) throws -> Any?{
         switch key {
+            case "version":
+               return self.version
             case "spaceUID":
                return self.spaceUID
             case "persistentUID":
