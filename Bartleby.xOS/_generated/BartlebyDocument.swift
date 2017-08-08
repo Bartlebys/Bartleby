@@ -267,7 +267,6 @@ import Foundation
 	@objc open dynamic var lockers=ManagedLockers()
 	@objc open dynamic var nodes=ManagedNodes()
 	@objc open dynamic var pushOperations=ManagedPushOperations()
-	@objc open dynamic var tags=ManagedTags()
 	@objc open dynamic var users=ManagedUsers()
 
     // MARK: - Schemas
@@ -316,13 +315,6 @@ import Foundation
         pushOperationDefinition.persistsDistantly = false
         pushOperationDefinition.inMemory = false
         
-        let tagDefinition = CollectionMetadatum()
-        tagDefinition.proxy = self.tags
-        tagDefinition.collectionName = Tag.collectionName
-        tagDefinition.storage = CollectionMetadatum.Storage.monolithicFileStorage
-        tagDefinition.persistsDistantly = true
-        tagDefinition.inMemory = false
-        
         let userDefinition = CollectionMetadatum()
         userDefinition.proxy = self.users
         userDefinition.collectionName = User.collectionName
@@ -339,7 +331,6 @@ import Foundation
 			try self.metadata.configureSchema(lockerDefinition)
 			try self.metadata.configureSchema(nodeDefinition)
 			try self.metadata.configureSchema(pushOperationDefinition)
-			try self.metadata.configureSchema(tagDefinition)
 			try self.metadata.configureSchema(userDefinition)
 
         }catch DocumentError.duplicatedCollectionName(let collectionName){

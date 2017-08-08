@@ -17,6 +17,7 @@ Bartleby
 - [Swift 4.x stack](Documents/Swift.md)
 - [How Bartleby's data synchronization works?](Documents/DataSynchronization.md)
 - [How Bartleby's Synchronized File system Works?](Documents/BSFS.md)
+- [Bartleby's Relational approach](Documents/Relationships.md)
 
 # Road Map 
 Bartleby Major version should increment each 24 months. 

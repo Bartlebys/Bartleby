@@ -70,15 +70,6 @@ open class BartlebysDynamics:Dynamics{
         if typeName == "UpdateUser"{ instance = try JSON.decoder.decode(UpdateUser.self, from: data); return instance }
         if typeName == "CreateUser"{ instance = try JSON.decoder.decode(CreateUser.self, from: data); return instance }
         if typeName == "ReadUserById"{ instance = try JSON.decoder.decode(ReadUserById.self, from: data); return instance }
-        if typeName == "ReadTagsByQuery"{ instance = try JSON.decoder.decode(ReadTagsByQuery.self, from: data); return instance }
-        if typeName == "DeleteTags"{ instance = try JSON.decoder.decode(DeleteTags.self, from: data); return instance }
-        if typeName == "UpdateTags"{ instance = try JSON.decoder.decode(UpdateTags.self, from: data); return instance }
-        if typeName == "ReadTagsByIds"{ instance = try JSON.decoder.decode(ReadTagsByIds.self, from: data); return instance }
-        if typeName == "CreateTags"{ instance = try JSON.decoder.decode(CreateTags.self, from: data); return instance }
-        if typeName == "DeleteTag"{ instance = try JSON.decoder.decode(DeleteTag.self, from: data); return instance }
-        if typeName == "UpdateTag"{ instance = try JSON.decoder.decode(UpdateTag.self, from: data); return instance }
-        if typeName == "CreateTag"{ instance = try JSON.decoder.decode(CreateTag.self, from: data); return instance }
-        if typeName == "ReadTagById"{ instance = try JSON.decoder.decode(ReadTagById.self, from: data); return instance }
         if typeName == "ReadNodesByQuery"{ instance = try JSON.decoder.decode(ReadNodesByQuery.self, from: data); return instance }
         if typeName == "DeleteNodes"{ instance = try JSON.decoder.decode(DeleteNodes.self, from: data); return instance }
         if typeName == "UpdateNodes"{ instance = try JSON.decoder.decode(UpdateNodes.self, from: data); return instance }
@@ -118,8 +109,6 @@ open class BartlebysDynamics:Dynamics{
         if typeName == "ManagedUsers"{ instance = try JSON.decoder.decode(ManagedUsers.self, from: data); return instance }
         if typeName == "User"{ instance = try JSON.decoder.decode(User.self, from: data); return instance }
         if typeName == "Trigger"{ instance = try JSON.decoder.decode(Trigger.self, from: data); return instance }
-        if typeName == "ManagedTags"{ instance = try JSON.decoder.decode(ManagedTags.self, from: data); return instance }
-        if typeName == "Tag"{ instance = try JSON.decoder.decode(Tag.self, from: data); return instance }
         if typeName == "StringValue"{ instance = try JSON.decoder.decode(StringValue.self, from: data); return instance }
         if typeName == "Report"{ instance = try JSON.decoder.decode(Report.self, from: data); return instance }
         if typeName == "ManagedPushOperations"{ instance = try JSON.decoder.decode(ManagedPushOperations.self, from: data); return instance }
@@ -165,15 +154,6 @@ open class BartlebysDynamics:Dynamics{
         if typeName == "UpdateUser"{ return UpdateUser() }
         if typeName == "CreateUser"{ return CreateUser() }
         if typeName == "ReadUserById"{ return ReadUserById() }
-        if typeName == "ReadTagsByQuery"{ return ReadTagsByQuery() }
-        if typeName == "DeleteTags"{ return DeleteTags() }
-        if typeName == "UpdateTags"{ return UpdateTags() }
-        if typeName == "ReadTagsByIds"{ return ReadTagsByIds() }
-        if typeName == "CreateTags"{ return CreateTags() }
-        if typeName == "DeleteTag"{ return DeleteTag() }
-        if typeName == "UpdateTag"{ return UpdateTag() }
-        if typeName == "CreateTag"{ return CreateTag() }
-        if typeName == "ReadTagById"{ return ReadTagById() }
         if typeName == "ReadNodesByQuery"{ return ReadNodesByQuery() }
         if typeName == "DeleteNodes"{ return DeleteNodes() }
         if typeName == "UpdateNodes"{ return UpdateNodes() }
@@ -213,8 +193,6 @@ open class BartlebysDynamics:Dynamics{
         if typeName == "ManagedUsers"{ return ManagedUsers() }
         if typeName == "User"{ return User() }
         if typeName == "Trigger"{ return Trigger() }
-        if typeName == "ManagedTags"{ return ManagedTags() }
-        if typeName == "Tag"{ return Tag() }
         if typeName == "StringValue"{ return StringValue() }
         if typeName == "Report"{ return Report() }
         if typeName == "ManagedPushOperations"{ return ManagedPushOperations() }

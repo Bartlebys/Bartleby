@@ -128,7 +128,6 @@ import Foundation
             }
             pushOperation.operationName = CreateBox.typeName()
             pushOperation.serialized = operationInstance.serialize()
-            //ic.add(pushOperation, commit:false, isUndoable:false)
         }catch{
             document.dispatchAdaptiveMessage(context,
                                              title: "Structural Error",
