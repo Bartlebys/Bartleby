@@ -11,7 +11,6 @@ import Foundation
 
 public enum DocumentError: Error {
     case duplicatedCollectionName(collectionName:String)
-    case attemptToLoadAnNonSupportedCollection(collectionName:String)
     case unExistingCollection(collectionName:String)
     case missingCollectionProxy(collectionName:String)
     case collectionProxyTypeError

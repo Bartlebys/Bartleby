@@ -170,11 +170,9 @@ extension BartlebyDocument{
                                         }else{
                                             throw DocumentError.collectionProxyTypeError
                                         }
-
-
                                     }
                                 } else {
-                                    throw DocumentError.attemptToLoadAnNonSupportedCollection(collectionName:metadatum.collectionName)
+                                    self.log("attemptToLoadAnNonSupportedCollection: \(metadatum.collectionName)")
                                 }
                             }
                         } else {
