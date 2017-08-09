@@ -323,7 +323,7 @@ class CollectionListDelegate:NSObject,NSOutlineViewDelegate,NSOutlineViewDataSou
     public func updateFilter(){
         let idx=self._filterPredicateDelegate.filterSelectedIndex()
         let expression=self._filterPredicateDelegate.filterExpression()
-        if idx == 0 || expression==""{
+        if (idx == 0 || expression=="" && idx < 8){
             self._filteredCollections=self._collections
         }else{
             self._filteredCollections=[BartlebyCollection]()
@@ -336,12 +336,20 @@ class CollectionListDelegate:NSObject,NSOutlineViewDelegate,NSOutlineViewDataSou
                         }else if idx==2{
                             // ExternalId contains
                             return o.externalID.contains(expression, compareOptions: NSString.CompareOptions.caseInsensitive)
-                        }else if idx==3{
+                        }else if idx==4{
+                            // ---------
                             // Is owned by <UID>
                             return o.ownedBy.contains(expression)
-                        }else if idx==4{
-                             // Is related to <UID>
+                        }else if idx==5{
+                             // Owns <UID>
+                            return o.owns.contains(expression)
+                        }else if idx==6{
+                            //Is related to <UID>
                             return o.freeRelations.contains(expression)
+                        }else if idx==8{
+                            // --------- NO Expression required after this separator
+                            //Changes Count > 0
+                            return o.changedKeys.count > 0
                         }
                     }
                     return false

@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="12118" systemVersion="16E195" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" customObjectInstantitationMethod="direct">
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="13168.3" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" customObjectInstantitationMethod="direct">
     <dependencies>
         <deployment identifier="macosx"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="12118"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="13168.3"/>
         <capability name="box content view" minToolsVersion="7.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -28,7 +28,7 @@
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
             <subviews>
                 <customView misplaced="YES" id="1uN-ZJ-dZH">
-                    <rect key="frame" x="0.0" y="0.0" width="201" height="963"/>
+                    <rect key="frame" x="0.0" y="0.0" width="200" height="963"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                     <subviews>
                         <scrollView autohidesScrollers="YES" horizontalLineScroll="19" horizontalPageScroll="10" verticalLineScroll="19" verticalPageScroll="10" usesPredominantAxisScrolling="NO" translatesAutoresizingMaskIntoConstraints="NO" id="YnQ-Jj-gwX">
@@ -224,8 +224,12 @@
                                         </menuItem>
                                         <menuItem title="&lt;UID&gt; contains" id="bPQ-Ff-uGU"/>
                                         <menuItem title="&lt;ExternalId&gt; contains" id="bgq-Tw-nd0"/>
+                                        <menuItem isSeparatorItem="YES" id="c04-8k-WLo"/>
                                         <menuItem title="Is Owned By &lt;UID&gt;" id="XSc-jz-uQZ"/>
-                                        <menuItem title="Is Related to  &lt;UID&gt;" id="cT3-TN-46h"/>
+                                        <menuItem title="Owns &lt;UID&gt;" id="cT3-TN-46h"/>
+                                        <menuItem title="Is Related to  &lt;UID&gt;" id="qDD-Yi-ypJ"/>
+                                        <menuItem isSeparatorItem="YES" id="Xjg-6d-nve"/>
+                                        <menuItem title="Changes Count &gt; 0" id="YZt-Kh-JcF"/>
                                     </items>
                                 </menu>
                                 <connections>
@@ -233,7 +237,7 @@
                                 </connections>
                             </popUpButtonCell>
                         </popUpButton>
-                        <searchField wantsLayer="YES" verticalHuggingPriority="750" allowsCharacterPickerTouchBarItem="NO" textCompletion="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Ooz-m3-rbX">
+                        <searchField wantsLayer="YES" verticalHuggingPriority="750" textCompletion="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Ooz-m3-rbX">
                             <rect key="frame" x="174" y="6" width="138" height="22"/>
                             <searchFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" enabled="NO" borderStyle="bezel" placeholderString="Filter" usesSingleLineMode="YES" bezelStyle="round" id="B2i-d4-kkc">
                                 <font key="font" metaFont="system"/>
@@ -259,7 +263,7 @@
                     </constraints>
                 </customView>
                 <customView misplaced="YES" id="gLV-HE-TI2">
-                    <rect key="frame" x="202" y="0.0" width="868" height="963"/>
+                    <rect key="frame" x="201" y="0.0" width="869" height="963"/>
                     <autoresizingMask key="autoresizingMask"/>
                     <subviews>
                         <splitView arrangesAllSubviews="NO" dividerStyle="paneSplitter" translatesAutoresizingMaskIntoConstraints="NO" id="8gB-cF-KPk">
