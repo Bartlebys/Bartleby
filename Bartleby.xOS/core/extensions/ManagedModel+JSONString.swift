@@ -13,12 +13,9 @@ extension ManagedModel:JSONString{
     // MARK:-  JSONString
 
     open func toJSONString(_ prettyPrint:Bool)->String{
-        let encoder = JSON.encoder
-        if prettyPrint{
-            encoder.outputFormatting = .prettyPrinted
-        }
+        let encoder = prettyPrint ? JSON.prettyEncoder : JSON.encoder
         do{
-            let data = try JSON.encoder.encode(self)
+            let data = try encoder.encode(self)
             return data.optionalString(using: Default.STRING_ENCODING) ?? Default.DESERIALIZATION_HAS_FAILED
         }catch{
             return Default.DESERIALIZATION_HAS_FAILED
