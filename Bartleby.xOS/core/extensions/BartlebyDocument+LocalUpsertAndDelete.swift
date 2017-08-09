@@ -48,15 +48,17 @@ public extension BartlebyDocument {
 
     // MARK: delete
 
-    /**
-     Deletes the Collectible instance.
 
-     - parameter instance: the instance
-
-     */
+    /// Deletes explicitly an instance.
+    ///
+    /// - Parameter instance:  the instance
     public func delete(_ instance: Collectible){
         do{
-            try instance.erase(commit:false)
+            // We do not pass the eraserUID, because we want to perform
+            // That explicit deletion in any case.
+            // If we have passed the self.UID when self is Co-Owned it would not have been erased
+            // Details on: https://github.com/Bartlebys/Bartleby/blob/master/Documents/Relationships.md
+            try instance.erase(commit:false, eraserUID: Default.NO_UID)
             self.hasChanged()
         }catch{
              glog("\(error)", file: #file, function: #function, line: #line, category: Default.LOG_FAULT, decorative: false)
