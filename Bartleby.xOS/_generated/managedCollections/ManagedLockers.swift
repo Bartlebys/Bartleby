@@ -614,9 +614,11 @@ public extension Notification.Name {
 
     // MARK: - Selection management Facilities
 
-    fileprivate var _KVOContext: Int = 0
 
 #if os(OSX) && !USE_EMBEDDED_MODULES
+
+    fileprivate var _KVOContext: Int = 0
+
     // We auto-configure most of the array controller.
     // And set up  indexes selection observation layer.
     open weak var arrayController:NSArrayController? {
@@ -631,13 +633,14 @@ public extension Notification.Name {
             arrayController?.bind(NSBindingName("content"), to: self, withKeyPath: "_items", options: nil)
             // Add observer
             arrayController?.addObserver(self, forKeyPath: "selectionIndexes", options: .new, context: &self._KVOContext)
-            if let data = self.referentDocument?.metadata.statesDictionary[self.selectedLockersIndexesKey]{
-                if let indexes = try? JSON.decoder.decode([Int].self, from: data){
-                    let indexesSet = NSMutableIndexSet()
-                    indexes.forEach{ indexesSet.add($0) }
-                    arrayController?.setSelectionIndexes(indexesSet as IndexSet)
+            let indexesSet = NSMutableIndexSet()
+            for instanceUID in self._selectedUIDS{
+                if let idx = self._UIDS.index(of:instanceUID){
+                    indexesSet.add(idx)
                 }
             }
+            arrayController?.setSelectionIndexes(indexesSet as IndexSet)
+
         }
     }
 
@@ -672,17 +675,46 @@ public extension Notification.Name {
 
 #endif
 
-    open let selectedLockersIndexesKey="selectedLockersIndexesKey"
 
+    fileprivate var _selectedUIDS:[String]{
+        set{
+            Bartleby.syncOnMain {
+                if let lockers = self.selectedLockers {
+                    let _selectedUIDS:[String]=lockers.map({ (locker) -> String in
+                        return locker.UID
+                    })
+                    let encodedUIDS = (try? JSON.encoder.encode(_selectedUIDS)) ?? "[]".data(using: Default.STRING_ENCODING)!
+                    self.referentDocument?.metadata.statesDictionary[selectedLockersUIDSKeys] = encodedUIDS
+                    self.referentDocument?.hasChanged()
+                }
+            }
+        }
+        get{
+            return Bartleby.syncOnMainAndReturn{ () -> [String] in
+                if let data = self.referentDocument?.metadata.statesDictionary[self.selectedLockersUIDSKeys]{
+                    if let encodedUIDS = try? JSON.decoder.decode([String].self, from: data){
+                       return encodedUIDS
+                    }
+                }
+                return [String]()
+            }
+        }
+    }
+
+    open let selectedLockersUIDSKeys="selectedLockersUIDSKeys"
+
+    // Note :
+    // If you use an ArrayController & Bartleby automation
+    // to modify the current selection you should use the array controller
+    // e.g: referentDocument.lockers.arrayController?.setSelectedObjects(lockers)
     @objc dynamic open var selectedLockers:[Locker]?{
         didSet{
             Bartleby.syncOnMain {
                 if let lockers = selectedLockers {
-                     let indexes:[Int]=lockers.map({ (locker) -> Int in
-                        return lockers.index(where:{ return $0.UID == locker.UID })!
+                    let UIDS:[String]=lockers.map({ (locker) -> String in
+                        return locker.UID
                     })
-                    let encodedIndexes = (try? JSON.encoder.encode(indexes)) ?? "[]".data(using: Default.STRING_ENCODING)!
-                    self.referentDocument?.metadata.statesDictionary[selectedLockersIndexesKey] = encodedIndexes
+                    self._selectedUIDS = UIDS
                 }
                 NotificationCenter.default.post(name:NSNotification.Name.Lockers.selectionChanged, object: nil)
             }

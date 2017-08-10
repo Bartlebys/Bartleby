@@ -614,9 +614,11 @@ public extension Notification.Name {
 
     // MARK: - Selection management Facilities
 
-    fileprivate var _KVOContext: Int = 0
 
 #if os(OSX) && !USE_EMBEDDED_MODULES
+
+    fileprivate var _KVOContext: Int = 0
+
     // We auto-configure most of the array controller.
     // And set up  indexes selection observation layer.
     open weak var arrayController:NSArrayController? {
@@ -631,13 +633,14 @@ public extension Notification.Name {
             arrayController?.bind(NSBindingName("content"), to: self, withKeyPath: "_items", options: nil)
             // Add observer
             arrayController?.addObserver(self, forKeyPath: "selectionIndexes", options: .new, context: &self._KVOContext)
-            if let data = self.referentDocument?.metadata.statesDictionary[self.selectedNodesIndexesKey]{
-                if let indexes = try? JSON.decoder.decode([Int].self, from: data){
-                    let indexesSet = NSMutableIndexSet()
-                    indexes.forEach{ indexesSet.add($0) }
-                    arrayController?.setSelectionIndexes(indexesSet as IndexSet)
+            let indexesSet = NSMutableIndexSet()
+            for instanceUID in self._selectedUIDS{
+                if let idx = self._UIDS.index(of:instanceUID){
+                    indexesSet.add(idx)
                 }
             }
+            arrayController?.setSelectionIndexes(indexesSet as IndexSet)
+
         }
     }
 
@@ -672,17 +675,46 @@ public extension Notification.Name {
 
 #endif
 
-    open let selectedNodesIndexesKey="selectedNodesIndexesKey"
 
+    fileprivate var _selectedUIDS:[String]{
+        set{
+            Bartleby.syncOnMain {
+                if let nodes = self.selectedNodes {
+                    let _selectedUIDS:[String]=nodes.map({ (node) -> String in
+                        return node.UID
+                    })
+                    let encodedUIDS = (try? JSON.encoder.encode(_selectedUIDS)) ?? "[]".data(using: Default.STRING_ENCODING)!
+                    self.referentDocument?.metadata.statesDictionary[selectedNodesUIDSKeys] = encodedUIDS
+                    self.referentDocument?.hasChanged()
+                }
+            }
+        }
+        get{
+            return Bartleby.syncOnMainAndReturn{ () -> [String] in
+                if let data = self.referentDocument?.metadata.statesDictionary[self.selectedNodesUIDSKeys]{
+                    if let encodedUIDS = try? JSON.decoder.decode([String].self, from: data){
+                       return encodedUIDS
+                    }
+                }
+                return [String]()
+            }
+        }
+    }
+
+    open let selectedNodesUIDSKeys="selectedNodesUIDSKeys"
+
+    // Note :
+    // If you use an ArrayController & Bartleby automation
+    // to modify the current selection you should use the array controller
+    // e.g: referentDocument.nodes.arrayController?.setSelectedObjects(nodes)
     @objc dynamic open var selectedNodes:[Node]?{
         didSet{
             Bartleby.syncOnMain {
                 if let nodes = selectedNodes {
-                     let indexes:[Int]=nodes.map({ (node) -> Int in
-                        return nodes.index(where:{ return $0.UID == node.UID })!
+                    let UIDS:[String]=nodes.map({ (node) -> String in
+                        return node.UID
                     })
-                    let encodedIndexes = (try? JSON.encoder.encode(indexes)) ?? "[]".data(using: Default.STRING_ENCODING)!
-                    self.referentDocument?.metadata.statesDictionary[selectedNodesIndexesKey] = encodedIndexes
+                    self._selectedUIDS = UIDS
                 }
                 NotificationCenter.default.post(name:NSNotification.Name.Nodes.selectionChanged, object: nil)
             }
