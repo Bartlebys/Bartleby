@@ -15,7 +15,7 @@ extension User {
     open func signInURL(for document:BartlebyDocument)->URL?{
         let password=self.cryptoPassword
         if let encoded=password.data(using: Default.STRING_ENCODING)?.base64EncodedString(){
-            let signin=document.baseURL.absoluteString.replacingOccurrences(of: "/api/v1", with: "")+"/signIn?spaceUID=\(document.spaceUID)&userUID=\(self.UID)&password=\(encoded)"
+            let signin=document.baseURL.absoluteString.replacingOccurrences(of: "/api/v1", with: "")+"/signIn?spaceUID=\(document.spaceUID)&userUID=\(self.UID)&password=\(encoded)&observationUID=\(document.UID)"
             return URL(string: signin)
         }
 
