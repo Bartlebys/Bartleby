@@ -240,4 +240,35 @@ open class BartlebysDynamics:Dynamics{
         throw DynamicsError.typeNotFound
     }
 
+
+    // MARK: - Patch
+
+    /// You can patch some data providing default values.
+    ///
+    /// - Parameters:
+    ///   - typeName: the concerned typeName
+    ///   - data: the Data to patch
+    ///   - dictionary: the dictionary
+    /// - Returns: the patched data
+    open func patchProperties(_ typeName:String,data:Data,dictionary:[String:Any])throws->Data{
+        if var jsonDictionary = try JSONSerialization.jsonObject(with: data, options: JSONSerialization.ReadingOptions.allowFragments) as? [String:Any]{
+            let isACollection = jsonDictionary.keys.contains("_storage") && jsonDictionary.keys.contains("_staged") &&  jsonDictionary.keys.contains("_deleted")
+            if isACollection {
+                if var items = jsonDictionary["_storage"] as? [String:[String:Any]]{
+                    for (UID,_) in items{
+                         for (key,value) in dictionary{
+                           items[UID]![key] = value
+                        }
+                    }
+                    jsonDictionary["_storage"]=items
+                }
+            }else{
+                for (key,value) in dictionary{
+                    jsonDictionary[key] = value
+                }
+            }
+            return try JSONSerialization.data(withJSONObject: jsonDictionary, options: [])
+        }
+        throw DynamicsError.jsonDeserializationFailure
+    }
 }
