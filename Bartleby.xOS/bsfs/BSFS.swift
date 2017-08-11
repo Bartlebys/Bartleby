@@ -427,79 +427,84 @@ public final class BSFS:TriggerHook{
             var firstNode:Node?
             func __chunksHaveBeenCreated(chunks:[Chunk]){
 
-                // Successful operation
-                // Let's Upsert the distant models.
-                // AND  the local nodes
+                Bartleby.syncOnMain{
+                    // Successful operation
+                    // Let's Upsert the distant models.
+                    // AND  the local nodes
 
-                let groupedChunks=Chunk.groupByNodePath(chunks: chunks)
+                    let groupedChunks=Chunk.groupByNodePath(chunks: chunks)
 
-                for (nodeRelativePath,groupOfChunks) in groupedChunks{
-                    // Create the new node.
-                    // And add its blocks
-                    let node=self._document.newManagedModel() as Node
-                    if firstNode==nil{
-                        firstNode=node
-                    }
-                    node.quietChanges{
-                        node.nature=reference.nodeNature.forNode
-                        node.relativePath=relativePath///
-                        node.priority=reference.priority
-                        // Set up the node relative path
-                        node.relativePath=nodeRelativePath
-
-                        var cumulatedDigests=""
-                        var cumulatedSize=0
-
-                        box.quietChanges {
-                            box.declaresOwnership(of: node)
+                    for (nodeRelativePath,groupOfChunks) in groupedChunks{
+                        // Create the new node.
+                        // And add its blocks
+                        let node=self._document.newManagedModel() as Node
+                        if firstNode==nil{
+                            firstNode=node
                         }
+                        node.quietChanges{
+                            node.nature=reference.nodeNature.forNode
+                            node.relativePath=relativePath///
+                            node.priority=reference.priority
+                            // Set up the node relative path
+                            node.relativePath=nodeRelativePath
 
-                        // Let's add the blocks
-                        for chunk in groupOfChunks{
-                            let block=self._document.newManagedModel() as Block
-                            block.quietChanges{
-                                block.rank=chunk.rank
-                                block.digest=chunk.sha1
-                                block.startsAt=chunk.startsAt
-                                block.size=chunk.originalSize
-                                block.priority=reference.priority
+                            var cumulatedDigests=""
+                            var cumulatedSize=0
 
+                            box.quietChanges {
+                                box.declaresOwnership(of: node)
                             }
-                            cumulatedSize += chunk.originalSize
-                            cumulatedDigests += chunk.sha1
-                            node.addBlock(block)
-                            self._toBeUploadedBlocksUIDS.append(block.UID)
+
+                            // Let's add the blocks
+                            for chunk in groupOfChunks{
+                                let block=self._document.newManagedModel() as Block
+                                block.quietChanges{
+                                    block.rank=chunk.rank
+                                    block.digest=chunk.sha1
+                                    block.startsAt=chunk.startsAt
+                                    block.size=chunk.originalSize
+                                    block.priority=reference.priority
+
+                                }
+                                cumulatedSize += chunk.originalSize
+                                cumulatedDigests += chunk.sha1
+                                node.addBlock(block)
+                                self._toBeUploadedBlocksUIDS.append(block.UID)
+                            }
+                            // Store the digest of the cumulated digests.
+                            node.digest=cumulatedDigests.sha1
+                            // And the node original size
+                            node.size=cumulatedSize
                         }
-                        // Store the digest of the cumulated digests.
-                        node.digest=cumulatedDigests.sha1
-                        // And the node original size
-                        node.size=cumulatedSize
-                    }
-
-                }
-
-
-                // Delete the original
-                if deleteOriginal{
-                    // We consider deletion as non mandatory.
-                    // So we produce only a log.
-                    do {
-                        try self._fileManager.removeItem(atPath: reference.absolutePath)
-                    } catch  {
-                        self._document.log("Deletion has failed. Path:\( reference.absolutePath)", file: #file, function: #function, line: #line, category: Default.LOG_DEFAULT, decorative: false)
                     }
                 }
 
-                let finalState=Completion.successState()
-                if let node=firstNode{
-                    finalState.setExternalReferenceResult(from:node)
-                }
-                completed(finalState)
+                Async.utility{
+                    // Delete the original
+                    if deleteOriginal{
+                        // We consider deletion as non mandatory.
+                        // So we produce only a log.
+                        do {
+                            try self._fileManager.removeItem(atPath: reference.absolutePath)
+                        } catch  {
+                            self._document.log("Deletion has failed. Path:\( reference.absolutePath)", file: #file, function: #function, line: #line, category: Default.LOG_DEFAULT, decorative: false)
+                        }
+                    }
 
-                // Call the centralized upload mechanism
-                self._uploadNext()
+                    let finalState=Completion.successState()
+                    if let node=firstNode{
+                        finalState.setExternalReferenceResult(from:node)
+                    }
+                    Bartleby.syncOnMain{
+                        completed(finalState)
+                    }
+
+                    // Call the centralized upload mechanism
+                    self._uploadNext()
+                }
 
             }
+
             Async.utility{
                 if  reference.nodeNature == .file{
                     var isDirectory:ObjCBool=false
