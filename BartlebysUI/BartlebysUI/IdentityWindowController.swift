@@ -223,45 +223,47 @@ public class IdentityWindowController: NSWindowController,DocumentProvider,Ident
     // MARK: - IdentityStepNavigation
 
     public func didValidateStep(_ step:Int){
-        var proceedImmediately=true
-        if self.creationMode {
-            // The SMS / second factor auth has been verified.
-            if self._currentStepIs(self.confirmActivation){
-                // user is confirmed.
-                if let document=self.getDocument(){
-                    proceedImmediately = false
-                    document.currentUser.doNotCommit {
-                        // We want to update the user status
-                        // And then we will move online
-                        // It permits to use PERMISSION_BY_IDENTIFICATION_AND_ACTIVATION
-                        // for the majority of the CRUD/URD calls
-                        document.currentUser.status = .actived
-                        IdentitiesManager.synchronize(document,password:document.currentUser.password ?? Default.NO_PASSWORD, completed: { (completion) in
-                            if completion.success{
-                                document.online=true
-                                self.identificationIsValid=true
-                                self.nextStep()
-                                self.enableActions()
-                            }else{
-                                document.log("Activation status updated did fail \(completion)", file: #file, function: #function, line: #line, category: Default.LOG_DEFAULT, decorative: false)
-                                self.enableActions()
-                            }
-                        })
+        Bartleby.syncOnMain{
+            var proceedImmediately=true
+            if self.creationMode {
+                // The SMS / second factor auth has been verified.
+                if self._currentStepIs(self.confirmActivation){
+                    // user is confirmed.
+                    if let document=self.getDocument(){
+                        proceedImmediately = false
+                        document.currentUser.doNotCommit {
+                            // We want to update the user status
+                            // And then we will move online
+                            // It permits to use PERMISSION_BY_IDENTIFICATION_AND_ACTIVATION
+                            // for the majority of the CRUD/URD calls
+                            document.currentUser.status = .actived
+                            IdentitiesManager.synchronize(document,password:document.currentUser.password ?? Default.NO_PASSWORD, completed: { (completion) in
+                                if completion.success{
+                                    document.online=true
+                                    self.identificationIsValid=true
+                                    self.nextStep()
+                                    self.enableActions()
+                                }else{
+                                    document.log("Activation status updated did fail \(completion)", file: #file, function: #function, line: #line, category: Default.LOG_DEFAULT, decorative: false)
+                                    self.enableActions()
+                                }
+                            })
+                        }
                     }
                 }
-            }
-            if proceedImmediately{
-                self.nextStep()
-                self.enableActions()
-            }
-            if step > 2 {
-                self.leftButton.isEnabled=false
-            }
-        }else{
-            // Not in creation Mode
-            if proceedImmediately{
-                self.nextStep()
-                self.enableActions()
+                if proceedImmediately{
+                    self.nextStep()
+                    self.enableActions()
+                }
+                if step > 2 {
+                    self.leftButton.isEnabled=false
+                }
+            }else{
+                // Not in creation Mode
+                if proceedImmediately{
+                    self.nextStep()
+                    self.enableActions()
+                }
             }
         }
     }
