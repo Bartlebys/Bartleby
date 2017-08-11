@@ -119,7 +119,7 @@ extension BartlebyDocument{
     fileprivate func _loadCollectionData(from fileWrappers: [String : FileWrapper])throws{
         do{
             // We load the data if the sugar is defined
-            if self.metadata.sugar != Default.VOID_STRING{
+            if self.metadata.sugar != Default.NO_SUGAR{
 
                 // ##############
                 // # BSFS DATA
@@ -206,7 +206,7 @@ extension BartlebyDocument{
 
     private func _updatedFileWrappers()throws ->FileWrapper{
         self.send(DocumentStates.documentWillSave)
-        if self.metadata.sugar == Default.VOID_STRING{
+        if self.metadata.sugar == Default.NO_SUGAR{
             self.log("Sugar is undefined", file: #file, function: #function, line: #line, category: Default.LOG_DEFAULT, decorative: false)
         }
         if var fileWrappers=self.documentFileWrapper.fileWrappers {
@@ -252,7 +252,7 @@ extension BartlebyDocument{
             // ##############
             // We load the data if the sugar is defined
 
-            if self.metadata.sugar != Default.NO_UID{
+            if self.metadata.sugar != Default.NO_SUGAR{
 
                 for metadatum: CollectionMetadatum in self.metadata.collectionsMetadata {
 
