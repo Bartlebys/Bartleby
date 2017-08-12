@@ -11,9 +11,6 @@ import BartlebyKit
 
 class SetupCollaborativeServerViewController: IdentityStepViewController{
 
-    // During dev you can setup to false (not to consume SMS credits)
-    let relayActivationCode:Bool=false
-
     override var nibName : NSNib.Name { return NSNib.Name("SetupCollaborativeServerViewController") }
 
     @IBOutlet weak var box: NSBox!
@@ -117,7 +114,6 @@ class SetupCollaborativeServerViewController: IdentityStepViewController{
                                             let email=user.email
                                             let phoneNumber=user.fullPhoneNumber
 
-                                            if self.relayActivationCode{
                                                 // The Locker has been successfully pushed
                                                 // we need now  to confirm the account
                                                 RelayActivationCode.execute(baseURL: serverURL,
@@ -132,9 +128,7 @@ class SetupCollaborativeServerViewController: IdentityStepViewController{
                                                     self.stepDelegate?.enableActions()
                                                     document.log("\(String(describing: context.responseString))", file: #file, function: #function, line: #line, category: Default.LOG_WARNING, decorative: false)
                                                 })
-                                            }else{
-                                                self.stepDelegate?.didValidateStep( self.stepIndex)
-                                            }
+
 
                                         }, failureHandler: { (context) in
                                             self.stepDelegate?.enableActions()
