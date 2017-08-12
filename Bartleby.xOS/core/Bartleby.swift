@@ -18,6 +18,7 @@ import Foundation
 
 //MARK: - Bartleby
 
+
 // Bartleby's 1.0 approach is suitable for data set that can stored in memory.
 open class Bartleby:NSObject,AliasResolver {
 
@@ -47,6 +48,7 @@ open class Bartleby:NSObject,AliasResolver {
     static open var cryptoDelegate: CryptoDelegate=NoCrypto()
 
     // The File manager
+    // #TODO REMOVE BartlebyFileIO (simplification)
     static open var fileManager: BartlebyFileIO=BFileManager()
 
     /**

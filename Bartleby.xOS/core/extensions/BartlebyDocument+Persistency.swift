@@ -42,6 +42,7 @@ extension BartlebyDocument{
     open override func write(to url: URL, ofType typeName: String) throws {
         let fileWrapper = try self._updatedFileWrappers()
         try fileWrapper.write(to: url, options: [FileWrapper.WritingOptions.atomic,FileWrapper.WritingOptions.withNameUpdating], originalContentsURL: url)
+        self.send(DocumentStates.documentDidSave)
     }
 
 
@@ -58,7 +59,9 @@ extension BartlebyDocument{
 
     // To Write content
     override open func contents(forType typeName: String) throws -> Any {
-        return try self._updatedFileWrappers()
+        let wrapper =  try self._updatedFileWrappers()
+        self.send(DocumentStates.documentDidSave)
+        return wrapper
     }
 
     #endif
@@ -298,11 +301,8 @@ extension BartlebyDocument{
                     blocksFileWrapper.preferredFilename=self.blocksDirectoryWrapperName
                     self.documentFileWrapper.addFileWrapper(blocksFileWrapper)
                 }
-
-
             }
         }
-        self.send(DocumentStates.documentDidSave)
         return self.documentFileWrapper
     }
     

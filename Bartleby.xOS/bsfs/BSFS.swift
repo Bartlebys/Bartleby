@@ -136,7 +136,11 @@ public final class BSFS:TriggerHook{
 
             var concernedNodes=[Node]()
 
-            try? self._fileManager.createDirectory(atPath: box.nodesFolderPath, withIntermediateDirectories: true, attributes: nil)
+            let group=AsyncGroup()
+            group.utility{
+                try? self._fileManager.createDirectory(atPath: box.nodesFolderPath, withIntermediateDirectories: true, attributes: nil)
+            }
+            group.wait()
 
             // Let's try to assemble as much nodes as we can.
             let nodes=box.nodes
@@ -196,7 +200,11 @@ public final class BSFS:TriggerHook{
         self._document.boxes.forEach { (box) in
             self.unMount(box: box)
         }
-        try? self._fileManager.removeItem(atPath: self.boxesFolderPath)
+        let group=AsyncGroup()
+        group.utility{
+            try? self._fileManager.removeItem(atPath: self.boxesFolderPath)
+        }
+        group.wait()
     }
 
     /// Un mounts the Box == deletes all the assembled files
@@ -224,15 +232,21 @@ public final class BSFS:TriggerHook{
                 }
             }
             let assembledPath=self.assemblyPath(for:node)
-            do{
-                try self._fileManager.removeItem(atPath: assembledPath)
-            }catch{
+
+                let group=AsyncGroup()
+                group.utility{
+                    try? self._fileManager.removeItem(atPath: assembledPath)
+                }
+                group.wait()
+
+
+        }
+            let group=AsyncGroup()
+            group.utility{
+              try? self._fileManager.removeItem(atPath: box.nodesFolderPath)
             }
-        }
-        do{
-            try self._fileManager.removeItem(atPath: box.nodesFolderPath)
-        }catch{
-        }
+            group.wait()
+
         box.isMounted=false
         box.assemblyInProgress=false
     }
@@ -422,89 +436,91 @@ public final class BSFS:TriggerHook{
                      progressed:@escaping (Progression)->(),
                      completed:@escaping (Completion)->()){
 
-        if self._fileManager.fileExists(atPath: reference.absolutePath){
+        var fileExistsAtPath = false
+        let group=AsyncGroup()
+        group.utility{
+            fileExistsAtPath = self._fileManager.fileExists(atPath: reference.absolutePath)
+        }
+        group.wait()
+
+        if fileExistsAtPath{
 
             var firstNode:Node?
             func __chunksHaveBeenCreated(chunks:[Chunk]){
 
-                Bartleby.syncOnMain{
-                    // Successful operation
-                    // Let's Upsert the distant models.
-                    // AND  the local nodes
+                // Successful operation
+                // Let's Upsert the distant models.
+                // AND  the local nodes
 
-                    let groupedChunks=Chunk.groupByNodePath(chunks: chunks)
+                let groupedChunks=Chunk.groupByNodePath(chunks: chunks)
 
-                    for (nodeRelativePath,groupOfChunks) in groupedChunks{
-                        // Create the new node.
-                        // And add its blocks
-                        let node=self._document.newManagedModel() as Node
-                        if firstNode==nil{
-                            firstNode=node
+                for (nodeRelativePath,groupOfChunks) in groupedChunks{
+                    // Create the new node.
+                    // And add its blocks
+                    let node=self._document.newManagedModel() as Node
+                    if firstNode==nil{
+                        firstNode=node
+                    }
+                    node.quietChanges{
+                        node.nature=reference.nodeNature.forNode
+                        node.relativePath=relativePath///
+                        node.priority=reference.priority
+                        // Set up the node relative path
+                        node.relativePath=nodeRelativePath
+
+                        var cumulatedDigests=""
+                        var cumulatedSize=0
+
+                        box.quietChanges {
+                            box.declaresOwnership(of: node)
                         }
-                        node.quietChanges{
-                            node.nature=reference.nodeNature.forNode
-                            node.relativePath=relativePath///
-                            node.priority=reference.priority
-                            // Set up the node relative path
-                            node.relativePath=nodeRelativePath
 
-                            var cumulatedDigests=""
-                            var cumulatedSize=0
+                        // Let's add the blocks
+                        for chunk in groupOfChunks{
+                            let block=self._document.newManagedModel() as Block
+                            block.quietChanges{
+                                block.rank=chunk.rank
+                                block.digest=chunk.sha1
+                                block.startsAt=chunk.startsAt
+                                block.size=chunk.originalSize
+                                block.priority=reference.priority
 
-                            box.quietChanges {
-                                box.declaresOwnership(of: node)
                             }
-
-                            // Let's add the blocks
-                            for chunk in groupOfChunks{
-                                let block=self._document.newManagedModel() as Block
-                                block.quietChanges{
-                                    block.rank=chunk.rank
-                                    block.digest=chunk.sha1
-                                    block.startsAt=chunk.startsAt
-                                    block.size=chunk.originalSize
-                                    block.priority=reference.priority
-
-                                }
-                                cumulatedSize += chunk.originalSize
-                                cumulatedDigests += chunk.sha1
-                                node.addBlock(block)
-                                self._toBeUploadedBlocksUIDS.append(block.UID)
-                            }
-                            // Store the digest of the cumulated digests.
-                            node.digest=cumulatedDigests.sha1
-                            // And the node original size
-                            node.size=cumulatedSize
+                            cumulatedSize += chunk.originalSize
+                            cumulatedDigests += chunk.sha1
+                            node.addBlock(block)
+                            self._toBeUploadedBlocksUIDS.append(block.UID)
                         }
+                        // Store the digest of the cumulated digests.
+                        node.digest=cumulatedDigests.sha1
+                        // And the node original size
+                        node.size=cumulatedSize
+                    }
+
+                }
+
+
+                // Delete the original
+                if deleteOriginal{
+                    // We consider deletion as non mandatory.
+                    // So we produce only a log.
+                    do {
+                        try self._fileManager.removeItem(atPath: reference.absolutePath)
+                    } catch  {
+                        self._document.log("Deletion has failed. Path:\( reference.absolutePath)", file: #file, function: #function, line: #line, category: Default.LOG_DEFAULT, decorative: false)
                     }
                 }
 
-                Async.utility{
-                    // Delete the original
-                    if deleteOriginal{
-                        // We consider deletion as non mandatory.
-                        // So we produce only a log.
-                        do {
-                            try self._fileManager.removeItem(atPath: reference.absolutePath)
-                        } catch  {
-                            self._document.log("Deletion has failed. Path:\( reference.absolutePath)", file: #file, function: #function, line: #line, category: Default.LOG_DEFAULT, decorative: false)
-                        }
-                    }
-
-                    let finalState=Completion.successState()
-                    if let node=firstNode{
-                        finalState.setExternalReferenceResult(from:node)
-                    }
-                    Bartleby.syncOnMain{
-                        completed(finalState)
-                    }
-
-                    // Call the centralized upload mechanism
-                    self._uploadNext()
+                let finalState=Completion.successState()
+                if let node=firstNode{
+                    finalState.setExternalReferenceResult(from:node)
                 }
+                completed(finalState)
+
+                // Call the centralized upload mechanism
+                self._uploadNext()
 
             }
-
             Async.utility{
                 if  reference.nodeNature == .file{
                     var isDirectory:ObjCBool=false
@@ -546,10 +562,7 @@ public final class BSFS:TriggerHook{
                 if  reference.nodeNature == .flock{
                     // @TODO
                 }
-
             }
-
-
         }else{
             completed(Completion.failureState(NSLocalizedString("Reference Not Found!", tableName:"system", comment: "Reference Not Found!")+" \(reference.absolutePath)", statusCode: .not_Found))
         }
@@ -586,9 +599,15 @@ public final class BSFS:TriggerHook{
 
             if node.authorized.contains(self._document.currentUser.UID) ||
                 node.authorized.contains("*"){
-
                 var isDirectory:ObjCBool=false
-                if self._fileManager.fileExists(atPath:path, isDirectory: &isDirectory){
+                var fileExistsAtPath = false
+                let group=AsyncGroup()
+                group.utility{
+                    fileExistsAtPath =  self._fileManager.fileExists(atPath:path, isDirectory: &isDirectory)
+                }
+                group.wait()
+                
+                if fileExistsAtPath{
                     if isDirectory.boolValue{
                         completed(Completion.failureState(NSLocalizedString("Forbidden! Replacement is restricted to single files not folder", tableName:"system", comment: "Forbidden! Replacement is restricted to single files not folder"), statusCode: .forbidden))
                     }else{
