@@ -11,6 +11,8 @@
 		E5037F261E78338D00ECEEB1 /* ViewsRecycler.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5037F241E78338D00ECEEB1 /* ViewsRecycler.swift */; };
 		E530947E1E4B50300068D7EC /* BartlebysUI iOS.h in Headers */ = {isa = PBXBuildFile; fileRef = E53094701E4B50300068D7EC /* BartlebysUI iOS.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		E53F0B571DF95D80003301DD /* DropView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E53F0B561DF95D80003301DD /* DropView.swift */; };
+		E550E9361F3F05500027A1F1 /* ByPassActivationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E550E9341F3F05500027A1F1 /* ByPassActivationViewController.swift */; };
+		E550E9371F3F05500027A1F1 /* ByPassActivationViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = E550E9351F3F05500027A1F1 /* ByPassActivationViewController.xib */; };
 		E55FF9841E155F5900EE3393 /* IdentityWindowController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E55FF9821E155F5900EE3393 /* IdentityWindowController.swift */; };
 		E55FF9851E155F5900EE3393 /* IdentityWindowController.xib in Resources */ = {isa = PBXBuildFile; fileRef = E55FF9831E155F5900EE3393 /* IdentityWindowController.xib */; };
 		E55FF9881E155FF300EE3393 /* UpdatePasswordViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E55FF9861E155FF300EE3393 /* UpdatePasswordViewController.swift */; };
@@ -52,6 +54,8 @@
 		E53F0B631DF95F4A003301DD /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = System/Library/Frameworks/AppKit.framework; sourceTree = SDKROOT; };
 		E54324461E98DE0600ED89D9 /* ObjectMapper.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ObjectMapper.framework; path = ../Carthage/Build/Mac/ObjectMapper.framework; sourceTree = "<group>"; };
 		E54324471E98DE0600ED89D9 /* ObjectMapper.framework.dSYM */ = {isa = PBXFileReference; lastKnownFileType = wrapper.dsym; name = ObjectMapper.framework.dSYM; path = ../Carthage/Build/Mac/ObjectMapper.framework.dSYM; sourceTree = "<group>"; };
+		E550E9341F3F05500027A1F1 /* ByPassActivationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ByPassActivationViewController.swift; sourceTree = "<group>"; };
+		E550E9351F3F05500027A1F1 /* ByPassActivationViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ByPassActivationViewController.xib; sourceTree = "<group>"; };
 		E55FF9821E155F5900EE3393 /* IdentityWindowController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IdentityWindowController.swift; sourceTree = "<group>"; };
 		E55FF9831E155F5900EE3393 /* IdentityWindowController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = IdentityWindowController.xib; sourceTree = "<group>"; };
 		E55FF9861E155FF300EE3393 /* UpdatePasswordViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UpdatePasswordViewController.swift; sourceTree = "<group>"; };
@@ -171,6 +175,8 @@
 				E55FF98B1E1562E000EE3393 /* PrepareUserCreationViewController.xib */,
 				E55FF9981E15667800EE3393 /* ConfirmActivationViewController.swift */,
 				E55FF9991E15667800EE3393 /* ConfirmActivationViewController.xib */,
+				E550E9341F3F05500027A1F1 /* ByPassActivationViewController.swift */,
+				E550E9351F3F05500027A1F1 /* ByPassActivationViewController.xib */,
 				E55FF98E1E15637F00EE3393 /* ValidatePasswordViewController.swift */,
 				E55FF98F1E15637F00EE3393 /* ValidatePasswordViewController.xib */,
 				E55FF9941E1564D600EE3393 /* SetupCollaborativeServerViewController.swift */,
@@ -342,6 +348,7 @@
 				E59AABA71E1A937F00BE4BF1 /* RevealPasswordViewController.xib in Resources */,
 				E55FF9891E155FF300EE3393 /* UpdatePasswordViewController.xib in Resources */,
 				E5717E661E2F6B7C00850303 /* RecoverSugarViewController.xib in Resources */,
+				E550E9371F3F05500027A1F1 /* ByPassActivationViewController.xib in Resources */,
 				E55FF9851E155F5900EE3393 /* IdentityWindowController.xib in Resources */,
 				E55FF9971E1564D600EE3393 /* SetupCollaborativeServerViewController.xib in Resources */,
 				E55FF98D1E1562E000EE3393 /* PrepareUserCreationViewController.xib in Resources */,
@@ -374,6 +381,7 @@
 				E55FF98C1E1562E000EE3393 /* PrepareUserCreationViewController.swift in Sources */,
 				E5DB87EE1E32615400E54244 /* SendMessageViewController.swift in Sources */,
 				E55FF9961E1564D600EE3393 /* SetupCollaborativeServerViewController.swift in Sources */,
+				E550E9361F3F05500027A1F1 /* ByPassActivationViewController.swift in Sources */,
 				E53F0B571DF95D80003301DD /* DropView.swift in Sources */,
 				E55FF99A1E15667800EE3393 /* ConfirmActivationViewController.swift in Sources */,
 				E55FF9841E155F5900EE3393 /* IdentityWindowController.swift in Sources */,

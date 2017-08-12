@@ -85,6 +85,8 @@ public class IdentityWindowController: NSWindowController,DocumentProvider,Ident
 
     @IBOutlet var prepareUserCreation: PrepareUserCreationViewController!
 
+    @IBOutlet var byPassActivation: ByPassActivationViewController!
+
     @IBOutlet var confirmActivation: ConfirmActivationViewController!
 
     @IBOutlet var setUpCollaborativeServer: SetupCollaborativeServerViewController!
@@ -127,7 +129,11 @@ public class IdentityWindowController: NSWindowController,DocumentProvider,Ident
                 // It is a new document
                 self.append(viewController: self.prepareUserCreation, selectImmediately: true)
                 self.append(viewController: self.setUpCollaborativeServer, selectImmediately: false)
-                self.append(viewController: self.confirmActivation, selectImmediately: false)
+                if document.metadata.secondaryAuthFactorRequired{
+                     self.append(viewController: self.confirmActivation, selectImmediately: false)
+                }else{
+                    self.append(viewController: self.byPassActivation, selectImmediately: false)
+                }
                 self.append(viewController: self.revealPassword, selectImmediately: false)
             }else{
                 self.creationMode=false
@@ -169,9 +175,13 @@ public class IdentityWindowController: NSWindowController,DocumentProvider,Ident
     }
 
     fileprivate func _currentStepIs(_ viewController:IdentityStepViewController)->Bool{
-        let item=self.tabView.tabViewItems[self.currentStep]
-        let matching=item.viewController?.className==viewController.className
-        return matching
+        if self.tabView.tabViewItems.count > self.currentStep{
+            let item=self.tabView.tabViewItems[self.currentStep]
+            let matching=item.viewController?.className==viewController.className
+            return matching
+        }else{
+            return false
+        }
     }
 
     // MARK: -
@@ -226,8 +236,8 @@ public class IdentityWindowController: NSWindowController,DocumentProvider,Ident
         Bartleby.syncOnMain{
             var proceedImmediately=true
             if self.creationMode {
-                // The SMS / second factor auth has been verified.
-                if self._currentStepIs(self.confirmActivation){
+                // The SMS / second factor auth has been verified or by passed
+                if self._currentStepIs(self.confirmActivation) || self._currentStepIs(self.byPassActivation){
                     // user is confirmed.
                     if let document=self.getDocument(){
                         proceedImmediately = false
