@@ -25,7 +25,6 @@
 		E55FF9971E1564D600EE3393 /* SetupCollaborativeServerViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = E55FF9951E1564D600EE3393 /* SetupCollaborativeServerViewController.xib */; };
 		E55FF99A1E15667800EE3393 /* ConfirmActivationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E55FF9981E15667800EE3393 /* ConfirmActivationViewController.swift */; };
 		E55FF99B1E15667800EE3393 /* ConfirmActivationViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = E55FF9991E15667800EE3393 /* ConfirmActivationViewController.xib */; };
-		E5717E621E2F6B7C00850303 /* ConfirmUpdatePasswordActivationCode.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5717E5D1E2F6B7C00850303 /* ConfirmUpdatePasswordActivationCode.swift */; };
 		E5717E631E2F6B7C00850303 /* ConfirmUpdatePasswordActivationCode.xib in Resources */ = {isa = PBXBuildFile; fileRef = E5717E5E1E2F6B7C00850303 /* ConfirmUpdatePasswordActivationCode.xib */; };
 		E5717E651E2F6B7C00850303 /* RecoverSugarViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5717E601E2F6B7C00850303 /* RecoverSugarViewController.swift */; };
 		E5717E661E2F6B7C00850303 /* RecoverSugarViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = E5717E611E2F6B7C00850303 /* RecoverSugarViewController.xib */; };
@@ -37,6 +36,7 @@
 		E5ADEE9B1F3F42FD00371DA1 /* CreateAnIsolatedUser.xib in Resources */ = {isa = PBXBuildFile; fileRef = E5ADEE991F3F42FD00371DA1 /* CreateAnIsolatedUser.xib */; };
 		E5B124961F30C0780080C026 /* BartlebyKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E5B124951F30C0780080C026 /* BartlebyKit.framework */; };
 		E5B124971F30C07D0080C026 /* BartlebysUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E5FAC5201DF95B1C00398C95 /* BartlebysUI.framework */; };
+		E5CFB9811F3F8BEA00CCA560 /* ConfirmUpdatePasswordActivationCode.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5CFB9801F3F8BAF00CCA560 /* ConfirmUpdatePasswordActivationCode.swift */; };
 		E5DB87EE1E32615400E54244 /* SendMessageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5DB87EC1E32615400E54244 /* SendMessageViewController.swift */; };
 		E5DB87EF1E32615400E54244 /* SendMessageViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = E5DB87ED1E32615400E54244 /* SendMessageViewController.xib */; };
 		E5F620C01E6EA911007E60D5 /* IdentificationStates.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5F620BF1E6EA911007E60D5 /* IdentificationStates.swift */; };
@@ -70,7 +70,6 @@
 		E55FF9951E1564D600EE3393 /* SetupCollaborativeServerViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SetupCollaborativeServerViewController.xib; sourceTree = "<group>"; };
 		E55FF9981E15667800EE3393 /* ConfirmActivationViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ConfirmActivationViewController.swift; sourceTree = "<group>"; };
 		E55FF9991E15667800EE3393 /* ConfirmActivationViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ConfirmActivationViewController.xib; sourceTree = "<group>"; };
-		E5717E5D1E2F6B7C00850303 /* ConfirmUpdatePasswordActivationCode.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ConfirmUpdatePasswordActivationCode.swift; sourceTree = "<group>"; };
 		E5717E5E1E2F6B7C00850303 /* ConfirmUpdatePasswordActivationCode.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ConfirmUpdatePasswordActivationCode.xib; sourceTree = "<group>"; };
 		E5717E601E2F6B7C00850303 /* RecoverSugarViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RecoverSugarViewController.swift; sourceTree = "<group>"; };
 		E5717E611E2F6B7C00850303 /* RecoverSugarViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = RecoverSugarViewController.xib; sourceTree = "<group>"; };
@@ -81,6 +80,7 @@
 		E5ADEE981F3F42FD00371DA1 /* CreateAnIsolatedUser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateAnIsolatedUser.swift; sourceTree = "<group>"; };
 		E5ADEE991F3F42FD00371DA1 /* CreateAnIsolatedUser.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = CreateAnIsolatedUser.xib; sourceTree = "<group>"; };
 		E5B124951F30C0780080C026 /* BartlebyKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = BartlebyKit.framework; path = "../../../../../../../../Library/Developer/Xcode/DerivedData/YouDub-aodsguokyrtmojgwlsnefsibaroc/Build/Products/Debug/BartlebyKit.framework"; sourceTree = "<group>"; };
+		E5CFB9801F3F8BAF00CCA560 /* ConfirmUpdatePasswordActivationCode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfirmUpdatePasswordActivationCode.swift; sourceTree = "<group>"; };
 		E5DB87EC1E32615400E54244 /* SendMessageViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SendMessageViewController.swift; sourceTree = "<group>"; };
 		E5DB87ED1E32615400E54244 /* SendMessageViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SendMessageViewController.xib; sourceTree = "<group>"; };
 		E5F620BF1E6EA911007E60D5 /* IdentificationStates.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IdentificationStates.swift; sourceTree = "<group>"; };
@@ -159,7 +159,6 @@
 		E5CC50A01E6EC6A6009FB014 /* Controllers */ = {
 			isa = PBXGroup;
 			children = (
-				E5717E5D1E2F6B7C00850303 /* ConfirmUpdatePasswordActivationCode.swift */,
 			);
 			name = Controllers;
 			sourceTree = "<group>";
@@ -168,6 +167,7 @@
 			isa = PBXGroup;
 			children = (
 				E5F620BF1E6EA911007E60D5 /* IdentificationStates.swift */,
+				E5CFB9801F3F8BAF00CCA560 /* ConfirmUpdatePasswordActivationCode.swift */,
 				E5717E5E1E2F6B7C00850303 /* ConfirmUpdatePasswordActivationCode.xib */,
 				E5717E601E2F6B7C00850303 /* RecoverSugarViewController.swift */,
 				E5717E611E2F6B7C00850303 /* RecoverSugarViewController.xib */,
@@ -380,12 +380,12 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				E5717E621E2F6B7C00850303 /* ConfirmUpdatePasswordActivationCode.swift in Sources */,
 				E59AABA31E1A889B00BE4BF1 /* IdentityStepViewController.swift in Sources */,
 				E5F620C01E6EA911007E60D5 /* IdentificationStates.swift in Sources */,
 				E5037F251E78338D00ECEEB1 /* ViewsRecycler.swift in Sources */,
 				E59AABA61E1A937F00BE4BF1 /* RevealPasswordViewController.swift in Sources */,
 				E55FF98C1E1562E000EE3393 /* PrepareUserCreationViewController.swift in Sources */,
+				E5CFB9811F3F8BEA00CCA560 /* ConfirmUpdatePasswordActivationCode.swift in Sources */,
 				E5DB87EE1E32615400E54244 /* SendMessageViewController.swift in Sources */,
 				E55FF9961E1564D600EE3393 /* SetupCollaborativeServerViewController.swift in Sources */,
 				E550E9361F3F05500027A1F1 /* ByPassActivationViewController.swift in Sources */,
