@@ -89,6 +89,8 @@ public class IdentityWindowController: NSWindowController,DocumentProvider,Ident
 
     @IBOutlet var prepareUserCreation: PrepareUserCreationViewController!
 
+    @IBOutlet var createAnIsolatedUser: CreateAnIsolatedUser!
+
     @IBOutlet var byPassActivation: ByPassActivationViewController!
 
     @IBOutlet var confirmActivation: ConfirmActivationViewController!
@@ -135,11 +137,15 @@ public class IdentityWindowController: NSWindowController,DocumentProvider,Ident
                 // It is a new document
                 self.append(viewController: self.prepareUserCreation, selectImmediately: true)
                 self.append(viewController: self.setUpCollaborativeServer, selectImmediately: false)
+
+                // Secondary Authentication factor management
                 if document.metadata.secondaryAuthFactorRequired{
-                     self.append(viewController: self.confirmActivation, selectImmediately: false)
+                    self.append(viewController: self.confirmActivation, selectImmediately: false)
                 }else{
                     self.append(viewController: self.byPassActivation, selectImmediately: false)
                 }
+
+                // Revelation of the password
                 self.append(viewController: self.revealPassword, selectImmediately: false)
             }else{
                 self.creationMode=false
@@ -180,6 +186,16 @@ public class IdentityWindowController: NSWindowController,DocumentProvider,Ident
         }
     }
 
+    fileprivate func _removeAllSuccessors(){
+        for item in self.tabView.tabViewItems.reversed(){
+            if self.tabView.tabViewItems.count > self.currentStep{
+                self.tabView.removeTabViewItem(item)
+            }else{
+                break
+            }
+        }
+    }
+
     fileprivate func _currentStepIs(_ viewController:IdentityStepViewController)->Bool{
         if self.tabView.tabViewItems.count > self.currentStep{
             let item=self.tabView.tabViewItems[self.currentStep]
@@ -205,6 +221,11 @@ public class IdentityWindowController: NSWindowController,DocumentProvider,Ident
                 self._userHasBeenControlled()
                 self.identificationDelegate?.userWantsToCloseIndentityController()
             }
+            if self._currentStepIs(self.prepareUserCreation) && Bartleby.configuration.ALLOW_ISOLATED_MODE{
+                self.leftButton.title = NSLocalizedString("Skip", comment: "Skip button tittle")
+            }else{
+               self.leftButton.title = NSLocalizedString("Cancel", comment: "Cancel button tittle")
+            }
         }
     }
 
@@ -227,8 +248,22 @@ public class IdentityWindowController: NSWindowController,DocumentProvider,Ident
     // MARK: - Actions
 
     @IBAction func leftAction(_ sender: Any) {
-        self._userHasBeenControlled()
-        self.identificationDelegate?.userWantsToCloseIndentityController()
+        if let document = self.getDocument(){
+            if (Bartleby.configuration.ALLOW_ISOLATED_MODE && self._currentStepIs(self.prepareUserCreation)){
+                // This can occur on very early stage cancelation
+                // If Bartleby.configuration.ALLOW_ISOLATED_MODE
+                self._removeAllSuccessors()
+                self.append(viewController: self.createAnIsolatedUser, selectImmediately: false)
+                self.append(viewController: self.revealPassword, selectImmediately: false)
+            }else if document.metadata.isolatedUserMode{
+                // Close automatically
+                document.close()
+            }else{
+                // Normal case.
+                self._userHasBeenControlled()
+                self.identificationDelegate?.userWantsToCloseIndentityController()
+            }
+        }
     }
 
     @IBAction func rightAction(_ sender: Any) {
@@ -241,7 +276,7 @@ public class IdentityWindowController: NSWindowController,DocumentProvider,Ident
     public func didValidateStep(_ step:Int){
         Bartleby.syncOnMain{
             var proceedImmediately=true
-            if self.creationMode {
+            if self.creationMode && !self._currentStepIs(self.createAnIsolatedUser) {
                 // The SMS / second factor auth has been verified or by passed
                 if self._currentStepIs(self.confirmActivation) || self._currentStepIs(self.byPassActivation){
                     // user is confirmed.
@@ -260,7 +295,7 @@ public class IdentityWindowController: NSWindowController,DocumentProvider,Ident
                                     self.nextStep()
                                     self.enableActions()
                                 }else{
-                                    document.log("Activation status updated did fail \(completion)", file: #file, function: #function, line: #line, category: Default.LOG_DEFAULT, decorative: false)
+                                    document.log("Activation status updated did fail \(completion)", file: #file, function: #function, line: #line, category: Default.LOG_IDENTITY, decorative: false)
                                     self.enableActions()
                                 }
                             })
@@ -276,6 +311,7 @@ public class IdentityWindowController: NSWindowController,DocumentProvider,Ident
                 }
             }else{
                 // Not in creation Mode
+                // or we are using an Isolated Created user
                 if proceedImmediately{
                     self.nextStep()
                     self.enableActions()

@@ -72,7 +72,7 @@ public protocol BartlebyConfiguration {
     // If set to true the confirmation code will be for example printed in the console...
     static var DEVELOPER_MODE: Bool { get }
 
-    // If set to true identification will not required second auth factor.
+    // If set to true identification will not require second auth factor.
     static var REDUCED_SECURITY_MODE:Bool { get }
 
     // Supports by default KeyChained password synchronization between multiple local accounts (false is more secured)
@@ -83,6 +83,9 @@ public protocol BartlebyConfiguration {
 
     // Allows by default users to memorize password (false is more secured)
     static var SUPPORTS_PASSWORD_MEMORIZATION_BY_DEFAULT: Bool { get }
+
+    // If set to true the user can skip the account creation and stay fully offline.
+    static var ALLOW_ISOLATED_MODE: Bool { get }
 }
 
 
@@ -164,6 +167,9 @@ public struct BartlebyDefaultConfiguration: BartlebyConfiguration {
     // Allows by default users to memorize password (false is more secured)
     public static var SUPPORTS_PASSWORD_MEMORIZATION_BY_DEFAULT: Bool = false
 
+    // If set to true the user can skip the account creation and stay fully offline.
+    public static var ALLOW_ISOLATED_MODE:Bool = false
+
 }
 
 // MARK: - Default values
@@ -179,6 +185,7 @@ public struct Default {
     static public let LOG_WARNING="Warning"
     static public let LOG_FAULT="FAULT"
     static public let LOG_SECURITY="SECURITY"
+    static public let LOG_IDENTITY="IDENTITY"
 
 
     //MARK: UserDefault key/values

@@ -9,6 +9,9 @@
 import Foundation
 import BartlebyKit
 
+
+// You should start by the IdentityWindowController to understand the variety of possible workflows.
+// Bartleby supports a lot variations from distributed execution, to confined deployments.
 public enum IdentificationStates:StateMessage{
 
     // Initial state

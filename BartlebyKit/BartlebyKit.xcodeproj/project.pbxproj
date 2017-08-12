@@ -258,8 +258,8 @@
 		E5450F641F3A1F84008FD1C3 /* DocumentStates.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5450DEC1F3A1F83008FD1C3 /* DocumentStates.swift */; };
 		E5450F651F3A1F84008FD1C3 /* ErasingError.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5450DED1F3A1F83008FD1C3 /* ErasingError.swift */; };
 		E5450F661F3A1F84008FD1C3 /* ErasingError.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5450DED1F3A1F83008FD1C3 /* ErasingError.swift */; };
-		E5450F671F3A1F84008FD1C3 /* BarltlebyDocument+Consignee.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5450DEF1F3A1F83008FD1C3 /* BarltlebyDocument+Consignee.swift */; };
-		E5450F681F3A1F84008FD1C3 /* BarltlebyDocument+Consignee.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5450DEF1F3A1F83008FD1C3 /* BarltlebyDocument+Consignee.swift */; };
+		E5450F671F3A1F84008FD1C3 /* BartlebyDocument+Consignee.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5450DEF1F3A1F83008FD1C3 /* BartlebyDocument+Consignee.swift */; };
+		E5450F681F3A1F84008FD1C3 /* BartlebyDocument+Consignee.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5450DEF1F3A1F83008FD1C3 /* BartlebyDocument+Consignee.swift */; };
 		E5450F691F3A1F84008FD1C3 /* BartlebyDocument+Blocks.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5450DF01F3A1F83008FD1C3 /* BartlebyDocument+Blocks.swift */; };
 		E5450F6A1F3A1F84008FD1C3 /* BartlebyDocument+Blocks.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5450DF01F3A1F83008FD1C3 /* BartlebyDocument+Blocks.swift */; };
 		E5450F6B1F3A1F84008FD1C3 /* BartlebyDocument+Collections.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5450DF11F3A1F83008FD1C3 /* BartlebyDocument+Collections.swift */; };
@@ -512,6 +512,8 @@
 		E55934361DEDD1B7001DE10F /* BartlebyTestCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = E55934351DEDD1B7001DE10F /* BartlebyTestCase.swift */; };
 		E55D61441DE9F79800BF63B6 /* BlocksTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E55D61431DE9F79800BF63B6 /* BlocksTests.swift */; };
 		E577CA471CCFB31500756BDD /* BartlebyKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E54999581C3A7D0100C52A9D /* BartlebyKit.framework */; };
+		E5ADEEA31F3F575F00371DA1 /* MasterKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5ADEEA21F3F575E00371DA1 /* MasterKey.swift */; };
+		E5ADEEA91F3F6AE300371DA1 /* MasterKey+Helper.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5ADEEA81F3F6AE300371DA1 /* MasterKey+Helper.swift */; };
 		E5B128F21D1C315D00D61261 /* BFileManagerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B5D0A071CDE1F48001FB281 /* BFileManagerTests.swift */; };
 		E5B128F31D1C315D00D61261 /* TransformTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BBF7D441CC8E4E400F2237B /* TransformTests.swift */; };
 		E5B128F41D1C315D00D61261 /* HandlersTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5361CFC1CD8DD9E005855DC /* HandlersTests.swift */; };
@@ -708,7 +710,7 @@
 		E5450DEB1F3A1F83008FD1C3 /* DocumentError.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DocumentError.swift; sourceTree = "<group>"; };
 		E5450DEC1F3A1F83008FD1C3 /* DocumentStates.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DocumentStates.swift; sourceTree = "<group>"; };
 		E5450DED1F3A1F83008FD1C3 /* ErasingError.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ErasingError.swift; sourceTree = "<group>"; };
-		E5450DEF1F3A1F83008FD1C3 /* BarltlebyDocument+Consignee.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "BarltlebyDocument+Consignee.swift"; sourceTree = "<group>"; };
+		E5450DEF1F3A1F83008FD1C3 /* BartlebyDocument+Consignee.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "BartlebyDocument+Consignee.swift"; sourceTree = "<group>"; };
 		E5450DF01F3A1F83008FD1C3 /* BartlebyDocument+Blocks.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "BartlebyDocument+Blocks.swift"; sourceTree = "<group>"; };
 		E5450DF11F3A1F83008FD1C3 /* BartlebyDocument+Collections.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "BartlebyDocument+Collections.swift"; sourceTree = "<group>"; };
 		E5450DF21F3A1F83008FD1C3 /* BartlebyDocument+ComputedProperties.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "BartlebyDocument+ComputedProperties.swift"; sourceTree = "<group>"; };
@@ -847,6 +849,8 @@
 		E56C005A1C8ED51D00BB6B19 /* BartlebyKitTOSXTests-Bridging-Header.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "BartlebyKitTOSXTests-Bridging-Header.h"; sourceTree = "<group>"; };
 		E578DD071C3AC53300617627 /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = System/Library/Frameworks/AppKit.framework; sourceTree = SDKROOT; };
 		E590EB231D0EF8DC00150E0B /* UsersCreationLoadTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UsersCreationLoadTest.swift; sourceTree = "<group>"; };
+		E5ADEEA21F3F575E00371DA1 /* MasterKey.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MasterKey.swift; sourceTree = "<group>"; };
+		E5ADEEA81F3F6AE300371DA1 /* MasterKey+Helper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MasterKey+Helper.swift"; sourceTree = "<group>"; };
 		E5CEFB511C3BFCBB00C36CBA /* BartlebyKit-Bridging-Header.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "BartlebyKit-Bridging-Header.h"; sourceTree = "<group>"; };
 		E5F5384A1DEAE4EA008DEBF7 /* MultiDocumentsTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MultiDocumentsTests.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -979,6 +983,7 @@
 		E5450D6E1F3A1F83008FD1C3 /* models */ = {
 			isa = PBXGroup;
 			children = (
+				E5ADEEA21F3F575E00371DA1 /* MasterKey.swift */,
 				E5450D6F1F3A1F83008FD1C3 /* Acknowledgment.swift */,
 				E5450D701F3A1F83008FD1C3 /* Block.swift */,
 				E5450D711F3A1F83008FD1C3 /* Box.swift */,
@@ -1213,7 +1218,7 @@
 		E5450DEE1F3A1F83008FD1C3 /* extensions */ = {
 			isa = PBXGroup;
 			children = (
-				E5450DEF1F3A1F83008FD1C3 /* BarltlebyDocument+Consignee.swift */,
+				E5450DEF1F3A1F83008FD1C3 /* BartlebyDocument+Consignee.swift */,
 				E5450DF01F3A1F83008FD1C3 /* BartlebyDocument+Blocks.swift */,
 				E5450DF11F3A1F83008FD1C3 /* BartlebyDocument+Collections.swift */,
 				E5450DF21F3A1F83008FD1C3 /* BartlebyDocument+ComputedProperties.swift */,
@@ -1257,6 +1262,7 @@
 				E5450E181F3A1F83008FD1C3 /* NSNotification+Completion.swift */,
 				E5450E191F3A1F83008FD1C3 /* NSNotification+Progression.swift */,
 				E5450E1A1F3A1F83008FD1C3 /* Progression+Conveniences.swift */,
+				E5ADEEA81F3F6AE300371DA1 /* MasterKey+Helper.swift */,
 				E5450E1B1F3A1F83008FD1C3 /* protocols */,
 				E5450E1C1F3A1F83008FD1C3 /* PushOperation+Conveniences.swift */,
 				E5450E1D1F3A1F83008FD1C3 /* UnManagedModel+Serializable.swift */,
@@ -1644,13 +1650,14 @@
 				E5450F131F3A1F83008FD1C3 /* UpdateUser.swift in Sources */,
 				E54510531F3A1F84008FD1C3 /* TriggersForIndexes.swift in Sources */,
 				E5450FE11F3A1F84008FD1C3 /* ConsolidableProgression.swift in Sources */,
+				E5ADEEA91F3F6AE300371DA1 /* MasterKey+Helper.swift in Sources */,
 				E5450F311F3A1F83008FD1C3 /* FileReference.swift in Sources */,
 				E5450F231F3A1F83008FD1C3 /* BytesStats.swift in Sources */,
 				E5450FE31F3A1F84008FD1C3 /* CryptoDelegate.swift in Sources */,
 				E54510411F3A1F84008FD1C3 /* KeyChainHelper.swift in Sources */,
 				E5450EF71F3A1F83008FD1C3 /* ReadNodeById.swift in Sources */,
 				E5450FFF1F3A1F84008FD1C3 /* LogCategorizable.swift in Sources */,
-				E5450F671F3A1F84008FD1C3 /* BarltlebyDocument+Consignee.swift in Sources */,
+				E5450F671F3A1F84008FD1C3 /* BartlebyDocument+Consignee.swift in Sources */,
 				E5450FA11F3A1F84008FD1C3 /* ManagedModel+Equatable.swift in Sources */,
 				E5450F331F3A1F83008FD1C3 /* Flocker.swift in Sources */,
 				E5450EDF1F3A1F83008FD1C3 /* ReadBlockById.swift in Sources */,
@@ -1766,6 +1773,7 @@
 				E5450FE71F3A1F84008FD1C3 /* Descriptible.swift in Sources */,
 				E5450FB71F3A1F84008FD1C3 /* ManagedModel+Supervisable.swift in Sources */,
 				E5450F031F3A1F83008FD1C3 /* UpdateBlock.swift in Sources */,
+				E5ADEEA31F3F575F00371DA1 /* MasterKey.swift in Sources */,
 				E545103F1F3A1F84008FD1C3 /* IdentitiesManager.swift in Sources */,
 				E545105B1F3A1F84008FD1C3 /* Pluralization.swift in Sources */,
 				E5450FFB1F3A1F84008FD1C3 /* IterableCollectibleCollection.swift in Sources */,
@@ -1904,7 +1912,7 @@
 				E54510421F3A1F84008FD1C3 /* KeyChainHelper.swift in Sources */,
 				E5450EF81F3A1F83008FD1C3 /* ReadNodeById.swift in Sources */,
 				E54510001F3A1F84008FD1C3 /* LogCategorizable.swift in Sources */,
-				E5450F681F3A1F84008FD1C3 /* BarltlebyDocument+Consignee.swift in Sources */,
+				E5450F681F3A1F84008FD1C3 /* BartlebyDocument+Consignee.swift in Sources */,
 				E5450FA21F3A1F84008FD1C3 /* ManagedModel+Equatable.swift in Sources */,
 				E5450F341F3A1F83008FD1C3 /* Flocker.swift in Sources */,
 				E5450EE01F3A1F83008FD1C3 /* ReadBlockById.swift in Sources */,

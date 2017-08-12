@@ -124,6 +124,7 @@ open class BartlebysDynamics:Dynamics{
         if typeName == "ManagedNodes"{ instance = try JSON.decoder.decode(ManagedNodes.self, from: data); return instance }
         if typeName == "Node"{ instance = try JSON.decoder.decode(Node.self, from: data); return instance }
         if typeName == "Metrics"{ instance = try JSON.decoder.decode(Metrics.self, from: data); return instance }
+        if typeName == "MasterKey"{ instance = try JSON.decoder.decode(MasterKey.self, from: data); return instance }
         if typeName == "ManagedModel"{ instance = try JSON.decoder.decode(ManagedModel.self, from: data); return instance }
         if typeName == "LogEntry"{ instance = try JSON.decoder.decode(LogEntry.self, from: data); return instance }
         if typeName == "ManagedLockers"{ instance = try JSON.decoder.decode(ManagedLockers.self, from: data); return instance }
@@ -217,6 +218,7 @@ open class BartlebysDynamics:Dynamics{
         if typeName == "ManagedNodes"{ return ManagedNodes() }
         if typeName == "Node"{ return Node() }
         if typeName == "Metrics"{ return Metrics() }
+        if typeName == "MasterKey"{ return MasterKey() }
         if typeName == "ManagedModel"{ return ManagedModel() }
         if typeName == "LogEntry"{ return LogEntry() }
         if typeName == "ManagedLockers"{ return ManagedLockers() }

@@ -139,6 +139,15 @@ import Foundation
 	//set to true on the first successfull login in the session (this property is not serialized)
 	@objc dynamic open var loginHasSucceed:Bool = false
 
+	//An isolated User is not associated to any Collaborative server
+	@objc dynamic open var isIsolated:Bool = false  {
+	    didSet { 
+	       if !self.wantsQuietChanges && isIsolated != oldValue {
+	            self.provisionChanges(forKey: "isIsolated",oldValue: oldValue,newValue: isIsolated)  
+	       } 
+	    }
+	}
+
 	//Can a user memorize her/his password
 	@objc dynamic open var supportsPasswordMemorization:Bool = Bartleby.configuration.SUPPORTS_PASSWORD_MEMORIZATION_BY_DEFAULT  {
 	    didSet { 
@@ -193,6 +202,7 @@ import Foundation
 		case status
 		case notes
 		case loginHasSucceed
+		case isIsolated
 		case supportsPasswordMemorization
 		case supportsPasswordUpdate
 		case supportsPasswordSyndication
@@ -215,6 +225,7 @@ import Foundation
 			self.password = try self.decodeCryptedStringIfPresent(codingKey: .password, from: values)
 			self.status = User.Status(rawValue: try values.decode(String.self,forKey:.status)) ?? .new
 			self.notes = try values.decodeIfPresent(String.self,forKey:.notes)
+			self.isIsolated = try values.decode(Bool.self,forKey:.isIsolated)
 			self.supportsPasswordMemorization = try values.decode(Bool.self,forKey:.supportsPasswordMemorization)
 			self.supportsPasswordUpdate = try values.decode(Bool.self,forKey:.supportsPasswordUpdate)
 			self.supportsPasswordSyndication = try values.decode(Bool.self,forKey:.supportsPasswordSyndication)
@@ -237,6 +248,7 @@ import Foundation
 		try self.encodeCryptedStringIfPresent(value: self.password, codingKey: .password, container: &container)
 		try container.encode(self.status.rawValue ,forKey:.status)
 		try container.encodeIfPresent(self.notes,forKey:.notes)
+		try container.encode(self.isIsolated,forKey:.isIsolated)
 		try container.encode(self.supportsPasswordMemorization,forKey:.supportsPasswordMemorization)
 		try container.encode(self.supportsPasswordUpdate,forKey:.supportsPasswordUpdate)
 		try container.encode(self.supportsPasswordSyndication,forKey:.supportsPasswordSyndication)
@@ -249,7 +261,7 @@ import Foundation
     /// Return all the exposed instance variables keys. (Exposed == public and modifiable).
     override  open var exposedKeys:[String] {
         var exposed=super.exposedKeys
-        exposed.append(contentsOf:["spaceUID","verificationMethod","localAssociationID","firstname","lastname","email","pseudo","phoneCountryCode","phoneNumber","password","status","notes","loginHasSucceed","supportsPasswordMemorization","supportsPasswordUpdate","supportsPasswordSyndication","base64Image"])
+        exposed.append(contentsOf:["spaceUID","verificationMethod","localAssociationID","firstname","lastname","email","pseudo","phoneCountryCode","phoneNumber","password","status","notes","loginHasSucceed","isIsolated","supportsPasswordMemorization","supportsPasswordUpdate","supportsPasswordSyndication","base64Image"])
         return exposed
     }
 
@@ -314,6 +326,10 @@ import Foundation
                 if let casted=value as? Bool{
                     self.loginHasSucceed=casted
                 }
+            case "isIsolated":
+                if let casted=value as? Bool{
+                    self.isIsolated=casted
+                }
             case "supportsPasswordMemorization":
                 if let casted=value as? Bool{
                     self.supportsPasswordMemorization=casted
@@ -371,6 +387,8 @@ import Foundation
                return self.notes
             case "loginHasSucceed":
                return self.loginHasSucceed
+            case "isIsolated":
+               return self.isIsolated
             case "supportsPasswordMemorization":
                return self.supportsPasswordMemorization
             case "supportsPasswordUpdate":

@@ -10,6 +10,7 @@
             <connections>
                 <outlet property="byPassActivation" destination="xmu-0E-c1e" id="eNx-Hi-hzl"/>
                 <outlet property="confirmActivation" destination="uEZ-ba-9Iq" id="jdK-5O-Kic"/>
+                <outlet property="createAnIsolatedUser" destination="17d-UX-B4c" id="DY8-tK-lvW"/>
                 <outlet property="leftButton" destination="fDC-hP-g9s" id="Qju-DJ-VpW"/>
                 <outlet property="prepareUserCreation" destination="DaE-jK-97s" id="i0n-BR-2lC"/>
                 <outlet property="progressIndicator" destination="v9q-il-xM5" id="L2c-x3-HjD"/>
@@ -32,6 +33,7 @@
         <viewController id="myt-lN-i1u" customClass="ValidatePasswordViewController" customModule="BartlebysUI" customModuleProvider="target"/>
         <viewController id="uEZ-ba-9Iq" customClass="ConfirmActivationViewController" customModule="BartlebysUI" customModuleProvider="target"/>
         <viewController id="xmu-0E-c1e" customClass="ByPassActivationViewController" customModule="BartlebysUI" customModuleProvider="target"/>
+        <viewController id="17d-UX-B4c" customClass="CreateAnIsolatedUser" customModule="BartlebysUI" customModuleProvider="target"/>
         <viewController id="dNR-CV-jVC" customClass="SetupCollaborativeServerViewController" customModule="BartlebysUI" customModuleProvider="target"/>
         <viewController id="BhJ-PB-9OU" customClass="RevealPasswordViewController" customModule="BartlebysUI" customModuleProvider="target"/>
         <window identifier="identityWindow" title="Identity" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" restorable="NO" releasedWhenClosed="NO" showsToolbarButton="NO" visibleAtLaunch="NO" animationBehavior="documentWindow" frameAutosaveName="identityContainerWindow" id="F0z-JX-Cv5">

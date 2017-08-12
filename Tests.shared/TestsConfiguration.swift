@@ -83,7 +83,7 @@ open class TestsConfiguration: BartlebyConfiguration {
     // If set to true the confirmation code will be for example printed in the console...
     open static let DEVELOPER_MODE: Bool = true // Should be turned to false in production
 
-    // If set to true identification will not required second auth factor.
+    // If set to true identification will not require second auth factor.
     open static var REDUCED_SECURITY_MODE:Bool = false
 
     // Supports by default KeyChained password synchronization between multiple local accounts (false is more secured)
@@ -95,6 +95,8 @@ open class TestsConfiguration: BartlebyConfiguration {
     // Allows by default users to memorize password (false is more secured)
     public static var SUPPORTS_PASSWORD_MEMORIZATION_BY_DEFAULT: Bool = false
 
+    // If set to true the user can skip the account creation and stay fully offline.
+    public static var ALLOW_ISOLATED_MODE:Bool = false
 
     //MARK: - Variable base URL
 

@@ -51,6 +51,9 @@ import Foundation
 	//If set to false the identification chain will by pass the second authentication factor
 	@objc dynamic open var secondaryAuthFactorRequired:Bool = Bartleby.configuration.REDUCED_SECURITY_MODE
 
+	//If set true no collaborative server is required.
+	@objc dynamic open var isolatedUserMode:Bool = false
+
 	//The identification method (By cookie or by Key - kvid)
 	public enum IdentificationMethod:String{
 		case key = "key"
@@ -156,6 +159,7 @@ import Foundation
 		case lockerUID
 		case userHasBeenControlled
 		case secondaryAuthFactorRequired
+		case isolatedUserMode
 		case identificationMethod
 		case appGroup
 		case identificationValue
@@ -197,6 +201,7 @@ import Foundation
 			self.currentUserFullPhoneNumber = try values.decode(String.self,forKey:.currentUserFullPhoneNumber)
 			self.lockerUID = try values.decode(String.self,forKey:.lockerUID)
 			self.secondaryAuthFactorRequired = try values.decode(Bool.self,forKey:.secondaryAuthFactorRequired)
+			self.isolatedUserMode = try values.decode(Bool.self,forKey:.isolatedUserMode)
 			self.identificationMethod = DocumentMetadata.IdentificationMethod(rawValue: try values.decode(String.self,forKey:.identificationMethod)) ?? .key
 			self.appGroup = try values.decode(String.self,forKey:.appGroup)
 			self.identificationValue = try values.decodeIfPresent(String.self,forKey:.identificationValue)
@@ -232,6 +237,7 @@ import Foundation
 		try container.encode(self.currentUserFullPhoneNumber,forKey:.currentUserFullPhoneNumber)
 		try container.encode(self.lockerUID,forKey:.lockerUID)
 		try container.encode(self.secondaryAuthFactorRequired,forKey:.secondaryAuthFactorRequired)
+		try container.encode(self.isolatedUserMode,forKey:.isolatedUserMode)
 		try container.encode(self.identificationMethod.rawValue ,forKey:.identificationMethod)
 		try container.encode(self.appGroup,forKey:.appGroup)
 		try container.encodeIfPresent(self.identificationValue,forKey:.identificationValue)
@@ -261,7 +267,7 @@ import Foundation
     /// Return all the exposed instance variables keys. (Exposed == public and modifiable).
     override  open var exposedKeys:[String] {
         var exposed=super.exposedKeys
-        exposed.append(contentsOf:["version","spaceUID","persistentUID","currentUserUID","currentUserEmail","currentUserFullPhoneNumber","sugar","lockerUID","userHasBeenControlled","secondaryAuthFactorRequired","identificationMethod","appGroup","identificationValue","collaborationServerURL","registred","changesAreInspectables","cleanupBoxesWhenClosingDocument","collectionsMetadata","statesDictionary","URLBookmarkData","preferredFileName","triggersIndexesDebugHistory","ownedTriggersIndexes","lastIntegratedTriggerIndex","receivedTriggers","operationsQuarantine","bunchInProgress","totalNumberOfOperations","pendingOperationsProgressionState","shouldBeOnline","online","transition","pushOnChanges","saveThePassword","cumulatedUpMetricsDuration","totalNumberOfUpMetrics","qosIndice"])
+        exposed.append(contentsOf:["version","spaceUID","persistentUID","currentUserUID","currentUserEmail","currentUserFullPhoneNumber","sugar","lockerUID","userHasBeenControlled","secondaryAuthFactorRequired","isolatedUserMode","identificationMethod","appGroup","identificationValue","collaborationServerURL","registred","changesAreInspectables","cleanupBoxesWhenClosingDocument","collectionsMetadata","statesDictionary","URLBookmarkData","preferredFileName","triggersIndexesDebugHistory","ownedTriggersIndexes","lastIntegratedTriggerIndex","receivedTriggers","operationsQuarantine","bunchInProgress","totalNumberOfOperations","pendingOperationsProgressionState","shouldBeOnline","online","transition","pushOnChanges","saveThePassword","cumulatedUpMetricsDuration","totalNumberOfUpMetrics","qosIndice"])
         return exposed
     }
 
@@ -313,6 +319,10 @@ import Foundation
             case "secondaryAuthFactorRequired":
                 if let casted=value as? Bool{
                     self.secondaryAuthFactorRequired=casted
+                }
+            case "isolatedUserMode":
+                if let casted=value as? Bool{
+                    self.isolatedUserMode=casted
                 }
             case "identificationMethod":
                 if let casted=value as? DocumentMetadata.IdentificationMethod{
@@ -457,6 +467,8 @@ import Foundation
                return self.userHasBeenControlled
             case "secondaryAuthFactorRequired":
                return self.secondaryAuthFactorRequired
+            case "isolatedUserMode":
+               return self.isolatedUserMode
             case "identificationMethod":
                return self.identificationMethod
             case "appGroup":
