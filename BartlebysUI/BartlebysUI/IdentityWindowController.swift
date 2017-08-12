@@ -221,6 +221,7 @@ public class IdentityWindowController: NSWindowController,DocumentProvider,Ident
                 self._userHasBeenControlled()
                 self.identificationDelegate?.userWantsToCloseIndentityController()
             }
+            // Define a different 
             if self._currentStepIs(self.prepareUserCreation) && Bartleby.configuration.ALLOW_ISOLATED_MODE{
                 self.leftButton.title = NSLocalizedString("Skip", comment: "Skip button tittle")
             }else{

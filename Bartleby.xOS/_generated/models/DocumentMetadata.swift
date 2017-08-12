@@ -49,7 +49,7 @@ import Foundation
 	@objc dynamic open var userHasBeenControlled:Bool = false
 
 	//If set to false the identification chain will by pass the second authentication factor
-	@objc dynamic open var secondaryAuthFactorRequired:Bool = Bartleby.configuration.REDUCED_SECURITY_MODE
+	@objc dynamic open var secondaryAuthFactorRequired:Bool = true
 
 	//If set true no collaborative server is required.
 	@objc dynamic open var isolatedUserMode:Bool = false
@@ -74,7 +74,7 @@ import Foundation
 	@objc dynamic open var registred:Bool = false
 
 	//If the changes are inspectable all the changes are stored in KeyChanges objects
-	@objc dynamic open var changesAreInspectables:Bool = Bartleby.configuration.CHANGES_ARE_INSPECTABLES_BY_DEFAULT
+	@objc dynamic open var changesAreInspectables:Bool = false
 
 	//If set to true the boxes will be deleted when closing the document (Better security) 
 	@objc dynamic open var cleanupBoxesWhenClosingDocument:Bool = true
@@ -116,10 +116,10 @@ import Foundation
 	@objc dynamic open var pendingOperationsProgressionState:Progression?
 
 	//When monitoring reachability we need to know if we should be connected to Collaborative server
-	@objc dynamic open var shouldBeOnline:Bool = Bartleby.configuration.ONLINE_BY_DEFAULT
+	@objc dynamic open var shouldBeOnline:Bool = false
 
 	//is the user performing Online
-	@objc dynamic open var online:Bool = Bartleby.configuration.ONLINE_BY_DEFAULT
+	@objc dynamic open var online:Bool = false
 
 	//Is the document transitionning offToOn: offline > online, onToOff: online > offine
 	public enum Transition:String{
@@ -130,10 +130,10 @@ import Foundation
 	open var transition:Transition = .none
 
 	//If set to true committed object will be pushed as soon as possible.
-	@objc dynamic open var pushOnChanges:Bool = Bartleby.configuration.ONLINE_BY_DEFAULT
+	@objc dynamic open var pushOnChanges:Bool = false
 
 	//Save the password or not?
-	@objc dynamic open var saveThePassword:Bool = Bartleby.configuration.SAVE_PASSWORD_BY_DEFAULT
+	@objc dynamic open var saveThePassword:Bool = false
 
 	//The sum of all the metrics
 	@objc dynamic open var cumulatedUpMetricsDuration:Double = 0

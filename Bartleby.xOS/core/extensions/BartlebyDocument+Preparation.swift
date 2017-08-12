@@ -39,6 +39,17 @@ extension BartlebyDocument{
     }
 
 
+    open func setUpDefaultMetadata(){
+        // Set up the default values.
+        self.metadata.secondaryAuthFactorRequired = !Bartleby.configuration.REDUCED_SECURITY_MODE
+        self.metadata.changesAreInspectables = Bartleby.configuration.CHANGES_ARE_INSPECTABLES_BY_DEFAULT
+        self.metadata.shouldBeOnline =  Bartleby.configuration.ONLINE_BY_DEFAULT
+        self.metadata.online =  Bartleby.configuration.ONLINE_BY_DEFAULT
+        self.metadata.pushOnChanges = Bartleby.configuration.ONLINE_BY_DEFAULT
+        self.metadata.saveThePassword = Bartleby.configuration.SAVE_PASSWORD_BY_DEFAULT
+    }
+
+
     /// Registers the collections into the document
     open func registerCollections() throws {
         for metadatum in self.metadata.collectionsMetadata {
