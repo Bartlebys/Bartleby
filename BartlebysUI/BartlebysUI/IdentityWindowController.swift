@@ -21,6 +21,10 @@ public protocol IdentityStepNavigation{
     func didValidateStep(_ step:Int)
     func disableActions()
     func enableActions()
+
+    // The progress indicator located between the buttons
+    func enableProgressIndicator()
+    func disableProgressIndicator()
 }
 
 // MARK: - IdentityStep
@@ -108,6 +112,8 @@ public class IdentityWindowController: NSWindowController,DocumentProvider,Ident
     @IBOutlet weak var rightButton: NSButton!
 
     @IBOutlet weak var progressIndicator: NSProgressIndicator!
+
+
 
     // MARK: - Life cycle
 
