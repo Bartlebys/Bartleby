@@ -184,6 +184,7 @@ public struct Default {
     static public let LOG_DEFAULT="Default"
     static public let LOG_WARNING="Warning"
     static public let LOG_FAULT="FAULT"
+    static public let LOG_BSFS="BSFS"
     static public let LOG_SECURITY="SECURITY"
     static public let LOG_IDENTITY="IDENTITY"
 

@@ -497,6 +497,15 @@ public final class BSFS:TriggerHook{
                         node.size=cumulatedSize
                     }
 
+                    // Add the file in the box if it is mounted.
+                    if box.isMounted{
+                        let nodeAssemblyPath = self.assemblyPath(for:node)
+                        do {
+                            try self._fileManager.copyItem(atPath: reference.absolutePath, toPath: nodeAssemblyPath)
+                        }catch{
+                            self._document.log("Original Copy has failed. \nReferencePath:\( reference.absolutePath) \nassemblyPath:\(nodeAssemblyPath)",category: Default.LOG_BSFS)
+                        }
+                    }
                 }
 
 
@@ -507,7 +516,7 @@ public final class BSFS:TriggerHook{
                     do {
                         try self._fileManager.removeItem(atPath: reference.absolutePath)
                     } catch  {
-                        self._document.log("Deletion has failed. Path:\( reference.absolutePath)", file: #file, function: #function, line: #line, category: Default.LOG_DEFAULT, decorative: false)
+                        self._document.log("Deletion has failed. Path:\( reference.absolutePath)",file: Default.LOG_BSFS)
                     }
                 }
 
