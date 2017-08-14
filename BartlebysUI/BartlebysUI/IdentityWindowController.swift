@@ -62,6 +62,12 @@ public class IdentityWindowController: NSWindowController,DocumentProvider,Ident
         return self.document as? BartlebyDocument
     }
 
+    // You can set up a void IdentityWindowController by setting `
+    // `IdentityWindowController.usesDefaultComponents = false`
+    // It allows to reuse creational identified components
+    // You should always roll back to `IdentityWindowController.usesDefaultComponents = true` afer usage
+    public static var usesDefaultComponents:Bool = true
+
     // Document creation
     public var creationMode=false
 
@@ -73,6 +79,7 @@ public class IdentityWindowController: NSWindowController,DocumentProvider,Ident
             }
         }
     }
+
 
     public var identification:Identification?
 
@@ -116,7 +123,6 @@ public class IdentityWindowController: NSWindowController,DocumentProvider,Ident
     @IBOutlet weak var progressIndicator: NSProgressIndicator!
 
 
-
     // MARK: - Life cycle
 
     override public func windowDidLoad() {
@@ -131,26 +137,30 @@ public class IdentityWindowController: NSWindowController,DocumentProvider,Ident
     }
 
     fileprivate func _configureControllers() -> () {
-        if let document=self.getDocument(){
-            if document.metadata.currentUserUID == Default.NO_UID {
-                self.creationMode=true
-                // It is a new document
-                self.append(viewController: self.prepareUserCreation, selectImmediately: true)
-                self.append(viewController: self.setUpCollaborativeServer, selectImmediately: false)
+        if IdentityWindowController.usesDefaultComponents{
+            if let document=self.getDocument(){
+                if document.metadata.currentUserUID == Default.NO_UID {
+                    self.creationMode=true
+                    // It is a new document
+                    self.append(viewController: self.prepareUserCreation, selectImmediately: true)
+                    self.append(viewController: self.setUpCollaborativeServer, selectImmediately: false)
 
-                // Secondary Authentication factor management
-                if document.metadata.secondaryAuthFactorRequired{
-                    self.append(viewController: self.confirmActivation, selectImmediately: false)
+                    // Secondary Authentication factor management
+                    if document.metadata.secondaryAuthFactorRequired{
+                        self.append(viewController: self.confirmActivation, selectImmediately: false)
+                    }else{
+                        self.append(viewController: self.byPassActivation, selectImmediately: false)
+                    }
+
+                    // Revelation of the password
+                    self.append(viewController: self.revealPassword, selectImmediately: false)
                 }else{
-                    self.append(viewController: self.byPassActivation, selectImmediately: false)
+                    self.creationMode=false
+                    self.append(viewController: self.validatePassword, selectImmediately: true)
                 }
-
-                // Revelation of the password
-                self.append(viewController: self.revealPassword, selectImmediately: false)
-            }else{
-                self.creationMode=false
-                self.append(viewController: self.validatePassword, selectImmediately: true)
             }
+        }else{
+             //IdentityWindowController.usesDefaultComponents == false
         }
     }
 
@@ -210,22 +220,32 @@ public class IdentityWindowController: NSWindowController,DocumentProvider,Ident
 
     var currentStep:Int = -1{
         didSet{
-            if self.tabView.tabViewItems.count > currentStep && currentStep >= 0{
-                self.tabView.selectTabViewItem(at: currentStep)
-            }else{
-                if currentStep==3 && self.creationMode==true{
-                    if let document=self.getDocument(){
-                        document.send(IdentificationStates.userHasBeenCreated)
+            if IdentityWindowController.usesDefaultComponents{
+                // Standard method
+                if self.tabView.tabViewItems.count > currentStep && currentStep >= 0{
+                    self.tabView.selectTabViewItem(at: currentStep)
+                }else{
+                    if currentStep==3 && self.creationMode==true{
+                        if let document=self.getDocument(){
+                            document.send(IdentificationStates.userHasBeenCreated)
+                        }
                     }
+                    self._userHasBeenControlled()
+                    self.identificationDelegate?.userWantsToCloseIndentityController()
                 }
-                self._userHasBeenControlled()
-                self.identificationDelegate?.userWantsToCloseIndentityController()
-            }
-            // Define a different 
-            if self._currentStepIs(self.prepareUserCreation) && Bartleby.configuration.ALLOW_ISOLATED_MODE{
-                self.leftButton.title = NSLocalizedString("Skip", comment: "Skip button tittle")
+                // Define a different
+                if self._currentStepIs(self.prepareUserCreation) && Bartleby.configuration.ALLOW_ISOLATED_MODE{
+                    self.leftButton.title = NSLocalizedString("Skip", comment: "Skip button tittle")
+                }else{
+                    self.leftButton.title = NSLocalizedString("Cancel", comment: "Cancel button tittle")
+                }
             }else{
-               self.leftButton.title = NSLocalizedString("Cancel", comment: "Cancel button tittle")
+                // IdentityWindowController.usesDefaultComponents == false
+                if self.tabView.tabViewItems.count > currentStep && currentStep >= 0{
+                    self.tabView.selectTabViewItem(at: currentStep)
+                }else{
+                    self.identificationDelegate?.userWantsToCloseIndentityController()
+                }
             }
         }
     }
@@ -249,21 +269,27 @@ public class IdentityWindowController: NSWindowController,DocumentProvider,Ident
     // MARK: - Actions
 
     @IBAction func leftAction(_ sender: Any) {
-        if let document = self.getDocument(){
-            if (Bartleby.configuration.ALLOW_ISOLATED_MODE && self._currentStepIs(self.prepareUserCreation)){
-                // This can occur on very early stage cancelation
-                // If Bartleby.configuration.ALLOW_ISOLATED_MODE
-                self._removeAllSuccessors()
-                self.append(viewController: self.createAnIsolatedUser, selectImmediately: false)
-                self.append(viewController: self.revealPassword, selectImmediately: false)
-            }else if document.metadata.isolatedUserMode{
-                // Close automatically
-                document.close()
-            }else{
-                // Normal case.
-                self._userHasBeenControlled()
-                self.identificationDelegate?.userWantsToCloseIndentityController()
+        if IdentityWindowController.usesDefaultComponents{
+
+            if let document = self.getDocument(){
+                if (Bartleby.configuration.ALLOW_ISOLATED_MODE && self._currentStepIs(self.prepareUserCreation)){
+                    // This can occur on very early stage cancelation
+                    // If Bartleby.configuration.ALLOW_ISOLATED_MODE
+                    self._removeAllSuccessors()
+                    self.append(viewController: self.createAnIsolatedUser, selectImmediately: false)
+                    self.append(viewController: self.revealPassword, selectImmediately: false)
+                }else if document.metadata.isolatedUserMode{
+                    // Close automatically
+                    document.close()
+                }else{
+                    // Normal case.
+                    self._userHasBeenControlled()
+                    self.identificationDelegate?.userWantsToCloseIndentityController()
+                }
             }
+        }else{
+            //IdentityWindowController.usesDefaultComponents == false
+             self.identificationDelegate?.userWantsToCloseIndentityController()
         }
     }
 
@@ -275,49 +301,55 @@ public class IdentityWindowController: NSWindowController,DocumentProvider,Ident
     // MARK: - IdentityStepNavigation
 
     public func didValidateStep(_ step:Int){
-        Bartleby.syncOnMain{
-            var proceedImmediately=true
-            if self.creationMode && !self._currentStepIs(self.createAnIsolatedUser) {
-                // The SMS / second factor auth has been verified or by passed
-                if self._currentStepIs(self.confirmActivation) || self._currentStepIs(self.byPassActivation){
-                    // user is confirmed.
-                    if let document=self.getDocument(){
-                        proceedImmediately = false
-                        document.currentUser.doNotCommit {
-                            // We want to update the user status
-                            // And then we will move online
-                            // It permits to use PERMISSION_BY_IDENTIFICATION_AND_ACTIVATION
-                            // for the majority of the CRUD/URD calls
-                            document.currentUser.status = .actived
-                            IdentitiesManager.synchronize(document,password:document.currentUser.password ?? Default.NO_PASSWORD, completed: { (completion) in
-                                if completion.success{
-                                    document.online=true
-                                    self.identificationIsValid=true
-                                    self.nextStep()
-                                    self.enableActions()
-                                }else{
-                                    document.log("Activation status updated did fail \(completion)", file: #file, function: #function, line: #line, category: Default.LOG_IDENTITY, decorative: false)
-                                    self.enableActions()
-                                }
-                            })
+        if IdentityWindowController.usesDefaultComponents{
+            Bartleby.syncOnMain{
+                var proceedImmediately=true
+                if self.creationMode && !self._currentStepIs(self.createAnIsolatedUser) {
+                    // The SMS / second factor auth has been verified or by passed
+                    if self._currentStepIs(self.confirmActivation) || self._currentStepIs(self.byPassActivation){
+                        // user is confirmed.
+                        if let document=self.getDocument(){
+                            proceedImmediately = false
+                            document.currentUser.doNotCommit {
+                                // We want to update the user status
+                                // And then we will move online
+                                // It permits to use PERMISSION_BY_IDENTIFICATION_AND_ACTIVATION
+                                // for the majority of the CRUD/URD calls
+                                document.currentUser.status = .actived
+                                IdentitiesManager.synchronize(document,password:document.currentUser.password ?? Default.NO_PASSWORD, completed: { (completion) in
+                                    if completion.success{
+                                        document.online=true
+                                        self.identificationIsValid=true
+                                        self.nextStep()
+                                        self.enableActions()
+                                    }else{
+                                        document.log("Activation status updated did fail \(completion)", file: #file, function: #function, line: #line, category: Default.LOG_IDENTITY, decorative: false)
+                                        self.enableActions()
+                                    }
+                                })
+                            }
                         }
                     }
-                }
-                if proceedImmediately{
-                    self.nextStep()
-                    self.enableActions()
-                }
-                if step > 2 {
-                    self.leftButton.isEnabled=false
-                }
-            }else{
-                // Not in creation Mode
-                // or we are using an Isolated Created user
-                if proceedImmediately{
-                    self.nextStep()
-                    self.enableActions()
+                    if proceedImmediately{
+                        self.nextStep()
+                        self.enableActions()
+                    }
+                    if step > 2 {
+                        self.leftButton.isEnabled=false
+                    }
+                }else{
+                    // Not in creation Mode
+                    // or we are using an Isolated Created user
+                    if proceedImmediately{
+                        self.nextStep()
+                        self.enableActions()
+                    }
                 }
             }
+        }else{
+             //IdentityWindowController.usesDefaultComponents == false
+            self.nextStep()
+            self.enableActions()
         }
     }
 
