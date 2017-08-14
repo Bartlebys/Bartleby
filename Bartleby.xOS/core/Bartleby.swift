@@ -455,7 +455,20 @@ open class Bartleby:NSObject,AliasResolver {
         }
     }
     
-    
+
+
+    /// synchronously but thread-safely invoke passed-in block on main thread avoiding deadlock
+    /// This method allows to synchronize blocks that throws
+    /// - Parameter block: the block
+    open static func syncThrowableOnMain(execute block: () throws -> Void) rethrows-> (){
+        if Thread.isMainThread {
+            try block()
+        } else {
+           try DispatchQueue.main.sync(execute: block)
+        }
+    }
+
+
     /// synchronously but thread-safely invoke passed-in block on main thread avoiding deadlock
     open static func syncOnMainAndReturn<T>(execute work: () throws -> T) rethrows -> T {
         if Thread.isMainThread {
