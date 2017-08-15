@@ -527,6 +527,7 @@
 		E5B128FE1D1C317300D61261 /* AccessControlTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BDEF70A1C9FE4A300D9FB70 /* AccessControlTests.swift */; };
 		E5B129031D1C317300D61261 /* TestCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = E52F94881D01C23A005BDA2D /* TestCase.swift */; };
 		E5B129041D1C317300D61261 /* TestsConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = E52F94891D01C23A005BDA2D /* TestsConfiguration.swift */; };
+		E5B18CD81F430819006FAB7F /* XImage+Data.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5B18CD61F430819006FAB7F /* XImage+Data.swift */; };
 		E5F5384B1DEAE4EA008DEBF7 /* MultiDocumentsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5F5384A1DEAE4EA008DEBF7 /* MultiDocumentsTests.swift */; };
 /* End PBXBuildFile section */
 
@@ -851,6 +852,7 @@
 		E590EB231D0EF8DC00150E0B /* UsersCreationLoadTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UsersCreationLoadTest.swift; sourceTree = "<group>"; };
 		E5ADEEA21F3F575E00371DA1 /* MasterKey.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MasterKey.swift; sourceTree = "<group>"; };
 		E5ADEEA81F3F6AE300371DA1 /* MasterKey+Helper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MasterKey+Helper.swift"; sourceTree = "<group>"; };
+		E5B18CD61F430819006FAB7F /* XImage+Data.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "XImage+Data.swift"; sourceTree = "<group>"; };
 		E5CEFB511C3BFCBB00C36CBA /* BartlebyKit-Bridging-Header.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "BartlebyKit-Bridging-Header.h"; sourceTree = "<group>"; };
 		E5F5384A1DEAE4EA008DEBF7 /* MultiDocumentsTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MultiDocumentsTests.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -1330,6 +1332,7 @@
 		E5450E561F3A1F83008FD1C3 /* extensions */ = {
 			isa = PBXGroup;
 			children = (
+				E5B18CD61F430819006FAB7F /* XImage+Data.swift */,
 				E5450E571F3A1F83008FD1C3 /* Data+String.swift */,
 				E5450E581F3A1F83008FD1C3 /* NSRange+Helpers.swift */,
 				E5450E591F3A1F83008FD1C3 /* String+Helpers.swift */,
@@ -1647,6 +1650,7 @@
 				E5450EE91F3A1F83008FD1C3 /* ReadBoxesByQuery.swift in Sources */,
 				E5450EA11F3A1F83008FD1C3 /* ManagedModel.swift in Sources */,
 				E5450EA31F3A1F83008FD1C3 /* Metrics.swift in Sources */,
+				E5B18CD81F430819006FAB7F /* XImage+Data.swift in Sources */,
 				E5450F131F3A1F83008FD1C3 /* UpdateUser.swift in Sources */,
 				E54510531F3A1F84008FD1C3 /* TriggersForIndexes.swift in Sources */,
 				E5450FE11F3A1F84008FD1C3 /* ConsolidableProgression.swift in Sources */,

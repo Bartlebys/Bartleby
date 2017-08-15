@@ -467,9 +467,9 @@ public class CommandLine {
       }
       
       /* Remove attached argument from flag */
-      let splitFlag = flagWithArg.split(by: ArgumentAttacher, maxSplits: 1)
-      let flag = splitFlag[0]
-      let attachedArg: String? = splitFlag.count == 2 ? splitFlag[1] : nil
+      let splitFlag = flagWithArg.split(separator: ArgumentAttacher, maxSplits: 1)
+      let flag = String(splitFlag[0])
+      let attachedArg: String? = splitFlag.count == 2 ? String(splitFlag[1]) : nil
       
       var flagMatched = false
       for option in _options where option.flagMatch(flag) {
