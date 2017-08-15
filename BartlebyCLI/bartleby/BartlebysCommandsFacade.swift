@@ -48,6 +48,7 @@ struct BartlebysCommandFacade {
         s += "\nvalid calls are S.V.O sentences like:\"bartleby <verb> [options]\""
         s += "\nAvailable verbs:"
         s += "\n"
+        s += "\n\t\(executableName) addKey --app-shared-key <app shared key> --file <key FilePath>"
         s += "\n\t\(executableName) install -m <Manifest FilePath>"
         s += "\n\t\(executableName) create <Manifest FilePath>"
         s += "\n\t\(executableName) generate <Manifest FilePath>"
