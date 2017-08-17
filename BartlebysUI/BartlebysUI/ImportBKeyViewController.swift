@@ -26,7 +26,6 @@ open class ImportBKeyViewController:IdentityStepViewController {
 
     override open func viewWillAppear() {
         super.viewWillAppear()
-        self.stepDelegate?.disableActions()
         self.stepDelegate?.disableProgressIndicator()
      
     }
