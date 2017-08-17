@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="13168.3" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" customObjectInstantitationMethod="direct">
+    <dependencies>
+        <deployment identifier="macosx"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="13168.3"/>
+        <capability name="box content view" minToolsVersion="7.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <customObject id="-2" userLabel="File's Owner" customClass="ImportBKeyViewController" customModule="BartlebysUI" customModuleProvider="target">
+            <connections>
+                <outlet property="box" destination="Gw7-4D-gjH" id="Z7Y-zM-fI9"/>
+                <outlet property="deleteTheKeyCheckBox" destination="xzm-M8-xGe" id="RxL-iC-36D"/>
+                <outlet property="filePathField" destination="aTy-4R-Sl5" id="txq-Zx-pme"/>
+                <outlet property="selectionButton" destination="8TD-EB-nw4" id="UGs-Nf-n8S"/>
+                <outlet property="view" destination="Hz6-mo-xeY" id="0bl-1N-x8E"/>
+            </connections>
+        </customObject>
+        <customObject id="-1" userLabel="First Responder" customClass="FirstResponder"/>
+        <customObject id="-3" userLabel="Application" customClass="NSObject"/>
+        <customView id="Hz6-mo-xeY">
+            <rect key="frame" x="0.0" y="0.0" width="494" height="220"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+            <subviews>
+                <box title="You need to import a key to decrypt this file " translatesAutoresizingMaskIntoConstraints="NO" id="Gw7-4D-gjH">
+                    <rect key="frame" x="7" y="6" width="480" height="204"/>
+                    <view key="contentView" id="P0p-1C-tfA">
+                        <rect key="frame" x="2" y="2" width="476" height="187"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <button verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="8TD-EB-nw4">
+                                <rect key="frame" x="303" y="110" width="157" height="32"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                <buttonCell key="cell" type="push" title="Select a &quot;.bkey&quot; file" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="KXQ-wz-6QP">
+                                    <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                    <font key="font" metaFont="system"/>
+                                </buttonCell>
+                                <connections>
+                                    <action selector="didSelect:" target="-2" id="hbT-KD-aXa"/>
+                                </connections>
+                            </button>
+                            <textField verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="aTy-4R-Sl5">
+                                <rect key="frame" x="14" y="147" width="444" height="22"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" state="on" borderStyle="bezel" drawsBackground="YES" id="pOR-CF-hUD">
+                                    <font key="font" metaFont="system"/>
+                                    <color key="textColor" name="textColor" catalog="System" colorSpace="catalog"/>
+                                    <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                </textFieldCell>
+                            </textField>
+                            <button fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="xzm-M8-xGe">
+                                <rect key="frame" x="13" y="119" width="238" height="18"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+                                <buttonCell key="cell" type="check" title="delete the key on successful import" bezelStyle="regularSquare" imagePosition="left" state="on" inset="2" id="UcV-YC-8oU">
+                                    <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
+                                    <font key="font" metaFont="system"/>
+                                </buttonCell>
+                            </button>
+                        </subviews>
+                    </view>
+                </box>
+            </subviews>
+            <constraints>
+                <constraint firstItem="Gw7-4D-gjH" firstAttribute="leading" secondItem="Hz6-mo-xeY" secondAttribute="leading" constant="10" id="NyZ-jo-n0N"/>
+                <constraint firstAttribute="trailing" secondItem="Gw7-4D-gjH" secondAttribute="trailing" constant="10" id="PN7-FU-X2o"/>
+                <constraint firstItem="Gw7-4D-gjH" firstAttribute="top" secondItem="Hz6-mo-xeY" secondAttribute="top" constant="10" id="gSF-1I-S7m"/>
+                <constraint firstAttribute="bottom" secondItem="Gw7-4D-gjH" secondAttribute="bottom" constant="10" id="pOT-QJ-Tn0"/>
+            </constraints>
+        </customView>
+        <viewController id="xoS-3C-GRV" customClass="ImportBKeyViewController" customModule="BartlebysUI" customModuleProvider="target"/>
+    </objects>
+</document>

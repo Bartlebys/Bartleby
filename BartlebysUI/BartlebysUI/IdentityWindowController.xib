@@ -11,6 +11,7 @@
                 <outlet property="byPassActivation" destination="xmu-0E-c1e" id="eNx-Hi-hzl"/>
                 <outlet property="confirmActivation" destination="uEZ-ba-9Iq" id="jdK-5O-Kic"/>
                 <outlet property="createAnIsolatedUser" destination="17d-UX-B4c" id="DY8-tK-lvW"/>
+                <outlet property="importBkey" destination="12d-Gb-2k0" id="euM-qy-67k"/>
                 <outlet property="leftButton" destination="fDC-hP-g9s" id="Qju-DJ-VpW"/>
                 <outlet property="prepareUserCreation" destination="DaE-jK-97s" id="i0n-BR-2lC"/>
                 <outlet property="progressIndicator" destination="v9q-il-xM5" id="L2c-x3-HjD"/>
@@ -102,5 +103,6 @@
             </connections>
         </window>
         <viewController id="Viv-WP-Y5M" customClass="RecoverSugarViewController" customModule="BartlebysUI" customModuleProvider="target"/>
+        <viewController id="12d-Gb-2k0" customClass="ImportBKeyViewController" customModule="BartlebysUI" customModuleProvider="target"/>
     </objects>
 </document>

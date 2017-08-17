@@ -11,11 +11,11 @@ import Cocoa
 
 // Allows to by pass the activation process
 // If the Secondary Authentication Factor is not required `!document.metadata.secondaryAuthFactorRequired``
-class ByPassActivationViewController: IdentityStepViewController{
+open class ByPassActivationViewController: IdentityStepViewController{
 
-    override var nibName : NSNib.Name { return NSNib.Name("ByPassActivationViewController") }
+    override open var nibName : NSNib.Name { return NSNib.Name("ByPassActivationViewController") }
 
-    override func viewWillAppear() {
+    override open func viewWillAppear() {
         super .viewWillAppear()
         self.stepDelegate?.didValidateStep(self.stepIndex)
     }

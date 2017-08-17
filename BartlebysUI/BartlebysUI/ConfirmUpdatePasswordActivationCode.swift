@@ -9,7 +9,7 @@
 import Cocoa
 import BartlebyKit
 
-class ConfirmUpdatePasswordActivationCode: IdentityStepViewController {
+open class ConfirmUpdatePasswordActivationCode: IdentityStepViewController {
 
     @IBOutlet weak var consignsLabel: NSTextField!
 
@@ -22,13 +22,13 @@ class ConfirmUpdatePasswordActivationCode: IdentityStepViewController {
     var confirmationIsImpossible=false
 
 
-    override var nibName : NSNib.Name { return NSNib.Name("ConfirmUpdatePasswordActivationCode") }
+    override open var nibName : NSNib.Name { return NSNib.Name("ConfirmUpdatePasswordActivationCode") }
 
-    override func viewDidLoad() {
+    override open func viewDidLoad() {
         super.viewDidLoad()
     }
 
-    override func viewWillAppear() {
+    override open func viewWillAppear() {
         super.viewWillAppear()
         if let document=self.documentProvider?.getDocument(){
             self.consignsLabel.stringValue=NSLocalizedString("We have sent a confirmation code to: ", comment: "We have sent a confirmation code to: ")+document.currentUser.fullPhoneNumber
@@ -41,7 +41,7 @@ class ConfirmUpdatePasswordActivationCode: IdentityStepViewController {
         }
     }
 
-    override func viewDidAppear() {
+    override open func viewDidAppear() {
         super.viewDidAppear()
         self.stepDelegate?.disableActions()
         if let document = self.documentProvider?.getDocument(){
@@ -81,7 +81,7 @@ class ConfirmUpdatePasswordActivationCode: IdentityStepViewController {
     }
 
 
-    override func proceedToValidation() {
+    override open func proceedToValidation() {
         super.proceedToValidation()
         self.stepDelegate?.disableActions()
         if let document = self.documentProvider?.getDocument(),

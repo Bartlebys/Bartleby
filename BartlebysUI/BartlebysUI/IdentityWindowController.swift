@@ -47,10 +47,10 @@ public protocol IdentityStep{
  3# Register as IdentificationDelegate
 
  */
-public class IdentityWindowController: NSWindowController,DocumentProvider,IdentityStepNavigation {
+open class IdentityWindowController: NSWindowController,DocumentProvider,IdentityStepNavigation {
 
 
-    override public var windowNibName: NSNib.Name? { return NSNib.Name("IdentityWindowController") }
+    override open var windowNibName: NSNib.Name? { return NSNib.Name("IdentityWindowController") }
 
     // MARK: DocumentDependent
 
@@ -92,27 +92,35 @@ public class IdentityWindowController: NSWindowController,DocumentProvider,Ident
 
     public var passwordCandidate:String=""
 
+
+    // MARK: - Components
+
+    // You can replace the components
+    // By overriding the IdentityWindowController.
+
+    @IBOutlet open var prepareUserCreation: PrepareUserCreationViewController!
+
+    @IBOutlet open var createAnIsolatedUser: CreateAnIsolatedUser!
+
+    @IBOutlet open var byPassActivation: ByPassActivationViewController!
+
+    @IBOutlet open var confirmActivation: ConfirmActivationViewController!
+
+    @IBOutlet open var setUpCollaborativeServer: SetupCollaborativeServerViewController!
+
+    @IBOutlet open var revealPassword: RevealPasswordViewController!
+
+    @IBOutlet open var validatePassword: ValidatePasswordViewController!
+
+    @IBOutlet open var updatePassword: UpdatePasswordViewController!
+
+    @IBOutlet open var updatePasswordConfirmation: ConfirmUpdatePasswordActivationCode!
+
+    @IBOutlet open var recoverSugar: RecoverSugarViewController!
+
+    @IBOutlet open var importBkey: ImportBKeyViewController!
+
     // MARK: - Outlets
-
-    @IBOutlet var prepareUserCreation: PrepareUserCreationViewController!
-
-    @IBOutlet var createAnIsolatedUser: CreateAnIsolatedUser!
-
-    @IBOutlet var byPassActivation: ByPassActivationViewController!
-
-    @IBOutlet var confirmActivation: ConfirmActivationViewController!
-
-    @IBOutlet var setUpCollaborativeServer: SetupCollaborativeServerViewController!
-
-    @IBOutlet var revealPassword: RevealPasswordViewController!
-
-    @IBOutlet var validatePassword: ValidatePasswordViewController!
-
-    @IBOutlet var updatePassword: UpdatePasswordViewController!
-
-    @IBOutlet var updatePasswordConfirmation: ConfirmUpdatePasswordActivationCode!
-
-    @IBOutlet var recoverSugar: RecoverSugarViewController!
 
     @IBOutlet weak var tabView: NSTabView!
 
@@ -125,9 +133,9 @@ public class IdentityWindowController: NSWindowController,DocumentProvider,Ident
 
     // MARK: - Life cycle
 
-    override public func windowDidLoad() {
+    override open func windowDidLoad() {
         super.windowDidLoad()
-        self._configureControllers()
+        self.configureControllers()
         self.progressIndicator.isHidden=true
         if Bartleby.configuration.DEVELOPER_MODE{
             if let document=self.getDocument(){
@@ -136,7 +144,7 @@ public class IdentityWindowController: NSWindowController,DocumentProvider,Ident
         }
     }
 
-    fileprivate func _configureControllers() -> () {
+    open func configureControllers() -> () {
         if IdentityWindowController.usesDefaultComponents{
             if let document=self.getDocument(){
                 if document.metadata.currentUserUID == Default.NO_UID {
@@ -151,12 +159,17 @@ public class IdentityWindowController: NSWindowController,DocumentProvider,Ident
                     }else{
                         self.append(viewController: self.byPassActivation, selectImmediately: false)
                     }
-
                     // Revelation of the password
                     self.append(viewController: self.revealPassword, selectImmediately: false)
                 }else{
                     self.creationMode=false
-                    self.append(viewController: self.validatePassword, selectImmediately: true)
+                    if document.metadata.sugar == Default.NO_SUGAR{
+                        // we need to import a bkey
+                        self.append(viewController: self.importBkey, selectImmediately: true)
+                        self.append(viewController: self.validatePassword, selectImmediately: false)
+                    }else{
+                        self.append(viewController: self.validatePassword, selectImmediately: true)
+                    }
                 }
             }
         }else{

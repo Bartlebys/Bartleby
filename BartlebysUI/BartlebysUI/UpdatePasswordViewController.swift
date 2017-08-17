@@ -9,21 +9,21 @@
 import Cocoa
 import BartlebyKit
 
-class UpdatePasswordViewController: IdentityStepViewController{
+open class UpdatePasswordViewController: IdentityStepViewController{
 
-    override var nibName : NSNib.Name { return NSNib.Name("UpdatePasswordViewController") }
+    override open var nibName : NSNib.Name { return NSNib.Name("UpdatePasswordViewController") }
 
     @IBOutlet weak var passwordTextField: NSTextField!
 
     @IBOutlet weak var refreshButton: NSButton!
 
     @IBOutlet weak var messageTextField: NSTextField!
-    override func viewDidLoad() {
+    override open func viewDidLoad() {
         super.viewDidLoad()
         // Do view setup here.
     }
 
-    override func viewWillAppear() {
+    override open func viewWillAppear() {
         super.viewWillAppear()
         self.refresh(self)
     }
@@ -32,7 +32,7 @@ class UpdatePasswordViewController: IdentityStepViewController{
         self.passwordTextField.stringValue=Bartleby.randomStringWithLength(8,signs:Bartleby.configuration.PASSWORD_CHAR_CART)
     }
 
-    override func proceedToValidation(){
+    override open func proceedToValidation(){
         super.proceedToValidation()
         self.documentProvider?.getDocument()?.send(IdentificationStates.updatePassword)
         self.identityWindowController?.passwordCandidate=self.passwordTextField.stringValue

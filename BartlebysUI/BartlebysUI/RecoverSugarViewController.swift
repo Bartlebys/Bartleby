@@ -9,9 +9,9 @@
 import Cocoa
 import BartlebyKit
 
-class RecoverSugarViewController: IdentityStepViewController {
+open class RecoverSugarViewController: IdentityStepViewController {
 
-    override var nibName : NSNib.Name { return NSNib.Name("RecoverSugarViewController") }
+    override open var nibName : NSNib.Name { return NSNib.Name("RecoverSugarViewController") }
 
     @IBOutlet weak var consignsLabel: NSTextField!
 
@@ -19,12 +19,12 @@ class RecoverSugarViewController: IdentityStepViewController {
 
     @IBOutlet weak var messageTextField: NSTextField!
 
-    override func viewDidLoad() {
+    override open func viewDidLoad() {
         super.viewDidLoad()
         // Do view setup here.
     }
 
-    override func viewWillAppear() {
+    override open func viewWillAppear() {
         super.viewWillAppear()
         if let document=self.documentProvider?.getDocument(){
             document.send(IdentificationStates.recoverSugar)
@@ -44,7 +44,7 @@ class RecoverSugarViewController: IdentityStepViewController {
         }
     }
 
-    override func proceedToValidation() {
+    override open func proceedToValidation() {
         super.proceedToValidation()
         let code = PString.trim(self.codeTextField.stringValue)
         if code.characters.count > 3 {

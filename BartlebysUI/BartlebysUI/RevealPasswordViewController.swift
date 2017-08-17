@@ -9,19 +9,19 @@
 import Cocoa
 import BartlebyKit
 
-class RevealPasswordViewController: IdentityStepViewController {
+open class RevealPasswordViewController: IdentityStepViewController {
 
-    override var nibName : NSNib.Name { return NSNib.Name("RevealPasswordViewController") }
+    override open var nibName : NSNib.Name { return NSNib.Name("RevealPasswordViewController") }
 
     @IBOutlet weak var explanationsTextField: NSTextField!
 
     @IBOutlet weak var passwordTextField: NSTextField!
 
-    override func viewDidLoad() {
+    override open func viewDidLoad() {
         super.viewDidLoad()
     }
 
-    override func viewWillAppear() {
+    override open func viewWillAppear() {
         super.viewWillAppear()
         if let document=self.documentProvider?.getDocument(){
             document.send(IdentificationStates.revealPassword)
@@ -30,7 +30,7 @@ class RevealPasswordViewController: IdentityStepViewController {
         }
     }
 
-    override func proceedToValidation(){
+    override open func proceedToValidation(){
         super.proceedToValidation()
         if let _ = self.documentProvider?.getDocument(){
             self.stepDelegate?.didValidateStep( self.stepIndex)

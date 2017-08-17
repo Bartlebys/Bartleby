@@ -9,10 +9,10 @@
 import Cocoa
 import BartlebyKit
 
-class ConfirmActivationViewController: IdentityStepViewController{
+open class ConfirmActivationViewController: IdentityStepViewController{
 
 
-    override var nibName : NSNib.Name { return NSNib.Name("ConfirmActivationViewController") }
+    override open var nibName : NSNib.Name { return NSNib.Name("ConfirmActivationViewController") }
 
     @IBOutlet weak var confirmLabel: NSTextField!
 
@@ -22,7 +22,7 @@ class ConfirmActivationViewController: IdentityStepViewController{
 
     var locker:Locker?
 
-    override func viewWillAppear() {
+    override open func viewWillAppear() {
         super.viewWillAppear()
         if let document=self.documentProvider?.getDocument(){
             document.send(IdentificationStates.confirmAccount)
@@ -36,7 +36,7 @@ class ConfirmActivationViewController: IdentityStepViewController{
         }
     }
 
-    override func proceedToValidation(){
+    override open func proceedToValidation(){
         super.proceedToValidation()
         self.stepDelegate?.disableActions()
         if let locker=self.locker{

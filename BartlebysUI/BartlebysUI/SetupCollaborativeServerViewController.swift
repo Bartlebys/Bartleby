@@ -9,9 +9,9 @@
 import Cocoa
 import BartlebyKit
 
-class SetupCollaborativeServerViewController: IdentityStepViewController{
+open class SetupCollaborativeServerViewController: IdentityStepViewController{
 
-    override var nibName : NSNib.Name { return NSNib.Name("SetupCollaborativeServerViewController") }
+    override open var nibName : NSNib.Name { return NSNib.Name("SetupCollaborativeServerViewController") }
 
     @IBOutlet weak var box: NSBox!
 
@@ -21,7 +21,7 @@ class SetupCollaborativeServerViewController: IdentityStepViewController{
 
     @IBOutlet weak var messageTextField: NSTextField!
 
-    override func viewWillAppear() {
+    override open func viewWillAppear() {
         super.viewWillAppear()
         self.documentProvider?.getDocument()?.send(IdentificationStates.selectTheServer)
         self.explanationsTextField.stringValue=NSLocalizedString("Select or register a Collaborative Server  API URL.", comment: "Select the Collaborative Server API URL")
@@ -33,7 +33,7 @@ class SetupCollaborativeServerViewController: IdentityStepViewController{
         }
     }
 
-    override func proceedToValidation(){
+    override open func proceedToValidation(){
         super.proceedToValidation()
         if let document=self.documentProvider?.getDocument(),
             let identityWindowController=self.identityWindowController{

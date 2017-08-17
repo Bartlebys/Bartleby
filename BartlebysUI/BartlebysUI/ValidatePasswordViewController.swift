@@ -9,9 +9,9 @@
 import Cocoa
 import BartlebyKit
 
-class ValidatePasswordViewController: IdentityStepViewController{
+open class ValidatePasswordViewController: IdentityStepViewController{
 
-    override var nibName : NSNib.Name { return NSNib.Name("ValidatePasswordViewController") }
+    override open var nibName : NSNib.Name { return NSNib.Name("ValidatePasswordViewController") }
 
     @IBOutlet weak var emailLabel: NSTextField!
 
@@ -31,7 +31,7 @@ class ValidatePasswordViewController: IdentityStepViewController{
 
     @IBOutlet weak var resetMyPasswordButton: NSButton!
 
-    override func viewWillAppear() {
+    override open func viewWillAppear() {
         super.viewWillAppear()
         if let document = self.documentProvider?.getDocument(){
 
@@ -95,7 +95,7 @@ class ValidatePasswordViewController: IdentityStepViewController{
 
 
 
-    override func proceedToValidation(){
+    override open func proceedToValidation(){
         super.proceedToValidation()
         if let document=self.documentProvider?.getDocument(){
                 let documentSugar = document.metadata.sugar
