@@ -163,7 +163,8 @@ open class IdentityWindowController: NSWindowController,DocumentProvider,Identit
                     self.append(viewController: self.revealPassword, selectImmediately: false)
                 }else{
                     self.creationMode=false
-                    if document.metadata.sugar == Default.NO_SUGAR{
+                    let isolatedMode = document.metadata.collaborationServerURL == nil
+                    if document.metadata.sugar == Default.NO_SUGAR && isolatedMode{
                         // we need to import a bkey
                         self.append(viewController: self.importBkey, selectImmediately: true)
                         self.append(viewController: self.validatePassword, selectImmediately: false)
