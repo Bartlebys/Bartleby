@@ -157,7 +157,7 @@ import Foundation
 			self.mode = Locker.Mode(rawValue: try values.decode(String.self,forKey:.mode)) ?? .autoDestructive
 			self.verificationMethod = Locker.VerificationMethod(rawValue: try values.decode(String.self,forKey:.verificationMethod)) ?? .online
 			self.security = Locker.Security(rawValue: try values.decode(String.self,forKey:.security)) ?? .secondaryAuthFactorRequired
-			self.code = try values.decode(String.self,forKey:.code)
+			self.code = try self.decodeCryptedString(codingKey: .code, from: values)
 			self.numberOfAttempt = try values.decode(Int.self,forKey:.numberOfAttempt)
 			self.startDate = try values.decode(Date.self,forKey:.startDate)
 			self.endDate = try values.decode(Date.self,forKey:.endDate)
@@ -174,7 +174,7 @@ import Foundation
 		try container.encode(self.mode.rawValue ,forKey:.mode)
 		try container.encode(self.verificationMethod.rawValue ,forKey:.verificationMethod)
 		try container.encode(self.security.rawValue ,forKey:.security)
-		try container.encode(self.code,forKey:.code)
+		try self.encodeCryptedString(value: self.code, codingKey: .code, container: &container)
 		try container.encode(self.numberOfAttempt,forKey:.numberOfAttempt)
 		try container.encode(self.startDate,forKey:.startDate)
 		try container.encode(self.endDate,forKey:.endDate)

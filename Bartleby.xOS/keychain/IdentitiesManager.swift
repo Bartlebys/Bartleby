@@ -407,8 +407,4 @@ open class IdentitiesManager {
         
         return false
     }
-    
-    
-    
-    
 }
