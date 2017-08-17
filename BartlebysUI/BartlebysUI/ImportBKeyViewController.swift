@@ -6,6 +6,7 @@
 //  Copyright © 2017 Chaosmos SAS. All rights reserved.
 //
 
+import Foundation
 import Cocoa
 import BartlebyKit
 
@@ -58,17 +59,27 @@ open class ImportBKeyViewController:IdentityStepViewController {
 
     override open func proceedToValidation(){
         super.proceedToValidation()
-        if let keyURL = self.keyURL{
+        if let keyURL = self.keyURL,
+            let document = self.documentProvider?.getDocument(){
             // Proceed to import
             do{
                 let cryptedData = try Data(contentsOf: keyURL)
                 let data = try Bartleby.cryptoDelegate.decryptData(cryptedData, useKey: Bartleby.configuration.KEY)
                 let masterKey = try JSON.decoder.decode(MasterKey.self, from:data)
-                print(masterKey)
+                document.metadata.sugar = masterKey.key
+                if Bartleby.configuration.DEVELOPER_MODE{
+                    print("The password is: \(masterKey.password)")
+                }
+                /// When the locker is verifyed use the sugar to retrieve the Collections and blocks data
+                try document.reloadCollectionData()
+                try document.metadata.putSomeSugarInYourBowl()
+                if self.deleteTheKeyCheckBox.state == .on{
+                    try FileManager.default.removeItem(at: keyURL)
+                }
+                self.stepDelegate?.didValidateStep(self.stepIndex)
             }catch{
                 self.displayMessage("\(error)")
             }
-            self.stepDelegate?.didValidateStep(self.stepIndex)
         }
     }
 
