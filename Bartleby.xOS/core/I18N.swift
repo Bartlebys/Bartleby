@@ -31,13 +31,31 @@ public struct I18N {
 
     fileprivate static var _languageNames:[String]?
 
-    static var defaultLanguageCode:String {
+    public static var defaultLanguageCode:String {
         let currentLocale:NSLocale = NSLocale(localeIdentifier: NSLocale.current.identifier)
         return currentLocale.object(forKey: NSLocale.Key.languageCode) as! String
     }
 
+    public static  func languageName(forCode:String)->String?{
+        for language in I18N.languages{
+            if language.code == forCode{
+                return language.displayName
+            }
+        }
+        return nil
+    }
+
+    public static  func localizedLanguageName(forCode:String)->String?{
+        for language in I18N.languages{
+            if language.code == forCode{
+                return language.localizedDisplayName
+            }
+        }
+        return nil
+    }
+
     // The Language names in their own locale
-    static var languageNames:[String] {
+    public static var languageNames:[String] {
         if let names = I18N._languageNames{
             return names
         }
@@ -49,7 +67,7 @@ public struct I18N {
 
 
     // The localized Language names
-    static var localizedLanguageNames:[String] {
+    public static var localizedLanguageNames:[String] {
         if let names = I18N._localizedLanguageNames{
             return names
         }
@@ -60,7 +78,7 @@ public struct I18N {
     }
 
     // the language codes
-    static var languageCodes:[String] {
+    public static var languageCodes:[String] {
         if let codes = I18N._languageCodes{
             return codes
         }
@@ -72,7 +90,7 @@ public struct I18N {
 
 
     /// A sorted language list.
-    static var languages:[Language]{
+    public static var languages:[Language]{
         if let listedLanguages = I18N._languages{
             return listedLanguages
         }
@@ -102,5 +120,6 @@ public struct I18N {
         I18N._languages = sortedLangages
         return I18N._languages!
     }
+
 
 }
