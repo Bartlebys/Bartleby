@@ -31,6 +31,8 @@ open class Bartleby:NSObject,AliasResolver {
     static let b_version = "1.0"
     static let b_release = "0"
 
+    open static let defaultLanguageCode = I18N.defaultLanguageCode
+
     /// The version string of Bartleby framework
     open static var versionString: String {
         get {
@@ -477,7 +479,5 @@ open class Bartleby:NSObject,AliasResolver {
             return try DispatchQueue.main.sync(execute: work)
         }
     }
-    
 
-    
 }

@@ -35,6 +35,9 @@ import Foundation
 	//Collectible protocol: The Creator UID - Can be used for ACL purposes automatically injected in new entities Factories
 	@objc dynamic open var creatorUID:String = Default.NO_UID
 
+	//The I18N base language code
+	@objc dynamic open var languageCode:String = Bartleby.defaultLanguageCode
+
 	//The UIDS of the owners
 	@objc dynamic open var ownedBy:[String] = [String]()  {
 	    didSet { 
@@ -125,6 +128,7 @@ import Foundation
 		case _id
 		case externalID
 		case creatorUID
+		case languageCode
 		case ownedBy
 		case freeRelations
 		case owns
@@ -144,6 +148,7 @@ import Foundation
 			self._id = try values.decode(String.self,forKey:._id)
 			self.externalID = try values.decode(String.self,forKey:.externalID)
 			self.creatorUID = try values.decode(String.self,forKey:.creatorUID)
+			self.languageCode = try values.decode(String.self,forKey:.languageCode)
 			self.ownedBy = try values.decode([String].self,forKey:.ownedBy)
 			self.freeRelations = try values.decode([String].self,forKey:.freeRelations)
 			self.summary = try values.decodeIfPresent(String.self,forKey:.summary)
@@ -158,6 +163,7 @@ import Foundation
 		try container.encode(self._id,forKey:._id)
 		try container.encode(self.externalID,forKey:.externalID)
 		try container.encode(self.creatorUID,forKey:.creatorUID)
+		try container.encode(self.languageCode,forKey:.languageCode)
 		try container.encode(self.ownedBy,forKey:.ownedBy)
 		try container.encode(self.freeRelations,forKey:.freeRelations)
 		try container.encodeIfPresent(self.summary,forKey:.summary)
@@ -173,7 +179,7 @@ import Foundation
     /// Return all the exposed instance variables keys. (Exposed == public and modifiable).
      open var exposedKeys:[String] {
         var exposed=[String]()
-        exposed.append(contentsOf:["_id","externalID","creatorUID","ownedBy","freeRelations","owns","summary","ephemeral","changedKeys","commitCounter"])
+        exposed.append(contentsOf:["_id","externalID","creatorUID","languageCode","ownedBy","freeRelations","owns","summary","ephemeral","changedKeys","commitCounter"])
         return exposed
     }
 
@@ -197,6 +203,10 @@ import Foundation
             case "creatorUID":
                 if let casted=value as? String{
                     self.creatorUID=casted
+                }
+            case "languageCode":
+                if let casted=value as? String{
+                    self.languageCode=casted
                 }
             case "ownedBy":
                 if let casted=value as? [String]{
@@ -247,6 +257,8 @@ import Foundation
                return self.externalID
             case "creatorUID":
                return self.creatorUID
+            case "languageCode":
+               return self.languageCode
             case "ownedBy":
                return self.ownedBy
             case "freeRelations":

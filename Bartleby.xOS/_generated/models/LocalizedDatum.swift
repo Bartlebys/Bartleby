@@ -20,15 +20,6 @@ import Foundation
         return "LocalizedDatum"
     }
 
-	//For example fr_FR (locale.languageCode)
-	@objc dynamic open var languageCode:String = "en_EN" {
-	    didSet { 
-	       if !self.wantsQuietChanges && languageCode != oldValue {
-	            self.provisionChanges(forKey: "languageCode",oldValue: oldValue,newValue: languageCode) 
-	       } 
-	    }
-	}
-
 	//the localized key
 	@objc dynamic open var key:String = "" {
 	    didSet { 
@@ -56,35 +47,44 @@ import Foundation
 	    }
 	}
 
+	//The localized double value
+	@objc dynamic open var numberValue:Double = 0  {
+	    didSet { 
+	       if !self.wantsQuietChanges && numberValue != oldValue {
+	            self.provisionChanges(forKey: "numberValue",oldValue: oldValue,newValue: numberValue)  
+	       } 
+	    }
+	}
+
 
     // MARK: - Codable
 
 
     public enum LocalizedDatumCodingKeys: String,CodingKey{
-		case languageCode
 		case key
 		case stringValue
 		case dataValue
+		case numberValue
     }
 
     required public init(from decoder: Decoder) throws{
 		try super.init(from: decoder)
         try self.quietThrowingChanges {
 			let values = try decoder.container(keyedBy: LocalizedDatumCodingKeys.self)
-			self.languageCode = try values.decode(String.self,forKey:.languageCode)
 			self.key = try values.decode(String.self,forKey:.key)
 			self.stringValue = try values.decodeIfPresent(String.self,forKey:.stringValue)
 			self.dataValue = try values.decodeIfPresent(Data.self,forKey:.dataValue)
+			self.numberValue = try values.decode(Double.self,forKey:.numberValue)
         }
     }
 
     override open func encode(to encoder: Encoder) throws {
 		try super.encode(to:encoder)
 		var container = encoder.container(keyedBy: LocalizedDatumCodingKeys.self)
-		try container.encode(self.languageCode,forKey:.languageCode)
 		try container.encode(self.key,forKey:.key)
 		try container.encodeIfPresent(self.stringValue,forKey:.stringValue)
 		try container.encodeIfPresent(self.dataValue,forKey:.dataValue)
+		try container.encode(self.numberValue,forKey:.numberValue)
     }
 
 
@@ -93,7 +93,7 @@ import Foundation
     /// Return all the exposed instance variables keys. (Exposed == public and modifiable).
     override  open var exposedKeys:[String] {
         var exposed=super.exposedKeys
-        exposed.append(contentsOf:["languageCode","key","stringValue","dataValue"])
+        exposed.append(contentsOf:["key","stringValue","dataValue","numberValue"])
         return exposed
     }
 
@@ -106,10 +106,6 @@ import Foundation
     /// - throws: throws an Exception when the key is not exposed
     override  open func setExposedValue(_ value:Any?, forKey key: String) throws {
         switch key {
-            case "languageCode":
-                if let casted=value as? String{
-                    self.languageCode=casted
-                }
             case "key":
                 if let casted=value as? String{
                     self.key=casted
@@ -121,6 +117,10 @@ import Foundation
             case "dataValue":
                 if let casted=value as? Data{
                     self.dataValue=casted
+                }
+            case "numberValue":
+                if let casted=value as? Double{
+                    self.numberValue=casted
                 }
             default:
                 return try super.setExposedValue(value, forKey: key)
@@ -137,14 +137,14 @@ import Foundation
     /// - returns: returns the value
     override  open func getExposedValueForKey(_ key:String) throws -> Any?{
         switch key {
-            case "languageCode":
-               return self.languageCode
             case "key":
                return self.key
             case "stringValue":
                return self.stringValue
             case "dataValue":
                return self.dataValue
+            case "numberValue":
+               return self.numberValue
             default:
                 return try super.getExposedValueForKey(key)
         }

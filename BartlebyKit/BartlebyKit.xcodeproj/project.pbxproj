@@ -12,6 +12,8 @@
 		E50805CA1DF6C3CC0085E5C3 /* Alamofire.framework.dSYM in CopyFiles */ = {isa = PBXBuildFile; fileRef = E50805C81DF6C3CC0085E5C3 /* Alamofire.framework.dSYM */; };
 		E50805CC1DF6C92D0085E5C3 /* Alamofire.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E50805BF1DF6C26F0085E5C3 /* Alamofire.framework */; };
 		E53E2C3C1DD358920040E32B /* PStringTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E53E2C3B1DD358920040E32B /* PStringTests.swift */; };
+		E5416CDD1F47368B00D93B0B /* I18N.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5416CDC1F47368B00D93B0B /* I18N.swift */; };
+		E5416CDE1F47368B00D93B0B /* I18N.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5416CDC1F47368B00D93B0B /* I18N.swift */; };
 		E5450E711F3A1F83008FD1C3 /* BartlebyDocument.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5450D641F3A1F83008FD1C3 /* BartlebyDocument.swift */; };
 		E5450E721F3A1F83008FD1C3 /* BartlebyDocument.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5450D641F3A1F83008FD1C3 /* BartlebyDocument.swift */; };
 		E5450E731F3A1F83008FD1C3 /* BartlebysDynamics.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5450D651F3A1F83008FD1C3 /* BartlebysDynamics.swift */; };
@@ -588,6 +590,7 @@
 		E52F94891D01C23A005BDA2D /* TestsConfiguration.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TestsConfiguration.swift; sourceTree = "<group>"; };
 		E5361CFC1CD8DD9E005855DC /* HandlersTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HandlersTests.swift; sourceTree = "<group>"; };
 		E53E2C3B1DD358920040E32B /* PStringTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PStringTests.swift; sourceTree = "<group>"; };
+		E5416CDC1F47368B00D93B0B /* I18N.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = I18N.swift; sourceTree = "<group>"; };
 		E5450D641F3A1F83008FD1C3 /* BartlebyDocument.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BartlebyDocument.swift; sourceTree = "<group>"; };
 		E5450D651F3A1F83008FD1C3 /* BartlebysDynamics.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BartlebysDynamics.swift; sourceTree = "<group>"; };
 		E5450D671F3A1F83008FD1C3 /* ManagedBlocks.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ManagedBlocks.swift; sourceTree = "<group>"; };
@@ -1213,6 +1216,7 @@
 				E5450E531F3A1F83008FD1C3 /* ServerErrorCodes.swift */,
 				E5450E541F3A1F83008FD1C3 /* StatusOfCompletion.swift */,
 				E5450E551F3A1F83008FD1C3 /* UnManagedModel.swift */,
+				E5416CDC1F47368B00D93B0B /* I18N.swift */,
 			);
 			path = core;
 			sourceTree = "<group>";
@@ -1790,6 +1794,7 @@
 				E54510291F3A1F84008FD1C3 /* SerializedEntity.swift in Sources */,
 				E545103B1F3A1F84008FD1C3 /* Identification.swift in Sources */,
 				E5450ED51F3A1F83008FD1C3 /* DeleteLockers.swift in Sources */,
+				E5416CDD1F47368B00D93B0B /* I18N.swift in Sources */,
 				E5450EFB1F3A1F83008FD1C3 /* ReadNodesByQuery.swift in Sources */,
 				E5450FB51F3A1F84008FD1C3 /* ManagedModel+Serializable.swift in Sources */,
 				E5450FEF1F3A1F84008FD1C3 /* DocumentProvider.swift in Sources */,
@@ -1950,6 +1955,7 @@
 				E5450F741F3A1F84008FD1C3 /* BartlebyDocument+Logs.swift in Sources */,
 				E5450F421F3A1F83008FD1C3 /* Data+Compression.swift in Sources */,
 				E545104C1F3A1F84008FD1C3 /* PatchUser.swift in Sources */,
+				E5416CDE1F47368B00D93B0B /* I18N.swift in Sources */,
 				E5450F1A1F3A1F83008FD1C3 /* UpsertLocalizedDatum.swift in Sources */,
 				E5450F941F3A1F84008FD1C3 /* HTTPContext+Conveniences.swift in Sources */,
 				E5450E8C1F3A1F83008FD1C3 /* Completion.swift in Sources */,
