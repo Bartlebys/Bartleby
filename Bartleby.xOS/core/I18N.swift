@@ -205,6 +205,9 @@ open class Localized{
     ///   - languageCode: the language code
     /// - Returns: the value
     open func getString( key:String,languageCode:String)->String?{
+        if self._reference.languageCode == languageCode{
+            do { return try self._reference.getExposedValueForKey(key) as? String } catch {}
+        }
         let localizedDatas:[LocalizedDatum] = self._reference.relations(Relationship.owns)
         if let localizedDatum:LocalizedDatum = localizedDatas.first(where: { (datum) -> Bool in
             return datum.key == key && datum.languageCode == languageCode
@@ -285,6 +288,9 @@ open class Localized{
     ///   - languageCode: the language code
     /// - Returns: the value
     open func getData( key:String,languageCode:String)->Data?{
+        if self._reference.languageCode == languageCode{
+            do { return try self._reference.getExposedValueForKey(key) as? Data } catch {}
+        }
         let localizedDatas:[LocalizedDatum] = self._reference.relations(Relationship.owns)
         if let localizedDatum:LocalizedDatum = localizedDatas.first(where: { (datum) -> Bool in
             return datum.key == key && datum.languageCode == languageCode
