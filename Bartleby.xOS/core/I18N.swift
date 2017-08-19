@@ -107,8 +107,8 @@ public struct I18N {
                     if !languages.contains(where: { (language) -> Bool in
                         return language.code == languageCode
                     }){
-                         let language =  Language(code:languageCode , localizedDisplayName:localizedLang , displayName: lang)
-                         languages.append(language)
+                        let language =  Language(code:languageCode , localizedDisplayName:localizedLang , displayName: lang)
+                        languages.append(language)
                     }
                 }
             }
@@ -120,6 +120,173 @@ public struct I18N {
         I18N._languages = sortedLangages
         return I18N._languages!
     }
+}
 
 
+public struct Localized{
+
+    // The associated reference
+    var reference:ManagedModel!
+
+
+    // MARK: - General
+
+    /// Return all the languages code available for a given key
+    ///
+    /// - Parameter key: the cibled key
+    /// - Returns: the language codes
+    func getLanguageCodesForkey(key:String)->[String]{
+        let localizedDatas:[LocalizedDatum] = self.reference.relations(Relationship.owns)
+        let filtered = localizedDatas.filter { (datum) -> Bool in
+            return datum.key != key
+        }
+        var languageCodes:[String] = filtered.map { (datum) -> String in
+            return datum.languageCode
+        }
+        if self.reference.exposedKeys.contains(key){
+            languageCodes.append(self.reference.languageCode)
+        }
+        return languageCodes
+    }
+
+    // MARK: - String API
+
+
+    /// Sets the string value for a given key for the designated LanguageCode
+    ///
+    /// - Parameters:
+    ///   - key: the key
+    ///   - stringValue: the value
+    ///   - languageCode: the language code to use (if set to the model language code it will try to set the native property)
+    func setString( key:String,stringValue:String,languageCode:String)->(){
+        // #1 Is it the original value?
+        // Let use the Exposed API to try to set the original value
+        do{
+            if languageCode == reference.languageCode{
+                try self.reference.setExposedValue(stringValue,forKey:key)
+                return
+            }
+        }catch{}
+
+        // #2 Do we already have this localized Datum ?
+        let localizedDatas:[LocalizedDatum] = self.reference.relations(Relationship.owns)
+        if let localizedDatum:LocalizedDatum = localizedDatas.first(where: { (datum) -> Bool in
+            return datum.key == key && datum.languageCode == languageCode
+        }){
+            localizedDatum.stringValue = stringValue
+            return
+        }
+
+        // #3 Create a new LocalizedDatum
+        if let localizedDatum:LocalizedDatum = self.reference.referentDocument?.newManagedModel(){
+            localizedDatum.stringValue = stringValue
+            localizedDatum.languageCode = languageCode
+            self.reference.declaresOwnership(of: localizedDatum)
+        }
+    }
+
+
+    /// Returns the string value for a given language code.
+    ///
+    /// - Parameters:
+    ///   - key: the key
+    ///   - languageCode: the language code
+    /// - Returns: the value
+    func getString( key:String,languageCode:String)->String?{
+        let localizedDatas:[LocalizedDatum] = self.reference.relations(Relationship.owns)
+        if let localizedDatum:LocalizedDatum = localizedDatas.first(where: { (datum) -> Bool in
+            return datum.key == key && datum.languageCode == languageCode
+        }){
+            return localizedDatum.stringValue
+        }
+        return nil
+    }
+
+
+
+    /// Returns all the available strings
+    ///
+    /// - Parameter key: the key
+    /// - Returns: the strings
+    func getStringList( key:String)->[String]{
+        let localizedDatas:[LocalizedDatum] = self.reference.relations(Relationship.owns)
+        let filtered = localizedDatas.filter { (datum) -> Bool in
+            return datum.stringValue != nil
+        }
+        return filtered.map({ (datum) -> String in
+            return datum.stringValue!
+        })
+    }
+
+
+    // MARK: - Data
+
+
+
+
+    /// Sets the data value for a given key for the designated LanguageCode
+    ///
+    /// - Parameters:
+    ///   - key: the key
+    ///   - dataValue: the value
+    ///   - languageCode: the language code to use (if set to the model language code it will try to set the native property)
+    func setData( key:String,dataValue:Data,languageCode:String){
+        // #1 Is it the original value?
+        // Let use the Exposed API to try to set the original value
+        do{
+            if languageCode == reference.languageCode{
+                try self.reference.setExposedValue(dataValue,forKey:key)
+                return
+            }
+        }catch{}
+
+        // #2 Do we already have this localized Datum ?
+        let localizedDatas:[LocalizedDatum] = self.reference.relations(Relationship.owns)
+        if let localizedDatum:LocalizedDatum = localizedDatas.first(where: { (datum) -> Bool in
+            return datum.key == key && datum.languageCode == languageCode
+        }){
+            localizedDatum.dataValue = dataValue
+            return
+        }
+
+        // #3 Create a new LocalizedDatum
+        if let localizedDatum:LocalizedDatum = self.reference.referentDocument?.newManagedModel(){
+            localizedDatum.dataValue = dataValue
+            localizedDatum.languageCode = languageCode
+            self.reference.declaresOwnership(of: localizedDatum)
+        }
+    }
+
+
+    /// Returns the data value for a given language code.
+    ///
+    /// - Parameters:
+    ///   - key: the key
+    ///   - languageCode: the language code
+    /// - Returns: the value
+    func getData( key:String,languageCode:String)->Data?{
+        let localizedDatas:[LocalizedDatum] = self.reference.relations(Relationship.owns)
+        if let localizedDatum:LocalizedDatum = localizedDatas.first(where: { (datum) -> Bool in
+            return datum.key == key && datum.languageCode == languageCode
+        }){
+            return localizedDatum.dataValue
+        }
+        return nil
+    }
+
+
+
+    /// Returns all the available data for a given key
+    ///
+    /// - Parameter key:
+    /// - Returns:
+    func getDataList( key:String)->[Data]{
+        let localizedDatas:[LocalizedDatum] = self.reference.relations(Relationship.owns)
+        let filtered = localizedDatas.filter { (datum) -> Bool in
+            return datum.dataValue != nil
+        }
+        return filtered.map({ (datum) -> Data in
+            return datum.dataValue!
+        })
+    }
 }

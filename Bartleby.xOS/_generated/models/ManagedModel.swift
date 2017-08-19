@@ -120,6 +120,8 @@ import Foundation
     // UID is a dynamic @objc to be available for cocoa bindings
     @objc open dynamic var UID:String { get{ return self._id } set{  self._id = newValue } }
 
+    // The key value localization proxy (original values are stored in the model, and localized in separate localized datum)
+    lazy var localized:Localized = Localized(reference:self)
 
     // MARK: - Codable
 

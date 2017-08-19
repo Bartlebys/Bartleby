@@ -47,15 +47,6 @@ import Foundation
 	    }
 	}
 
-	//The localized double value
-	@objc dynamic open var numberValue:Double = 0  {
-	    didSet { 
-	       if !self.wantsQuietChanges && numberValue != oldValue {
-	            self.provisionChanges(forKey: "numberValue",oldValue: oldValue,newValue: numberValue)  
-	       } 
-	    }
-	}
-
 
     // MARK: - Codable
 
@@ -64,7 +55,6 @@ import Foundation
 		case key
 		case stringValue
 		case dataValue
-		case numberValue
     }
 
     required public init(from decoder: Decoder) throws{
@@ -74,7 +64,6 @@ import Foundation
 			self.key = try values.decode(String.self,forKey:.key)
 			self.stringValue = try values.decodeIfPresent(String.self,forKey:.stringValue)
 			self.dataValue = try values.decodeIfPresent(Data.self,forKey:.dataValue)
-			self.numberValue = try values.decode(Double.self,forKey:.numberValue)
         }
     }
 
@@ -84,7 +73,6 @@ import Foundation
 		try container.encode(self.key,forKey:.key)
 		try container.encodeIfPresent(self.stringValue,forKey:.stringValue)
 		try container.encodeIfPresent(self.dataValue,forKey:.dataValue)
-		try container.encode(self.numberValue,forKey:.numberValue)
     }
 
 
@@ -93,7 +81,7 @@ import Foundation
     /// Return all the exposed instance variables keys. (Exposed == public and modifiable).
     override  open var exposedKeys:[String] {
         var exposed=super.exposedKeys
-        exposed.append(contentsOf:["key","stringValue","dataValue","numberValue"])
+        exposed.append(contentsOf:["key","stringValue","dataValue"])
         return exposed
     }
 
@@ -118,10 +106,6 @@ import Foundation
                 if let casted=value as? Data{
                     self.dataValue=casted
                 }
-            case "numberValue":
-                if let casted=value as? Double{
-                    self.numberValue=casted
-                }
             default:
                 return try super.setExposedValue(value, forKey: key)
         }
@@ -143,8 +127,6 @@ import Foundation
                return self.stringValue
             case "dataValue":
                return self.dataValue
-            case "numberValue":
-               return self.numberValue
             default:
                 return try super.getExposedValueForKey(key)
         }
