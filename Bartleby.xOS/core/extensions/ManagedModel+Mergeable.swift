@@ -14,6 +14,7 @@ extension ManagedModel:Mergeable{
     ///
     /// - parameter instance: the instance
     open func mergeWith(_ instance: Exposed) throws {
+        let preservedId = self._id
         for key in instance.exposedKeys{
             if self.exposedKeys.contains(key){
                 let value = try instance.getExposedValueForKey(key)
@@ -22,6 +23,7 @@ extension ManagedModel:Mergeable{
                 self.log("Attempt to merge an unexisting key \(key) on \(instance))", file: #file, function: #function, line: #line, category: logsCategoryFor(self), decorative: false)
             }
         }
+        self._id = preservedId
     }
 
 }
