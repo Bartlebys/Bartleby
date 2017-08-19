@@ -163,7 +163,14 @@ open class Localized{
     ///   - stringValue: the value
     ///   - languageCode: the language code to use (if set to the model language code it will try to set the native property)
     open func setString( key:String,stringValue:String,languageCode:String)->(){
-        // #1 Is it the original value?
+
+        if let baseValue = try? self._reference.getExposedValueForKey(key) as? String{
+            if baseValue == stringValue {
+                return
+            }
+        }
+
+        // #1 Is it the base value?
         // Let use the Exposed API to try to set the original value
         do{
             if languageCode == _reference.languageCode{
@@ -183,6 +190,7 @@ open class Localized{
 
         // #3 Create a new LocalizedDatum
         if let localizedDatum:LocalizedDatum = self._reference.referentDocument?.newManagedModel(){
+            localizedDatum.key = key
             localizedDatum.stringValue = stringValue
             localizedDatum.languageCode = languageCode
             self._reference.declaresOwnership(of: localizedDatum)
@@ -235,7 +243,14 @@ open class Localized{
     ///   - dataValue: the value
     ///   - languageCode: the language code to use (if set to the model language code it will try to set the native property)
     open func setData( key:String,dataValue:Data,languageCode:String){
-        // #1 Is it the original value?
+
+        if let baseValue = try? self._reference.getExposedValueForKey(key) as? Data{
+            if baseValue == dataValue {
+                return
+            }
+        }
+
+        // #1 Is it the base value?
         // Let use the Exposed API to try to set the original value
         do{
             if languageCode == _reference.languageCode{
@@ -255,6 +270,7 @@ open class Localized{
 
         // #3 Create a new LocalizedDatum
         if let localizedDatum:LocalizedDatum = self._reference.referentDocument?.newManagedModel(){
+            localizedDatum.key = key
             localizedDatum.dataValue = dataValue
             localizedDatum.languageCode = languageCode
             self._reference.declaresOwnership(of: localizedDatum)
