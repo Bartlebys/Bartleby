@@ -37,7 +37,7 @@ open class ImportBKeyViewController:IdentityStepViewController {
             openPanel.canChooseDirectories = false
             openPanel.canCreateDirectories = false
             openPanel.canChooseFiles = true
-            openPanel.allowedFileTypes = ["bkey"]
+            openPanel.allowedFileTypes = ["bky"]
             openPanel.begin { (result) -> Void in
                 Bartleby.syncOnMain {
                     if result.rawValue == NSFileHandlingPanelOKButton {

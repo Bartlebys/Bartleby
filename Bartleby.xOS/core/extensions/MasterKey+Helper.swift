@@ -32,7 +32,7 @@ extension MasterKey{
                 savePanel.prompt = NSLocalizedString("Save", comment: "Save")
                 savePanel.nameFieldStringValue = name
                 savePanel.canCreateDirectories = true
-                savePanel.allowedFileTypes=["bkey"]
+                savePanel.allowedFileTypes=["bky"]
                 savePanel.beginSheetModal(for:window,completionHandler: { (result) in
                     if result.rawValue==NSFileHandlingPanelOKButton{
                         if let url = savePanel.url {
