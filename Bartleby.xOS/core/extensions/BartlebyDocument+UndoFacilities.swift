@@ -51,12 +51,13 @@ extension BartlebyDocument{
                                                      serializedManagedModels:serializedData,
                                                      undoActionName: undoActionName,
                                                      doAfterAction: doAfterAction)
+                    // Invoke the closure
+                    doAfterAction(target)
                 })
                 if !undoManager.isUndoing {
                     undoManager.setActionName(undoActionName)
                 }
-                // Invoke the closure
-                doAfterAction(target)
+
             }
         }catch{
             self.log("\(error)")
