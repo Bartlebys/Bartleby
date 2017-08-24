@@ -72,9 +72,6 @@ open class ImportBKeyViewController:IdentityStepViewController {
                 /// When the locker is verifyed use the sugar to retrieve the Collections and blocks data
                 try document.reloadCollectionData()
                 try document.metadata.putSomeSugarInYourBowl()
-                if self.deleteTheKeyCheckBox.state == .on{
-                    try FileManager.default.removeItem(at: keyURL)
-                }
                 self.stepDelegate?.didValidateStep(self.stepIndex)
             }catch{
                 self.displayMessage("\(error)")
