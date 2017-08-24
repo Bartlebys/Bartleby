@@ -55,4 +55,60 @@ public extension DocumentMetadata{
         }
     }
 
+
+    // MARK: - States Saving API
+
+
+    /// Save the state of a codable into the metadata state dictionary
+    /// E.g : save indexes, document related preferences (not app wide)
+    ///
+    /// - Parameters:
+    ///   - value: the value
+    ///   - byKey: the identification key (must be unique)
+    public func saveStateOf<T:Codable>(_ value:T,identified byKey:String){
+        if let value = try? JSON.encoder.encode(value){
+            self.statesDictionary[byKey] = value
+        }
+    }
+
+
+    /// Recover the saved state
+    ///
+    /// - Parameter byKey: the identification key (must be unique)
+    /// - Returns: the value
+    public func getStateOf<T:Codable>(identified byKey:String)->T?{
+        if let data = self.statesDictionary[byKey]{
+            if let value = try? JSON.decoder.decode(T.self, from: data){
+               return value
+            }
+        }
+        return nil
+    }
+
+
+    /// Save a string into the metadata state dictionary
+    /// E.g : save indexes, document related preferences (not app wide)
+    ///
+    /// - Parameters:
+    ///   - string: the string
+    ///   - byKey: the identification key (must be unique)
+    public func saveStateString(_ string:String,identified byKey:String){
+        if let data = Data(base64Encoded: string){
+            self.statesDictionary[byKey] = data
+        }
+    }
+
+
+    /// Recover the saved string
+    ///
+    /// - Parameter byKey: the identification key (must be unique)
+    /// - Returns: the string
+    public func getString(identified byKey:String)->String?{
+        if let base64Data = self.statesDictionary[byKey]{
+            return try? base64Data.string(using: Default.STRING_ENCODING)
+        }
+        return nil
+    }
+
+
 }
