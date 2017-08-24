@@ -142,7 +142,7 @@ open class Localized{
     open func getLanguageCodesForkey(key:String)->[String]{
         let localizedDatas:[LocalizedDatum] = self._reference.relations(Relationship.owns)
         let filtered = localizedDatas.filter { (datum) -> Bool in
-            return datum.key != key
+            return datum.key == key
         }
         var languageCodes:[String] = filtered.map { (datum) -> String in
             return datum.languageCode
