@@ -157,6 +157,7 @@ open class Localized{
 
 
     /// Sets the string value for a given key for the designated LanguageCode
+    /// If the value equals the base value we do not create a localized data
     ///
     /// - Parameters:
     ///   - key: the key
@@ -251,12 +252,14 @@ open class Localized{
     }
 
 
+
     // MARK: - Data
 
 
 
 
     /// Sets the data value for a given key for the designated LanguageCode
+    /// If the value equals the base value we do not create a localized data
     ///
     /// - Parameters:
     ///   - key: the key
@@ -346,4 +349,23 @@ open class Localized{
             return datum.dataValue!
         })
     }
+
+
+    // MARK: - Deletion
+
+
+    /// Deletes the associated LocalizedDatum if there is one
+    ///
+    /// - Parameters:
+    ///   - key: for a given key
+    ///   - languageCode: and a given language code
+    open func deleteKey(key:String,languageCode:String)throws->(){
+        let localizedDatas:[LocalizedDatum] = self._reference.relations(Relationship.owns)
+        if let localizedDatum:LocalizedDatum = localizedDatas.first(where: { (datum) -> Bool in
+            return datum.key == key && datum.languageCode == languageCode
+        }){
+            try localizedDatum.erase()
+        }
+    }
+
 }
