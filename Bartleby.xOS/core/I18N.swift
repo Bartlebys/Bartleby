@@ -219,6 +219,23 @@ open class Localized{
 
 
 
+    /// Returns the string value for a given language code or the base native value
+    ///
+    /// - Parameters:
+    ///   - key: the key
+    ///   - languageCode: the language code
+    /// - Returns: the string
+    open func getStringOrBaseValue( key:String,languageCode:String)->String?{
+        if let string = self.getString(key: key, languageCode: languageCode){
+            return string
+        }
+        return (try? self._reference.getExposedValueForKey(key)) as? String
+    }
+
+
+
+
+
     /// Returns all the available strings
     ///
     /// - Parameter key: the key
@@ -298,6 +315,20 @@ open class Localized{
             return localizedDatum.dataValue
         }
         return nil
+    }
+
+
+    /// Returns the data value for a given language code or the base native value
+    ///
+    /// - Parameters:
+    ///   - key: the key
+    ///   - languageCode: the language code
+    /// - Returns: the string
+    open func getDataOrBaseValue( key:String,languageCode:String)->Data?{
+        if let  data = self.getData(key: key, languageCode: languageCode){
+            return data
+        }
+        return (try? self._reference.getExposedValueForKey(key)) as? Data
     }
 
 
