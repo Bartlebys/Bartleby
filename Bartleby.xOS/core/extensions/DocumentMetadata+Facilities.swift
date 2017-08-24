@@ -10,6 +10,8 @@ import Foundation
 
 public extension DocumentMetadata{
 
+    public var document:BartlebyDocument? { return Bartleby.sharedInstance.getDocumentByUID(self.persistentUID) }
+
     public var debugTriggersHistory:Bool{ return true } // Should be set to False
 
     public var jsonReceivedTrigger:String{
@@ -68,6 +70,7 @@ public extension DocumentMetadata{
     public func saveStateOf<T:Codable>(_ value:T,identified byKey:String){
         if let value = try? JSON.encoder.encode(value){
             self.statesDictionary[byKey] = value
+            self.document?.hasChanged()
         }
     }
 
@@ -95,6 +98,7 @@ public extension DocumentMetadata{
     public func saveStateString(_ string:String,identified byKey:String){
         if let data = Data(base64Encoded: string){
             self.statesDictionary[byKey] = data
+            self.document?.hasChanged()
         }
     }
 
