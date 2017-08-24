@@ -51,6 +51,9 @@ extension BartlebyDocument{
                                                      serializedManagedModels:serializedData,
                                                      undoActionName: undoActionName,
                                                      doAfterAction: doAfterAction)
+                    if Bartleby.configuration.DEVELOPER_MODE{
+                        Swift.print("Invocation of doAfterAction on \(target)")
+                    }
                     // Invoke the closure
                     doAfterAction(target)
                 })
