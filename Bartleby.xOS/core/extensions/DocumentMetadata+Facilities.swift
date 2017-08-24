@@ -96,8 +96,8 @@ public extension DocumentMetadata{
     ///   - string: the string
     ///   - byKey: the identification key (must be unique)
     public func saveStateString(_ string:String,identified byKey:String){
-        if let data = Data(base64Encoded: string){
-            self.statesDictionary[byKey] = data
+        if let value = try? JSON.base64Encoder.encode([string]){
+            self.statesDictionary[byKey] = value
             self.document?.hasChanged()
         }
     }
@@ -108,8 +108,10 @@ public extension DocumentMetadata{
     /// - Parameter byKey: the identification key (must be unique)
     /// - Returns: the string
     public func getString(identified byKey:String)->String?{
-        if let base64Data = self.statesDictionary[byKey]{
-            return try? base64Data.string(using: Default.STRING_ENCODING)
+        if let data = self.statesDictionary[byKey]{
+            if let value = try? JSON.base64Decoder.decode([String].self, from: data){
+                return value[0]
+            }
         }
         return nil
     }
