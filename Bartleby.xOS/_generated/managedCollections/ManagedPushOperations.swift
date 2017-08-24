@@ -612,20 +612,13 @@ public extension Notification.Name {
                     let _selectedUIDS:[String]=pushOperations.map({ (pushOperation) -> String in
                         return pushOperation.UID
                     })
-                    let encodedUIDS = (try? JSON.encoder.encode(_selectedUIDS)) ?? "[]".data(using: Default.STRING_ENCODING)!
-                    self.referentDocument?.metadata.statesDictionary[selectedPushOperationsUIDSKeys] = encodedUIDS
-                    self.referentDocument?.hasChanged()
+                    self.referentDocument?.metadata.saveStateOf(_selectedUIDS, identified: self.selectedPushOperationsUIDSKeys)
                 }
             }
         }
         get{
             return Bartleby.syncOnMainAndReturn{ () -> [String] in
-                if let data = self.referentDocument?.metadata.statesDictionary[self.selectedPushOperationsUIDSKeys]{
-                    if let encodedUIDS = try? JSON.decoder.decode([String].self, from: data){
-                       return encodedUIDS
-                    }
-                }
-                return [String]()
+                return self.referentDocument?.metadata.getStateOf(identified: self.selectedPushOperationsUIDSKeys) ?? [String]()
             }
         }
     }
