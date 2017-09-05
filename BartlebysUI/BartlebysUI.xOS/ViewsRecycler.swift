@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import CoreGraphics
 import BartlebyKit
 
 /// The view recycler facilitate view reusage for high performance rendering

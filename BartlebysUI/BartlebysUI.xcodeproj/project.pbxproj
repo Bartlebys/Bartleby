@@ -56,8 +56,6 @@
 		E53F09851DF95C4E003301DD /* BartlebyKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = BartlebyKit.framework; path = "../../../../../../../../Library/Developer/Xcode/DerivedData/Bartleby-gnbycabytonvqxecnlfitmgmkmiu/Build/Products/Debug/BartlebyKit.framework"; sourceTree = "<group>"; };
 		E53F0B561DF95D80003301DD /* DropView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DropView.swift; sourceTree = "<group>"; };
 		E53F0B631DF95F4A003301DD /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = System/Library/Frameworks/AppKit.framework; sourceTree = SDKROOT; };
-		E54324461E98DE0600ED89D9 /* ObjectMapper.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ObjectMapper.framework; path = ../Carthage/Build/Mac/ObjectMapper.framework; sourceTree = "<group>"; };
-		E54324471E98DE0600ED89D9 /* ObjectMapper.framework.dSYM */ = {isa = PBXFileReference; lastKnownFileType = wrapper.dsym; name = ObjectMapper.framework.dSYM; path = ../Carthage/Build/Mac/ObjectMapper.framework.dSYM; sourceTree = "<group>"; };
 		E550E9341F3F05500027A1F1 /* ByPassActivationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ByPassActivationViewController.swift; sourceTree = "<group>"; };
 		E550E9351F3F05500027A1F1 /* ByPassActivationViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ByPassActivationViewController.xib; sourceTree = "<group>"; };
 		E55FF9821E155F5900EE3393 /* IdentityWindowController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IdentityWindowController.swift; sourceTree = "<group>"; };
@@ -141,8 +139,6 @@
 			isa = PBXGroup;
 			children = (
 				E5B124951F30C0780080C026 /* BartlebyKit.framework */,
-				E54324461E98DE0600ED89D9 /* ObjectMapper.framework */,
-				E54324471E98DE0600ED89D9 /* ObjectMapper.framework.dSYM */,
 				E5124F5B1E8BAA2800797254 /* BartlebyKit.framework */,
 				E53ECDF51E1575720084DD6C /* Security.framework */,
 				E53F0B631DF95F4A003301DD /* AppKit.framework */,

@@ -13,7 +13,7 @@ public struct JSON{
     public static var encoder:JSONEncoder{
         get{
             let encoder = JSONEncoder()
-            if #available(OSX 10.12, *) {
+            if #available(iOS 10.0, OSX 10.12, *){
                 encoder.dateEncodingStrategy = .iso8601
             } else {
                 let formatter = DateFormatter()
@@ -41,7 +41,7 @@ public struct JSON{
     public static var decoder:JSONDecoder{
         get{
             let decoder = JSONDecoder()
-            if #available(OSX 10.12, *) {
+            if #available(iOS 10.0, OSX 10.12, *) {
                 decoder.dateDecodingStrategy = .iso8601
             } else {
                 let formatter = DateFormatter()
