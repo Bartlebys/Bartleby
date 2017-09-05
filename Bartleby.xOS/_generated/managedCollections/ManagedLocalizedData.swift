@@ -61,6 +61,7 @@ public extension Notification.Name {
     // While the API deals with `Collectible` instances.
     fileprivate var _storage=[String:LocalizedDatum]()
 
+
     fileprivate func _rebuildFromStorage(){
         self._UIDS=[String]()
         self._items=[LocalizedDatum]()
@@ -123,12 +124,16 @@ public extension Notification.Name {
     }
 
     // Should be called to propagate references (Collection, ReferentDocument, Owned relations)
+    // And to propagate the selections
     open func propagate(){
         #if BARTLEBY_CORE_DEBUG
         if self.referentDocument == nil{
             glog("Document Reference is nil during Propagation on ManagedLocalizedData", file: #file, function: #function, line: #line, category: Default.LOG_FAULT, decorative: false)
         }
         #endif
+
+        let selectedUIDS = self._selectedUIDS
+        var selected = [LocalizedDatum]()
         for item in self{
             // Reference the collection
             item.collection=self
@@ -143,7 +148,11 @@ public extension Notification.Name {
                     Bartleby.appendToDeferredOwnershipsList(item, ownerUID: ownerUID)
                 }
             })
+            if selectedUIDS.contains(item.UID){
+                selected.append(item)
+            }
         }
+        self.selectedLocalizedData = selected
     }
 
     open func generate() -> AnyIterator<LocalizedDatum> {
