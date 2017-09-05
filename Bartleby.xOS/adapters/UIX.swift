@@ -13,6 +13,8 @@
 
     import AppKit
 
+    public typealias XColor = NSColor
+
     public typealias XView = NSView
 
     public typealias XImage = NSImage
@@ -44,6 +46,8 @@
 #elseif os(iOS)
 
     import UIKit
+
+    public typealias XColor = UIColor
 
     public typealias XView = UIView
 
