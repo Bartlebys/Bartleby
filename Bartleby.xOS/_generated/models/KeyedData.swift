@@ -9,7 +9,6 @@
 //
 import Foundation
 #if !USE_EMBEDDED_MODULES
-	import Alamofire
 #endif
 
 // MARK: A simple wrapper to associate a key and a Data

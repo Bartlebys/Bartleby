@@ -9,7 +9,6 @@
 //
 import Foundation
 #if !USE_EMBEDDED_MODULES
-	import Alamofire
 #endif
 
 // MARK: Bartleby's Core: Master keys are used to save a password + a key (mostly in user isolated mode)

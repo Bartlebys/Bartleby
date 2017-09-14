@@ -9,8 +9,7 @@
 //
 import Foundation
 #if !USE_EMBEDDED_MODULES
-		import Alamofire
-#endif
+	#endif
 
 // MARK: Bartleby's Core: an object used to provision serialized operation.
 @objc open class PushOperation : ManagedModel{

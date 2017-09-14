@@ -9,8 +9,7 @@
 //
 import Foundation
 #if !USE_EMBEDDED_MODULES
-		import Alamofire
-#endif
+	#endif
 
 // MARK: Bartleby's Synchronized File System: a block references bytes
 @objc open class Block : ManagedModel{

@@ -9,8 +9,7 @@
 //
 import Foundation
 #if !USE_EMBEDDED_MODULES
-		import Alamofire
-#endif
+	#endif
 
 // MARK: Bartleby's Synchronized File System: a node references a collection of blocks that compose a files, or an alias or a folder
 @objc open class Node : ManagedModel{

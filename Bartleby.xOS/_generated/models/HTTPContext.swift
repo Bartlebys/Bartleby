@@ -9,7 +9,6 @@
 //
 import Foundation
 #if !USE_EMBEDDED_MODULES
-	import Alamofire
 #endif
 
 // MARK: Bartleby's Core: an object that encapsulate the whole http context , request, response

@@ -9,8 +9,7 @@
 //
 import Foundation
 #if !USE_EMBEDDED_MODULES
-		import Alamofire
-#endif
+	#endif
 
 // MARK: An entity used to associate localized name and informations
 @objc open class LocalizedDatum : ManagedModel{

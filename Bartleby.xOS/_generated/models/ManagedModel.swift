@@ -9,8 +9,7 @@
 //
 import Foundation
 #if !USE_EMBEDDED_MODULES
-		import Alamofire
-#endif
+	#endif
 
 // MARK: Bartleby's Core: The base of any ManagedModel
 @objc open class ManagedModel : NSObject, Collectible, Codable{

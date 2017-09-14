@@ -9,7 +9,6 @@
 //
 import Foundation
 #if !USE_EMBEDDED_MODULES
-	import Alamofire
 #endif
 
 // MARK: Bartleby's Core: A single print entry

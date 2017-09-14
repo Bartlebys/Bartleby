@@ -9,7 +9,6 @@
 //
 import Foundation
 #if !USE_EMBEDDED_MODULES
-	import Alamofire
 #endif
 
 // MARK: Bartleby's Core: a Trigger encapsulates a bunch of that's modelizes a state transformation

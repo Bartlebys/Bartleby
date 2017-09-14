@@ -9,8 +9,7 @@
 //
 import Foundation
 #if !USE_EMBEDDED_MODULES
-		import Alamofire
-#endif
+	#endif
 
 // MARK: Bartleby's Core: a Report object that can be used for analytics and support purposes
 @objc open class Report : ManagedModel{

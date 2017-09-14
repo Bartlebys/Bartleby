@@ -9,8 +9,7 @@
 //
 import Foundation
 #if !USE_EMBEDDED_MODULES
-		import Alamofire
-#endif
+	#endif
 
 // MARK: Bartleby's Synchronized File System: A box is a logical reference for Nodes and Blocks
 @objc open class Box : ManagedModel{
