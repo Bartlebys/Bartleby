@@ -242,8 +242,7 @@ open class BartlebysDynamics:Dynamics{
         throw DynamicsError.typeNotFound
     }
 
-
-    // MARK: - Patch
+   // MARK: - Patch
 
     /// You can patch some data providing default values.
     ///
@@ -258,15 +257,19 @@ open class BartlebysDynamics:Dynamics{
             if isACollection {
                 if var items = jsonDictionary["_storage"] as? [String:[String:Any]]{
                     for (UID,_) in items{
-                         for (key,value) in dictionary{
-                           items[UID]![key] = value
+                        for (key,value) in dictionary{
+                            if !items[UID]!.keys.contains(key){
+                                 items[UID]![key] = value
+                            }
                         }
                     }
                     jsonDictionary["_storage"]=items
                 }
             }else{
                 for (key,value) in dictionary{
-                    jsonDictionary[key] = value
+                    if !jsonDictionary.keys.contains(key){
+                       jsonDictionary[key] = value
+                    }
                 }
             }
             return try JSONSerialization.data(withJSONObject: jsonDictionary, options: [])
