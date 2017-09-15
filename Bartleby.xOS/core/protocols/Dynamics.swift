@@ -9,6 +9,8 @@ import Foundation
 
 public enum DynamicsError:Error{
     case typeNotFound
+    case collectionTypeRequired
+    case injectionHasFailed
     case jsonDeserializationFailure
 }
 
@@ -44,6 +46,18 @@ public protocol Dynamics{
     ///   - data: the Data to patch
     ///   - dictionary: the dictionary
     /// - Returns: the patched data
-    func patchProperties(_ typeName:String,data:Data,dictionary:[String:Any])throws->Data
+    func patchProperties(_ typeName:String,data:Data,patchDictionary:[String:Any])throws->Data
+
+
+    /// You can patch some data providing
+    ///
+    /// - Parameters:
+    ///   - typeName:  the concerned typeName
+    ///   - data:  the Data to patch
+    ///   - injectedDictionary: the dictionary to be injected
+    ///   - keyPath: the key path to be used
+    /// - Returns: the patched data
+    func patchItemsInCollection(_ typeName:String,data:Data,injectedDictionary:[String:Any],keyPath:DictionaryKeyPath)throws->Data
+
 
 }

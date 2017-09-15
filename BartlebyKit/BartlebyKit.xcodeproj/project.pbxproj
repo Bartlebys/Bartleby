@@ -515,6 +515,8 @@
 		E55934361DEDD1B7001DE10F /* BartlebyTestCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = E55934351DEDD1B7001DE10F /* BartlebyTestCase.swift */; };
 		E55D61441DE9F79800BF63B6 /* BlocksTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E55D61431DE9F79800BF63B6 /* BlocksTests.swift */; };
 		E577CA471CCFB31500756BDD /* BartlebyKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E54999581C3A7D0100C52A9D /* BartlebyKit.framework */; };
+		E59E8CF21F6C0E0B00B7DAEB /* DictionaryKeyPath.swift in Sources */ = {isa = PBXBuildFile; fileRef = E59E8CF11F6C0E0B00B7DAEB /* DictionaryKeyPath.swift */; };
+		E59E8CF31F6C0E0B00B7DAEB /* DictionaryKeyPath.swift in Sources */ = {isa = PBXBuildFile; fileRef = E59E8CF11F6C0E0B00B7DAEB /* DictionaryKeyPath.swift */; };
 		E5ADEEA31F3F575F00371DA1 /* MasterKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5ADEEA21F3F575E00371DA1 /* MasterKey.swift */; };
 		E5ADEEA91F3F6AE300371DA1 /* MasterKey+Helper.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5ADEEA81F3F6AE300371DA1 /* MasterKey+Helper.swift */; };
 		E5B128F21D1C315D00D61261 /* BFileManagerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5B5D0A071CDE1F48001FB281 /* BFileManagerTests.swift */; };
@@ -854,6 +856,7 @@
 		E56C005A1C8ED51D00BB6B19 /* BartlebyKitTOSXTests-Bridging-Header.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "BartlebyKitTOSXTests-Bridging-Header.h"; sourceTree = "<group>"; };
 		E578DD071C3AC53300617627 /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = System/Library/Frameworks/AppKit.framework; sourceTree = SDKROOT; };
 		E590EB231D0EF8DC00150E0B /* UsersCreationLoadTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UsersCreationLoadTest.swift; sourceTree = "<group>"; };
+		E59E8CF11F6C0E0B00B7DAEB /* DictionaryKeyPath.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DictionaryKeyPath.swift; sourceTree = "<group>"; };
 		E5ADEEA21F3F575E00371DA1 /* MasterKey.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MasterKey.swift; sourceTree = "<group>"; };
 		E5ADEEA81F3F6AE300371DA1 /* MasterKey+Helper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MasterKey+Helper.swift"; sourceTree = "<group>"; };
 		E5B18CD61F430819006FAB7F /* XImage+Data.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "XImage+Data.swift"; sourceTree = "<group>"; };
@@ -1207,6 +1210,7 @@
 				E5450E1E1F3A1F83008FD1C3 /* Global.swift */,
 				E5450E1F1F3A1F83008FD1C3 /* Handlers.swift */,
 				E5450E201F3A1F83008FD1C3 /* JSON.swift */,
+				E59E8CF11F6C0E0B00B7DAEB /* DictionaryKeyPath.swift */,
 				E5450E211F3A1F83008FD1C3 /* JSONSerializer.swift */,
 				E5450E221F3A1F83008FD1C3 /* ManagedModelError.swift */,
 				E5450E231F3A1F83008FD1C3 /* ObjectExpositionError.swift */,
@@ -1714,6 +1718,7 @@
 				E5450E751F3A1F83008FD1C3 /* ManagedBlocks.swift in Sources */,
 				E5450EBB1F3A1F83008FD1C3 /* CreateLocker.swift in Sources */,
 				E5450EAB1F3A1F83008FD1C3 /* Report.swift in Sources */,
+				E59E8CF21F6C0E0B00B7DAEB /* DictionaryKeyPath.swift in Sources */,
 				E5450E931F3A1F83008FD1C3 /* HTTPContext.swift in Sources */,
 				E5450FA31F3A1F84008FD1C3 /* ManagedModel+Erasure.swift in Sources */,
 				E5450EBD1F3A1F83008FD1C3 /* CreateLockers.swift in Sources */,
@@ -2120,6 +2125,7 @@
 				E5450E801F3A1F83008FD1C3 /* ManagedPushOperations.swift in Sources */,
 				E5450FFA1F3A1F84008FD1C3 /* Initializable.swift in Sources */,
 				E5450F461F3A1F83008FD1C3 /* CryptoKeySize.swift in Sources */,
+				E59E8CF31F6C0E0B00B7DAEB /* DictionaryKeyPath.swift in Sources */,
 				E5450EFE1F3A1F83008FD1C3 /* ReadUserById.swift in Sources */,
 				E5450F381F3A1F83008FD1C3 /* UploadBlock.swift in Sources */,
 				E5450EEE1F3A1F83008FD1C3 /* ReadLocalizedDataByQuery.swift in Sources */,
