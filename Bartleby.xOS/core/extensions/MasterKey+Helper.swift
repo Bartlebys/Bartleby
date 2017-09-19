@@ -34,7 +34,7 @@ extension MasterKey{
                 savePanel.canCreateDirectories = true
                 savePanel.allowedFileTypes=["bky"]
                 savePanel.beginSheetModal(for:window,completionHandler: { (result) in
-                    if result.rawValue==NSFileHandlingPanelOKButton{
+                    if result==NSApplication.ModalResponse.OK {
                         if let url = savePanel.url {
                             Bartleby.syncOnMain{
                                 do{
