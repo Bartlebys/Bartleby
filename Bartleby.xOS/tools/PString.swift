@@ -156,7 +156,7 @@ public struct PString {
         let startIndex = (leftPos==0) ? string.startIndex : string.index(string.startIndex, offsetBy: leftPos)
         let endIndex = (rightPos==0) ? string.startIndex : string.index(string.startIndex, offsetBy: rightPos)
 
-        return string.substring(with: startIndex..<endIndex)
+        return String(string[startIndex..<endIndex])
     }
 
 
@@ -196,14 +196,14 @@ public struct PString {
     public static func lcfirst(_ string: String) -> String {
         var tstring=string
         let first=tstring.firstCharacterRange()
-        tstring.replaceSubrange(first, with:tstring.substring(with: first).lowercased())
+        tstring.replaceSubrange(first, with:String(tstring[first]).lowercased())
         return tstring
     }
 
     public static func ucfirst(_ string: String) -> String {
         var tstring=string
         let first=tstring.firstCharacterRange()
-        tstring.replaceSubrange(first, with:tstring.substring(with:first).uppercased())
+        tstring.replaceSubrange(first, with:String(tstring[first]).uppercased())
         return tstring
     }
 

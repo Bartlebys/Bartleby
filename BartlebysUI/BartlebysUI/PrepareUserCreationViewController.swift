@@ -121,7 +121,7 @@ import BartlebyKit
 
             var prefix=""
             if let match = self.phoneCountryCodeComboBox.stringValue.range(of:"(?<=\\()[^()]{1,10}(?=\\))", options: .regularExpression) {
-                prefix=self.phoneCountryCodeComboBox.stringValue.substring(with: match)
+                prefix=String(self.phoneCountryCodeComboBox.stringValue[match])
             }
 
             let phoneNumber=prefix+self.phoneNumberComboBox.stringValue
