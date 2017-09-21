@@ -99,7 +99,7 @@ public final class BSFS:TriggerHook{
     ///     - downloads/[files] tmp download files
     public var baseFolderPath:String{
         if BSFS.useExportPath{
-            return BSFS.exportPath + "/" + _document.UID
+            return BSFS.exportPath
         }
         if self._document.metadata.appGroup != ""{
             if let url=self._fileManager.containerURL(forSecurityApplicationGroupIdentifier: self._document.metadata.appGroup){
