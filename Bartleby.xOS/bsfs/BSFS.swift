@@ -17,7 +17,7 @@ public final class BSFS:TriggerHook{
     // If set to false we use the sandBoxing Context
     // else we use the `exportPath` (CLI context)
     static var useExportPath = false
-    static var exportPath:String = "~/Desktop"
+    static var exportPath:String = Bartleby.getSearchPath(.desktopDirectory) ?? Default.NO_PATH
 
     // Document
     fileprivate var _document:BartlebyDocument
@@ -198,7 +198,7 @@ public final class BSFS:TriggerHook{
 
         } catch {
             completed(Completion.failureStateFromError(error))
-            self._document.send(BoxStates.mountingHasFailed(boxUID:boxUID,message: error.localizedDescription))
+            self._document.send(BoxStates.mountingHasFailed(boxUID:boxUID,message: "\(error)"))
         }
     }
 

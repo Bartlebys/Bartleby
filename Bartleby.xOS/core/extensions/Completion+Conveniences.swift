@@ -91,7 +91,7 @@ public extension Completion {
 
     public static func failureStateFromError(_ error: Error) -> Completion {
         let nse = error as NSError
-        return Completion(success: false, message: nse.localizedDescription, statusCode: StatusOfCompletion (rawValue: nse.code) ?? .undefined)
+        return Completion(success: false, message: "\(error)", statusCode: StatusOfCompletion (rawValue: nse.code) ?? .undefined)
 
     }
 
