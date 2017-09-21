@@ -48,7 +48,7 @@ extension User {
     open var fullPhoneNumber:String{
         var prefix=""
         if let match = self.phoneCountryCode.range(of:"(?<=\\()[^()]{1,10}(?=\\))", options: .regularExpression) {
-            prefix = self.phoneCountryCode.substring(with: match)
+            prefix = String(self.phoneCountryCode[match])
         }
         return prefix+self.phoneNumber
 
