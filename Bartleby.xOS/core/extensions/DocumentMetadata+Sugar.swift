@@ -97,7 +97,10 @@ public extension DocumentMetadata{
                     return url.path+"/bowl"
                 }
             }
-            return Bartleby.getSearchPath(.documentDirectory)!+"/bowl"
+            if let document = self.document{
+                return document.bsfs.baseFolderPath+"/bowl"
+            }
+            return "ERROR"
         }
     }
 }

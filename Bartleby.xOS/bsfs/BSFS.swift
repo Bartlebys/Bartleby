@@ -14,6 +14,11 @@ public final class BSFS:TriggerHook{
 
     // MARK: -
 
+    // If set to false we use the sandBoxing Context
+    // else we use the `exportPath` (CLI context)
+    static var useExportPath = false
+    static var exportPath:String = "~/Desktop"
+
     // Document
     fileprivate var _document:BartlebyDocument
 
@@ -93,13 +98,15 @@ public final class BSFS:TriggerHook{
     ///     - boxes/<boxUID>/[files]
     ///     - downloads/[files] tmp download files
     public var baseFolderPath:String{
+        if BSFS.useExportPath{
+            return BSFS.exportPath + "/" + _document.UID
+        }
         if self._document.metadata.appGroup != ""{
             if let url=self._fileManager.containerURL(forSecurityApplicationGroupIdentifier: self._document.metadata.appGroup){
                 return url.path+"/\(_document.UID)"
             }
         }
         return Bartleby.getSearchPath(.documentDirectory)!+"/\(_document.UID)"
-
     }
 
     /// Downloads folder
