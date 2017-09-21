@@ -40,6 +40,11 @@ public protocol CollectibleCollection: Collectible {
     // Should be called to propagat references (Collection, ReferentDocument, Owned relations)
     func propagate()
 
+    /// Replaces the items in the proxy
+    ///
+    /// - Parameter items: the collectible item
+    /// - Returns: N/A
+    func replaceProxyData(_ items:[Collectible])
 
     /// Returns the collected items
     /// You should not normally use this method directly

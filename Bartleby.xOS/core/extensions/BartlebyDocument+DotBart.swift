@@ -99,11 +99,11 @@ extension BartlebyDocument {
                                                 let collectionDictionary=collectionDictionary as? [String:Any] {
                                                 do{
                                                     let jsonData = try JSONSerialization.data(withJSONObject: collectionDictionary, options:[])
-                                                    // Use the dynamics
+                                                    // Use  dynamics
                                                     let collection=try self.dynamics.deserialize(typeName: collectionName, data: jsonData, document: nil)
                                                     // We need to cast the dynamic type to ManagedModel & BartlebyCollection (BartlebyCollection alone is not enough)
                                                     if let bartlebyCollection = collection as? ManagedModel & BartlebyCollection{
-                                                        proxy.append(bartlebyCollection.getItems(), commit: false, isUndoable: false)
+                                                        proxy.replaceProxyData(bartlebyCollection.getItems())
                                                     }else{
                                                         throw DocumentError.collectionProxyTypeError
                                                     }
