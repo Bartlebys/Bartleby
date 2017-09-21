@@ -86,8 +86,6 @@ open class Bartleby:NSObject,AliasResolver {
         // Ephemeral mode.
         Bartleby.ephemeral=configuration.EPHEMERAL_MODE
 
-        glog("Bartleby Start time : \(Bartleby.startTime)", file:#file, function:#function, line:#line)
-
         // Configure the HTTP Manager
         HTTPManager.configure()
     }
