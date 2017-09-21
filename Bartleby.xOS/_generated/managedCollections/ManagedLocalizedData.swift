@@ -84,6 +84,17 @@ public extension Notification.Name {
         self.referentDocument?.hasChanged()
     }
 
+    /// Replace the items in the proxy (advanced feature)
+    ///
+    /// - Parameter items: the collectible item
+    /// - Returns: N/A
+    open func replaceProxyData(_ items:[Collectible]){
+        if let collection = items as? [LocalizedDatum]{
+            self._items = [LocalizedDatum]()
+            self.append(collection, commit: false, isUndoable: false)
+        }
+    }
+
     /// Returns the collected items
     /// You should not normally use this method directly
     /// We use this to offer better performances during collection proxy deserialization phase
