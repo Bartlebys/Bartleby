@@ -3,7 +3,7 @@
 //  YouDub
 //
 //  Created by Benoit Pereira da silva on 15/08/2017.
-//  Copyright © 2017 Lylo Media Group SA. All rights reserved.
+//  Copyright © 2017 https://pereira-da-silva.com/ All rights reserved.
 //
 
 import Foundation
