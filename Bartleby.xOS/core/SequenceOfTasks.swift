@@ -15,42 +15,42 @@ import Foundation
 //    onCompletion(completion)
 //  })
 //
-//  tasks.taskHandler = { box,index,sequence in
+//  tasks.taskHandler = { box,index,taskSequence in
 //      print("Mounting box#\(index): \(box.UID)")
 //      document.bsfs.mount(boxUID: box.UID, progressed: { (progression) in
 //          print(progression.message)
 //      }, completed: { (completion) in
-//          completion.success ? sequence.runTask(at:index+1) : chain.end(completion)
+//          completion.success ? taskSequence.runTask(at:index+1) : taskSequence.end(completion)
 //       })
 //  }
 //
 //  tasks.start()
 
 
-struct SequenceOfTasks<T:Any> {
+public struct SequenceOfTasks<T:Any> {
 
-    var items:[T]
+    fileprivate var _items:[T]
 
-    var taskHandler:(_ item:T,_ index:Int,_ sequence:SequenceOfTasks)->() = { item,index,sequence in sequence.runTask(at:index+1) }
+    public var taskHandler:(_ item:T,_ index:Int,_ sequence:SequenceOfTasks)->() = { item,index,sequence in sequence.runTask(at:index+1) }
 
-    var end:CompletionHandler
+    public var end:CompletionHandler
     
     fileprivate var _index:Int = 0
     
-    init(items:[T],end:@escaping CompletionHandler ) {
-        self.items = items
+    public init(items:[T],end:@escaping CompletionHandler ) {
+        self._items = items
         self.end = end
     }
     
-    func start(){
+    public func start(){
         self.runTask(at: 0)
     }
     
-    func runTask(at index:Int){
-        if index == items.count{
+    public func runTask(at index:Int){
+        if index == _items.count{
             self.end(Completion.successState())
         }else{
-            let item = self.items[index]
+            let item = self._items[index]
             self.taskHandler(item,index,self)
         }
     }
