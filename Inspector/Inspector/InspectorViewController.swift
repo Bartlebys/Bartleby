@@ -186,7 +186,7 @@ class InspectorViewController: NSViewController,DocumentDependent,FilterPredicat
 
     override func viewDidAppear() {
         super.viewDidAppear()
-        NotificationCenter.default.addObserver(forName: NSNotification.Name(rawValue: DocumentInspector.CHANGES_HAS_BEEN_RESET_NOTIFICATION), object: nil, queue: nil) {(notification) in
+        NotificationCenter.default.addObserver(forName: Notification.Name(rawValue: DocumentInspector.CHANGES_HAS_BEEN_RESET_NOTIFICATION), object: nil, queue: nil) {(notification) in
             self._collectionListDelegate?.reloadData()
         }
     }

@@ -20,7 +20,7 @@ extension Notification {
     }
 
     public func getProgressionState() -> Progression? {
-        if let dictionary=(self as NSNotification).userInfo as? [String:AnyObject] {
+        if let dictionary=(self as Notification).userInfo as? [String:AnyObject] {
             if let data = dictionary["data"] as? Data{
                 return try? JSON.decoder.decode(Progression.self, from: data)
             }

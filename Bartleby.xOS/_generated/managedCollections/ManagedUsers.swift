@@ -728,7 +728,7 @@ public extension Notification.Name {
                     })
                     self._selectedUIDS = UIDS
                 }
-                NotificationCenter.default.post(name:NSNotification.Name.Users.selectionChanged, object: nil)
+                NotificationCenter.default.post(name:Notification.Name.Users.selectionChanged, object: nil)
             }
         }
     }

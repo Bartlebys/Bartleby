@@ -729,7 +729,7 @@ public extension Notification.Name {
                     })
                     self._selectedUIDS = UIDS
                 }
-                NotificationCenter.default.post(name:NSNotification.Name.Lockers.selectionChanged, object: nil)
+                NotificationCenter.default.post(name:Notification.Name.Lockers.selectionChanged, object: nil)
             }
         }
     }
