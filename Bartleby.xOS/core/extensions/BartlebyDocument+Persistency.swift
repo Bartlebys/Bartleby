@@ -50,18 +50,18 @@ extension BartlebyDocument{
     
     // To Read content
     open override func load(fromContents contents: Any, ofType typeName: String?) throws {
-    if let fileWrapper = contents as? FileWrapper{
-    try self._read(from:fileWrapper)
-    }else{
-    throw DocumentError.fileWrapperNotFound(message:"on load")
-    }
+        if let fileWrapper = contents as? FileWrapper{
+            try self._read(from:fileWrapper)
+        }else{
+            throw DocumentError.fileWrapperNotFound(message:"on load")
+        }
     }
     
     // To Write content
     override open func contents(forType typeName: String) throws -> Any {
-    let wrapper =  try self._updatedFileWrappers()
-    self.send(DocumentStates.documentDidSave)
-    return wrapper
+        let wrapper =  try self._updatedFileWrappers()
+        self.send(DocumentStates.documentDidSave)
+        return wrapper
     }
     
     #endif
@@ -105,7 +105,6 @@ extension BartlebyDocument{
                 self.documentFileWrapper=fileWrapper
             }
         }catch{
-            Swift.print("\(error)")
             throw error
         }
     }
@@ -198,11 +197,8 @@ extension BartlebyDocument{
                 self.log("Sugar is undefined", file: #file, function: #function, line: #line, category: Default.LOG_DEFAULT, decorative: false)
             }
         }catch{
-            Swift.print("\(error)")
             throw error
         }
-        
-        
     }
     
     
