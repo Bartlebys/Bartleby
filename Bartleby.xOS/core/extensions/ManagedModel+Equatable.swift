@@ -10,6 +10,8 @@ import Foundation
 
 // MARK: - Equatable
 
-public func ==(lhs: ManagedModel, rhs: ManagedModel) -> Bool {
-    return lhs.UID==rhs.UID
+extension ManagedModel{
+    public static func ==(lhs: ManagedModel, rhs: ManagedModel) -> Bool {
+        return lhs.UID==rhs.UID
+    }
 }
