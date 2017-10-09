@@ -40,7 +40,7 @@ extension BartlebyDocument{
                 var serializedData  = [Data]()
                 for data in serializedManagedModels{
                     let deserializedModel:ModelType = try self.serializer.deserialize(data, register: false)
-                    let currentModel:ManagedModel = try Bartleby.registredObjectByUID(deserializedModel.UID)
+                    let currentModel:ModelType = try Bartleby.registredObjectByUID(deserializedModel.UID)
                     serializedData.append(currentModel.serialize())
                     try currentModel.mergeWith(deserializedModel)
 
@@ -60,7 +60,7 @@ extension BartlebyDocument{
                 if !undoManager.isUndoing {
                     undoManager.setActionName(undoActionName)
                 }
-
+                
             }
         }catch{
             self.log("\(error)")
