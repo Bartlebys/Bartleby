@@ -21,12 +21,12 @@ extension BartlebyDocument{
     ///     That's all folks...
     ///
     /// - Parameters:
-    ///   - serializedManagedModels: the serialized managed Models instances
+    ///   - serializedRelationalObjects: the serialized managed Models instances
     ///   - undoActionName: the name of the action to undo
     ///   - doAfterAction: a closure called after undo / redo (e.g to update the UI)
     public func registerUndoChangesOn<TargetType,ModelType>(withTarget target: TargetType,
                                                             modelType:ModelType.Type,
-                                                            serializedManagedModels:[Data],
+                                                            serializedRelationalObjects:[SerializedRelationalObject],
                                                             undoActionName:String,
                                                             doAfterAction:@escaping(TargetType)->(Swift.Void)) where TargetType : AnyObject , ModelType:Collectible {
         do{
@@ -37,18 +37,16 @@ extension BartlebyDocument{
                     // Open a new group
                     undoManager.beginUndoGrouping()
                 }
-                var serializedData  = [Data]()
-                for data in serializedManagedModels{
-                    let deserializedModel:ModelType = try self.serializer.deserialize(data, register: false)
+                // @TODO control that implementation
+                for serialized in serializedRelationalObjects{
+                    let deserializedModel:ModelType = try serialized.instanciate()
                     let currentModel:ModelType = try Bartleby.registredObjectByUID(deserializedModel.UID)
-                    serializedData.append(currentModel.serialize())
                     try currentModel.mergeWith(deserializedModel)
-
                 }
                 undoManager.registerUndo(withTarget: self, handler: { (targetSelf) in
                     targetSelf.registerUndoChangesOn(withTarget:target,
                                                      modelType:modelType,
-                                                     serializedManagedModels:serializedData,
+                                                     serializedRelationalObjects:serializedRelationalObjects,
                                                      undoActionName: undoActionName,
                                                      doAfterAction: doAfterAction)
                     if Bartleby.configuration.DEVELOPER_MODE{
