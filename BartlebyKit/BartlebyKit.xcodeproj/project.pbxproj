@@ -457,8 +457,8 @@
 		E54510261F3A1F84008FD1C3 /* Reaction.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5450E501F3A1F83008FD1C3 /* Reaction.swift */; };
 		E54510271F3A1F84008FD1C3 /* RelationShip.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5450E511F3A1F83008FD1C3 /* RelationShip.swift */; };
 		E54510281F3A1F84008FD1C3 /* RelationShip.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5450E511F3A1F83008FD1C3 /* RelationShip.swift */; };
-		E54510291F3A1F84008FD1C3 /* SerializedEntity.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5450E521F3A1F83008FD1C3 /* SerializedEntity.swift */; };
-		E545102A1F3A1F84008FD1C3 /* SerializedEntity.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5450E521F3A1F83008FD1C3 /* SerializedEntity.swift */; };
+		E54510291F3A1F84008FD1C3 /* SerializedRelationalObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5450E521F3A1F83008FD1C3 /* SerializedRelationalObject.swift */; };
+		E545102A1F3A1F84008FD1C3 /* SerializedRelationalObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5450E521F3A1F83008FD1C3 /* SerializedRelationalObject.swift */; };
 		E545102B1F3A1F84008FD1C3 /* ServerErrorCodes.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5450E531F3A1F83008FD1C3 /* ServerErrorCodes.swift */; };
 		E545102C1F3A1F84008FD1C3 /* ServerErrorCodes.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5450E531F3A1F83008FD1C3 /* ServerErrorCodes.swift */; };
 		E545102D1F3A1F84008FD1C3 /* StatusOfCompletion.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5450E541F3A1F83008FD1C3 /* StatusOfCompletion.swift */; };
@@ -817,7 +817,7 @@
 		E5450E4F1F3A1F83008FD1C3 /* UserProtocol.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserProtocol.swift; sourceTree = "<group>"; };
 		E5450E501F3A1F83008FD1C3 /* Reaction.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Reaction.swift; sourceTree = "<group>"; };
 		E5450E511F3A1F83008FD1C3 /* RelationShip.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RelationShip.swift; sourceTree = "<group>"; };
-		E5450E521F3A1F83008FD1C3 /* SerializedEntity.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SerializedEntity.swift; sourceTree = "<group>"; };
+		E5450E521F3A1F83008FD1C3 /* SerializedRelationalObject.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SerializedRelationalObject.swift; sourceTree = "<group>"; };
 		E5450E531F3A1F83008FD1C3 /* ServerErrorCodes.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ServerErrorCodes.swift; sourceTree = "<group>"; };
 		E5450E541F3A1F83008FD1C3 /* StatusOfCompletion.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StatusOfCompletion.swift; sourceTree = "<group>"; };
 		E5450E551F3A1F83008FD1C3 /* UnManagedModel.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UnManagedModel.swift; sourceTree = "<group>"; };
@@ -1220,7 +1220,7 @@
 				E5450E241F3A1F83008FD1C3 /* protocols */,
 				E5450E501F3A1F83008FD1C3 /* Reaction.swift */,
 				E5450E511F3A1F83008FD1C3 /* RelationShip.swift */,
-				E5450E521F3A1F83008FD1C3 /* SerializedEntity.swift */,
+				E5450E521F3A1F83008FD1C3 /* SerializedRelationalObject.swift */,
 				E538F85B1F7642BB004E4E13 /* SequenceOfTasks.swift */,
 				E5450E531F3A1F83008FD1C3 /* ServerErrorCodes.swift */,
 				E5450E541F3A1F83008FD1C3 /* StatusOfCompletion.swift */,
@@ -1801,7 +1801,7 @@
 				E5450FFD1F3A1F84008FD1C3 /* JSONString.swift in Sources */,
 				E5450F491F3A1F83008FD1C3 /* HMAC.swift in Sources */,
 				E54510351F3A1F84008FD1C3 /* String+Helpers.swift in Sources */,
-				E54510291F3A1F84008FD1C3 /* SerializedEntity.swift in Sources */,
+				E54510291F3A1F84008FD1C3 /* SerializedRelationalObject.swift in Sources */,
 				E545103B1F3A1F84008FD1C3 /* Identification.swift in Sources */,
 				E5450ED51F3A1F83008FD1C3 /* DeleteLockers.swift in Sources */,
 				E5416CDD1F47368B00D93B0B /* I18N.swift in Sources */,
@@ -2059,7 +2059,7 @@
 				E5450FFE1F3A1F84008FD1C3 /* JSONString.swift in Sources */,
 				E5450F4A1F3A1F83008FD1C3 /* HMAC.swift in Sources */,
 				E54510361F3A1F84008FD1C3 /* String+Helpers.swift in Sources */,
-				E545102A1F3A1F84008FD1C3 /* SerializedEntity.swift in Sources */,
+				E545102A1F3A1F84008FD1C3 /* SerializedRelationalObject.swift in Sources */,
 				E545103C1F3A1F84008FD1C3 /* Identification.swift in Sources */,
 				E5450ED61F3A1F83008FD1C3 /* DeleteLockers.swift in Sources */,
 				E5450EFC1F3A1F83008FD1C3 /* ReadNodesByQuery.swift in Sources */,
