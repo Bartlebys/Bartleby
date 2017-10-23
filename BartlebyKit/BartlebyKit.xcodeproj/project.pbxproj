@@ -1278,18 +1278,10 @@
 				E5450E191F3A1F83008FD1C3 /* NSNotification+Progression.swift */,
 				E5450E1A1F3A1F83008FD1C3 /* Progression+Conveniences.swift */,
 				E5ADEEA81F3F6AE300371DA1 /* MasterKey+Helper.swift */,
-				E5450E1B1F3A1F83008FD1C3 /* protocols */,
 				E5450E1C1F3A1F83008FD1C3 /* PushOperation+Conveniences.swift */,
 				E5450E1D1F3A1F83008FD1C3 /* UnManagedModel+Serializable.swift */,
 			);
 			path = extensions;
-			sourceTree = "<group>";
-		};
-		E5450E1B1F3A1F83008FD1C3 /* protocols */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = protocols;
 			sourceTree = "<group>";
 		};
 		E5450E241F3A1F83008FD1C3 /* protocols */ = {
