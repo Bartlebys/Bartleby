@@ -18,8 +18,6 @@ public enum DynamicsError:Error{
 // Everywhere else you should use the standard Serializer
 public protocol Dynamics{
 
-
-
     /// Deserializes dynamically an entity based on its Class name.
     ///
     /// - Parameters:
@@ -42,22 +40,27 @@ public protocol Dynamics{
     /// You can patch some data providing default values.
     ///
     /// - Parameters:
-    ///   - typeName: the concerned typeName
     ///   - data: the Data to patch
     ///   - dictionary: the dictionary
     /// - Returns: the patched data
-    func patchProperties(_ typeName:String,data:Data,patchDictionary:[String:Any])throws->Data
+    func patchProperties(data:Data,patchDictionary:[String:Any])throws->Data
 
 
     /// You can patch some data providing
     ///
     /// - Parameters:
-    ///   - typeName:  the concerned typeName
     ///   - data:  the Data to patch
     ///   - injectedDictionary: the dictionary to be injected
     ///   - keyPath: the key path to be used
     /// - Returns: the patched data
-    func patchItemsInCollection(_ typeName:String,data:Data,injectedDictionary:[String:Any],keyPath:DictionaryKeyPath)throws->Data
+    func patchItemsInCollection(data:Data,injectedDictionary:[String:Any],keyPath:DictionaryKeyPath)throws->Data
 
-
+    // Changes the property name from an old to a new name
+    ///
+    /// - Parameters:
+    ///   - data: the Data to patch
+    ///   - oldName: the old property name
+    ///   - newName: the new property name
+    /// - Returns: the patched data
+    func changeItemsPropertyName(data:Data,oldName:String,newName:String)throws->Data
 }

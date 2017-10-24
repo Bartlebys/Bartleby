@@ -247,11 +247,10 @@ open class BartlebysDynamics:Dynamics{
     /// You can patch some data providing default values.
     ///
     /// - Parameters:
-    ///   - typeName: the concerned typeName
     ///   - data: the Data to patch
     ///   - patchDictionary: the dictionary with the default key / value. E.G: ["firtsName":"", "lastName":"","age":0]
     /// - Returns: the patched data
-    open func patchProperties(_ typeName:String,data:Data,patchDictionary:[String:Any])throws->Data{
+    open func patchProperties(data:Data,patchDictionary:[String:Any])throws->Data{
         if var jsonDictionary = try JSONSerialization.jsonObject(with: data, options: JSONSerialization.ReadingOptions.allowFragments) as? [String:Any]{
             let isACollection = jsonDictionary.keys.contains("_storage") && jsonDictionary.keys.contains("_staged") &&  jsonDictionary.keys.contains("_deleted")
             if isACollection {
@@ -280,12 +279,11 @@ open class BartlebysDynamics:Dynamics{
     /// You can patch some data providing a dictionary template.
     ///
     /// - Parameters:
-    ///   - typeName:  the concerned typeName
     ///   - data:  the Data to patch
     ///   - injectedDictionary: the string to be injected
     ///   - keyPath: the insertion point
     /// - Returns: the patched data
-    open func patchItemsInCollection(_ typeName:String,data:Data,injectedDictionary:[String:Any],keyPath:DictionaryKeyPath)throws->Data{
+    open func patchItemsInCollection(data:Data,injectedDictionary:[String:Any],keyPath:DictionaryKeyPath)throws->Data{
         if var jsonDictionary = try JSONSerialization.jsonObject(with: data, options: JSONSerialization.ReadingOptions.allowFragments) as? [String:Any]{
             let isACollection = jsonDictionary.keys.contains("_storage") && jsonDictionary.keys.contains("_staged") &&  jsonDictionary.keys.contains("_deleted")
             if isACollection {
@@ -308,7 +306,34 @@ open class BartlebysDynamics:Dynamics{
     }
 
 
-
-
+    /// Change the property name
+    ///
+    /// - Parameters:
+    ///   - data: the Data to patch
+    ///   - oldName: the old property name
+    ///   - newName: the new property name
+    /// - Returns: the patched data
+    open func changeItemsPropertyName(data:Data,oldName:String,newName:String)throws->Data{
+        if var jsonDictionary = try JSONSerialization.jsonObject(with: data, options: JSONSerialization.ReadingOptions.allowFragments) as? [String:Any]{
+            let isACollection = jsonDictionary.keys.contains("_storage") && jsonDictionary.keys.contains("_staged") &&  jsonDictionary.keys.contains("_deleted")
+            if isACollection {
+                if var items = jsonDictionary["_storage"] as? [String:[String:Any]]{
+                    for (UID,_) in items{
+                        // We use a rare dynamic approach.
+                        // Check `Bartleby.xOS/Core/DictionaryKetPath.swift` for details.
+                        if items[UID]![oldName] != nil{
+                            items[UID]![newName] = items[UID]![oldName]
+                            items[UID]![oldName] = nil
+                        }
+                    }
+                    jsonDictionary["_storage"]=items
+                }
+            }else{
+                throw DynamicsError.collectionTypeRequired
+            }
+            return try JSONSerialization.data(withJSONObject: jsonDictionary, options: [])
+        }
+        throw DynamicsError.jsonDeserializationFailure
+    }
 
 }
