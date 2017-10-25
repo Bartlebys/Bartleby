@@ -242,7 +242,7 @@ open class BartlebysDynamics:Dynamics{
         throw DynamicsError.typeNotFound
     }
 
-   // MARK: - Patch
+    // MARK: - Patch
 
     /// You can patch some data providing default values.
     ///
@@ -335,5 +335,8 @@ open class BartlebysDynamics:Dynamics{
         }
         throw DynamicsError.jsonDeserializationFailure
     }
+
+
+
 
 }
