@@ -21,7 +21,7 @@ open class Identities:Codable {
     open static var storageKey="identities.org.bartlebys"
 
     open var identifications:[Identification]=[Identification]()
-    open var profiles:[Profile]=[Profile]()
+    open var profiles:[UserProfile]=[UserProfile]()
 
     public init () {}
 

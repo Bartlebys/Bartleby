@@ -48,7 +48,7 @@ open class SetupCollaborativeServerViewController: IdentityStepViewController{
                             self.messageTextField.stringValue=""
 
                             // Should we create a USER?
-                            var matchingProfile:Profile?
+                            var matchingProfile:UserProfile?
                             var userHasBeenFound=false
 
                             // Check if we should reuse a password or an external ID.

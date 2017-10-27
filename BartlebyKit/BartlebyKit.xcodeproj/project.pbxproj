@@ -483,8 +483,8 @@
 		E54510401F3A1F84008FD1C3 /* IdentitiesManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5450E5F1F3A1F83008FD1C3 /* IdentitiesManager.swift */; };
 		E54510411F3A1F84008FD1C3 /* KeyChainHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5450E601F3A1F83008FD1C3 /* KeyChainHelper.swift */; };
 		E54510421F3A1F84008FD1C3 /* KeyChainHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5450E601F3A1F83008FD1C3 /* KeyChainHelper.swift */; };
-		E54510431F3A1F84008FD1C3 /* Profile.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5450E611F3A1F83008FD1C3 /* Profile.swift */; };
-		E54510441F3A1F84008FD1C3 /* Profile.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5450E611F3A1F83008FD1C3 /* Profile.swift */; };
+		E54510431F3A1F84008FD1C3 /* UserProfile.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5450E611F3A1F83008FD1C3 /* UserProfile.swift */; };
+		E54510441F3A1F84008FD1C3 /* UserProfile.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5450E611F3A1F83008FD1C3 /* UserProfile.swift */; };
 		E54510451F3A1F84008FD1C3 /* GetActivationCode.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5450E631F3A1F83008FD1C3 /* GetActivationCode.swift */; };
 		E54510461F3A1F84008FD1C3 /* GetActivationCode.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5450E631F3A1F83008FD1C3 /* GetActivationCode.swift */; };
 		E54510471F3A1F84008FD1C3 /* LoginUser.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5450E641F3A1F83008FD1C3 /* LoginUser.swift */; };
@@ -830,7 +830,7 @@
 		E5450E5E1F3A1F83008FD1C3 /* Identities.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Identities.swift; sourceTree = "<group>"; };
 		E5450E5F1F3A1F83008FD1C3 /* IdentitiesManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IdentitiesManager.swift; sourceTree = "<group>"; };
 		E5450E601F3A1F83008FD1C3 /* KeyChainHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KeyChainHelper.swift; sourceTree = "<group>"; };
-		E5450E611F3A1F83008FD1C3 /* Profile.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Profile.swift; sourceTree = "<group>"; };
+		E5450E611F3A1F83008FD1C3 /* UserProfile.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserProfile.swift; sourceTree = "<group>"; };
 		E5450E631F3A1F83008FD1C3 /* GetActivationCode.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GetActivationCode.swift; sourceTree = "<group>"; };
 		E5450E641F3A1F83008FD1C3 /* LoginUser.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginUser.swift; sourceTree = "<group>"; };
 		E5450E651F3A1F83008FD1C3 /* LogoutUser.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LogoutUser.swift; sourceTree = "<group>"; };
@@ -1354,7 +1354,7 @@
 				E5450E5E1F3A1F83008FD1C3 /* Identities.swift */,
 				E5450E5F1F3A1F83008FD1C3 /* IdentitiesManager.swift */,
 				E5450E601F3A1F83008FD1C3 /* KeyChainHelper.swift */,
-				E5450E611F3A1F83008FD1C3 /* Profile.swift */,
+				E5450E611F3A1F83008FD1C3 /* UserProfile.swift */,
 			);
 			path = keychain;
 			sourceTree = "<group>";
@@ -1779,7 +1779,7 @@
 				E5450FCF1F3A1F84008FD1C3 /* BartlebyCollection.swift in Sources */,
 				E5450EEB1F3A1F83008FD1C3 /* ReadLocalizedDataByIds.swift in Sources */,
 				E5450F9B1F3A1F84008FD1C3 /* ManagedModel+Committable.swift in Sources */,
-				E54510431F3A1F84008FD1C3 /* Profile.swift in Sources */,
+				E54510431F3A1F84008FD1C3 /* UserProfile.swift in Sources */,
 				E5450FE71F3A1F84008FD1C3 /* Descriptible.swift in Sources */,
 				E5450FB71F3A1F84008FD1C3 /* ManagedModel+Supervisable.swift in Sources */,
 				E5450F031F3A1F83008FD1C3 /* UpdateBlock.swift in Sources */,
@@ -2038,7 +2038,7 @@
 				E5450FD01F3A1F84008FD1C3 /* BartlebyCollection.swift in Sources */,
 				E5450EEC1F3A1F83008FD1C3 /* ReadLocalizedDataByIds.swift in Sources */,
 				E5450F9C1F3A1F84008FD1C3 /* ManagedModel+Committable.swift in Sources */,
-				E54510441F3A1F84008FD1C3 /* Profile.swift in Sources */,
+				E54510441F3A1F84008FD1C3 /* UserProfile.swift in Sources */,
 				E5450FE81F3A1F84008FD1C3 /* Descriptible.swift in Sources */,
 				E5450FB81F3A1F84008FD1C3 /* ManagedModel+Supervisable.swift in Sources */,
 				E5450F041F3A1F83008FD1C3 /* UpdateBlock.swift in Sources */,

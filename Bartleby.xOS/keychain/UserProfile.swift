@@ -1,5 +1,5 @@
 //
-//  Profile.swift
+//  UserProfile.swift
 //  BartlebyKit
 //
 //  Created by Benoit Pereira da silva on 29/12/2016.
@@ -8,7 +8,7 @@
 
 import Foundation
 
-open class Profile:Codable{
+open class UserProfile:Codable{
 
     open var url:URL=Bartleby.configuration.API_BASE_URL
     open var documentUID:String=Default.NO_UID

@@ -129,7 +129,7 @@ open class IdentitiesManager {
     }
 
 
-    open static func profileMatching(identification:Identification, inDocument document:BartlebyDocument)->Profile?{
+    open static func profileMatching(identification:Identification, inDocument document:BartlebyDocument)->UserProfile?{
         if document.metadata.appGroup != ""{
             let identities=try? Identities.loadFromKeyChain(accessGroup: document.metadata.appGroup)
             if let profiles=identities?.profiles{
@@ -154,8 +154,8 @@ open class IdentitiesManager {
     ///
     /// - Parameter document: the current document
     /// - Returns: the suggested profiles (can be used to propose a user account)
-    fileprivate static func _suggestedProfiles(forDocument document:BartlebyDocument)throws-> [Profile]{
-        var profiles=[Profile]()
+    fileprivate static func _suggestedProfiles(forDocument document:BartlebyDocument)throws-> [UserProfile]{
+        var profiles=[UserProfile]()
         guard document.metadata.appGroup != "" else{
             throw IdentitiesManagerError.appGroupIsMissing
         }
@@ -255,7 +255,7 @@ open class IdentitiesManager {
             // It will be Upserted normally.
         }else{
             // Add the user to the stored profiles.
-            let profile=Profile()
+            let profile=UserProfile()
             profile.documentUID=document.UID
             profile.documentSpaceUID=document.spaceUID
             profile.user=document.currentUser
@@ -299,7 +299,7 @@ open class IdentitiesManager {
     }
 
 
-    fileprivate static func _patch(_ profile:Profile, with identification:Identification, from document:BartlebyDocument)throws{
+    fileprivate static func _patch(_ profile:UserProfile, with identification:Identification, from document:BartlebyDocument)throws{
         guard document.metadata.appGroup != "" else{
             throw IdentitiesManagerError.appGroupIsMissing
         }
@@ -312,7 +312,7 @@ open class IdentitiesManager {
         // We do patch user that explicitly accepts syndication
         if supportsPasswordSyndication == true && profile.user?.UID != document.currentUser.UID{
 
-            func __patchHasSucceededOn(_ profile:Profile, with identification:Identification){
+            func __patchHasSucceededOn(_ profile:UserProfile, with identification:Identification){
                 // Recover the identification and profile.
                 let profile = profile
                 profile.user?.email=identification.email
@@ -387,7 +387,7 @@ open class IdentitiesManager {
         return false
     }
 
-    fileprivate static func _matching(_ user:User,_ profile:Profile)->Bool{
+    fileprivate static func _matching(_ user:User,_ profile:UserProfile)->Bool{
         if user.UID == profile.user?.UID{
             return true
         }
