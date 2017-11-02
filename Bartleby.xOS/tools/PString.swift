@@ -127,7 +127,7 @@ public struct PString {
      */
     public static func substr(_ string: String, _ start: Int, _ length: Int?) -> String {
 
-        let strLength=Int(string.characters.count)
+        let strLength=Int(string.count)
         var start=start
         let length:Int=length ?? strLength
 
@@ -190,7 +190,7 @@ public struct PString {
 
 
     public static func strlen(_ string: String) -> Int {
-        return Int(string.characters.count)
+        return Int(string.count)
     }
 
     public static func lcfirst(_ string: String) -> String {

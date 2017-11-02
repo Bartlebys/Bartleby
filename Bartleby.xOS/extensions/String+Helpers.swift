@@ -24,7 +24,7 @@ public extension String {
     public func isMatching(_ regex: String) -> Bool {
         do {
             let regex = try NSRegularExpression(pattern: regex, options: [])
-            let matchCount = regex.numberOfMatches(in: self, options: [], range: NSMakeRange(0, self.characters.count))
+            let matchCount = regex.numberOfMatches(in: self, options: [], range: NSMakeRange(0, self.count))
             return matchCount > 0
         } catch {
             glog("\(error)", file:#file, function:#function, line: #line)
@@ -35,7 +35,7 @@ public extension String {
     public func getMatches(_ regex: String, options: NSRegularExpression.Options) -> [NSTextCheckingResult]? {
         do {
             let regex = try NSRegularExpression(pattern: regex, options: options)
-            let matches = regex.matches(in: self, options: [], range: NSMakeRange(0, self.characters.count))
+            let matches = regex.matches(in: self, options: [], range: NSMakeRange(0, self.count))
             return matches
         } catch {
             glog("\(error)", file:#file, function:#function, line: #line)
@@ -72,7 +72,7 @@ public extension String {
     }
 
     public func fullNSRange()->NSRange{
-        return NSRange(location: 0, length: self.characters.count)
+        return NSRange(location: 0, length: self.count)
     }
 
     /*
@@ -103,7 +103,7 @@ public extension String {
     /// - Parameter range: the range of char to remove
     public mutating func removeSubNSRange(_ range:NSRange){
         let rangeEndLocation = range.location + range.length
-        let charCount = self.characters.count
+        let charCount = self.count
         let prefixed =  range.location > 0 ? PString.substr(self, 0, range.location) : ""
         let postFixed = rangeEndLocation < charCount ? PString.substr(self, rangeEndLocation) : ""
         self = prefixed + postFixed

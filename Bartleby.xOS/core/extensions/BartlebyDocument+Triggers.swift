@@ -289,7 +289,7 @@ extension BartlebyDocument {
         for trigger in self.metadata.receivedTriggers {
             if let data = try? JSON.prettyEncoder.encode(trigger){
                 if let s = data.optionalString(using: Default.STRING_ENCODING){
-                    let n = s.characters.count// We can  the trigger envelop.
+                    let n = s.count// We can  the trigger envelop.
                     informations += "\(trigger.index) [\(n) Bytes] \(trigger.action) \(trigger.origin ?? "" ) \(trigger.UIDS)\n"
                 }
             }

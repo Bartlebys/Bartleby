@@ -102,7 +102,7 @@ open class Bartleby:NSObject,AliasResolver {
     // MARK: -
     // TODO: @md #crypto Check crypto key requirement
     static open func isValidKey(_ key: String) -> Bool {
-        return key.characters.count >= 32
+        return key.count >= 32
     }
 
     // MARK: - Registries
@@ -196,10 +196,10 @@ open class Bartleby:NSObject,AliasResolver {
     open static func randomStringWithLength (_ len: UInt, signs: String="abcdefghjkmnpqrstuvwxyzABCDEFGHJKMNPQRSTUVWXYZ23456789") -> String {
         var randomString = ""
         for _ in (0 ..< len) {
-            let length = UInt32 (signs.characters.count)
+            let length = UInt32 (signs.count)
             let rand = Int(arc4random_uniform(length))
-            let idx = signs.characters.index(signs.startIndex, offsetBy: rand, limitedBy:signs.endIndex)
-            let c=signs.characters[idx!]
+            let idx = signs.index(signs.startIndex, offsetBy: rand, limitedBy:signs.endIndex)
+            let c=signs[idx!]
             randomString.append(c)
         }
         return randomString

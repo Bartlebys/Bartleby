@@ -28,7 +28,7 @@ extension LogEntry{
 
     func padded<T>(_ number: T, _ numberOfDigit: Int, _ char: String=" ", _ left: Bool=true) -> String {
         var s="\(number)"
-        while s.characters.count < numberOfDigit {
+        while s.count < numberOfDigit {
             if left {
                 s=char+s
             } else {

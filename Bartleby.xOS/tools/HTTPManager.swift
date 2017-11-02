@@ -348,9 +348,9 @@ open class HTTPManager: NSObject {
     static open func isValidPhoneNumber(_ testStr: String) -> Bool {
             do {
                 let detector = try NSDataDetector(types: NSTextCheckingResult.CheckingType.phoneNumber.rawValue)
-                let matches = detector.matches(in: testStr, options: [], range: NSMakeRange(0, testStr.characters.count))
+                let matches = detector.matches(in: testStr, options: [], range: NSMakeRange(0, testStr.count))
                 if let res = matches.first {
-                    return res.resultType == .phoneNumber && res.range.location == 0 && res.range.length == testStr.characters.count
+                    return res.resultType == .phoneNumber && res.range.location == 0 && res.range.length == testStr.count
                 } else {
                     return false
                 }

@@ -70,7 +70,7 @@ public extension DocumentMetadata{
         // Let's generate a new one
         var sweet=""
         /// Do we have a super sugar?
-        if sweet.characters.count >= 512{
+        if sweet.count >= 512{
             sweet=PString.substr(superSugar, 0, 512)+Bartleby.randomStringWithLength(512)
         }else{
             sweet=Bartleby.randomStringWithLength(1024)
