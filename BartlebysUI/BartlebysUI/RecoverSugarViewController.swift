@@ -47,7 +47,7 @@ open class RecoverSugarViewController: IdentityStepViewController {
     override open func proceedToValidation() {
         super.proceedToValidation()
         let code = PString.trim(self.codeTextField.stringValue)
-        if code.characters.count > 3 {
+        if code.count > 3 {
             if let document=self.documentProvider?.getDocument(){
                 ////
                 /// Verifies the Locker

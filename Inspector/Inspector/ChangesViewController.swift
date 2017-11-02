@@ -79,7 +79,7 @@ extension ChangesViewController:NSTableViewDataSource{
         guard let item =  self.itemForRow(row) else {
             return 20
         }
-        if item.changes.characters.count > 200 {
+        if item.changes.count > 200 {
             return 100
         }
         return 20

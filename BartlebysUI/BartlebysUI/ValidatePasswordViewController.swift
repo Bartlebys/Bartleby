@@ -45,11 +45,11 @@ open class ValidatePasswordViewController: IdentityStepViewController{
 
             document.send(IdentificationStates.validatePassword)
             self.emailTextField.stringValue = document.metadata.currentUserEmail
-            if document.metadata.currentUserFullPhoneNumber.characters.count > 3{
+            if document.metadata.currentUserFullPhoneNumber.count > 3{
                 self.phoneNumberTextField.stringValue = document.metadata.currentUserFullPhoneNumber
             }else{
                 let p = document.currentUser.fullPhoneNumber
-                if p.characters.count > 3 {
+                if p.count > 3 {
                     self.phoneNumberTextField.stringValue = p
                 }
             }
