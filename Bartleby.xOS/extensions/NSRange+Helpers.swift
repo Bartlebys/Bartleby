@@ -47,14 +47,4 @@ extension NSRange{
         return r
     }
 
-    // MARK: - Operations on ranges
-
-    public func union(_ range: NSRange) -> NSRange {
-        return NSUnionRange(self, range)
-    }
-
-    public func intersection(_ range: NSRange) -> NSRange {
-        return NSIntersectionRange(self, range)
-    }
-
 }
