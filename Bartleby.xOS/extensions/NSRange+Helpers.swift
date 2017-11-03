@@ -47,4 +47,26 @@ extension NSRange{
         return r
     }
 
+
+    /// Return the inverted ranges from an Array of NSRange
+    ///
+    /// - Parameters:
+    ///   - ranges: the array of range
+    ///   - fullRange: the full range
+    /// - Returns: the inverse of the array of NSRange
+    public static func invertedNSRangesFrom(_ ranges:[NSRange],with fullRange:NSRange)->[NSRange]{
+        var invertedRanges = [NSRange]()
+        var lastRange:NSRange = NSMakeRange(-1,0)
+        for range in ranges{
+            if lastRange.lastLocation <= range.firstLocation{
+                invertedRanges.append(NSMakeRange(lastRange.lastLocation+1,range.firstLocation-lastRange.lastLocation-1))
+            }
+            lastRange = range
+        }
+        if lastRange.lastLocation < fullRange.length{
+            invertedRanges.append(NSMakeRange(lastRange.lastLocation+1,fullRange.lastLocation-lastRange.lastLocation))
+        }
+        return invertedRanges
+    }
+
 }
