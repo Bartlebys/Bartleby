@@ -46,19 +46,23 @@ open class ViewsRecycler {
 
     /// Purges all the views (e.g on view controller deinit)
     open func purgeViews(){
-        while let vs = self._viewsReferers.popLast(){
-            vs.view.removeFromSuperview()
+        Bartleby.syncOnMain {
+            while let vs = self._viewsReferers.popLast(){
+                vs.view.removeFromSuperview()
+            }
         }
     }
 
 
     /// Call this method if you consider there is possibly to much recyclable views
     open func purgeAvailableViews(){
-        let r = self._viewsReferers.enumerated().reversed()
-        for (i,referer) in  r{
-            if referer.available {
-                referer.view.removeFromSuperview()
-                self._viewsReferers.remove(at: i)
+        Bartleby.syncOnMain {
+            let r = self._viewsReferers.enumerated().reversed()
+            for (i,referer) in  r{
+                if referer.available {
+                    referer.view.removeFromSuperview()
+                    self._viewsReferers.remove(at: i)
+                }
             }
         }
     }
@@ -90,17 +94,19 @@ open class ViewsRecycler {
 
     /// You must call this method regularly to recycle off screen views.
     open func liberateOffScreenViews(){
-        for referer in self._viewsReferers{
-            if let superview = referer.view.superview{
-                if  referer.view.frame.origin.x + referer.view.frame.width + self.minOffScreenDistance < superview.frame.origin.x ||
-                    referer.view.frame.origin.x > superview.frame.origin.x + superview.frame.width + self.minOffScreenDistance ||
-                    referer.view.frame.origin.y + referer.view.frame.height + self.minOffScreenDistance < superview.frame.origin.y ||
-                    referer.view.frame.origin.y > superview.frame.origin.y + superview.frame.height + self.minOffScreenDistance {
+        Bartleby.syncOnMain {
+            for referer in self._viewsReferers{
+                if let superview = referer.view.superview{
+                    if  referer.view.frame.origin.x + referer.view.frame.width + self.minOffScreenDistance < superview.frame.origin.x ||
+                        referer.view.frame.origin.x > superview.frame.origin.x + superview.frame.width + self.minOffScreenDistance ||
+                        referer.view.frame.origin.y + referer.view.frame.height + self.minOffScreenDistance < superview.frame.origin.y ||
+                        referer.view.frame.origin.y > superview.frame.origin.y + superview.frame.height + self.minOffScreenDistance {
+                        referer.available = true
+                    }
+                }else if referer.available == false{
+                    // The clients may remove the view from the superview to force the recycling
                     referer.available = true
                 }
-            }else if referer.available == false{
-                // The clients may remove the view from the superview to force the recycling
-                referer.available = true
             }
         }
     }
@@ -110,8 +116,10 @@ open class ViewsRecycler {
     ///
     /// - Parameter view: the view to recycle
     open func recycleView(view:XView){
-        view.removeFromSuperview()
-        self.liberate(view: view)
+        Bartleby.syncOnMain {
+            view.removeFromSuperview()
+            self.liberate(view: view)
+        }
     }
 
 
@@ -122,7 +130,7 @@ open class ViewsRecycler {
     ///   - view: the view to recycle
     open func liberate(viewsGroupedBy groupNames:[String]){
         let referers = self._viewsReferers.filter({ (referer) -> Bool in
-        return groupNames.contains(referer.groupName)
+            return groupNames.contains(referer.groupName)
         })
         for referer in referers{
             referer.available = true
@@ -145,12 +153,14 @@ open class ViewsRecycler {
 
     /// Removes all the unused view from their superview
     open func removeAllAvailableViewsFromSuperView(){
-        // We liberate all the offscreen views
-        self.liberateOffScreenViews()
-        // And remove All the available views from their superview
-        for referer in self._viewsReferers{
-            if referer.available{
-                referer.view.removeFromSuperview()
+        Bartleby.syncOnMain {
+            // We liberate all the offscreen views
+            self.liberateOffScreenViews()
+            // And remove All the available views from their superview
+            for referer in self._viewsReferers{
+                if referer.available{
+                    referer.view.removeFromSuperview()
+                }
             }
         }
     }
@@ -271,7 +281,7 @@ open class ViewsRecycler {
     /// - Returns: the collection of views
     open func getAllViews()->[XView]{
         return self._viewsReferers.flatMap({ (referer) -> XView? in
-                return referer.view
+            return referer.view
         })
     }
 
