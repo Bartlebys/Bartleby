@@ -63,7 +63,7 @@ extension NSRange{
             }
             lastRange = range
         }
-        if lastRange.lastLocation < fullRange.length{
+        if lastRange.lastLocation < fullRange.length && fullRange.lastLocation-lastRange.lastLocation > 0 {
             invertedRanges.append(NSMakeRange(lastRange.lastLocation+1,fullRange.lastLocation-lastRange.lastLocation))
         }
         return invertedRanges
