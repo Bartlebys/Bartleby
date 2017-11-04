@@ -58,13 +58,15 @@ extension NSRange{
         var invertedRanges = [NSRange]()
         var lastRange:NSRange = NSMakeRange(-1,0)
         for range in ranges{
-            if lastRange.lastLocation <= range.firstLocation{
-                invertedRanges.append(NSMakeRange(lastRange.lastLocation+1,range.firstLocation-lastRange.lastLocation-1))
+            let length = range.firstLocation-lastRange.lastLocation-1
+            if lastRange.lastLocation <= range.firstLocation &&  length > 0{
+                invertedRanges.append(NSMakeRange(lastRange.lastLocation+1,length))
             }
             lastRange = range
         }
-        if lastRange.lastLocation < fullRange.length && fullRange.lastLocation-lastRange.lastLocation > 0 {
-            invertedRanges.append(NSMakeRange(lastRange.lastLocation+1,fullRange.lastLocation-lastRange.lastLocation))
+        let length = fullRange.lastLocation-lastRange.lastLocation
+        if lastRange.lastLocation < fullRange.length && length > 0 {
+            invertedRanges.append(NSMakeRange(lastRange.lastLocation+1,length))
         }
         return invertedRanges
     }
