@@ -100,7 +100,6 @@
 		E5F439D71FA31B6F00AFC05B /* BartlebyDocument+SecurityScopes.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5F438CB1FA31B6F00AFC05B /* BartlebyDocument+SecurityScopes.swift */; };
 		E5F439D81FA31B6F00AFC05B /* ManagedModel+Serializable.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5F438CC1FA31B6F00AFC05B /* ManagedModel+Serializable.swift */; };
 		E5F439D91FA31B6F00AFC05B /* DocumentMetadata+Facilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5F438CD1FA31B6F00AFC05B /* DocumentMetadata+Facilities.swift */; };
-		E5F439DA1FA31B6F00AFC05B /* ManagedModel+QuietChanges.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5F438CE1FA31B6F00AFC05B /* ManagedModel+QuietChanges.swift */; };
 		E5F439DB1FA31B6F00AFC05B /* NSNotification+Completion.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5F438CF1FA31B6F00AFC05B /* NSNotification+Completion.swift */; };
 		E5F439DC1FA31B6F00AFC05B /* Completion+Conveniences.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5F438D01FA31B6F00AFC05B /* Completion+Conveniences.swift */; };
 		E5F439DD1FA31B6F00AFC05B /* ManagedModel+Committable.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5F438D11FA31B6F00AFC05B /* ManagedModel+Committable.swift */; };
@@ -396,7 +395,6 @@
 		E5F438CB1FA31B6F00AFC05B /* BartlebyDocument+SecurityScopes.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "BartlebyDocument+SecurityScopes.swift"; sourceTree = "<group>"; };
 		E5F438CC1FA31B6F00AFC05B /* ManagedModel+Serializable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "ManagedModel+Serializable.swift"; sourceTree = "<group>"; };
 		E5F438CD1FA31B6F00AFC05B /* DocumentMetadata+Facilities.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "DocumentMetadata+Facilities.swift"; sourceTree = "<group>"; };
-		E5F438CE1FA31B6F00AFC05B /* ManagedModel+QuietChanges.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "ManagedModel+QuietChanges.swift"; sourceTree = "<group>"; };
 		E5F438CF1FA31B6F00AFC05B /* NSNotification+Completion.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "NSNotification+Completion.swift"; sourceTree = "<group>"; };
 		E5F438D01FA31B6F00AFC05B /* Completion+Conveniences.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Completion+Conveniences.swift"; sourceTree = "<group>"; };
 		E5F438D11FA31B6F00AFC05B /* ManagedModel+Committable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "ManagedModel+Committable.swift"; sourceTree = "<group>"; };
@@ -856,7 +854,6 @@
 				E5F438CB1FA31B6F00AFC05B /* BartlebyDocument+SecurityScopes.swift */,
 				E5F438CC1FA31B6F00AFC05B /* ManagedModel+Serializable.swift */,
 				E5F438CD1FA31B6F00AFC05B /* DocumentMetadata+Facilities.swift */,
-				E5F438CE1FA31B6F00AFC05B /* ManagedModel+QuietChanges.swift */,
 				E5F438CF1FA31B6F00AFC05B /* NSNotification+Completion.swift */,
 				E5F438D01FA31B6F00AFC05B /* Completion+Conveniences.swift */,
 				E5F438D11FA31B6F00AFC05B /* ManagedModel+Committable.swift */,
@@ -1319,7 +1316,6 @@
 				E5F439E81FA31B6F00AFC05B /* RelationShip.swift in Sources */,
 				E5F439BB1FA31B6F00AFC05B /* PushOperation+Conveniences.swift in Sources */,
 				E5F439EF1FA31B6F00AFC05B /* Pusher.swift in Sources */,
-				E5F439DA1FA31B6F00AFC05B /* ManagedModel+QuietChanges.swift in Sources */,
 				E5F43A741FA31B6F00AFC05B /* DeleteBoxes.swift in Sources */,
 				E5F439BA1FA31B6F00AFC05B /* NSNotification+Progression.swift in Sources */,
 				E5F43A8C1FA31B6F00AFC05B /* ManagedPushOperations.swift in Sources */,

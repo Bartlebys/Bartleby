@@ -335,8 +335,6 @@
 		E5450FAC1F3A1F84008FD1C3 /* ManagedModel+Mergeable.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5450E111F3A1F83008FD1C3 /* ManagedModel+Mergeable.swift */; };
 		E5450FAD1F3A1F84008FD1C3 /* ManagedModel+ProvisionChanges.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5450E121F3A1F83008FD1C3 /* ManagedModel+ProvisionChanges.swift */; };
 		E5450FAE1F3A1F84008FD1C3 /* ManagedModel+ProvisionChanges.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5450E121F3A1F83008FD1C3 /* ManagedModel+ProvisionChanges.swift */; };
-		E5450FAF1F3A1F84008FD1C3 /* ManagedModel+QuietChanges.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5450E131F3A1F83008FD1C3 /* ManagedModel+QuietChanges.swift */; };
-		E5450FB01F3A1F84008FD1C3 /* ManagedModel+QuietChanges.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5450E131F3A1F83008FD1C3 /* ManagedModel+QuietChanges.swift */; };
 		E5450FB11F3A1F84008FD1C3 /* ManagedModel+Relational.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5450E141F3A1F83008FD1C3 /* ManagedModel+Relational.swift */; };
 		E5450FB21F3A1F84008FD1C3 /* ManagedModel+Relational.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5450E141F3A1F83008FD1C3 /* ManagedModel+Relational.swift */; };
 		E5450FB31F3A1F84008FD1C3 /* ManagedModel+RelationsResolution.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5450E151F3A1F83008FD1C3 /* ManagedModel+RelationsResolution.swift */; };
@@ -756,7 +754,6 @@
 		E5450E101F3A1F83008FD1C3 /* ManagedModel+Logs.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "ManagedModel+Logs.swift"; sourceTree = "<group>"; };
 		E5450E111F3A1F83008FD1C3 /* ManagedModel+Mergeable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "ManagedModel+Mergeable.swift"; sourceTree = "<group>"; };
 		E5450E121F3A1F83008FD1C3 /* ManagedModel+ProvisionChanges.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "ManagedModel+ProvisionChanges.swift"; sourceTree = "<group>"; };
-		E5450E131F3A1F83008FD1C3 /* ManagedModel+QuietChanges.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "ManagedModel+QuietChanges.swift"; sourceTree = "<group>"; };
 		E5450E141F3A1F83008FD1C3 /* ManagedModel+Relational.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "ManagedModel+Relational.swift"; sourceTree = "<group>"; };
 		E5450E151F3A1F83008FD1C3 /* ManagedModel+RelationsResolution.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "ManagedModel+RelationsResolution.swift"; sourceTree = "<group>"; };
 		E5450E161F3A1F83008FD1C3 /* ManagedModel+Serializable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "ManagedModel+Serializable.swift"; sourceTree = "<group>"; };
@@ -1269,7 +1266,6 @@
 				E5450E101F3A1F83008FD1C3 /* ManagedModel+Logs.swift */,
 				E5450E111F3A1F83008FD1C3 /* ManagedModel+Mergeable.swift */,
 				E5450E121F3A1F83008FD1C3 /* ManagedModel+ProvisionChanges.swift */,
-				E5450E131F3A1F83008FD1C3 /* ManagedModel+QuietChanges.swift */,
 				E5450E141F3A1F83008FD1C3 /* ManagedModel+Relational.swift */,
 				E5450E151F3A1F83008FD1C3 /* ManagedModel+RelationsResolution.swift */,
 				E5450E161F3A1F83008FD1C3 /* ManagedModel+Serializable.swift */,
@@ -1641,7 +1637,6 @@
 				E5450FD71F3A1F84008FD1C3 /* Collectible.swift in Sources */,
 				E5450F5B1F3A1F84008FD1C3 /* Consignation.swift in Sources */,
 				E5450ED91F3A1F83008FD1C3 /* DeleteNodes.swift in Sources */,
-				E5450FAF1F3A1F84008FD1C3 /* ManagedModel+QuietChanges.swift in Sources */,
 				E5450FC91F3A1F84008FD1C3 /* JSONSerializer.swift in Sources */,
 				E5450EA91F3A1F83008FD1C3 /* PushOperation.swift in Sources */,
 				E5450F7F1F3A1F84008FD1C3 /* BartlebyDocument+SecurityScopes.swift in Sources */,
@@ -1901,7 +1896,6 @@
 				E5450FD81F3A1F84008FD1C3 /* Collectible.swift in Sources */,
 				E5450F5C1F3A1F84008FD1C3 /* Consignation.swift in Sources */,
 				E5450EDA1F3A1F83008FD1C3 /* DeleteNodes.swift in Sources */,
-				E5450FB01F3A1F84008FD1C3 /* ManagedModel+QuietChanges.swift in Sources */,
 				E5450FCA1F3A1F84008FD1C3 /* JSONSerializer.swift in Sources */,
 				E5450EAA1F3A1F83008FD1C3 /* PushOperation.swift in Sources */,
 				E5450F801F3A1F84008FD1C3 /* BartlebyDocument+SecurityScopes.swift in Sources */,
