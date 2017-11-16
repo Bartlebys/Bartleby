@@ -11,32 +11,32 @@ import Foundation
 
 // An High performance Chunker, with a reduced memory foot print
 struct  Chunker {
-
+    
     fileprivate let _fileManager:FileManager
-
+    
     // Destroys the chunks destination folder
     var destroyChunksFolder:Bool
-
+    
     enum Mode{
         case digestAndProcessing
         case digestOnly
     }
-
+    
     /// If the document is set we use the Document.fileWrapper to read or write chunk coordinated data
     /// We consider that the blocks are embedded.
     /// Else the chunker loads directly the data from  the File System (blocks are not embedded)
     var document:BartlebyDocument?
     var embeddedInADocument:Bool { return (self.document != nil) }
-
+    
     // When using `.real` mode the file are chunked, when using `.digestOnly` we compute their digest only
     // Simulated can be 5X faster than real mode and do not require Disk room.
     var mode:Chunker.Mode
-
+    
     // The Crypto Helper
     fileprivate let _cryptoHelper:CryptoHelper
-
+    
     // MARK: - Init
-
+    
     ///  The designated Initializer
     ///
     /// - Parameters:
@@ -56,10 +56,10 @@ struct  Chunker {
         self.document=embeddedIn
         self._cryptoHelper=CryptoHelper(salt: Bartleby.configuration.SHARED_SALT,keySize:keySize)
     }
-
-
+    
+    
     // MARK: - Files and Folder to Chunk
-
+    
     /// Breaks recursively any file, folder, alias from a given folder path.
     /// - The hard stuff is done Asynchronously on a the Utility queue
     /// - we use an Autorelease pool to lower the memory foot print
@@ -86,7 +86,7 @@ struct  Chunker {
                                        progression:@escaping((Progression)->()),
                                        success:@escaping ([Chunk])->(),
                                        failure:@escaping ([Chunk],String)->()){
-
+        
         Async.utility{
             let progressionState=Progression()
             progressionState.quietChanges{
@@ -98,10 +98,10 @@ struct  Chunker {
             Bartleby.syncOnMain {
                 progression(progressionState)
             }
-
+            
             var failuresMessages=[String]()
             var cumulatedChunks=[Chunk]()
-
+            
             let fm:FileManager = self._fileManager
             if let folderURL=URL(string: assembledFolderPath){
                 let keys:[URLResourceKey]=[ URLResourceKey.fileSizeKey,
@@ -130,7 +130,7 @@ struct  Chunker {
                 let pathNb=paths.count
                 var counter=1
                 for relativePath in paths{
-
+                    
                     self.breakIntoChunk(fileAt: assembledFolderPath+relativePath,
                                         relativePath: relativePath,
                                         chunksFolderPath: chunksFolderPath,
@@ -164,7 +164,7 @@ struct  Chunker {
                                 }
                             }
                         }
-
+                        
                     }, failure: { (message) in
                         counter += 1
                         failuresMessages.append(message)
@@ -177,8 +177,8 @@ struct  Chunker {
             }
         }
     }
-
-
+    
+    
     /// This breaks efficiently a file to chunks.
     /// - The hard stuff is done Asynchronously on a the Utility queue
     /// - we use an Autorelease pool to lower the memory foot print
@@ -207,13 +207,13 @@ struct  Chunker {
                                  progression:@escaping((Progression)->()),
                                  success:@escaping ([Chunk])->(),
                                  failure:@escaping (String)->()){
-
+        
         // Don't block the main thread with those intensive IO  processing
         Async.utility {
             if self._isPathValid(absolutePath){
                 if let attributes:[FileAttributeKey : Any] = try? self._fileManager.attributesOfItem(atPath: absolutePath){
                     if let type=attributes[FileAttributeKey.type] as? FileAttributeType{
-
+                        
                         if (URL(fileURLWithPath: absolutePath).isAnAlias){
                             // It is an alias
                             var aliasDestinationPath:String=Default.NO_PATH
@@ -234,9 +234,9 @@ struct  Chunker {
                             Bartleby.syncOnMain{
                                 success([chunk])
                             }
-
+                            
                         }else if type==FileAttributeType.typeRegular{
-
+                            
                             self._breakIntoChunk( fileAt: absolutePath,
                                                   relativePath:relativePath,
                                                   chunksfolderPath: chunksFolderPath,
@@ -248,7 +248,7 @@ struct  Chunker {
                                                   progression: progression,
                                                   success: success,
                                                   failure: failure)
-
+                            
                         }else if type==FileAttributeType.typeDirectory{
                             var chunk=Chunk( rank: 0,
                                              baseDirectory:chunksFolderPath,
@@ -276,9 +276,9 @@ struct  Chunker {
             }
         }
     }
-
-
-
+    
+    
+    
     fileprivate func _breakIntoChunk(   fileAt path:String,
                                         relativePath:String,
                                         chunksfolderPath:String,
@@ -290,18 +290,18 @@ struct  Chunker {
                                         progression:@escaping((Progression)->()),
                                         success:@escaping ([Chunk])->(),
                                         failure:@escaping (String)->()){
-
+        
         Async.utility {
-
+            
             // Read each chunk efficiently
             if let fileHandle=FileHandle(forReadingAtPath:path ){
-
+                
                 // We Can't guess what will Happen
                 // But we want a guarantee the handle will be closed
                 defer{
                     fileHandle.closeFile()
                 }
-
+                
                 let _=fileHandle.seekToEndOfFile()
                 let l=fileHandle.offsetInFile
                 fileHandle.seek(toFileOffset: 0)
@@ -315,7 +315,7 @@ struct  Chunker {
                 if l < maxSize{
                     r = l
                 }
-
+                
                 let progressionState=Progression()
                 progressionState.quietChanges{
                     progressionState.totalTaskCount=Int(nb)
@@ -327,21 +327,21 @@ struct  Chunker {
                     if self.destroyChunksFolder{
                         let _ = try? self._fileManager.removeItem(atPath: chunksfolderPath)
                     }
-
+                    
                     let _ = try? self._fileManager.createDirectory(atPath: chunksfolderPath, withIntermediateDirectories: true, attributes: nil)
                 }
-
+                
                 var offset:UInt64=0
                 var position:UInt64=0
                 var chunks=[Chunk]()
-
+                
                 var counter=0
-
-
+                
+                
                 func __writeData(rank:Int,size:Int, data:Data,to chunksFolderPath:String,digest sha1:String, position:Int,relativePath:String)throws->(){
-
+                    
                     var relativeFolderPath=""
-
+                    
                     if !self.embeddedInADocument{
                         // Generate a Classified Block Tree.
                         let c1=PString.substr(sha1, 0, 1)
@@ -349,7 +349,7 @@ struct  Chunker {
                         let c3=PString.substr(sha1, 2, 1)
                         relativeFolderPath="/\(c1)/\(c2)/\(c3)"
                     }
-
+                    
                     let bFolderPath = self.embeddedInADocument ? relativeFolderPath : chunksFolderPath+relativeFolderPath
                     if !self.embeddedInADocument && self.mode == .digestAndProcessing{
                         let _ = try self._fileManager.createDirectory(atPath: bFolderPath, withIntermediateDirectories: true, attributes: nil)
@@ -371,9 +371,9 @@ struct  Chunker {
                             let url=URL(fileURLWithPath: destination)
                             let _ = try data.write(to:url )
                         }
-
+                        
                     }
-
+                    
                     Bartleby.syncOnMain{
                         counter += 1
                         progressionState.quietChanges{
@@ -384,14 +384,14 @@ struct  Chunker {
                         // Relay the progression
                         progression(progressionState)
                     }
-
+                    
                 }
-
+                
                 do {
                     for i in 0 ... nb{
                         // We try to reduce the memory usage
                         // To the footprint of a Chunk +  Derivated Data.
-                        try autoreleasepool(invoking: { () -> Void in
+                        try autoreleasepool{
                             fileHandle.seek(toFileOffset: position)
                             offset = (i==nb ? r : maxSize)
                             position += offset
@@ -408,21 +408,21 @@ struct  Chunker {
                                 if encrypt && self.mode == .digestAndProcessing{
                                     if self.embeddedInADocument{
                                         // We use sugar one to be able to share crypted files between multiple sub document
-                                         data = try self._cryptoHelper.encryptData(data,useKey: self.document!.metadata.firstPieceOfSugar)
+                                        data = try self._cryptoHelper.encryptData(data,useKey: self.document!.metadata.firstPieceOfSugar)
                                     }else{
-                                         data = try self._cryptoHelper.encryptData(data,useKey: Bartleby.configuration.KEY)
+                                        data = try self._cryptoHelper.encryptData(data,useKey: Bartleby.configuration.KEY)
                                     }
                                 }
                                 try __writeData(rank:Int(i),size:Int(offset), data: data,to:chunksfolderPath,digest:sha1,position:Int(position),relativePath:relativePath)
                             }
-
-                        })
+                            
+                        }
                     }
-
+                    
                     Bartleby.syncOnMain{
                         success(chunks)
                     }
-
+                    
                 }catch{
                     Bartleby.syncOnMain{
                         failure("\(error)")
@@ -433,14 +433,14 @@ struct  Chunker {
                     failure(NSLocalizedString("Enable to create file Handle", tableName:"system", comment: "Enable to create file Handle")+" \(path)")
                 }
             }
-
+            
         }
     }
-
-
+    
+    
     // MARK: - Chunks to files and folders
-
-
+    
+    
     /// Joins multiple chunks to a folder
     ///
     /// - Parameters:
@@ -454,9 +454,9 @@ struct  Chunker {
                              progression:@escaping((Progression)->()),
                              success:@escaping ()->(),
                              failure:@escaping (_ createdPaths:[String],_ message:String)->()){
-
+        
         Async.utility {
-
+            
             // #1 Compute the file path to chunk.
             var filePathToChunks=[String:[Chunk]]()
             for chunk in chunks{
@@ -467,11 +467,11 @@ struct  Chunker {
                 }
                 filePathToChunks[chunk.nodePath]!.append(chunk)
             }
-
-
+            
+            
             var failuresMessages=[String]()
             var createdPaths=[String]()
-
+            
             let progressionState=Progression()
             progressionState.quietChanges{
                 progressionState.totalTaskCount=filePathToChunks.count
@@ -479,14 +479,14 @@ struct  Chunker {
                 progressionState.externalIdentifier=""
                 progressionState.message=""
             }
-
-
+            
+            
             // #2 re-join the files
             var counter=0
             for (_,v) in filePathToChunks{
                 let destinationFile=assemblyFolderPath+v[0].nodePath
                 let nodeNature=v[0].nodeNature
-
+                
                 // Sub func for normalized progression and finalization handling
                 func __progressWithPath(_ path:String,error:Bool=false){
                     counter += 1
@@ -516,17 +516,17 @@ struct  Chunker {
                         }
                     }
                 }
-
+                
                 if nodeNature == .file{
-
+                    
                     let chunksPaths=v.map({ (chunk) -> String in
                         return assemblyFolderPath+"/.blocks"+chunk.relativePath //chunk.absolutePath
                     })
-
+                    
                     if !self.embeddedInADocument{
                         try? self._fileManager.removeItem(atPath: destinationFile)
                     }
-
+                    
                     self.joinChunksToFile(from: chunksPaths,
                                           to: destinationFile,
                                           decompress: true,
@@ -539,7 +539,7 @@ struct  Chunker {
                         failuresMessages.append(message)
                         __progressWithPath(destinationFile,error:true)
                     })
-
+                    
                 }else if nodeNature == .folder{
                     Async.utility{
                         do{
@@ -550,20 +550,20 @@ struct  Chunker {
                             }
                             __progressWithPath(destinationFile)
                         }catch{
-
+                            
                             failuresMessages.append("\(error)")
                             __progressWithPath(destinationFile,error:true)
                         }
                     }
-
+                    
                 }else if nodeNature == .alias{
-
+                    
                     Async.utility{
                         do{
                             if !self.embeddedInADocument{
                                 try? self._fileManager.removeItem(atPath: destinationFile)
                                 try self._fileManager.createSymbolicLink(atPath: destinationFile, withDestinationPath: v[0].aliasDestination)
-
+                                
                             }
                             __progressWithPath(destinationFile)
                         }catch{
@@ -571,13 +571,13 @@ struct  Chunker {
                             __progressWithPath(destinationFile,error:true)
                         }
                     }
-
+                    
                 }
             }
         }
     }
-
-
+    
+    
     /// Joins the chunks to form a single file
     /// - The hard stuff is done Asynchronously on a the Utility queue
     /// - we use an Autorelease pool to lower the memory foot print
@@ -600,18 +600,18 @@ struct  Chunker {
                                      progression:@escaping((Progression)->()),
                                      success:@escaping (_ path:String)->(),
                                      failure:@escaping (_ message:String)->()){
-
+        
         // Don't block the main thread with those intensive IO  processing
         Async.utility {
             do{
                 let folderPath=(destinationFilePath as NSString).deletingLastPathComponent
                 try self._fileManager.createDirectory(atPath: folderPath, withIntermediateDirectories: true, attributes: nil)
                 self._fileManager.createFile(atPath: destinationFilePath, contents: nil, attributes: nil)
-
+                
                 // Assemble
                 if let writeFileHande = FileHandle(forWritingAtPath:destinationFilePath ){
                     writeFileHande.seek(toFileOffset: 0)
-
+                    
                     let progressionState=Progression()
                     progressionState.quietChanges{
                         progressionState.totalTaskCount=chunksPaths.count
@@ -619,11 +619,11 @@ struct  Chunker {
                         progressionState.message=""
                         progressionState.externalIdentifier=externalId
                     }
-
+                    
                     var counter=0
                     for source in chunksPaths{
                         let digest=URL(fileURLWithPath: source).lastPathComponent
-                        try autoreleasepool(invoking: { () -> Void in
+                        try autoreleasepool{
                             var data=Data()
                             if self.embeddedInADocument{
                                 data = try self.document!.dataForBlock(identifiedBy: digest)
@@ -631,8 +631,8 @@ struct  Chunker {
                                 let url=URL(fileURLWithPath: source)
                                 data = try Data(contentsOf:url)
                             }
-
-
+                            
+                            
                             if decrypt{
                                 if self.embeddedInADocument{
                                     // We use sugar one to be able to share crypted files between multiple sub document
@@ -641,7 +641,7 @@ struct  Chunker {
                                     data = try self._cryptoHelper.decryptData(data,useKey: Bartleby.configuration.KEY)
                                 }
                             }
-
+                            
                             if decompress{
                                 data = try data.decompress(algorithm: .lz4)
                             }
@@ -656,12 +656,12 @@ struct  Chunker {
                                 // Relay the progression
                                 progression(progressionState)
                             }
-                        })
+                        }
                     }
                     Bartleby.syncOnMain{
                         success(destinationFilePath)
                     }
-
+                    
                 }else{
                     Bartleby.syncOnMain{
                         failure(NSLocalizedString("Enable to create file Handle", tableName:"system", comment: "Enable to create file Handle")+" \(destinationFilePath)")
@@ -674,10 +674,10 @@ struct  Chunker {
             }
         }
     }
-
+    
     // MARK: -
-
-
+    
+    
     /// Test the validity of a path
     /// 1# We test the existence of the path.
     /// 2# Some typeSymbolicLink may point to themselves and then be considerated as inexistent

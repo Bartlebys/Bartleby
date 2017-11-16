@@ -13,9 +13,9 @@ enum FlockerError:Error{
 }
 
 /*
-
+ 
  Binary Format specs
-
+ 
  --------
  data -> the  Nodes binary
  --------
@@ -23,20 +23,20 @@ enum FlockerError:Error{
  --------
  8Bytes for one UInt64 -> gives the footer size
  --------
-
+ 
  */
 struct Flocker{
-
-
+    
+    
     /// The file manager is used on the utility queue
     fileprivate let _fileManager:FileManager
-
+    
     fileprivate var _key:String=""
-
-
+    
+    
     // The Crypto Helper
     fileprivate let _cryptoHelper:CryptoHelper
-
+    
     /// Designated Initializer
     ///
     /// - Parameters:
@@ -49,10 +49,10 @@ struct Flocker{
         self._key=cryptoKey
         self._cryptoHelper=CryptoHelper(salt: cryptoSalt,keySize:keySize)
     }
-
-
+    
+    
     // MARK: - Flocking
-
+    
     /// Flocks the files means you transform all the files to a single file
     /// By using this method the FileReference Authorization will apply to any Node
     ///
@@ -64,7 +64,7 @@ struct Flocker{
                      progression:@escaping((Progression)->()),
                      success:@escaping (BytesStats)->(),
                      failure:@escaping (Container,String)->())->(){
-
+        
         self._flock(filesIn: folderReference.absolutePath,
                     flockFilePath: path,
                     authorized:folderReference.authorized,
@@ -75,8 +75,8 @@ struct Flocker{
                     success: success,
                     failure: failure)
     }
-
-
+    
+    
     /// Breaks recursively any file, folder, alias from a given folder path  into block and adds theme to flock
     /// - The hard stuff is done Asynchronously on a the Utility queue
     /// - we use an Autorelease pool to lower the memory foot print
@@ -90,20 +90,20 @@ struct Flocker{
                               progression:@escaping((Progression)->()),
                               success:@escaping (BytesStats)->(),
                               failure:@escaping (Container,String)->()){
-
+        
         var stats=BytesStats(name: "Flocking: \(path)")
         let container=Container()
         let box=Box()
         container.boxes.append(box)
         Async.utility{
-
+            
             try? self._fileManager.removeItem(atPath: flockFilePath)
             let r = self._fileManager.createFile(atPath: flockFilePath, contents: nil, attributes: nil)
             if let flockFileHandle = FileHandle(forWritingAtPath: flockFilePath){
-
+                
                 var folderPath=path
                 var paths=[String]()
-
+                
                 let progressionState=Progression()
                 progressionState.quietChanges{
                     progressionState.totalTaskCount=0
@@ -111,11 +111,11 @@ struct Flocker{
                     progressionState.externalIdentifier=path
                     progressionState.message=""
                 }
-
+                
                 var failuresMessages=[String]()
                 let fm:FileManager = self._fileManager
                 var isDirectory:ObjCBool=false
-
+                
                 if fm.fileExists(atPath: path, isDirectory: &isDirectory){
                     if isDirectory.boolValue{
                         /// Directory scanning
@@ -128,9 +128,9 @@ struct Flocker{
                                                         URLResourceKey.isDirectoryKey,
                                                         URLResourceKey.isAliasFileKey,
                                                         URLResourceKey.isSymbolicLinkKey ]
-
+                            
                             let options: FileManager.DirectoryEnumerationOptions = []//.skipsHiddenFiles TODO to be verified
-
+                            
                             let enumerator=fm.enumerator(at: rootURL, includingPropertiesForKeys: keys, options: options, errorHandler: { (URL, error) -> Bool in
                                 return false
                             })
@@ -161,12 +161,12 @@ struct Flocker{
                         failure(container,NSLocalizedString("Unexisting path: ", tableName:"system", comment: "Unexisting path: ")+flockFilePath)
                     }
                 }
-
-
+                
+                
                 progressionState.totalTaskCount += paths.count
                 let pathNb=paths.count
                 var counter=0
-
+                
                 // Relays the progression
                 func __onProgression(message:String, incrementGlobalCounter:Bool=true){
                     if incrementGlobalCounter{
@@ -182,7 +182,7 @@ struct Flocker{
                         progression(progressionState)
                     }
                 }
-
+                
                 for relativePath in paths{
                     self._append(folderPath: folderPath,
                                  relativePath:relativePath,
@@ -204,7 +204,7 @@ struct Flocker{
                             }
                             do{
                                 try self._writeContainerIntoFlock(handle: flockFileHandle, container: container)
-
+                                
                             }catch{
                                 failuresMessages.append("_writeContainerIntoFlock \(error)")
                             }
@@ -218,23 +218,23 @@ struct Flocker{
                                 }))
                             }
                         }
-
+                        
                     }, failure: { (message) in
                         counter += 1
                         failuresMessages.append(message)
                     })
                 }
-
+                
             }else{
                 Bartleby.syncOnMain{
                     failure(container,NSLocalizedString("Invalid Path", tableName:"system", comment: "Invalid Path")+" \(path)")
                 }
             }
-
+            
         }
     }
-
-
+    
+    
     /// Appends a file a folder or an alias to flock file
     /// IMPORTANT! this method Must be called on the utility Queue
     /// - Parameters:
@@ -261,8 +261,8 @@ struct Flocker{
                               progression:@escaping((Progression)->()),
                               success:@escaping ()->(),
                               failure:@escaping (String)->() )->(){
-
-
+        
+        
         let filePath=folderPath+relativePath
         let node=Node()
         node.relativePath=relativePath
@@ -270,11 +270,11 @@ struct Flocker{
         node.compressedBlocks=compress
         node.cryptedBlocks=encrypt
         node.authorized=authorized
-
+        
         if self._isPathValid(filePath){
             if let attributes:[FileAttributeKey : Any] = try? self._fileManager.attributesOfItem(atPath: filePath){
                 if let type=attributes[FileAttributeKey.type] as? FileAttributeType{
-
+                    
                     if (URL(fileURLWithPath: filePath).isAnAlias){
                         // It is an alias
                         var aliasDestinationPath:String=Default.NO_PATH
@@ -293,13 +293,13 @@ struct Flocker{
                         // It is a file
                         node.nature=Node.Nature.file
                         if let fileHandle=FileHandle(forReadingAtPath:filePath ){
-
+                            
                             // We Can't guess what will Happen
                             // But we want a guarantee the handle will be closed
                             defer{
                                 fileHandle.closeFile()
                             }
-
+                            
                             // determine the length
                             let _=fileHandle.seekToEndOfFile()
                             let length=fileHandle.offsetInFile
@@ -318,7 +318,7 @@ struct Flocker{
                             var offset:UInt64=0
                             var position:UInt64=0
                             var counter=0
-
+                            
                             let progressionState=Progression()
                             progressionState.quietChanges{
                                 progressionState.totalTaskCount=Int(nb)
@@ -326,19 +326,19 @@ struct Flocker{
                                 progressionState.externalIdentifier=filePath
                                 progressionState.message=""
                             }
-
-
+                            
+                            
                             do {
-
+                                
                                 for i in 0 ... nb{
                                     // We try to reduce the memory usage
                                     // To the footprint of a Chunk +  Derivated Data.
-                                    try autoreleasepool(invoking: { () -> Void in
-
+                                    try autoreleasepool{
+                                        
                                         fileHandle.seek(toFileOffset: position)
                                         offset = (i==nb ? rest : maxSize)
                                         position += offset
-
+                                        
                                         // Read the block data
                                         var data=fileHandle.readData(ofLength: Int(offset))
                                         // Store the original sha1 (independent from compression and encryption)
@@ -349,19 +349,19 @@ struct Flocker{
                                         if encrypt{
                                             data = try self._cryptoHelper.encryptData(data,useKey:self._key)
                                         }
-
+                                        
                                         // Store the current write position before adding the new data
                                         let writePosition=Int(writeHandle.offsetInFile)
-
+                                        
                                         // How much data will we write ?
                                         let lengthOfAddedData:Int=data.count
-
+                                        
                                         // Write the data to flock File
                                         writeHandle.write(data)
-
+                                        
                                         // Consign the processing
                                         stats.consign(numberOfBytes:UInt(offset),compressedBytes: UInt(lengthOfAddedData))
-
+                                        
                                         // Create the related block
                                         let block=Block()
                                         block.startsAt = writePosition
@@ -379,8 +379,8 @@ struct Flocker{
                                             progressionState.message="\(i) \(filePath): <\( block.startsAt), \(block.startsAt+block.size)> + \(block.size) Bytes"
                                             progression(progressionState)
                                         }
-
-                                    })
+                                        
+                                    }
                                 }
                                 container.nodes.append(node)
                                 Bartleby.syncOnMain{
@@ -414,11 +414,11 @@ struct Flocker{
                 failure(NSLocalizedString("Invalid file at path:", tableName:"system", comment: "Unexisting file at path:")+" \(filePath)")
             }
         }
-
+        
     }
-
-
-
+    
+    
+    
     /// Appends a file a folder or an alias to flock file
     /// IMPORTANT! this method Must be called on the utility Queue
     ///
@@ -440,11 +440,11 @@ struct Flocker{
             handle.write(sizeData)
         }
     }
-
-
-
+    
+    
+    
     // MARK: - UnFlocking
-
+    
     /// Transforms a .flk to a file tree
     ///
     /// - Parameters:
@@ -462,7 +462,7 @@ struct Flocker{
             let container = try self.containerFrom(flockedFile: flockedFile)
             Async.utility{
                 if let fileHandle=FileHandle(forReadingAtPath:flockedFile ){
-
+                    
                     let progressionState=Progression()
                     progressionState.quietChanges{
                         progressionState.totalTaskCount=container.nodes.count
@@ -470,13 +470,13 @@ struct Flocker{
                         progressionState.externalIdentifier=flockedFile
                         progressionState.message=""
                     }
-
+                    
                     let stats=BytesStats(name: "Unflocking: \(flockedFile)")
-
+                    
                     var failuresMessages=[String]()
                     var counter=0
-
-
+                    
+                    
                     // Relays the progression
                     func __onProgression(message:String, incrementGlobalCounter:Bool=true){
                         if incrementGlobalCounter{
@@ -492,7 +492,7 @@ struct Flocker{
                             progression(progressionState)
                         }
                     }
-
+                    
                     for node in container.nodes{
                         let blocks:[Block]=container.blocks
                         // Consecutive blocks are faster to assemble
@@ -533,13 +533,13 @@ struct Flocker{
                     }
                 }
             }
-
+            
         }catch{
             failure(NSLocalizedString("Container error", tableName:"system", comment: "Container Error") + " \(error)")
         }
-
+        
     }
-
+    
     /// Returns the deserialized container from the flock file
     ///
     /// - Parameter flockedFile: the flocked file
@@ -555,7 +555,7 @@ struct Flocker{
                 defer{
                     fileHandle.closeFile()
                 }
-
+                
                 /*
                  Binary Format specs
                  --------
@@ -575,7 +575,7 @@ struct Flocker{
                     fileHandle.seek(toFileOffset:sizePosition)
                     let footerSizeData=fileHandle.readData(ofLength: intSize)
                     let footerSize:UInt64=footerSizeData.withUnsafeBytes { $0.pointee }
-
+                    
                     /// Go to footer position
                     let footerPosition=UInt64(l)-(UInt64(intSize)+footerSize)
                     fileHandle.seek(toFileOffset:footerPosition)
@@ -600,8 +600,8 @@ struct Flocker{
             throw FlockerError.unableToAccessToContainer(at:flockedFile,message: "Container is void")
         }
     }
-
-
+    
+    
     /// Assembles the node
     /// IMPORTANT! this method Must be called on the utility Queue
     /// - Parameters:
@@ -619,13 +619,13 @@ struct Flocker{
                                progression:@escaping((Progression)->()),
                                success:@escaping ()->(),
                                failure:@escaping (_ createdPaths:[String],_ message:String)->()){
-
+        
         var failuresMessages=[String]()
         var createdPaths=[String]()
-
+        
         let decrypt=node.cryptedBlocks
         let decompress=node.compressedBlocks
-
+        
         let progressionState=Progression()
         progressionState.quietChanges{
             progressionState.totalTaskCount=blocks.count
@@ -633,14 +633,14 @@ struct Flocker{
             progressionState.externalIdentifier=""
             progressionState.message=""
         }
-
-
+        
+        
         var counter=0
-
+        
         let destinationFile=assemblyFolderPath+node.relativePath
         let nodeNature=node.nature
-
-
+        
+        
         // Sub func for normalized progression and finalization handling
         func __progressWithPath(_ path:String,error:Bool=false,message:String=""){
             counter += 1
@@ -656,7 +656,7 @@ struct Flocker{
             Bartleby.syncOnMain{
                 progression(progressionState)
             }
-
+            
             if counter>=blocks.count{
                 Bartleby.syncOnMain{
                     if failuresMessages.count==0{
@@ -672,25 +672,25 @@ struct Flocker{
                 }
             }
         }
-
-
+        
+        
         if nodeNature == .file{
             do{
                 let folderPath=(destinationFile as NSString).deletingLastPathComponent
                 try self._fileManager.createDirectory(atPath: folderPath, withIntermediateDirectories: true, attributes: nil)
                 self._fileManager.createFile(atPath: destinationFile, contents: nil, attributes: nil)
-
+                
                 if let writeFileHandler = FileHandle(forWritingAtPath:destinationFile ){
-
+                    
                     // We Can't guess what will Happen
                     // But we want a guarantee the handle will be closed
                     defer{
                         writeFileHandler.closeFile()
                     }
-
+                    
                     writeFileHandler.seek(toFileOffset: 0)
                     for block in blocks{
-                        autoreleasepool(invoking: { () -> Void in
+                        autoreleasepool{
                             do{
                                 let startsAt=UInt64(block.startsAt)
                                 let size=block.size
@@ -705,19 +705,19 @@ struct Flocker{
                                 let decompressDataSize=data.count
                                 writeFileHandler.write(data)
                                 stats.consign(numberOfBytes: UInt(decompressDataSize),compressedBytes: UInt(size))
-
+                                
                                 let message="\(block.rank) \(destinationFile): <\( block.startsAt), \(block.startsAt+block.size)> + \(block.size) Bytes"
                                 __progressWithPath(destinationFile,error: false,message:message )
                             }catch{
                                 failuresMessages.append("\(error)")
                                 __progressWithPath(destinationFile,error:true)
                             }
-                        })
+                        }
                     }
                 }else{
                     failuresMessages.append("Enable to create file Handle \(destinationFile)")
                     __progressWithPath(destinationFile,error:true)
-
+                    
                 }
             }catch{
                 failuresMessages.append("\(error)")
@@ -746,7 +746,7 @@ struct Flocker{
             }
         }
     }
-
+    
     // MARK: - Random Access TODO
     
     // MARK:  Read Access
