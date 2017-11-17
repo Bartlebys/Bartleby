@@ -242,7 +242,7 @@ open class BartlebysDynamics:Dynamics{
         throw DynamicsError.typeNotFound
     }
 
-    // MARK: - Patch
+   // MARK: - Patch
 
     /// You can patch some data providing default values.
     ///
@@ -258,7 +258,7 @@ open class BartlebysDynamics:Dynamics{
                     for (UID,_) in items{
                         for (key,value) in patchDictionary{
                             if !items[UID]!.keys.contains(key){
-                                 items[UID]![key] = value
+                                items[UID]![key] = value
                             }
                         }
                     }
@@ -267,11 +267,17 @@ open class BartlebysDynamics:Dynamics{
             }else{
                 for (key,value) in patchDictionary{
                     if !jsonDictionary.keys.contains(key){
-                       jsonDictionary[key] = value
+                        jsonDictionary[key] = value
                     }
                 }
             }
-            return try JSONSerialization.data(withJSONObject: jsonDictionary, options: [])
+            do{
+                let r = try JSONSerialization.data(withJSONObject: jsonDictionary, options: [])
+                return r
+            }catch{
+                print("\(#file) \(#line) Error while patching: \(patchDictionary)")
+                throw error
+            }
         }
         throw DynamicsError.jsonDeserializationFailure
     }
@@ -300,7 +306,13 @@ open class BartlebysDynamics:Dynamics{
             }else{
                 throw DynamicsError.collectionTypeRequired
             }
-            return try JSONSerialization.data(withJSONObject: jsonDictionary, options: [])
+            do{
+                let r = try JSONSerialization.data(withJSONObject: jsonDictionary, options: [])
+                return r
+            }catch{
+                print("\(#file) \(#line) Error while injecting: @\(keyPath.path) \n \(injectedDictionary)")
+                throw error
+            }
         }
         throw DynamicsError.jsonDeserializationFailure
     }
@@ -331,12 +343,15 @@ open class BartlebysDynamics:Dynamics{
             }else{
                 throw DynamicsError.collectionTypeRequired
             }
-            return try JSONSerialization.data(withJSONObject: jsonDictionary, options: [])
+            do{
+                let r = try JSONSerialization.data(withJSONObject: jsonDictionary, options: [])
+                return r
+            }catch{
+                print("\(#file) \(#line) Error while changing propertyName: \(oldName) -> \(newName)")
+                throw error
+            }
         }
         throw DynamicsError.jsonDeserializationFailure
     }
-
-
-
 
 }
