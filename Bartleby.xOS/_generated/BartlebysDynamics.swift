@@ -322,24 +322,30 @@ open class BartlebysDynamics:Dynamics{
     ///
     /// - Parameters:
     ///   - data: the Data to patch
-    ///   - oldName: the old property name
+    ///   - oldName: the old property name (you can use KeyPaths)
     ///   - newName: the new property name
     /// - Returns: the patched data
     open func changeItemsPropertyName(data:Data,oldName:String,newName:String)throws->Data{
         if var jsonDictionary = try JSONSerialization.jsonObject(with: data, options: JSONSerialization.ReadingOptions.allowFragments) as? [String:Any]{
             let isACollection = jsonDictionary.keys.contains("_storage") && jsonDictionary.keys.contains("_staged") &&  jsonDictionary.keys.contains("_deleted")
             if isACollection {
+                var components = oldName.components(separatedBy: ".")
+                components.removeLast()
+                components.append(newName)
+                let newNameKeyPath = DictionaryKeyPath(components.joined(separator: "."))
+                let oldKeyPath = DictionaryKeyPath(oldName)
                 if var items = jsonDictionary["_storage"] as? [String:[String:Any]]{
                     for (UID,_) in items{
                         // We use a rare dynamic approach.
                         // Check `Bartleby.xOS/Core/DictionaryKetPath.swift` for details.
-                        if items[UID]![oldName] != nil{
-                            items[UID]![newName] = items[UID]![oldName]
-                            items[UID]![oldName] = nil
+                        if items[UID]![keyPath:oldKeyPath] != nil{
+                            items[UID]![keyPath:newNameKeyPath] = items[UID]![keyPath:oldKeyPath]
+                            items[UID]![keyPath:oldKeyPath] = nil
                         }
                     }
                     jsonDictionary["_storage"]=items
                 }
+
             }else{
                 throw DynamicsError.collectionTypeRequired
             }
@@ -353,5 +359,4 @@ open class BartlebysDynamics:Dynamics{
         }
         throw DynamicsError.jsonDeserializationFailure
     }
-
 }
