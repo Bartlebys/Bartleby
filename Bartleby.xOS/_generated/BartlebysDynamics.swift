@@ -281,15 +281,16 @@ open class BartlebysDynamics:Dynamics{
         }
         throw DynamicsError.jsonDeserializationFailure
     }
-
-    /// You can patch some data providing a dictionary template.
+    
+    // You can patch some data providing a dictionary template.
     ///
     /// - Parameters:
     ///   - data:  the Data to patch
     ///   - injectedDictionary: the string to be injected
     ///   - keyPath: the insertion point
+    ///   - forced: if set to true the key path will be replaced in any case (use carefully)
     /// - Returns: the patched data
-    open func patchItemsInCollection(data:Data,injectedDictionary:[String:Any],keyPath:DictionaryKeyPath)throws->Data{
+    open func patchItemsInCollection(data:Data,injectedDictionary:[String:Any],keyPath:DictionaryKeyPath,forced:Bool = false)throws->Data{
         if var jsonDictionary = try JSONSerialization.jsonObject(with: data, options: JSONSerialization.ReadingOptions.allowFragments) as? [String:Any]{
             let isACollection = jsonDictionary.keys.contains("_storage") && jsonDictionary.keys.contains("_staged") &&  jsonDictionary.keys.contains("_deleted")
             if isACollection {
@@ -297,7 +298,7 @@ open class BartlebysDynamics:Dynamics{
                     for (UID,_) in items{
                         // We use a rare dynamic approach.
                         // Check `Bartleby.xOS/Core/DictionaryKetPath.swift` for details.
-                        if items[UID]![keyPath:keyPath] == nil{
+                        if items[UID]![keyPath:keyPath] == nil || forced{
                             items[UID]![keyPath:keyPath] = injectedDictionary
                         }
                     }
@@ -316,7 +317,6 @@ open class BartlebysDynamics:Dynamics{
         }
         throw DynamicsError.jsonDeserializationFailure
     }
-
 
     /// Change the property name
     ///

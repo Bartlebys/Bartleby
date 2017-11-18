@@ -52,8 +52,9 @@ public protocol Dynamics{
     ///   - data:  the Data to patch
     ///   - injectedDictionary: the dictionary to be injected
     ///   - keyPath: the key path to be used
+    ///   - forced: if set to true the key path will be replaced in any case (use carefully)
     /// - Returns: the patched data
-    func patchItemsInCollection(data:Data,injectedDictionary:[String:Any],keyPath:DictionaryKeyPath)throws->Data
+    func patchItemsInCollection(data:Data,injectedDictionary:[String:Any],keyPath:DictionaryKeyPath,forced:Bool)throws->Data
 
     // Changes the property name from an old to a new name
     ///
