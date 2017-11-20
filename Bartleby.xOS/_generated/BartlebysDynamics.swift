@@ -281,7 +281,7 @@ open class BartlebysDynamics:Dynamics{
         }
         throw DynamicsError.jsonDeserializationFailure
     }
-    
+
     // You can patch some data providing a dictionary template.
     ///
     /// - Parameters:
