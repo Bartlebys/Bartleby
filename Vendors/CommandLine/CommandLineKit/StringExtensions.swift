@@ -57,9 +57,9 @@ internal extension String {
     let decimalPoint = self._localDecimalPoint()
 
     #if swift(>=3.0)
-      let charactersEnumerator = self.characters.enumerated()
+      let charactersEnumerator = self.enumerated()
     #else
-      let charactersEnumerator = self.characters.enumerate()
+      let charactersEnumerator = self.enumerate()
     #endif
     for (i, c) in charactersEnumerator {
       if i == 0 && c == "-" {

@@ -13,7 +13,16 @@ import Foundation
 extension Progression:Descriptible {
 
     public func toString() -> String {
-        return "Progression. \(currentTaskIndex)/\(totalTaskCount) - \(floor(currentPercentProgress))% - \(data?.count ?? 0 ) bytes of data.\n\(message) [\(category)-\(externalIdentifier)]"
+        var dataString = ""
+        if let data = data{
+            if data.count > 0{
+                dataString = "\(data.count) bytes of data."
+            }
+        }
+        let percent = String(format:"%.2f",self.currentPercentProgress)
+        let elapsed = String(format:"%.2f",self.elapsedTime)
+        let remaining = String(format:"%.0f",floor(self.remaining))
+        return "\(percent)% (\(self.currentTaskIndex)/\(self.totalTaskCount)) Elapsed: \(elapsed)s Remaining:\(remaining)s | \(dataString): \(message) [\(category)-\(externalIdentifier)]"
     }
 
 }
