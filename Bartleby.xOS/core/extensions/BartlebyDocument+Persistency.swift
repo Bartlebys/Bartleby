@@ -60,6 +60,7 @@ extension BartlebyDocument{
     // To Write content
     override open func contents(forType typeName: String) throws -> Any {
         let wrapper =  try self._updatedFileWrappers()
+        try fileWrapper.write(to: url, options: [FileWrapper.WritingOptions.atomic,FileWrapper.WritingOptions.withNameUpdating], originalContentsURL: url)
         self.send(DocumentStates.documentDidSave)
         return wrapper
     }
@@ -301,5 +302,19 @@ extension BartlebyDocument{
         }
         return self.documentFileWrapper
     }
-    
+
+
+    open func dumpCollections(){
+        Swift.print("\n{")
+        for (idx, metadatum) in self.metadata.collectionsMetadata.enumerated() {
+            if metadatum.storage == CollectionMetadatum.Storage.monolithicFileStorage {
+                if let collection = self.collectionByName(metadatum.collectionName) {
+                    let isLast = (idx == self.metadata.collectionsMetadata.count-1 )
+                    let postFixedString = isLast ? "" : ",\n"
+                    Swift.print("\"\(collection.d_collectionName)\" : \(collection.serializeToUFf8String())\(postFixedString)")
+                }
+            }
+        }
+        Swift.print("}\n")
+    }
 }

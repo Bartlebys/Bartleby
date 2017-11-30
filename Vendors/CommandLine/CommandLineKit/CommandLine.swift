@@ -492,7 +492,7 @@ public class CommandLine {
       let flagLength = flag.count
       if !flagMatched && !arg.hasPrefix(LongOptionPrefix) {
         #if swift(>=3.0)
-          let flagCharactersEnumerator = flag.characters.enumerated()
+          let flagCharactersEnumerator = flag.enumerated()
         #else
           let flagCharactersEnumerator = flag.characters.enumerate()
         #endif
