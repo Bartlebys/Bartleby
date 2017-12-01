@@ -50,19 +50,19 @@ extension BartlebyDocument{
     
     // To Read content
     open override func load(fromContents contents: Any, ofType typeName: String?) throws {
-        if let fileWrapper = contents as? FileWrapper{
-            try self._read(from:fileWrapper)
-        }else{
-            throw DocumentError.fileWrapperNotFound(message:"on load")
-        }
+    if let fileWrapper = contents as? FileWrapper{
+    try self._read(from:fileWrapper)
+    }else{
+    throw DocumentError.fileWrapperNotFound(message:"on load")
+    }
     }
     
     // To Write content
     override open func contents(forType typeName: String) throws -> Any {
-        let wrapper =  try self._updatedFileWrappers()
-        try fileWrapper.write(to: url, options: [FileWrapper.WritingOptions.atomic,FileWrapper.WritingOptions.withNameUpdating], originalContentsURL: url)
-        self.send(DocumentStates.documentDidSave)
-        return wrapper
+    let wrapper =  try self._updatedFileWrappers()
+    try fileWrapper.write(to: url, options: [FileWrapper.WritingOptions.atomic,FileWrapper.WritingOptions.withNameUpdating], originalContentsURL: url)
+    self.send(DocumentStates.documentDidSave)
+    return wrapper
     }
     
     #endif
@@ -304,17 +304,24 @@ extension BartlebyDocument{
     }
 
 
-    open func dumpCollections(){
-        Swift.print("\n{")
+
+    /// Returns the decrypted collection as a JSON String
+    /// Can be used for debug purposes.
+    ///
+    /// - Returns: the Json String
+    open func getCollectionsAsJSONString()->String{
+        var jsonString = ""
+        jsonString += "\n{"
         for (idx, metadatum) in self.metadata.collectionsMetadata.enumerated() {
             if metadatum.storage == CollectionMetadatum.Storage.monolithicFileStorage {
                 if let collection = self.collectionByName(metadatum.collectionName) {
                     let isLast = (idx == self.metadata.collectionsMetadata.count-1 )
                     let postFixedString = isLast ? "" : ",\n"
-                    Swift.print("\"\(collection.d_collectionName)\" : \(collection.serializeToUFf8String())\(postFixedString)")
+                    jsonString += "\"\(collection.d_collectionName)\" : \(collection.serializeToUFf8String())\(postFixedString)"
                 }
             }
         }
-        Swift.print("}\n")
+        jsonString += "}\n"
+        return jsonString
     }
 }
