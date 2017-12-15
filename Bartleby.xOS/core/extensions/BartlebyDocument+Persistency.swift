@@ -330,13 +330,13 @@ extension BartlebyDocument{
     /// Returns invidually each entoty serialized to JSON
     ///
     /// - Returns: the collection of Entity
-    open func getJSONSElements()->[String]{
-        var jsons = [String]()
+    open func getJSONSElements()->[String:String]{
+        var jsons = [String:String]()
         for metadatum in self.metadata.collectionsMetadata {
             if metadatum.storage == CollectionMetadatum.Storage.monolithicFileStorage {
                 if let collection = self.collectionByName(metadatum.collectionName) {
                     for element in collection.getItems(){
-                        jsons.append(element.serializeToUFf8String())
+                        jsons[metadatum.collectionName] = element.serializeToUFf8String()
                     }
                 }
             }
