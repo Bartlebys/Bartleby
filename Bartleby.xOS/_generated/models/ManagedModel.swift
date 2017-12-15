@@ -12,7 +12,7 @@ import Foundation
 	#endif
 
 // MARK: Bartleby's Core: The base of any ManagedModel
-@objc open class ManagedModel : NSObject, Collectible, Codable{
+@objc open class ManagedModel : Model, Collectible{
 
     // Universal type support
     open class func typeName() -> String {
@@ -159,7 +159,7 @@ import Foundation
         }
     }
 
-    open func encode(to encoder: Encoder) throws {
+    override open func encode(to encoder: Encoder) throws {
 		var container = encoder.container(keyedBy: ManagedModelCodingKeys.self)
 		try container.encode(self._id,forKey:._id)
 		try container.encode(self.externalID,forKey:.externalID)
@@ -279,7 +279,7 @@ import Foundation
         }
     }
     // MARK: - Initializable
-   override  required public init() {
+    required public init() {
         super.init()
     }
 

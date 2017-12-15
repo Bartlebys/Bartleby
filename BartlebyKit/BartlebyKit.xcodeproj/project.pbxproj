@@ -533,6 +533,10 @@
 		E5B129031D1C317300D61261 /* TestCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = E52F94881D01C23A005BDA2D /* TestCase.swift */; };
 		E5B129041D1C317300D61261 /* TestsConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = E52F94891D01C23A005BDA2D /* TestsConfiguration.swift */; };
 		E5B18CD81F430819006FAB7F /* XImage+Data.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5B18CD61F430819006FAB7F /* XImage+Data.swift */; };
+		E5E72D8F1FE42C2A00849952 /* Model.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5E72D8D1FE42C2900849952 /* Model.swift */; };
+		E5E72D901FE42C2A00849952 /* Model.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5E72D8D1FE42C2900849952 /* Model.swift */; };
+		E5E72D911FE42C2A00849952 /* Object.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5E72D8E1FE42C2900849952 /* Object.swift */; };
+		E5E72D921FE42C2A00849952 /* Object.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5E72D8E1FE42C2900849952 /* Object.swift */; };
 		E5F5384B1DEAE4EA008DEBF7 /* MultiDocumentsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5F5384A1DEAE4EA008DEBF7 /* MultiDocumentsTests.swift */; };
 /* End PBXBuildFile section */
 
@@ -861,6 +865,8 @@
 		E5ADEEA81F3F6AE300371DA1 /* MasterKey+Helper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MasterKey+Helper.swift"; sourceTree = "<group>"; };
 		E5B18CD61F430819006FAB7F /* XImage+Data.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "XImage+Data.swift"; sourceTree = "<group>"; };
 		E5CEFB511C3BFCBB00C36CBA /* BartlebyKit-Bridging-Header.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "BartlebyKit-Bridging-Header.h"; sourceTree = "<group>"; };
+		E5E72D8D1FE42C2900849952 /* Model.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Model.swift; sourceTree = "<group>"; };
+		E5E72D8E1FE42C2900849952 /* Object.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Object.swift; sourceTree = "<group>"; };
 		E5F5384A1DEAE4EA008DEBF7 /* MultiDocumentsTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MultiDocumentsTests.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -1197,6 +1203,7 @@
 		E5450DE41F3A1F83008FD1C3 /* core */ = {
 			isa = PBXGroup;
 			children = (
+				E5E72D8C1FE42BFF00849952 /* FutureCore */,
 				E5450DE51F3A1F83008FD1C3 /* Alias.swift */,
 				E5450DE61F3A1F83008FD1C3 /* Bartleby.swift */,
 				E5450DE71F3A1F83008FD1C3 /* BXDocument.swift */,
@@ -1454,6 +1461,15 @@
 				E56C004A1C8ED4A800BB6B19 /* Info.plist */,
 			);
 			name = "Support-files";
+			sourceTree = "<group>";
+		};
+		E5E72D8C1FE42BFF00849952 /* FutureCore */ = {
+			isa = PBXGroup;
+			children = (
+				E5E72D8D1FE42C2900849952 /* Model.swift */,
+				E5E72D8E1FE42C2900849952 /* Object.swift */,
+			);
+			path = FutureCore;
 			sourceTree = "<group>";
 		};
 		E5F538491DEAE472008DEBF7 /* Documents */ = {
@@ -1761,6 +1777,7 @@
 				E5450FB31F3A1F84008FD1C3 /* ManagedModel+RelationsResolution.swift in Sources */,
 				E545103D1F3A1F84008FD1C3 /* Identities.swift in Sources */,
 				E5450F211F3A1F83008FD1C3 /* BSFSError.swift in Sources */,
+				E5E72D8F1FE42C2A00849952 /* Model.swift in Sources */,
 				E545101F1F3A1F84008FD1C3 /* TriggerHook.swift in Sources */,
 				E5450F7B1F3A1F84008FD1C3 /* BartlebyDocument+Preparation.swift in Sources */,
 				E5450F271F3A1F83008FD1C3 /* Chunker.swift in Sources */,
@@ -1789,6 +1806,7 @@
 				E5450F491F3A1F83008FD1C3 /* HMAC.swift in Sources */,
 				E54510351F3A1F84008FD1C3 /* String+Helpers.swift in Sources */,
 				E54510291F3A1F84008FD1C3 /* SerializedRelationalObject.swift in Sources */,
+				E5E72D911FE42C2A00849952 /* Object.swift in Sources */,
 				E545103B1F3A1F84008FD1C3 /* Identification.swift in Sources */,
 				E5450ED51F3A1F83008FD1C3 /* DeleteLockers.swift in Sources */,
 				E5416CDD1F47368B00D93B0B /* I18N.swift in Sources */,
@@ -1985,6 +2003,7 @@
 				E54510261F3A1F84008FD1C3 /* Reaction.swift in Sources */,
 				E5450ECE1F3A1F83008FD1C3 /* DeleteBoxes.swift in Sources */,
 				E5450EF21F3A1F83008FD1C3 /* ReadLockerById.swift in Sources */,
+				E5E72D921FE42C2A00849952 /* Object.swift in Sources */,
 				E5450F181F3A1F83008FD1C3 /* UpsertLocalizedData.swift in Sources */,
 				E5450F5A1F3A1F84008FD1C3 /* BXDocument.swift in Sources */,
 				E5450E8E1F3A1F83008FD1C3 /* Container.swift in Sources */,
@@ -2055,6 +2074,7 @@
 				E5450F761F3A1F84008FD1C3 /* BartlebyDocument+Metrics.swift in Sources */,
 				E5450F481F3A1F83008FD1C3 /* Data+HMAC.swift in Sources */,
 				E5450FF21F3A1F84008FD1C3 /* Dynamics.swift in Sources */,
+				E5E72D901FE42C2A00849952 /* Model.swift in Sources */,
 				E5450F641F3A1F84008FD1C3 /* DocumentStates.swift in Sources */,
 				E545100A1F3A1F84008FD1C3 /* Monitoring.swift in Sources */,
 				E5450E9A1F3A1F83008FD1C3 /* KeyedData.swift in Sources */,
