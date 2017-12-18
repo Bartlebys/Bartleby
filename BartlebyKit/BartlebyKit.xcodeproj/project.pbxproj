@@ -1203,33 +1203,33 @@
 		E5450DE41F3A1F83008FD1C3 /* core */ = {
 			isa = PBXGroup;
 			children = (
-				E5E72D8C1FE42BFF00849952 /* FutureCore */,
 				E5450DE51F3A1F83008FD1C3 /* Alias.swift */,
 				E5450DE61F3A1F83008FD1C3 /* Bartleby.swift */,
 				E5450DE71F3A1F83008FD1C3 /* BXDocument.swift */,
 				E5450DE81F3A1F83008FD1C3 /* Consignation.swift */,
 				E5450DE91F3A1F83008FD1C3 /* Context.swift */,
 				E5450DEA1F3A1F83008FD1C3 /* Default.swift */,
+				E59E8CF11F6C0E0B00B7DAEB /* DictionaryKeyPath.swift */,
 				E5450DEB1F3A1F83008FD1C3 /* DocumentError.swift */,
 				E5450DEC1F3A1F83008FD1C3 /* DocumentStates.swift */,
 				E5450DED1F3A1F83008FD1C3 /* ErasingError.swift */,
 				E5450DEE1F3A1F83008FD1C3 /* extensions */,
+				E5E72D8C1FE42BFF00849952 /* FutureCore */,
 				E5450E1E1F3A1F83008FD1C3 /* Global.swift */,
 				E5450E1F1F3A1F83008FD1C3 /* Handlers.swift */,
+				E5416CDC1F47368B00D93B0B /* I18N.swift */,
 				E5450E201F3A1F83008FD1C3 /* JSON.swift */,
-				E59E8CF11F6C0E0B00B7DAEB /* DictionaryKeyPath.swift */,
 				E5450E211F3A1F83008FD1C3 /* JSONSerializer.swift */,
 				E5450E221F3A1F83008FD1C3 /* ManagedModelError.swift */,
 				E5450E231F3A1F83008FD1C3 /* ObjectExpositionError.swift */,
 				E5450E241F3A1F83008FD1C3 /* protocols */,
 				E5450E501F3A1F83008FD1C3 /* Reaction.swift */,
 				E5450E511F3A1F83008FD1C3 /* RelationShip.swift */,
-				E5450E521F3A1F83008FD1C3 /* SerializedRelationalObject.swift */,
 				E538F85B1F7642BB004E4E13 /* SequenceOfTasks.swift */,
+				E5450E521F3A1F83008FD1C3 /* SerializedRelationalObject.swift */,
 				E5450E531F3A1F83008FD1C3 /* ServerErrorCodes.swift */,
 				E5450E541F3A1F83008FD1C3 /* StatusOfCompletion.swift */,
 				E5450E551F3A1F83008FD1C3 /* UnManagedModel.swift */,
-				E5416CDC1F47368B00D93B0B /* I18N.swift */,
 			);
 			path = core;
 			sourceTree = "<group>";
@@ -1237,10 +1237,10 @@
 		E5450DEE1F3A1F83008FD1C3 /* extensions */ = {
 			isa = PBXGroup;
 			children = (
-				E5450DEF1F3A1F83008FD1C3 /* BartlebyDocument+Consignee.swift */,
 				E5450DF01F3A1F83008FD1C3 /* BartlebyDocument+Blocks.swift */,
 				E5450DF11F3A1F83008FD1C3 /* BartlebyDocument+Collections.swift */,
 				E5450DF21F3A1F83008FD1C3 /* BartlebyDocument+ComputedProperties.swift */,
+				E5450DEF1F3A1F83008FD1C3 /* BartlebyDocument+Consignee.swift */,
 				E5450DF31F3A1F83008FD1C3 /* BartlebyDocument+DotBart.swift */,
 				E5450DF41F3A1F83008FD1C3 /* BartlebyDocument+LocalUpsertAndDelete.swift */,
 				E5450DF51F3A1F83008FD1C3 /* BartlebyDocument+Logs.swift */,
@@ -1277,10 +1277,10 @@
 				E5450E151F3A1F83008FD1C3 /* ManagedModel+RelationsResolution.swift */,
 				E5450E161F3A1F83008FD1C3 /* ManagedModel+Serializable.swift */,
 				E5450E171F3A1F83008FD1C3 /* ManagedModel+Supervisable.swift */,
+				E5ADEEA81F3F6AE300371DA1 /* MasterKey+Helper.swift */,
 				E5450E181F3A1F83008FD1C3 /* NSNotification+Completion.swift */,
 				E5450E191F3A1F83008FD1C3 /* NSNotification+Progression.swift */,
 				E5450E1A1F3A1F83008FD1C3 /* Progression+Conveniences.swift */,
-				E5ADEEA81F3F6AE300371DA1 /* MasterKey+Helper.swift */,
 				E5450E1C1F3A1F83008FD1C3 /* PushOperation+Conveniences.swift */,
 				E5450E1D1F3A1F83008FD1C3 /* UnManagedModel+Serializable.swift */,
 			);
@@ -1340,12 +1340,12 @@
 		E5450E561F3A1F83008FD1C3 /* extensions */ = {
 			isa = PBXGroup;
 			children = (
-				E5B18CD61F430819006FAB7F /* XImage+Data.swift */,
 				E5450E571F3A1F83008FD1C3 /* Data+String.swift */,
 				E5450E581F3A1F83008FD1C3 /* NSRange+Helpers.swift */,
 				E5450E591F3A1F83008FD1C3 /* String+Helpers.swift */,
 				E5450E5A1F3A1F83008FD1C3 /* URL+Utilities.swift */,
 				E5450E5B1F3A1F83008FD1C3 /* User+Auth.swift */,
+				E5B18CD61F430819006FAB7F /* XImage+Data.swift */,
 			);
 			path = extensions;
 			sourceTree = "<group>";
