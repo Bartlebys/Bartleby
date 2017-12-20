@@ -12,7 +12,6 @@ import Foundation
 import AppKit
 #endif
 #if !USE_EMBEDDED_MODULES
-	import Alamofire
 #endif
 
 // MARK: - Notification

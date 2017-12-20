@@ -279,7 +279,7 @@ import Foundation
         }
     }
     // MARK: - Initializable
-    required public init() {
+   override  required public init() {
         super.init()
     }
 
