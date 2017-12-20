@@ -8,6 +8,17 @@
 
 import Foundation
 
+infix operator =?: AssignmentPrecedence
+
+public func =?<T> ( left:inout T?, right: T? ){
+    left = right ?? left
+}
+
+public func =?<T> ( left:inout T, right: T? ){
+    left = right ?? left
+}
+
+
 public let GB=1000000000
 public let MB=1000000
 public let KB=1000
