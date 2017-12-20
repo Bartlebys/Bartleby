@@ -8,6 +8,12 @@
 
 import Foundation
 
+// The `=? operator allows simplify optional assignements :
+//  `p.stringAttributes = movieCharacter.defaultStringAttributes ?? p.stringAttributes`
+// can be written :
+//  `p.stringAttributes =? movieCharacter.defaultStringAttributes`
+
+
 infix operator =?: AssignmentPrecedence
 
 public func =?<T> ( left:inout T?, right: T? ){
@@ -17,6 +23,7 @@ public func =?<T> ( left:inout T?, right: T? ){
 public func =?<T> ( left:inout T, right: T? ){
     left = right ?? left
 }
+
 
 
 public let GB=1000000000
