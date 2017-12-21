@@ -16,7 +16,6 @@
  */
 
 import Foundation
-/* Required for setlocale(3) */
 #if os(OSX)
   import Darwin
 #elseif os(Linux)
@@ -204,9 +203,6 @@ public class CommandLine {
    */
   public init(arguments: [String] = Swift.CommandLine.arguments) {
     self._arguments = arguments
-
-    /* Initialize locale settings from the environment */
-    setlocale(LC_ALL, "")
   }
 
   /* Returns all argument values from flagIndex to the next flag or the end of the argument array. */
@@ -330,9 +326,6 @@ public class CommandLine {
    */
   public init(arguments: [String] = Process.arguments) {
     self._arguments = arguments
-    
-    /* Initialize locale settings from the environment */
-    setlocale(LC_ALL, "")
   }
   
   /* Returns all argument values from flagIndex to the next flag or the end of the argument array. */
