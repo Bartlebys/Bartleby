@@ -47,11 +47,11 @@ extension ManagedModel:Aliasable{
 }
 
 
-// MARK: - AliasResolver
+// MARK: - AliasResolution
 
 
-/// Bartleby is a notorious AliasResolver.
-public protocol AliasResolver{
+/// Bartleby is a notorious AliasResolution.
+public protocol AliasResolution{
 
      /// Resolve the alias
      ///

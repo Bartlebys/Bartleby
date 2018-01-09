@@ -20,7 +20,7 @@ import Foundation
 
 
 // Bartleby's 1.0 approach is suitable for data set that can stored in memory.
-open class Bartleby:NSObject,AliasResolver {
+open class Bartleby:NSObject,AliasResolution {
 
     /// The standard singleton shared instance
     open static let sharedInstance: Bartleby = {
