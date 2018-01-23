@@ -696,7 +696,7 @@ public extension Notification.Name {
 
     fileprivate var _selectedUIDS:[String]{
         set{
-            Bartleby.syncOnMain {
+            syncOnMain {
                 if let users = self.selectedUsers {
                     let _selectedUIDS:[String]=users.map({ (user) -> String in
                         return user.UID
@@ -706,7 +706,7 @@ public extension Notification.Name {
             }
         }
         get{
-            return Bartleby.syncOnMainAndReturn{ () -> [String] in
+            return syncOnMainAndReturn{ () -> [String] in
                 return self.referentDocument?.metadata.getStateOf(identified: self.selectedUsersUIDSKeys) ?? [String]()
             }
         }
@@ -720,7 +720,7 @@ public extension Notification.Name {
     // e.g: referentDocument.users.arrayController?.setSelectedObjects(users)
     @objc dynamic open var selectedUsers:[User]?{
         didSet{
-            Bartleby.syncOnMain {
+            syncOnMain {
                 if let users = selectedUsers {
                     let UIDS:[String]=users.map({ (user) -> String in
                         return user.UID

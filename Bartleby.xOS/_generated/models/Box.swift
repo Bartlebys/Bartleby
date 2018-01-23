@@ -61,13 +61,13 @@ import Foundation
     required public init(from decoder: Decoder) throws{
 		try super.init(from: decoder)
         try self.quietThrowingChanges {
-			let values = try decoder.container(keyedBy: BoxCodingKeys.self)
+			let _ = try decoder.container(keyedBy: BoxCodingKeys.self)
         }
     }
 
     override open func encode(to encoder: Encoder) throws {
 		try super.encode(to:encoder)
-		var container = encoder.container(keyedBy: BoxCodingKeys.self)
+		var _ = encoder.container(keyedBy: BoxCodingKeys.self)
     }
 
 

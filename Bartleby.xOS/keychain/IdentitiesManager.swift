@@ -354,7 +354,7 @@ open class IdentitiesManager {
                                       userUID: user.UID,
                                       cryptoPassword: user.cryptoPassword,
                                       sucessHandler:{ (context) in
-                                        Bartleby.syncOnMain{
+                                        syncOnMain{
                                             __patchHasSucceededOn(profile, with: identification)
                                         }
                     }, failureHandler: { (context) in

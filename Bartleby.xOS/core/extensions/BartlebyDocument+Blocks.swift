@@ -52,7 +52,7 @@ extension BartlebyDocument{
     ///   - digest: the identifier of the block (use the block digests)
     public func put(data:Data,identifiedBy digest:String)throws->(){
         if let directoryFileWrapper = self.blocksWrapper {
-            Bartleby.syncOnMain{
+            syncOnMain{
                 // Remove the previous wrapper if there is one
                 if let w=directoryFileWrapper.fileWrappers?[digest]{
                     directoryFileWrapper.removeFileWrapper(w)
@@ -75,7 +75,7 @@ extension BartlebyDocument{
     public func removeBlock(with digest:String)throws->(){
         if let directoryFileWrapper:FileWrapper = self.blocksWrapper {
             if let w=directoryFileWrapper.fileWrappers?[digest]{
-                Bartleby.syncOnMain{
+                syncOnMain{
                     directoryFileWrapper.removeFileWrapper(w)
                 }
             }else{

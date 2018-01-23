@@ -39,7 +39,7 @@ open class SetupCollaborativeServerViewController: IdentityStepViewController{
             let identityWindowController=self.identityWindowController{
             if let serverURL:URL=URL(string:self.serverComboBox.stringValue){
                 self.stepDelegate?.disableActions()
-                Bartleby.syncOnMain{
+                syncOnMain{
                     HTTPManager.apiIsReachable(serverURL, successHandler: {
                         self.documentProvider?.getDocument()?.send(IdentificationStates.serverHasBeenSelected)
                         if let identification=identityWindowController.identification{

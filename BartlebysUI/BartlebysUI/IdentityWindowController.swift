@@ -316,7 +316,7 @@ open class IdentityWindowController: NSWindowController,DocumentProvider,Identit
 
     public func didValidateStep(_ step:Int){
         if IdentityWindowController.usesDefaultComponents{
-            Bartleby.syncOnMain{
+            syncOnMain{
                 var proceedImmediately=true
                 if self.creationMode && !self._currentStepIs(self.createAnIsolatedUser) {
                     // The SMS / second factor auth has been verified or by passed

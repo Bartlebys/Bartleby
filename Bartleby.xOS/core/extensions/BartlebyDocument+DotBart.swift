@@ -32,7 +32,7 @@ extension BartlebyDocument {
         savePanel.nameFieldStringValue = self.fileURL?.lastPathComponent ?? "metadata"
         savePanel.allowedFileTypes=["bart"]
         savePanel.begin(completionHandler: { (result) in
-            Bartleby.syncOnMain{
+            syncOnMain{
                 if result==NSApplication.ModalResponse.OK {
                     if let url = savePanel.url {
                         let filePath=url.path
@@ -49,7 +49,7 @@ extension BartlebyDocument {
         openPanel.canCreateDirectories = false
         openPanel.allowedFileTypes=["bart"]
         openPanel.begin(completionHandler: { (result) in
-            Bartleby.syncOnMain{
+            syncOnMain{
                 if result==NSApplication.ModalResponse.OK {
                     if let url = openPanel.url {
                         let filePath=url.path

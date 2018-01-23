@@ -692,7 +692,7 @@ public extension Notification.Name {
 
     fileprivate var _selectedUIDS:[String]{
         set{
-            Bartleby.syncOnMain {
+            syncOnMain {
                 if let localizedData = self.selectedLocalizedData {
                     let _selectedUIDS:[String]=localizedData.map({ (localizedDatum) -> String in
                         return localizedDatum.UID
@@ -702,7 +702,7 @@ public extension Notification.Name {
             }
         }
         get{
-            return Bartleby.syncOnMainAndReturn{ () -> [String] in
+            return syncOnMainAndReturn{ () -> [String] in
                 return self.referentDocument?.metadata.getStateOf(identified: self.selectedLocalizedDataUIDSKeys) ?? [String]()
             }
         }
@@ -716,7 +716,7 @@ public extension Notification.Name {
     // e.g: referentDocument.localizedData.arrayController?.setSelectedObjects(localizedData)
     @objc dynamic open var selectedLocalizedData:[LocalizedDatum]?{
         didSet{
-            Bartleby.syncOnMain {
+            syncOnMain {
                 if let localizedData = selectedLocalizedData {
                     let UIDS:[String]=localizedData.map({ (localizedDatum) -> String in
                         return localizedDatum.UID

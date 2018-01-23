@@ -39,7 +39,7 @@ open class ImportBKeyViewController:IdentityStepViewController {
             openPanel.canChooseFiles = true
             openPanel.allowedFileTypes = ["bky"]
             openPanel.begin { (result) -> Void in
-                Bartleby.syncOnMain {
+                syncOnMain {
                     if result == NSApplication.ModalResponse.OK  {
                         if let url=openPanel.url {
                             self.filePathField.stringValue = url.path

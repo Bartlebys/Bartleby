@@ -626,7 +626,7 @@ public extension Notification.Name {
 
     fileprivate var _selectedUIDS:[String]{
         set{
-            Bartleby.syncOnMain {
+            syncOnMain {
                 if let pushOperations = self.selectedPushOperations {
                     let _selectedUIDS:[String]=pushOperations.map({ (pushOperation) -> String in
                         return pushOperation.UID
@@ -636,7 +636,7 @@ public extension Notification.Name {
             }
         }
         get{
-            return Bartleby.syncOnMainAndReturn{ () -> [String] in
+            return syncOnMainAndReturn{ () -> [String] in
                 return self.referentDocument?.metadata.getStateOf(identified: self.selectedPushOperationsUIDSKeys) ?? [String]()
             }
         }
@@ -650,7 +650,7 @@ public extension Notification.Name {
     // e.g: referentDocument.pushOperations.arrayController?.setSelectedObjects(pushOperations)
     @objc dynamic open var selectedPushOperations:[PushOperation]?{
         didSet{
-            Bartleby.syncOnMain {
+            syncOnMain {
                 if let pushOperations = selectedPushOperations {
                     let UIDS:[String]=pushOperations.map({ (pushOperation) -> String in
                         return pushOperation.UID

@@ -81,3 +81,40 @@ public func glog(_ message: Any, file: String=#file, function: String=#function,
 }
 
 
+
+// MARK : - Sync on Main Thread
+
+
+/// synchronously but thread-safely invoke p assed-in block on main thread avoiding deadlock
+public func syncOnMain(execute block: () -> Void) {
+    if Thread.isMainThread {
+        block()
+    } else {
+        DispatchQueue.main.sync(execute: block)
+    }
+}
+
+
+
+/// synchronously but thread-safely invoke passed-in block on main thread avoiding deadlock
+/// This method allows to synchronize blocks that throws
+/// - Parameter block: the block
+public func syncThrowableOnMain(execute block: () throws -> Void) rethrows-> (){
+    if Thread.isMainThread {
+        try block()
+    } else {
+        try DispatchQueue.main.sync(execute: block)
+    }
+}
+
+
+/// synchronously but thread-safely invoke passed-in block on main thread avoiding deadlock
+public func syncOnMainAndReturn<T>(execute work: () throws -> T) rethrows -> T {
+    if Thread.isMainThread {
+        return try work()
+    } else {
+        return try DispatchQueue.main.sync(execute: work)
+    }
+}
+
+

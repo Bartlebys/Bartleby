@@ -119,7 +119,7 @@ class UsersCreationLoadTest: TestCase {
             if  UsersCreationLoadTest.userCounter == UsersCreationLoadTest.nbOfIteration {
                 __fullFill()
             }else{
-                Bartleby.syncOnMain{
+                syncOnMain{
                     __create(idMethod)
                 }
             }

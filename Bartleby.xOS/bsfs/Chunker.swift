@@ -95,7 +95,7 @@ struct  Chunker {
                 progressionState.externalIdentifier=assembledFolderPath
                 progressionState.message=NSLocalizedString("Creating chunks: ", tableName:"system", comment: "Creating chunks: ")+" \(assembledFolderPath)"
             }
-            Bartleby.syncOnMain {
+            syncOnMain {
                 progression(progressionState)
             }
             
@@ -149,7 +149,7 @@ struct  Chunker {
                         }
                         cumulatedChunks.append(contentsOf: chunks)
                         progressionState.currentPercentProgress=Double(counter)*Double(100)/Double(progressionState.totalTaskCount)
-                        Bartleby.syncOnMain{
+                        syncOnMain{
                             // Relay the progression
                             progression(progressionState)
                             if counter > pathNb{
@@ -171,7 +171,7 @@ struct  Chunker {
                     })
                 }
             }else{
-                Bartleby.syncOnMain{
+                syncOnMain{
                     failure([Chunk](),NSLocalizedString("Invalid URL", tableName:"system", comment: "Invalid URL")+" \(assembledFolderPath)")
                 }
             }
@@ -231,7 +231,7 @@ struct  Chunker {
                                             nodeRelativePath:relativePath)
                             chunk.aliasDestination=aliasDestinationPath
                             chunk.sha1=chunk.relativePath.sha1
-                            Bartleby.syncOnMain{
+                            syncOnMain{
                                 success([chunk])
                             }
                             
@@ -259,18 +259,18 @@ struct  Chunker {
                                              nature: Chunk.Nature.folder,
                                              nodeRelativePath:relativePath)
                             chunk.sha1=chunk.relativePath.sha1
-                            Bartleby.syncOnMain{
+                            syncOnMain{
                                 success([chunk])
                             }
                         }
                     }
                 }else{
-                    Bartleby.syncOnMain{
+                    syncOnMain{
                         failure(NSLocalizedString("Unable to extract attributes at path:", tableName:"system", comment: "Unable to extract attributes at path:")+" \(absolutePath)")
                     }
                 }
             }else{
-                Bartleby.syncOnMain{
+                syncOnMain{
                     failure(NSLocalizedString("Invalid file at path:", tableName:"system", comment: "Unexisting file at path:")+" \(absolutePath)")
                 }
             }
@@ -374,7 +374,7 @@ struct  Chunker {
                         
                     }
                     
-                    Bartleby.syncOnMain{
+                    syncOnMain{
                         counter += 1
                         progressionState.quietChanges{
                             progressionState.message=chunkRelativePath
@@ -419,17 +419,17 @@ struct  Chunker {
                         }
                     }
                     
-                    Bartleby.syncOnMain{
+                    syncOnMain{
                         success(chunks)
                     }
                     
                 }catch{
-                    Bartleby.syncOnMain{
+                    syncOnMain{
                         failure("\(error)")
                     }
                 }
             }else{
-                Bartleby.syncOnMain{
+                syncOnMain{
                     failure(NSLocalizedString("Enable to create file Handle", tableName:"system", comment: "Enable to create file Handle")+" \(path)")
                 }
             }
@@ -499,11 +499,11 @@ struct  Chunker {
                     }
                     progressionState.currentPercentProgress=Double(counter)*Double(100)/Double(progressionState.totalTaskCount)
                     // Relay the progression
-                    Bartleby.syncOnMain{
+                    syncOnMain{
                         progression(progressionState)
                     }
                     if counter==filePathToChunks.count{
-                        Bartleby.syncOnMain{
+                        syncOnMain{
                             if failuresMessages.count==0{
                                 // it is a success
                                 success()
@@ -646,7 +646,7 @@ struct  Chunker {
                                 data = try data.decompress(algorithm: .lz4)
                             }
                             writeFileHande.write(data)
-                            Bartleby.syncOnMain{
+                            syncOnMain{
                                 counter += 1
                                 progressionState.quietChanges{
                                     progressionState.message=source
@@ -658,17 +658,17 @@ struct  Chunker {
                             }
                         }
                     }
-                    Bartleby.syncOnMain{
+                    syncOnMain{
                         success(destinationFilePath)
                     }
                     
                 }else{
-                    Bartleby.syncOnMain{
+                    syncOnMain{
                         failure(NSLocalizedString("Enable to create file Handle", tableName:"system", comment: "Enable to create file Handle")+" \(destinationFilePath)")
                     }
                 }
             }catch{
-                Bartleby.syncOnMain{
+                syncOnMain{
                     failure("\(error)")
                 }
             }

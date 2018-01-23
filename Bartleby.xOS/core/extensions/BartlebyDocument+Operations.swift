@@ -176,7 +176,7 @@ extension BartlebyDocument {
                             // If we set to BartlebyOperation it fails
                             if let op=o as? ManagedModel & BartlebyOperation {
                                 op.referentDocument = self
-                                Bartleby.syncOnMain{
+                                syncOnMain{
                                     // Push the command.
                                     op.push(sucessHandler: {  (context) in
                                         //////////////////////////////////////////////////

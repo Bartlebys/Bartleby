@@ -36,7 +36,7 @@ extension MasterKey{
                 savePanel.beginSheetModal(for:window,completionHandler: { (result) in
                     if result==NSApplication.ModalResponse.OK {
                         if let url = savePanel.url {
-                            Bartleby.syncOnMain{
+                            syncOnMain{
                                 do{
                                     try data.write(to: url, options: Data.WritingOptions.atomic)
                                 }catch{

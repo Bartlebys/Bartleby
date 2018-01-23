@@ -697,7 +697,7 @@ public extension Notification.Name {
 
     fileprivate var _selectedUIDS:[String]{
         set{
-            Bartleby.syncOnMain {
+            syncOnMain {
                 if let lockers = self.selectedLockers {
                     let _selectedUIDS:[String]=lockers.map({ (locker) -> String in
                         return locker.UID
@@ -707,7 +707,7 @@ public extension Notification.Name {
             }
         }
         get{
-            return Bartleby.syncOnMainAndReturn{ () -> [String] in
+            return syncOnMainAndReturn{ () -> [String] in
                 return self.referentDocument?.metadata.getStateOf(identified: self.selectedLockersUIDSKeys) ?? [String]()
             }
         }
@@ -721,7 +721,7 @@ public extension Notification.Name {
     // e.g: referentDocument.lockers.arrayController?.setSelectedObjects(lockers)
     @objc dynamic open var selectedLockers:[Locker]?{
         didSet{
-            Bartleby.syncOnMain {
+            syncOnMain {
                 if let lockers = selectedLockers {
                     let UIDS:[String]=lockers.map({ (locker) -> String in
                         return locker.UID

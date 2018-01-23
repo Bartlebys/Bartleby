@@ -535,7 +535,7 @@ class CollectionListDelegate:NSObject,NSOutlineViewDelegate,NSOutlineViewDataSou
 
     
     func outlineViewSelectionDidChange(_ notification: Notification) {
-        Bartleby.syncOnMain{
+        syncOnMain{
             let selected=self._outlineView.selectedRow
             if let item=self._outlineView.item(atRow: selected){
                 self._selectionHandler(item)

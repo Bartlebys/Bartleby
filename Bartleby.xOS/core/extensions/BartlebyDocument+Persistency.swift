@@ -98,7 +98,7 @@ extension BartlebyDocument{
                 try self._loadCollectionData(from:fileWrappers)
                 // Store the reference
                 self.documentFileWrapper=fileWrapper
-                Bartleby.syncOnMain {
+                syncOnMain {
                     self.send(DocumentStates.collectionsDataHasBeenDecrypted)
                 }
             }else{
