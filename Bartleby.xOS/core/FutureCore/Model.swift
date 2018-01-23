@@ -12,7 +12,7 @@ open  class Model:Object,Codable{
 
     // MARK: - Initializable
 
-    required public override init() {
+    public override init() {
         super.init()
     }
 
