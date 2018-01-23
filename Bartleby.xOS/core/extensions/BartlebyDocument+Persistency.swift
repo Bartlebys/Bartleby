@@ -50,19 +50,22 @@ extension BartlebyDocument{
     
     // To Read content
     open override func load(fromContents contents: Any, ofType typeName: String?) throws {
-    if let fileWrapper = contents as? FileWrapper{
-    try self._read(from:fileWrapper)
-    }else{
-    throw DocumentError.fileWrapperNotFound(message:"on load")
-    }
+        if let fileWrapper = contents as? FileWrapper{
+            try self._read(from:fileWrapper)
+        }else{
+            throw DocumentError.fileWrapperNotFound(message:"on load")
+        }
     }
     
     // To Write content
     override open func contents(forType typeName: String) throws -> Any {
-    let wrapper =  try self._updatedFileWrappers()
-    try fileWrapper.write(to: url, options: [FileWrapper.WritingOptions.atomic,FileWrapper.WritingOptions.withNameUpdating], originalContentsURL: url)
-    self.send(DocumentStates.documentDidSave)
-    return wrapper
+        // @todo on iOS
+        let wrapper =  try self._updatedFileWrappers()
+        /*
+        try fileWrapper.write(to: url, options: [FileWrapper.WritingOptions.atomic,FileWrapper.WritingOptions.withNameUpdating], originalContentsURL: url)
+        self.send(DocumentStates.documentDidSave)
+        */
+        return wrapper
     }
     
     #endif
