@@ -16,13 +16,12 @@ extension BartlebyDocument {
     // MARK: - Supervised Automatic Push
 
     func startPushLoopIfNecessary() {
-        if self._timer==nil && !self.metadata.isolatedUserMode{
-            self._timer=Timer(timeInterval: Bartleby.configuration.LOOP_TIME_INTERVAL_IN_SECONDS,
+        if self._timer == nil && !self.metadata.isolatedUserMode{
+            self._timer = Timer.scheduledTimer(timeInterval: Bartleby.configuration.LOOP_TIME_INTERVAL_IN_SECONDS,
                               target: self,
                               selector: #selector(BartlebyDocument._pushLoop),
                               userInfo: nil,
                               repeats: true)
-            RunLoop.current.add(self._timer!, forMode: RunLoopMode.commonModes)
         }
     }
 
