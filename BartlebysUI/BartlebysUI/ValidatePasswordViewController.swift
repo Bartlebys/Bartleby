@@ -54,11 +54,11 @@ open class ValidatePasswordViewController: IdentityStepViewController{
                 }
             }
 
-            var supportsPasswordUpdate=false
-            var supportsPasswordMemorization=false
+            var supportsPasswordUpdate = false
+            var supportsPasswordMemorization = false
             if let user = document.metadata.currentUser{
-                supportsPasswordUpdate=user.supportsPasswordUpdate
-                supportsPasswordMemorization=user.supportsPasswordMemorization
+                supportsPasswordUpdate = user.supportsPasswordUpdate
+                supportsPasswordMemorization = user.supportsPasswordMemorization
             }
 
             if !Bartleby.configuration.REDUCED_SECURITY_MODE{
@@ -108,12 +108,12 @@ open class ValidatePasswordViewController: IdentityStepViewController{
                     let documentPassword=PString.trim(document.currentUser.password ?? Default.NO_PASSWORD)
                     if currentPassword == documentPassword{
                         document.send(IdentificationStates.passwordsAreMatching)
-                        document.metadata.saveThePassword=(self.memorizePasswordCheckBox.state == NSControl.StateValue.on )
+                        document.metadata.saveThePassword = (self.memorizePasswordCheckBox.state == NSControl.StateValue.on )
                         self.identityWindowController?.identificationIsValid=true
                         if (!document.currentUser.isIsolated){
-                             document.online=true
+                             document.online = true
                         }
-                        self.stepDelegate?.didValidateStep( self.stepIndex)
+                        self.stepDelegate?.didValidateStep(self.stepIndex)
                     }else{
                         self.messageTextField.stringValue=NSLocalizedString("Invalid Password", comment: "Invalid Password")
                     }
