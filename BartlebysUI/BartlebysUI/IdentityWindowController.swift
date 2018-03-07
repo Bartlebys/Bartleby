@@ -148,19 +148,22 @@ open class IdentityWindowController: NSWindowController,DocumentProvider,Identit
         if IdentityWindowController.usesDefaultComponents{
             if let document=self.getDocument(){
                 if document.metadata.currentUserUID == Default.NO_UID {
-                    self.creationMode=true
                     // It is a new document
-                    self.append(viewController: self.prepareUserCreation, selectImmediately: true)
-                    self.append(viewController: self.setUpCollaborativeServer, selectImmediately: false)
-
-                    // Secondary Authentication factor management
-                    if document.metadata.secondaryAuthFactorRequired{
-                        self.append(viewController: self.confirmActivation, selectImmediately: false)
+                    self.creationMode = true
+                    if Bartleby.configuration.AUTO_CREATE_A_USER_AUTOMATICALLY_IN_ISOLATED_MODE{
+                          self.append(viewController: self.createAnIsolatedUser, selectImmediately: true)
                     }else{
-                        self.append(viewController: self.byPassActivation, selectImmediately: false)
+                        self.append(viewController: self.prepareUserCreation, selectImmediately: true)
+                        self.append(viewController: self.setUpCollaborativeServer, selectImmediately: false)
+                        // Secondary Authentication factor management
+                        if document.metadata.secondaryAuthFactorRequired{
+                            self.append(viewController: self.confirmActivation, selectImmediately: false)
+                        }else{
+                            self.append(viewController: self.byPassActivation, selectImmediately: false)
+                        }
+                        // Revelation of the password
+                        self.append(viewController: self.revealPassword, selectImmediately: false)
                     }
-                    // Revelation of the password
-                    self.append(viewController: self.revealPassword, selectImmediately: false)
                 }else{
                     self.creationMode=false
                     let isolatedMode = document.metadata.collaborationServerURL == nil
