@@ -37,7 +37,8 @@ open class CreateAnIsolatedUser: IdentityStepViewController {
             do{
                 try document.metadata.putSomeSugarInYourBowl() // Save the key
                 document.send(IdentificationStates.sugarHasBeenRecovered)
-                self.identityWindowController?.identificationIsValid=true
+                self.identityWindowController?.identificationIsValid = true
+                self.identityWindowController?.enableActions()
             }catch{
                 document.log("\(error)",category: Default.LOG_IDENTITY)
             }
