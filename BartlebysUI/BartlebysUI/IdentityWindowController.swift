@@ -170,7 +170,10 @@ open class IdentityWindowController: NSWindowController,DocumentProvider,Identit
                     if document.metadata.sugar == Default.NO_SUGAR && isolatedMode{
                         // we need to import a bkey
                         self.append(viewController: self.importBkey, selectImmediately: true)
-                        self.append(viewController: self.validatePassword, selectImmediately: false)
+                        if Bartleby.configuration.AUTO_CREATE_A_USER_AUTOMATICALLY_IN_ISOLATED_MODE == false{
+                            // We gonna control the password
+                            self.append(viewController: self.validatePassword, selectImmediately: false)
+                        }
                     }else{
                         self.append(viewController: self.validatePassword, selectImmediately: true)
                     }
@@ -321,7 +324,11 @@ open class IdentityWindowController: NSWindowController,DocumentProvider,Identit
         if IdentityWindowController.usesDefaultComponents{
             syncOnMain{
                 var proceedImmediately=true
-                if self.creationMode && !self._currentStepIs(self.createAnIsolatedUser) {
+
+                if self._currentStepIs(self.importBkey) && Bartleby.configuration.AUTO_CREATE_A_USER_AUTOMATICALLY_IN_ISOLATED_MODE{
+                    self.nextStep()
+                    self.enableActions()
+                }else if self.creationMode && !self._currentStepIs(self.createAnIsolatedUser) {
                     // The SMS / second factor auth has been verified or by passed
                     if self._currentStepIs(self.confirmActivation) || self._currentStepIs(self.byPassActivation){
                         // user is confirmed.

@@ -72,7 +72,11 @@ open class ImportBKeyViewController:IdentityStepViewController {
                 /// When the locker is verifyed use the sugar to retrieve the Collections and blocks data
                 try document.reloadCollectionData()
                 try document.metadata.putSomeSugarInYourBowl()
+                if Bartleby.configuration.AUTO_CREATE_A_USER_AUTOMATICALLY_IN_ISOLATED_MODE{
+                    self.identityWindowController?.identificationIsValid = true
+                }
                 self.stepDelegate?.didValidateStep(self.stepIndex)
+
             }catch{
                 self.displayMessage("\(error)")
             }

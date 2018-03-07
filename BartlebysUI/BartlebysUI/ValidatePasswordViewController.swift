@@ -61,17 +61,15 @@ open class ValidatePasswordViewController: IdentityStepViewController{
                 supportsPasswordMemorization = user.supportsPasswordMemorization
             }
 
-            if !Bartleby.configuration.REDUCED_SECURITY_MODE{
-                if !supportsPasswordMemorization{
-                    self.memorizePasswordCheckBox.isEnabled=false
-                    self.memorizePasswordCheckBox.isHidden=true
-                }
+            if !supportsPasswordMemorization{
+                self.memorizePasswordCheckBox.isEnabled=false
+                self.memorizePasswordCheckBox.isHidden=true
+            }
 
-                if document.metadata.sugar == Default.NO_SUGAR
-                    || supportsPasswordUpdate == false {
-                    self.resetMyPasswordButton.isEnabled=false
-                    self.resetMyPasswordButton.isHidden=true
-                }
+            if document.metadata.sugar == Default.NO_SUGAR
+                || supportsPasswordUpdate == false {
+                self.resetMyPasswordButton.isEnabled=false
+                self.resetMyPasswordButton.isHidden=true
             }
 
             if document.metadata.saveThePassword == true && supportsPasswordMemorization{
