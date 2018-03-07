@@ -10,7 +10,7 @@ import Foundation
 
 
 // MARK: - BartlebyConfiguration
-public protocol BartlebyConfiguration {
+public protocol  BartlebyConfiguration {
 
     // The Default base key used to encrypt / decrypt (the metadata)
     // We use a different key for the data (saved during the activation process)
@@ -73,7 +73,7 @@ public protocol BartlebyConfiguration {
     static var DEVELOPER_MODE: Bool { get }
 
     // If set to true identification will not require second auth factor.
-    static var REDUCED_SECURITY_MODE:Bool { get }
+    static var SECOND_AUTHENTICATION_FACTOR_IS_DISABLED:Bool { get }
 
     // Supports by default KeyChained password synchronization between multiple local accounts (false is more secured)
     static var SUPPORTS_PASSWORD_SYNDICATION_BY_DEFAULT: Bool { get }
@@ -159,7 +159,7 @@ public struct BartlebyDefaultConfiguration: BartlebyConfiguration {
     public static let DEVELOPER_MODE: Bool = false
 
     // If set to true identification will not required second auth factor.
-    public static var REDUCED_SECURITY_MODE: Bool = false
+    public static var SECOND_AUTHENTICATION_FACTOR_IS_DISABLED: Bool = false
 
     // Supports by default KeyChained password synchronization between multiple local accounts (false is more secured)
     public static let SUPPORTS_PASSWORD_SYNDICATION_BY_DEFAULT: Bool = false

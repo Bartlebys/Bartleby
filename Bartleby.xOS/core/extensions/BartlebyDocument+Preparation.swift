@@ -41,7 +41,7 @@ extension BartlebyDocument{
 
     open func setUpDefaultMetadata(){
         // Set up the default values.
-        self.metadata.secondaryAuthFactorRequired = !Bartleby.configuration.REDUCED_SECURITY_MODE
+        self.metadata.secondaryAuthFactorRequired = !Bartleby.configuration.SECOND_AUTHENTICATION_FACTOR_IS_DISABLED
         self.metadata.changesAreInspectables = Bartleby.configuration.CHANGES_ARE_INSPECTABLES_BY_DEFAULT
         self.metadata.shouldBeOnline =  Bartleby.configuration.ONLINE_BY_DEFAULT
         self.metadata.online =  Bartleby.configuration.ONLINE_BY_DEFAULT

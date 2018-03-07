@@ -84,7 +84,7 @@ open class TestsConfiguration: BartlebyConfiguration {
     open static let DEVELOPER_MODE: Bool = true // Should be turned to false in production
 
     // If set to true identification will not require second auth factor.
-    open static var REDUCED_SECURITY_MODE:Bool = false
+    open static var SECOND_AUTHENTICATION_FACTOR_IS_DISABLED:Bool = false
 
     // Supports by default KeyChained password synchronization between multiple local accounts (false is more secured)
     public static let SUPPORTS_PASSWORD_SYNDICATION_BY_DEFAULT: Bool = false
