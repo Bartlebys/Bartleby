@@ -96,7 +96,10 @@ open class TestsConfiguration: BartlebyConfiguration {
     public static var SUPPORTS_PASSWORD_MEMORIZATION_BY_DEFAULT: Bool = false
 
     // If set to true the user can skip the account creation and stay fully offline.
-    public static var ALLOW_ISOLATED_MODE:Bool = false
+    public static var ALLOW_ISOLATED_MODE: Bool = false
+
+    // If set to true each document has it own isolated user
+    public static var AUTO_CREATE_A_USER_AUTOMATICALLY_IN_ISOLATED_MODE: Bool = false
 
     //MARK: - Variable base URL
 

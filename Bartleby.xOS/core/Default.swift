@@ -86,6 +86,9 @@ public protocol BartlebyConfiguration {
 
     // If set to true the user can skip the account creation and stay fully offline.
     static var ALLOW_ISOLATED_MODE: Bool { get }
+
+    // If set to true each document has it own isolated user
+    static var AUTO_CREATE_A_USER_AUTOMATICALLY_IN_ISOLATED_MODE: Bool { get }
 }
 
 
@@ -156,7 +159,7 @@ public struct BartlebyDefaultConfiguration: BartlebyConfiguration {
     public static let DEVELOPER_MODE: Bool = false
 
     // If set to true identification will not required second auth factor.
-    public static var REDUCED_SECURITY_MODE:Bool = false
+    public static var REDUCED_SECURITY_MODE: Bool = false
 
     // Supports by default KeyChained password synchronization between multiple local accounts (false is more secured)
     public static let SUPPORTS_PASSWORD_SYNDICATION_BY_DEFAULT: Bool = false
@@ -168,8 +171,10 @@ public struct BartlebyDefaultConfiguration: BartlebyConfiguration {
     public static var SUPPORTS_PASSWORD_MEMORIZATION_BY_DEFAULT: Bool = false
 
     // If set to true the user can skip the account creation and stay fully offline.
-    public static var ALLOW_ISOLATED_MODE:Bool = false
+    public static var ALLOW_ISOLATED_MODE: Bool = false
 
+    // If set to true each document has it own isolated user
+    public static var AUTO_CREATE_A_USER_AUTOMATICALLY_IN_ISOLATED_MODE: Bool = false
 }
 
 // MARK: - Default values
