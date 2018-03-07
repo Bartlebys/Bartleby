@@ -102,7 +102,7 @@ class LogsViewController: NSViewController,DocumentDependent{
     }
 
 
-    @IBAction func reload(_ sender: AnyObject) {
+    @IBAction func refreshLogs(_ sender: AnyObject) {
         if let logs=self._document?.logs{
             self.entries=logs
         }
