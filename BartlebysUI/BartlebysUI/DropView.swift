@@ -43,6 +43,10 @@ open class DropView:NSView{
         }
     }
 
+    @IBInspectable
+    open var highLightOnRollOver: Bool = true
+
+
     // MARK: Drawings
 
     open override func draw(_ dirtyRect: NSRect) {
@@ -72,17 +76,19 @@ open class DropView:NSView{
     // Active zone
     private var _active:Bool=false{
         didSet {
-            //needsDisplay = true
-            if _active==true{
-                self.subviews.forEach({ (view) in
-                    self._alphas[view.hashValue]=view.alphaValue
-                    view.alphaValue=0.30
-                })
-            }else{
-                self.subviews.forEach({ (view) in
-                    view.alphaValue = self._alphas[view.hashValue] ?? 1.0
-                })
-                self._alphas.removeAll()
+            if self.highLightOnRollOver{
+                //needsDisplay = true
+                if _active==true{
+                    self.subviews.forEach({ (view) in
+                        self._alphas[view.hashValue]=view.alphaValue
+                        view.alphaValue=0.30
+                    })
+                }else{
+                    self.subviews.forEach({ (view) in
+                        view.alphaValue = self._alphas[view.hashValue] ?? 1.0
+                    })
+                    self._alphas.removeAll()
+                }
             }
         }
     }
