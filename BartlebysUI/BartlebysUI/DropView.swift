@@ -108,7 +108,7 @@ open class DropView:NSView{
                 if let delegate=self.dropDelegate{
                     delegate.droppedURLs(urls: urls,dropZoneIdentifier:dropZoneIdentifier)
                 }else{
-                    let notification=Notification(name: Notification.Name.DropView.droppedUrls, object: nil, userInfo: ["urls":urls,"identifier":dropZoneIdentifier])
+                    let notification = Notification(name: Notification.Name.DropView.droppedUrls, object: self.window, userInfo: ["urls":urls,"identifier":dropZoneIdentifier])
                     NotificationCenter.default.post(notification)
                 }
             }
