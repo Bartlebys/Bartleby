@@ -27,6 +27,9 @@ open class MultiStepWindowController: NSWindowController,DocumentProvider,StepNa
     }
 
 
+    public fileprivate(set) var steps:[StepViewController] = [StepViewController]()
+
+
     open var onCompletion:(_ reference:MultiStepWindowController)->() = { reference in
         reference.close()
     }
@@ -123,10 +126,14 @@ open class MultiStepWindowController: NSWindowController,DocumentProvider,StepNa
     ///   - viewController: an StepViewController children
     ///   - selectImmediately: display immediately the added view Controller
     public func append(viewController:StepViewController,selectImmediately:Bool){
-        let viewControllerItem=NSTabViewItem(viewController:viewController)
-        viewController.documentProvider=self
-        viewController.stepDelegate=self
-        viewController.stepIndex=self.tabView.tabViewItems.count
+
+        let viewControllerItem = NSTabViewItem(viewController:viewController)
+        viewController.documentProvider = self
+        viewController.stepDelegate = self
+        viewController.stepIndex = self.tabView.tabViewItems.count
+
+        self.steps.append(viewController)
+
         self.tabView.addTabViewItem(viewControllerItem)
         if selectImmediately{
             self.setCurrentStepIndex(viewController.stepIndex)
@@ -139,6 +146,9 @@ open class MultiStepWindowController: NSWindowController,DocumentProvider,StepNa
     /// - Parameter viewController: the view controller to remove
     public func remove(viewController:StepViewController){
         let nb=self.tabView.tabViewItems.count
+        if let idx = self.steps.index(of: viewController){
+            self.steps.remove(at: idx)
+        }
         for i in 0..<nb{
             let item=self.tabView.tabViewItems[i]
             if item.viewController==viewController{
@@ -156,6 +166,12 @@ open class MultiStepWindowController: NSWindowController,DocumentProvider,StepNa
                 break
             }
         }
+
+        for idx in  self.currentStepIndex..<self.steps.count{
+            let vc = self.steps[idx]
+            self.remove(viewController: vc)
+        }
+
     }
 
     internal func currentStepIs(_ viewController:StepViewController)->Bool{
