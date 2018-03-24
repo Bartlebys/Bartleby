@@ -10,7 +10,7 @@ import Foundation
 import Cocoa
 import BartlebyKit
 
-open class ImportBKeyViewController:IdentityStepViewController {
+open class ImportBKeyViewController:StepViewController {
 
     override open var nibName : NSNib.Name { return NSNib.Name("ImportBKeyViewController") }
 

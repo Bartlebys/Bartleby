@@ -11,7 +11,7 @@ import BartlebyKit
 
 
 // Creates automatically a single User in off line mode
-open class CreateAnIsolatedUser: IdentityStepViewController {
+open class CreateAnIsolatedUser: StepViewController {
 
     override open var nibName : NSNib.Name { return NSNib.Name("CreateAnIsolatedUser") }
 

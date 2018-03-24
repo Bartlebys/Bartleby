@@ -8,7 +8,7 @@
 
 import Cocoa
 
-open class SendMessageViewController: IdentityStepViewController {
+open class SendMessageViewController: StepViewController {
 
 
     // @TODO

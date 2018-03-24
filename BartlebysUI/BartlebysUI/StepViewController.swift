@@ -1,5 +1,5 @@
 //
-//  IdentityStepViewController.swift
+//  StepViewController.swift
 //  BartlebysUI
 //
 //  Created by Benoit Pereira da silva on 02/01/2017.
@@ -9,9 +9,9 @@
 import Cocoa
 import BartlebyKit
 
-@objc open class IdentityStepViewController: NSViewController ,DocumentDependent,IdentityStep{
+@objc open class StepViewController: NSViewController ,DocumentDependent,Step{
 
-    open var stepDelegate:IdentityStepNavigation?
+    open var stepDelegate:StepNavigation?
 
 
     /// There are credentials for that Server.
@@ -19,17 +19,7 @@ import BartlebyKit
 
     open var documentProvider: DocumentProvider?
 
-
-    open var identityWindowController:IdentityWindowController?{
-        return self.documentProvider as? IdentityWindowController
-    }
-
-    override open func viewDidLoad() {
-        super.viewDidLoad()
-        // Do view setup here.
-    }
-
-    // MARK: - IdentityStep
+    // MARK: - Step
 
     open var stepIndex:Int = -1
 
@@ -37,4 +27,16 @@ import BartlebyKit
         // On success You should call: self.stepDelegate?.didValidateStep(self.stepIndex)
         // Else you can embedd the navigation logic
     }
+}
+
+
+
+/// This extension is used to access to the window controller
+/// when the steps controllers are embedded in the IdentityWindowController
+public extension StepViewController{
+
+    public var identityWindowController:IdentityWindowController?{
+        return self.documentProvider as? IdentityWindowController
+    }
+
 }

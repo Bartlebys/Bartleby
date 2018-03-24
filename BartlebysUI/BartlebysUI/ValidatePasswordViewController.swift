@@ -9,7 +9,7 @@
 import Cocoa
 import BartlebyKit
 
-open class ValidatePasswordViewController: IdentityStepViewController{
+open class ValidatePasswordViewController: StepViewController{
 
     override open var nibName : NSNib.Name { return NSNib.Name("ValidatePasswordViewController") }
 

@@ -9,7 +9,7 @@
 import Cocoa
 import BartlebyKit
 
-open class SetupCollaborativeServerViewController: IdentityStepViewController{
+open class SetupCollaborativeServerViewController: StepViewController{
 
     override open var nibName : NSNib.Name { return NSNib.Name("SetupCollaborativeServerViewController") }
 

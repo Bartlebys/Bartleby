@@ -9,7 +9,7 @@
 import Cocoa
 import BartlebyKit
 
-open class ConfirmUpdatePasswordActivationCode: IdentityStepViewController {
+open class ConfirmUpdatePasswordActivationCode: StepViewController {
 
     @IBOutlet weak var consignsLabel: NSTextField!
 

@@ -9,7 +9,7 @@
 import Cocoa
 import BartlebyKit
 
-open class ConfirmActivationViewController: IdentityStepViewController{
+open class ConfirmActivationViewController: StepViewController{
 
 
     override open var nibName : NSNib.Name { return NSNib.Name("ConfirmActivationViewController") }

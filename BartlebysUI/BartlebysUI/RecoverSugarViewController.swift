@@ -9,7 +9,7 @@
 import Cocoa
 import BartlebyKit
 
-open class RecoverSugarViewController: IdentityStepViewController {
+open class RecoverSugarViewController: StepViewController {
 
     override open var nibName : NSNib.Name { return NSNib.Name("RecoverSugarViewController") }
 

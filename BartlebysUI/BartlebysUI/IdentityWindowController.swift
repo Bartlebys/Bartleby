@@ -15,29 +15,8 @@ public protocol IdentifactionDelegate{
     func userWantsToCloseIndentityController()
 }
 
-// MARK: - IdentityStepNavigation
-
-public protocol IdentityStepNavigation{
-    func didValidateStep(_ step:Int)
-    func disableActions()
-    func enableActions()
-
-    // The progress indicator located between the buttons
-    func enableProgressIndicator()
-    func disableProgressIndicator()
-}
-
-// MARK: - IdentityStep
-
-public protocol IdentityStep{
-    var stepIndex:Int { get set }
-    func proceedToValidation()
-}
-
-
 
 // MARK: - IdentityWindowController
-
 
 /*
  To use the identity Controller
@@ -47,8 +26,7 @@ public protocol IdentityStep{
  3# Register as IdentificationDelegate
 
  */
-open class IdentityWindowController: NSWindowController,DocumentProvider,IdentityStepNavigation {
-
+open class IdentityWindowController: NSWindowController,DocumentProvider,StepNavigation {
 
     override open var windowNibName: NSNib.Name? { return NSNib.Name("IdentityWindowController") }
 
@@ -188,9 +166,9 @@ open class IdentityWindowController: NSWindowController,DocumentProvider,Identit
     /// Appends a view Controller to the stack
     ///
     /// - Parameters:
-    ///   - viewController: an IdentityStepViewController children
+    ///   - viewController: an StepViewController children
     ///   - selectImmediately: display immediately the added view Controller
-    public func append(viewController:IdentityStepViewController,selectImmediately:Bool){
+    public func append(viewController:StepViewController,selectImmediately:Bool){
         let viewControllerItem=NSTabViewItem(viewController:viewController)
         viewController.documentProvider=self
         viewController.stepDelegate=self
@@ -205,7 +183,7 @@ open class IdentityWindowController: NSWindowController,DocumentProvider,Identit
     /// Removes the viewController
     ///
     /// - Parameter viewController: the view controller to remove
-    public func remove(viewController:IdentityStepViewController){
+    public func remove(viewController:StepViewController){
         let nb=self.tabView.tabViewItems.count
         for i in 0..<nb{
             let item=self.tabView.tabViewItems[i]
@@ -226,7 +204,7 @@ open class IdentityWindowController: NSWindowController,DocumentProvider,Identit
         }
     }
 
-    fileprivate func _currentStepIs(_ viewController:IdentityStepViewController)->Bool{
+    fileprivate func _currentStepIs(_ viewController:StepViewController)->Bool{
         if self.tabView.tabViewItems.count > self.currentStep{
             let item=self.tabView.tabViewItems[self.currentStep]
             let matching=item.viewController?.className==viewController.className
@@ -277,9 +255,9 @@ open class IdentityWindowController: NSWindowController,DocumentProvider,Identit
         }
     }
 
-    var currentIdentityStep:IdentityStep?{
+    var currentIdentityStep:Step?{
         let vc =  self.tabView.selectedTabViewItem?.viewController
-        return vc as? IdentityStep
+        return vc as? Step
     }
 
     func nextStep(){
@@ -318,7 +296,7 @@ open class IdentityWindowController: NSWindowController,DocumentProvider,Identit
     }
 
 
-    // MARK: - IdentityStepNavigation
+    // MARK: - StepNavigation
 
     public func didValidateStep(_ step:Int){
         if IdentityWindowController.usesDefaultComponents{

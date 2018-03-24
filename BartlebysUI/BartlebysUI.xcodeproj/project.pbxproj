@@ -29,7 +29,7 @@
 		E5717E651E2F6B7C00850303 /* RecoverSugarViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5717E601E2F6B7C00850303 /* RecoverSugarViewController.swift */; };
 		E5717E661E2F6B7C00850303 /* RecoverSugarViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = E5717E611E2F6B7C00850303 /* RecoverSugarViewController.xib */; };
 		E5717E681E2F6B9500850303 /* Media.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = E5717E671E2F6B9500850303 /* Media.xcassets */; };
-		E59AABA31E1A889B00BE4BF1 /* IdentityStepViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E59AABA21E1A889B00BE4BF1 /* IdentityStepViewController.swift */; };
+		E59AABA31E1A889B00BE4BF1 /* StepViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E59AABA21E1A889B00BE4BF1 /* StepViewController.swift */; };
 		E59AABA61E1A937F00BE4BF1 /* RevealPasswordViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E59AABA41E1A937F00BE4BF1 /* RevealPasswordViewController.swift */; };
 		E59AABA71E1A937F00BE4BF1 /* RevealPasswordViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = E59AABA51E1A937F00BE4BF1 /* RevealPasswordViewController.xib */; };
 		E5A2B2B41F45838200C29BCB /* ImportBKeyViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5A2B2B21F45838200C29BCB /* ImportBKeyViewController.swift */; };
@@ -38,6 +38,10 @@
 		E5ADEE9B1F3F42FD00371DA1 /* CreateAnIsolatedUser.xib in Resources */ = {isa = PBXBuildFile; fileRef = E5ADEE991F3F42FD00371DA1 /* CreateAnIsolatedUser.xib */; };
 		E5B124961F30C0780080C026 /* BartlebyKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E5B124951F30C0780080C026 /* BartlebyKit.framework */; };
 		E5B90F382017A0D400A9098E /* BartlebyKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E5124F5B1E8BAA2800797254 /* BartlebyKit.framework */; };
+		E5C593BA2066439F008CC4E7 /* StepNavigation.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5C593B92066439F008CC4E7 /* StepNavigation.swift */; };
+		E5C593BD206643F7008CC4E7 /* Step.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5C593BC206643F7008CC4E7 /* Step.swift */; };
+		E5C593BE206643F7008CC4E7 /* Step.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5C593BC206643F7008CC4E7 /* Step.swift */; };
+		E5C593BF206644E0008CC4E7 /* StepNavigation.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5C593B92066439F008CC4E7 /* StepNavigation.swift */; };
 		E5CFB9811F3F8BEA00CCA560 /* ConfirmUpdatePasswordActivationCode.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5CFB9801F3F8BAF00CCA560 /* ConfirmUpdatePasswordActivationCode.swift */; };
 		E5DB87EE1E32615400E54244 /* SendMessageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5DB87EC1E32615400E54244 /* SendMessageViewController.swift */; };
 		E5DB87EF1E32615400E54244 /* SendMessageViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = E5DB87ED1E32615400E54244 /* SendMessageViewController.xib */; };
@@ -74,7 +78,7 @@
 		E5717E601E2F6B7C00850303 /* RecoverSugarViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RecoverSugarViewController.swift; sourceTree = "<group>"; };
 		E5717E611E2F6B7C00850303 /* RecoverSugarViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = RecoverSugarViewController.xib; sourceTree = "<group>"; };
 		E5717E671E2F6B9500850303 /* Media.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Media.xcassets; sourceTree = "<group>"; };
-		E59AABA21E1A889B00BE4BF1 /* IdentityStepViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IdentityStepViewController.swift; sourceTree = "<group>"; };
+		E59AABA21E1A889B00BE4BF1 /* StepViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StepViewController.swift; sourceTree = "<group>"; };
 		E59AABA41E1A937F00BE4BF1 /* RevealPasswordViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RevealPasswordViewController.swift; sourceTree = "<group>"; };
 		E59AABA51E1A937F00BE4BF1 /* RevealPasswordViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = RevealPasswordViewController.xib; sourceTree = "<group>"; };
 		E5A2B2B21F45838200C29BCB /* ImportBKeyViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImportBKeyViewController.swift; sourceTree = "<group>"; };
@@ -82,6 +86,8 @@
 		E5ADEE981F3F42FD00371DA1 /* CreateAnIsolatedUser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateAnIsolatedUser.swift; sourceTree = "<group>"; };
 		E5ADEE991F3F42FD00371DA1 /* CreateAnIsolatedUser.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = CreateAnIsolatedUser.xib; sourceTree = "<group>"; };
 		E5B124951F30C0780080C026 /* BartlebyKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = BartlebyKit.framework; path = "../../../../../../../../Library/Developer/Xcode/DerivedData/YouDub-aodsguokyrtmojgwlsnefsibaroc/Build/Products/Debug/BartlebyKit.framework"; sourceTree = "<group>"; };
+		E5C593B92066439F008CC4E7 /* StepNavigation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StepNavigation.swift; sourceTree = "<group>"; };
+		E5C593BC206643F7008CC4E7 /* Step.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Step.swift; sourceTree = "<group>"; };
 		E5CFB9801F3F8BAF00CCA560 /* ConfirmUpdatePasswordActivationCode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConfirmUpdatePasswordActivationCode.swift; sourceTree = "<group>"; };
 		E5DB87EC1E32615400E54244 /* SendMessageViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SendMessageViewController.swift; sourceTree = "<group>"; };
 		E5DB87ED1E32615400E54244 /* SendMessageViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = SendMessageViewController.xib; sourceTree = "<group>"; };
@@ -156,6 +162,15 @@
 			name = supportFiles;
 			sourceTree = "<group>";
 		};
+		E5C593BB206643AD008CC4E7 /* Protocols */ = {
+			isa = PBXGroup;
+			children = (
+				E5C593B92066439F008CC4E7 /* StepNavigation.swift */,
+				E5C593BC206643F7008CC4E7 /* Step.swift */,
+			);
+			name = Protocols;
+			sourceTree = "<group>";
+		};
 		E5CC50A01E6EC6A6009FB014 /* Controllers */ = {
 			isa = PBXGroup;
 			children = (
@@ -175,7 +190,7 @@
 				E5ADEE981F3F42FD00371DA1 /* CreateAnIsolatedUser.swift */,
 				E5ADEE991F3F42FD00371DA1 /* CreateAnIsolatedUser.xib */,
 				E5F620BF1E6EA911007E60D5 /* IdentificationStates.swift */,
-				E59AABA21E1A889B00BE4BF1 /* IdentityStepViewController.swift */,
+				E59AABA21E1A889B00BE4BF1 /* StepViewController.swift */,
 				E55FF9821E155F5900EE3393 /* IdentityWindowController.swift */,
 				E55FF9831E155F5900EE3393 /* IdentityWindowController.xib */,
 				E5A2B2B21F45838200C29BCB /* ImportBKeyViewController.swift */,
@@ -230,6 +245,7 @@
 		E5FAC5221DF95B1C00398C95 /* BartlebysUI */ = {
 			isa = PBXGroup;
 			children = (
+				E5C593BB206643AD008CC4E7 /* Protocols */,
 				E5DC3C211E360390004B379A /* Views */,
 				E5CC50A01E6EC6A6009FB014 /* Controllers */,
 				E5DC3C1F1E3602AA004B379A /* IdentityManagement */,
@@ -376,6 +392,8 @@
 			files = (
 				E5F620C11E6EA911007E60D5 /* IdentificationStates.swift in Sources */,
 				E5037F261E78338D00ECEEB1 /* ViewsRecycler.swift in Sources */,
+				E5C593BE206643F7008CC4E7 /* Step.swift in Sources */,
+				E5C593BF206644E0008CC4E7 /* StepNavigation.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -383,13 +401,15 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				E59AABA31E1A889B00BE4BF1 /* IdentityStepViewController.swift in Sources */,
+				E59AABA31E1A889B00BE4BF1 /* StepViewController.swift in Sources */,
 				E5F620C01E6EA911007E60D5 /* IdentificationStates.swift in Sources */,
 				E5037F251E78338D00ECEEB1 /* ViewsRecycler.swift in Sources */,
 				E59AABA61E1A937F00BE4BF1 /* RevealPasswordViewController.swift in Sources */,
 				E55FF98C1E1562E000EE3393 /* PrepareUserCreationViewController.swift in Sources */,
 				E5CFB9811F3F8BEA00CCA560 /* ConfirmUpdatePasswordActivationCode.swift in Sources */,
 				E5DB87EE1E32615400E54244 /* SendMessageViewController.swift in Sources */,
+				E5C593BD206643F7008CC4E7 /* Step.swift in Sources */,
+				E5C593BA2066439F008CC4E7 /* StepNavigation.swift in Sources */,
 				E55FF9961E1564D600EE3393 /* SetupCollaborativeServerViewController.swift in Sources */,
 				E550E9361F3F05500027A1F1 /* ByPassActivationViewController.swift in Sources */,
 				E53F0B571DF95D80003301DD /* DropView.swift in Sources */,
