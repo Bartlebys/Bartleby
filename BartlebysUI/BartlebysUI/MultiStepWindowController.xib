@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="13771" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" customObjectInstantitationMethod="direct">
+    <dependencies>
+        <deployment identifier="macosx"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="13771"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <customObject id="-2" userLabel="File's Owner" customClass="MultiStepWindowController" customModule="BartlebysUI" customModuleProvider="target">
+            <connections>
+                <outlet property="leftButton" destination="342-1U-qMX" id="oET-CS-TkQ"/>
+                <outlet property="progressIndicator" destination="M7w-PX-I7z" id="oey-zX-1cq"/>
+                <outlet property="rightButton" destination="hfq-FR-AXb" id="22W-Q5-14E"/>
+                <outlet property="tabView" destination="kQ1-QF-2Ej" id="PZe-eP-s60"/>
+            </connections>
+        </customObject>
+        <customObject id="-1" userLabel="First Responder" customClass="FirstResponder"/>
+        <customObject id="-3" userLabel="Application" customClass="NSObject"/>
+        <window identifier="identityWindow" allowsToolTipsWhenApplicationIsInactive="NO" autorecalculatesKeyViewLoop="NO" restorable="NO" releasedWhenClosed="NO" showsToolbarButton="NO" visibleAtLaunch="NO" animationBehavior="documentWindow" frameAutosaveName="multiStep" id="OFm-Yg-tPD">
+            <windowStyleMask key="styleMask" titled="YES"/>
+            <windowPositionMask key="initialPositionMask" leftStrut="YES" rightStrut="YES" topStrut="YES" bottomStrut="YES"/>
+            <rect key="contentRect" x="196" y="240" width="500" height="290"/>
+            <rect key="screenRect" x="0.0" y="0.0" width="3440" height="1418"/>
+            <view key="contentView" wantsLayer="YES" focusRingType="none" id="SWh-vh-BWv">
+                <rect key="frame" x="0.0" y="0.0" width="500" height="290"/>
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <tabView type="noTabsNoBorder" translatesAutoresizingMaskIntoConstraints="NO" id="kQ1-QF-2Ej">
+                        <rect key="frame" x="0.0" y="50" width="500" height="240"/>
+                        <font key="font" metaFont="system"/>
+                        <tabViewItems/>
+                    </tabView>
+                    <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="342-1U-qMX">
+                        <rect key="frame" x="8" y="5" width="161" height="32"/>
+                        <constraints>
+                            <constraint firstAttribute="width" constant="149" id="cLl-Zp-gf2"/>
+                            <constraint firstAttribute="height" constant="21" id="gb0-hG-n7k"/>
+                        </constraints>
+                        <buttonCell key="cell" type="push" title="Cancel" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="qsN-0H-1f0">
+                            <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                            <font key="font" metaFont="system"/>
+                        </buttonCell>
+                    </button>
+                    <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="hfq-FR-AXb">
+                        <rect key="frame" x="317" y="5" width="161" height="32"/>
+                        <constraints>
+                            <constraint firstAttribute="width" constant="149" id="MQT-1h-lck"/>
+                        </constraints>
+                        <buttonCell key="cell" type="push" title="Validate" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="run-Nv-vrG">
+                            <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                            <font key="font" metaFont="system"/>
+                        </buttonCell>
+                    </button>
+                    <progressIndicator wantsLayer="YES" horizontalHuggingPriority="750" verticalHuggingPriority="750" maxValue="100" bezeled="NO" indeterminate="YES" controlSize="small" style="spinning" translatesAutoresizingMaskIntoConstraints="NO" id="M7w-PX-I7z">
+                        <rect key="frame" x="239" y="15" width="16" height="16"/>
+                    </progressIndicator>
+                </subviews>
+                <constraints>
+                    <constraint firstItem="hfq-FR-AXb" firstAttribute="centerY" secondItem="342-1U-qMX" secondAttribute="centerY" id="6fd-DQ-fcK"/>
+                    <constraint firstItem="kQ1-QF-2Ej" firstAttribute="top" secondItem="SWh-vh-BWv" secondAttribute="top" id="BXZ-OA-r0V"/>
+                    <constraint firstAttribute="trailing" secondItem="kQ1-QF-2Ej" secondAttribute="trailing" id="CUM-cP-LXH"/>
+                    <constraint firstItem="kQ1-QF-2Ej" firstAttribute="leading" secondItem="SWh-vh-BWv" secondAttribute="leading" id="GB7-aA-N1G"/>
+                    <constraint firstItem="hfq-FR-AXb" firstAttribute="leading" secondItem="M7w-PX-I7z" secondAttribute="trailing" constant="68" id="Gip-QY-RRB"/>
+                    <constraint firstAttribute="bottom" secondItem="kQ1-QF-2Ej" secondAttribute="bottom" constant="50" id="VCh-oK-LzI"/>
+                    <constraint firstItem="hfq-FR-AXb" firstAttribute="width" secondItem="342-1U-qMX" secondAttribute="width" id="VyP-fE-vuS"/>
+                    <constraint firstAttribute="bottom" secondItem="342-1U-qMX" secondAttribute="bottom" constant="12" id="a9O-cg-nkA"/>
+                    <constraint firstAttribute="trailing" secondItem="hfq-FR-AXb" secondAttribute="trailing" constant="28" id="krk-jk-lus"/>
+                    <constraint firstItem="342-1U-qMX" firstAttribute="leading" secondItem="SWh-vh-BWv" secondAttribute="leading" constant="14" id="lqc-V8-w9f"/>
+                    <constraint firstItem="hfq-FR-AXb" firstAttribute="height" secondItem="342-1U-qMX" secondAttribute="height" id="nqB-ua-OGe"/>
+                    <constraint firstItem="M7w-PX-I7z" firstAttribute="leading" secondItem="342-1U-qMX" secondAttribute="trailing" constant="76" id="qeU-qJ-Lk9"/>
+                    <constraint firstItem="M7w-PX-I7z" firstAttribute="centerY" secondItem="342-1U-qMX" secondAttribute="centerY" id="qwv-9s-mff"/>
+                </constraints>
+            </view>
+        </window>
+    </objects>
+</document>

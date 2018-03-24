@@ -28,15 +28,3 @@ import BartlebyKit
         // Else you can embedd the navigation logic
     }
 }
-
-
-
-/// This extension is used to access to the window controller
-/// when the steps controllers are embedded in the IdentityWindowController
-public extension StepViewController{
-
-    public var identityWindowController:IdentityWindowController?{
-        return self.documentProvider as? IdentityWindowController
-    }
-
-}

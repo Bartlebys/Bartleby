@@ -48,6 +48,9 @@
 		E5F620C01E6EA911007E60D5 /* IdentificationStates.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5F620BF1E6EA911007E60D5 /* IdentificationStates.swift */; };
 		E5F620C11E6EA911007E60D5 /* IdentificationStates.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5F620BF1E6EA911007E60D5 /* IdentificationStates.swift */; };
 		E5FAC5311DF95B1D00398C95 /* BartlebysUI.h in Headers */ = {isa = PBXBuildFile; fileRef = E5FAC5231DF95B1C00398C95 /* BartlebysUI.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		E5FF1E8A206649CE005EE4BC /* MultiStepWindowController.xib in Resources */ = {isa = PBXBuildFile; fileRef = E5FF1E88206649CE005EE4BC /* MultiStepWindowController.xib */; };
+		E5FF1E8C206649CE005EE4BC /* MultiStepWindowController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5FF1E89206649CE005EE4BC /* MultiStepWindowController.swift */; };
+		E5FF1E9020664DB4005EE4BC /* StepViewController+Identity.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5FF1E8F20664DB4005EE4BC /* StepViewController+Identity.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -95,6 +98,9 @@
 		E5FAC5201DF95B1C00398C95 /* BartlebysUI.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = BartlebysUI.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		E5FAC5231DF95B1C00398C95 /* BartlebysUI.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BartlebysUI.h; sourceTree = "<group>"; };
 		E5FAC5241DF95B1C00398C95 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		E5FF1E88206649CE005EE4BC /* MultiStepWindowController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MultiStepWindowController.xib; sourceTree = "<group>"; };
+		E5FF1E89206649CE005EE4BC /* MultiStepWindowController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MultiStepWindowController.swift; sourceTree = "<group>"; };
+		E5FF1E8F20664DB4005EE4BC /* StepViewController+Identity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "StepViewController+Identity.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -166,6 +172,7 @@
 			isa = PBXGroup;
 			children = (
 				E5C593B92066439F008CC4E7 /* StepNavigation.swift */,
+				E59AABA21E1A889B00BE4BF1 /* StepViewController.swift */,
 				E5C593BC206643F7008CC4E7 /* Step.swift */,
 			);
 			name = Protocols;
@@ -174,6 +181,8 @@
 		E5CC50A01E6EC6A6009FB014 /* Controllers */ = {
 			isa = PBXGroup;
 			children = (
+				E5FF1E89206649CE005EE4BC /* MultiStepWindowController.swift */,
+				E5FF1E88206649CE005EE4BC /* MultiStepWindowController.xib */,
 			);
 			name = Controllers;
 			sourceTree = "<group>";
@@ -190,7 +199,6 @@
 				E5ADEE981F3F42FD00371DA1 /* CreateAnIsolatedUser.swift */,
 				E5ADEE991F3F42FD00371DA1 /* CreateAnIsolatedUser.xib */,
 				E5F620BF1E6EA911007E60D5 /* IdentificationStates.swift */,
-				E59AABA21E1A889B00BE4BF1 /* StepViewController.swift */,
 				E55FF9821E155F5900EE3393 /* IdentityWindowController.swift */,
 				E55FF9831E155F5900EE3393 /* IdentityWindowController.xib */,
 				E5A2B2B21F45838200C29BCB /* ImportBKeyViewController.swift */,
@@ -205,6 +213,7 @@
 				E5DB87ED1E32615400E54244 /* SendMessageViewController.xib */,
 				E55FF9941E1564D600EE3393 /* SetupCollaborativeServerViewController.swift */,
 				E55FF9951E1564D600EE3393 /* SetupCollaborativeServerViewController.xib */,
+				E5FF1E8F20664DB4005EE4BC /* StepViewController+Identity.swift */,
 				E55FF9861E155FF300EE3393 /* UpdatePasswordViewController.swift */,
 				E55FF9871E155FF300EE3393 /* UpdatePasswordViewController.xib */,
 				E55FF98E1E15637F00EE3393 /* ValidatePasswordViewController.swift */,
@@ -378,6 +387,7 @@
 				E55FF9971E1564D600EE3393 /* SetupCollaborativeServerViewController.xib in Resources */,
 				E5ADEE9B1F3F42FD00371DA1 /* CreateAnIsolatedUser.xib in Resources */,
 				E55FF98D1E1562E000EE3393 /* PrepareUserCreationViewController.xib in Resources */,
+				E5FF1E8A206649CE005EE4BC /* MultiStepWindowController.xib in Resources */,
 				E55FF9911E15637F00EE3393 /* ValidatePasswordViewController.xib in Resources */,
 				E55FF99B1E15667800EE3393 /* ConfirmActivationViewController.xib in Resources */,
 			);
@@ -410,6 +420,7 @@
 				E5DB87EE1E32615400E54244 /* SendMessageViewController.swift in Sources */,
 				E5C593BD206643F7008CC4E7 /* Step.swift in Sources */,
 				E5C593BA2066439F008CC4E7 /* StepNavigation.swift in Sources */,
+				E5FF1E9020664DB4005EE4BC /* StepViewController+Identity.swift in Sources */,
 				E55FF9961E1564D600EE3393 /* SetupCollaborativeServerViewController.swift in Sources */,
 				E550E9361F3F05500027A1F1 /* ByPassActivationViewController.swift in Sources */,
 				E53F0B571DF95D80003301DD /* DropView.swift in Sources */,
@@ -418,6 +429,7 @@
 				E5ADEE9A1F3F42FD00371DA1 /* CreateAnIsolatedUser.swift in Sources */,
 				E55FF9901E15637F00EE3393 /* ValidatePasswordViewController.swift in Sources */,
 				E55FF9881E155FF300EE3393 /* UpdatePasswordViewController.swift in Sources */,
+				E5FF1E8C206649CE005EE4BC /* MultiStepWindowController.swift in Sources */,
 				E5A2B2B41F45838200C29BCB /* ImportBKeyViewController.swift in Sources */,
 				E5717E651E2F6B7C00850303 /* RecoverSugarViewController.swift in Sources */,
 			);

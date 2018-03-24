@@ -26,19 +26,10 @@ public protocol IdentifactionDelegate{
  3# Register as IdentificationDelegate
 
  */
-open class IdentityWindowController: NSWindowController,DocumentProvider,StepNavigation {
+open class IdentityWindowController: MultiStepWindowController {
+
 
     override open var windowNibName: NSNib.Name? { return NSNib.Name("IdentityWindowController") }
-
-    // MARK: DocumentDependent
-
-    /// Returns a BartlebyDocument
-    /// Generally used in  with `DocumentDependent` protocol
-    ///
-    /// - Returns: the document
-    public func getDocument() -> BartlebyDocument?{
-        return self.document as? BartlebyDocument
-    }
 
     // You can set up a void IdentityWindowController by setting `
     // `IdentityWindowController.usesDefaultComponents = false`
@@ -98,16 +89,6 @@ open class IdentityWindowController: NSWindowController,DocumentProvider,StepNav
 
     @IBOutlet open var importBkey: ImportBKeyViewController!
 
-    // MARK: - Outlets
-
-    @IBOutlet weak var tabView: NSTabView!
-
-    @IBOutlet weak var leftButton: NSButton!
-
-    @IBOutlet weak var rightButton: NSButton!
-
-    @IBOutlet weak var progressIndicator: NSProgressIndicator!
-
 
     // MARK: - Life cycle
 
@@ -163,67 +144,16 @@ open class IdentityWindowController: NSWindowController,DocumentProvider,StepNav
     }
 
 
-    /// Appends a view Controller to the stack
-    ///
-    /// - Parameters:
-    ///   - viewController: an StepViewController children
-    ///   - selectImmediately: display immediately the added view Controller
-    public func append(viewController:StepViewController,selectImmediately:Bool){
-        let viewControllerItem=NSTabViewItem(viewController:viewController)
-        viewController.documentProvider=self
-        viewController.stepDelegate=self
-        viewController.stepIndex=self.tabView.tabViewItems.count
-        self.tabView.addTabViewItem(viewControllerItem)
-        if selectImmediately{
-            self.currentStep=viewController.stepIndex
-        }
-    }
-
-
-    /// Removes the viewController
-    ///
-    /// - Parameter viewController: the view controller to remove
-    public func remove(viewController:StepViewController){
-        let nb=self.tabView.tabViewItems.count
-        for i in 0..<nb{
-            let item=self.tabView.tabViewItems[i]
-            if item.viewController==viewController{
-                self.tabView.removeTabViewItem(item)
-                break
-            }
-        }
-    }
-
-    fileprivate func _removeAllSuccessors(){
-        for item in self.tabView.tabViewItems.reversed(){
-            if self.tabView.tabViewItems.count > self.currentStep{
-                self.tabView.removeTabViewItem(item)
-            }else{
-                break
-            }
-        }
-    }
-
-    fileprivate func _currentStepIs(_ viewController:StepViewController)->Bool{
-        if self.tabView.tabViewItems.count > self.currentStep{
-            let item=self.tabView.tabViewItems[self.currentStep]
-            let matching=item.viewController?.className==viewController.className
-            return matching
-        }else{
-            return false
-        }
-    }
-
     // MARK: -
 
-    var currentStep:Int = -1{
+    override var currentStepIndex:Int{
         didSet{
             if IdentityWindowController.usesDefaultComponents{
                 // Standard method
-                if self.tabView.tabViewItems.count > currentStep && currentStep >= 0{
-                    self.tabView.selectTabViewItem(at: currentStep)
+                if self.tabView.tabViewItems.count > currentStepIndex && currentStepIndex >= 0{
+                    self.tabView.selectTabViewItem(at: currentStepIndex)
                 }else{
-                    if currentStep==3 && self.creationMode==true{
+                    if currentStepIndex==3 && self.creationMode==true{
                         if let document=self.getDocument(){
                             document.send(IdentificationStates.userHasBeenCreated)
                         }
@@ -232,15 +162,15 @@ open class IdentityWindowController: NSWindowController,DocumentProvider,StepNav
                     self.identificationDelegate?.userWantsToCloseIndentityController()
                 }
                 // Define a different
-                if self._currentStepIs(self.prepareUserCreation) && Bartleby.configuration.ALLOW_ISOLATED_MODE{
+                if self.currentStepIs(self.prepareUserCreation) && Bartleby.configuration.ALLOW_ISOLATED_MODE{
                     self.leftButton.title = NSLocalizedString("Skip", comment: "Skip button tittle")
                 }else{
                     self.leftButton.title = NSLocalizedString("Cancel", comment: "Cancel button tittle")
                 }
             }else{
                 // IdentityWindowController.usesDefaultComponents == false
-                if self.tabView.tabViewItems.count > currentStep && currentStep >= 0{
-                    self.tabView.selectTabViewItem(at: currentStep)
+                if self.tabView.tabViewItems.count > currentStepIndex && currentStepIndex >= 0{
+                    self.tabView.selectTabViewItem(at: currentStepIndex)
                 }else{
                     self.identificationDelegate?.userWantsToCloseIndentityController()
                 }
@@ -255,25 +185,18 @@ open class IdentityWindowController: NSWindowController,DocumentProvider,StepNav
         }
     }
 
-    var currentIdentityStep:Step?{
-        let vc =  self.tabView.selectedTabViewItem?.viewController
-        return vc as? Step
-    }
 
-    func nextStep(){
-        self.currentStep += 1
-    }
 
     // MARK: - Actions
 
-    @IBAction func leftAction(_ sender: Any) {
+    @IBAction override func leftAction(_ sender: Any) {
         if IdentityWindowController.usesDefaultComponents{
 
             if let document = self.getDocument(){
-                if (Bartleby.configuration.ALLOW_ISOLATED_MODE && self._currentStepIs(self.prepareUserCreation)){
+                if (Bartleby.configuration.ALLOW_ISOLATED_MODE && self.currentStepIs(self.prepareUserCreation)){
                     // This can occur on very early stage cancelation
                     // If Bartleby.configuration.ALLOW_ISOLATED_MODE
-                    self._removeAllSuccessors()
+                    self.removeAllSuccessors()
                     self.append(viewController: self.createAnIsolatedUser, selectImmediately: false)
                     self.append(viewController: self.revealPassword, selectImmediately: false)
                 }else if document.metadata.isolatedUserMode{
@@ -291,24 +214,23 @@ open class IdentityWindowController: NSWindowController,DocumentProvider,StepNav
         }
     }
 
-    @IBAction func rightAction(_ sender: Any) {
-        self.currentIdentityStep?.proceedToValidation()
-    }
+
 
 
     // MARK: - StepNavigation
 
-    public func didValidateStep(_ step:Int){
+    public override func didValidateStep(_ step:Int){
+        // Do not call super
         if IdentityWindowController.usesDefaultComponents{
             syncOnMain{
                 var proceedImmediately=true
 
-                if self._currentStepIs(self.importBkey) && Bartleby.configuration.AUTO_CREATE_A_USER_AUTOMATICALLY_IN_ISOLATED_MODE{
+                if self.currentStepIs(self.importBkey) && Bartleby.configuration.AUTO_CREATE_A_USER_AUTOMATICALLY_IN_ISOLATED_MODE{
                     self.nextStep()
                     self.enableActions()
-                }else if self.creationMode && !self._currentStepIs(self.createAnIsolatedUser) {
+                }else if self.creationMode && !self.currentStepIs(self.createAnIsolatedUser) {
                     // The SMS / second factor auth has been verified or by passed
-                    if self._currentStepIs(self.confirmActivation) || self._currentStepIs(self.byPassActivation){
+                    if self.currentStepIs(self.confirmActivation) || self.currentStepIs(self.byPassActivation){
                         // user is confirmed.
                         if let document=self.getDocument(){
                             proceedImmediately = false
@@ -355,28 +277,6 @@ open class IdentityWindowController: NSWindowController,DocumentProvider,StepNav
         }
     }
 
-    public func disableActions(){
-        self.enableProgressIndicator()
-        self.leftButton.isEnabled=false
-        self.rightButton.isEnabled=false
-    }
-
-    public func enableActions(){
-        self.disableProgressIndicator()
-        self.leftButton.isEnabled=true
-        self.rightButton.isEnabled=true
-    }
-
-    public func enableProgressIndicator(){
-        self.progressIndicator.isHidden=false
-        self.progressIndicator.startAnimation(self)
-    }
-
-    public func disableProgressIndicator(){
-        self.progressIndicator.isHidden=true
-        self.progressIndicator.stopAnimation(self)
-    }
-
 
     /// MARK: Activation
 
@@ -396,7 +296,7 @@ open class IdentityWindowController: NSWindowController,DocumentProvider,StepNav
     /// Called by ConfirmUpdatePasswordActivationCode
     public func passwordHasBeenChanged(){
         self.getDocument()?.send(IdentificationStates.passwordHasBeenUpdated)
-        self.currentStep=0
+        self.currentStepIndex=0
         let u=self.tabView.tabViewItem(at: 1)
         let c=self.tabView.tabViewItem(at: 2)
         self.tabView.removeTabViewItem(u)
