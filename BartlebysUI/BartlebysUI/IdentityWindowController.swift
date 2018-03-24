@@ -109,7 +109,7 @@ open class IdentityWindowController: MultiStepWindowController {
                 if document.metadata.currentUserUID == Default.NO_UID {
                     // It is a new document
                     self.creationMode = true
-                    if Bartleby.configuration.AUTO_CREATE_A_USER_AUTOMATICALLY_IN_ISOLATED_MODE{
+                    if Bartleby.configuration.ALLOW_ISOLATED_MODE && Bartleby.configuration.AUTO_CREATE_A_USER_AUTOMATICALLY_IN_ISOLATED_MODE{
                           self.append(viewController: self.createAnIsolatedUser, selectImmediately: true)
                     }else{
                         self.append(viewController: self.prepareUserCreation, selectImmediately: true)
@@ -129,7 +129,7 @@ open class IdentityWindowController: MultiStepWindowController {
                     if document.metadata.sugar == Default.NO_SUGAR && isolatedMode{
                         // we need to import a bkey
                         self.append(viewController: self.importBkey, selectImmediately: true)
-                        if Bartleby.configuration.AUTO_CREATE_A_USER_AUTOMATICALLY_IN_ISOLATED_MODE == false{
+                        if Bartleby.configuration.ALLOW_ISOLATED_MODE  && Bartleby.configuration.AUTO_CREATE_A_USER_AUTOMATICALLY_IN_ISOLATED_MODE == false{
                             // We gonna control the password
                             self.append(viewController: self.validatePassword, selectImmediately: false)
                         }
@@ -225,7 +225,9 @@ open class IdentityWindowController: MultiStepWindowController {
             syncOnMain{
                 var proceedImmediately=true
 
-                if self.currentStepIs(self.importBkey) && Bartleby.configuration.AUTO_CREATE_A_USER_AUTOMATICALLY_IN_ISOLATED_MODE{
+                if self.currentStepIs(self.importBkey) &&
+                    Bartleby.configuration.ALLOW_ISOLATED_MODE &&
+                    Bartleby.configuration.AUTO_CREATE_A_USER_AUTOMATICALLY_IN_ISOLATED_MODE{
                     self.nextStep()
                     self.enableActions()
                 }else if self.creationMode && !self.currentStepIs(self.createAnIsolatedUser) {
