@@ -26,6 +26,11 @@ open class MultiStepWindowController: NSWindowController,DocumentProvider,StepNa
         return self.document as? BartlebyDocument
     }
 
+
+    open var onCompletion:(_ reference:MultiStepWindowController)->() = { reference in
+        reference.close()
+    }
+
     // MARK: - Outlets
 
     @IBOutlet weak var tabView: NSTabView!
@@ -57,7 +62,8 @@ open class MultiStepWindowController: NSWindowController,DocumentProvider,StepNa
 
 
     public func didValidateStep(_ step: Int) {
-
+        self.nextStep()
+        self.enableActions()
     }
 
 
@@ -90,13 +96,24 @@ open class MultiStepWindowController: NSWindowController,DocumentProvider,StepNa
         return vc as? Step
     }
 
-    var currentStepIndex:Int = -1 {
-        didSet{
+    internal var _currentStepIndex:Int = -1
+
+    var currentStepIndex:Int  {
+        return self._currentStepIndex
+    }
+
+    func setCurrentStepIndex(_ index:Int){
+        self._currentStepIndex = index
+        if self.tabView.tabViewItems.count > index && index >= 0{
+            self.tabView.selectTabViewItem(at: index)
+        }else{
+            self.onCompletion(self)
         }
     }
-    
+
+
     func nextStep(){
-        self.currentStepIndex += 1
+        self.setCurrentStepIndex(self.currentStepIndex + 1)
     }
 
 
@@ -112,7 +129,7 @@ open class MultiStepWindowController: NSWindowController,DocumentProvider,StepNa
         viewController.stepIndex=self.tabView.tabViewItems.count
         self.tabView.addTabViewItem(viewControllerItem)
         if selectImmediately{
-            self.currentStepIndex=viewController.stepIndex
+            self.setCurrentStepIndex(viewController.stepIndex)
         }
     }
 

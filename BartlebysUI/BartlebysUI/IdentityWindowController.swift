@@ -110,7 +110,7 @@ open class IdentityWindowController: MultiStepWindowController {
                     // It is a new document
                     self.creationMode = true
                     if Bartleby.configuration.ALLOW_ISOLATED_MODE && Bartleby.configuration.AUTO_CREATE_A_USER_AUTOMATICALLY_IN_ISOLATED_MODE{
-                          self.append(viewController: self.createAnIsolatedUser, selectImmediately: true)
+                        self.append(viewController: self.createAnIsolatedUser, selectImmediately: true)
                     }else{
                         self.append(viewController: self.prepareUserCreation, selectImmediately: true)
                         self.append(viewController: self.setUpCollaborativeServer, selectImmediately: false)
@@ -139,43 +139,50 @@ open class IdentityWindowController: MultiStepWindowController {
                 }
             }
         }else{
-             //IdentityWindowController.usesDefaultComponents == false
+            //IdentityWindowController.usesDefaultComponents == false
         }
     }
 
 
     // MARK: -
 
-    override var currentStepIndex:Int{
-        didSet{
-            if IdentityWindowController.usesDefaultComponents{
-                // Standard method
-                if self.tabView.tabViewItems.count > currentStepIndex && currentStepIndex >= 0{
-                    self.tabView.selectTabViewItem(at: currentStepIndex)
-                }else{
-                    if currentStepIndex==3 && self.creationMode==true{
-                        if let document=self.getDocument(){
-                            document.send(IdentificationStates.userHasBeenCreated)
-                        }
-                    }
-                    self._userHasBeenControlled()
-                    self.identificationDelegate?.userWantsToCloseIndentityController()
-                }
-                // Define a different
-                if self.currentStepIs(self.prepareUserCreation) && Bartleby.configuration.ALLOW_ISOLATED_MODE{
-                    self.leftButton.title = NSLocalizedString("Skip", comment: "Skip button tittle")
-                }else{
-                    self.leftButton.title = NSLocalizedString("Cancel", comment: "Cancel button tittle")
-                }
+    override func setCurrentStepIndex(_ index: Int) {
+
+        // Do not call super.setCurrentStepIndex(index)
+        // To define a specialized behaviour.
+        // by default setCurrentStepIndex:
+        // - pushes the next view controller
+        // - call the completion handler that closes the window
+
+        self._currentStepIndex = index
+
+        if IdentityWindowController.usesDefaultComponents{
+            // Standard method
+            if self.tabView.tabViewItems.count > index && index >= 0{
+                self.tabView.selectTabViewItem(at: index)
             }else{
-                // IdentityWindowController.usesDefaultComponents == false
-                if self.tabView.tabViewItems.count > currentStepIndex && currentStepIndex >= 0{
-                    self.tabView.selectTabViewItem(at: currentStepIndex)
-                }else{
-                    self.identificationDelegate?.userWantsToCloseIndentityController()
+                if index == 3 && self.creationMode == true{
+                    if let document=self.getDocument(){
+                        document.send(IdentificationStates.userHasBeenCreated)
+                    }
                 }
+                self._userHasBeenControlled()
+                self.identificationDelegate?.userWantsToCloseIndentityController()
+            }
+            // Define a different
+            if self.currentStepIs(self.prepareUserCreation) && Bartleby.configuration.ALLOW_ISOLATED_MODE{
+                self.leftButton.title = NSLocalizedString("Skip", comment: "Skip button tittle")
+            }else{
+                self.leftButton.title = NSLocalizedString("Cancel", comment: "Cancel button tittle")
+            }
+        }else{
+            if self.tabView.tabViewItems.count > index && index >= 0{
+                self.tabView.selectTabViewItem(at: index)
+            }else{
+                self.identificationDelegate?.userWantsToCloseIndentityController()
             }
         }
+
     }
 
     fileprivate func _userHasBeenControlled(){
@@ -210,7 +217,7 @@ open class IdentityWindowController: MultiStepWindowController {
             }
         }else{
             //IdentityWindowController.usesDefaultComponents == false
-             self.identificationDelegate?.userWantsToCloseIndentityController()
+            self.identificationDelegate?.userWantsToCloseIndentityController()
         }
     }
 
@@ -273,7 +280,7 @@ open class IdentityWindowController: MultiStepWindowController {
                 }
             }
         }else{
-             //IdentityWindowController.usesDefaultComponents == false
+            //IdentityWindowController.usesDefaultComponents == false
             self.nextStep()
             self.enableActions()
         }
@@ -298,9 +305,9 @@ open class IdentityWindowController: MultiStepWindowController {
     /// Called by ConfirmUpdatePasswordActivationCode
     public func passwordHasBeenChanged(){
         self.getDocument()?.send(IdentificationStates.passwordHasBeenUpdated)
-        self.currentStepIndex=0
-        let u=self.tabView.tabViewItem(at: 1)
-        let c=self.tabView.tabViewItem(at: 2)
+        self.setCurrentStepIndex(0)
+        let u = self.tabView.tabViewItem(at: 1)
+        let c = self.tabView.tabViewItem(at: 2)
         self.tabView.removeTabViewItem(u)
         self.tabView.removeTabViewItem(c)
         self.enableActions()

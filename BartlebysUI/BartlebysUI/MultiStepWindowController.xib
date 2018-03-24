@@ -12,6 +12,7 @@
                 <outlet property="progressIndicator" destination="M7w-PX-I7z" id="oey-zX-1cq"/>
                 <outlet property="rightButton" destination="hfq-FR-AXb" id="22W-Q5-14E"/>
                 <outlet property="tabView" destination="kQ1-QF-2Ej" id="PZe-eP-s60"/>
+                <outlet property="window" destination="OFm-Yg-tPD" id="hZl-vu-t6E"/>
             </connections>
         </customObject>
         <customObject id="-1" userLabel="First Responder" customClass="FirstResponder"/>
@@ -40,6 +41,9 @@
                             <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                             <font key="font" metaFont="system"/>
                         </buttonCell>
+                        <connections>
+                            <action selector="leftAction:" target="-2" id="a5L-KI-yPj"/>
+                        </connections>
                     </button>
                     <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="hfq-FR-AXb">
                         <rect key="frame" x="317" y="5" width="161" height="32"/>
@@ -50,6 +54,9 @@
                             <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                             <font key="font" metaFont="system"/>
                         </buttonCell>
+                        <connections>
+                            <action selector="rightAction:" target="-2" id="xcZ-1E-7F7"/>
+                        </connections>
                     </button>
                     <progressIndicator wantsLayer="YES" horizontalHuggingPriority="750" verticalHuggingPriority="750" maxValue="100" bezeled="NO" indeterminate="YES" controlSize="small" style="spinning" translatesAutoresizingMaskIntoConstraints="NO" id="M7w-PX-I7z">
                         <rect key="frame" x="239" y="15" width="16" height="16"/>
@@ -71,6 +78,9 @@
                     <constraint firstItem="M7w-PX-I7z" firstAttribute="centerY" secondItem="342-1U-qMX" secondAttribute="centerY" id="qwv-9s-mff"/>
                 </constraints>
             </view>
+            <connections>
+                <outlet property="delegate" destination="-2" id="lUo-Fw-j0H"/>
+            </connections>
         </window>
     </objects>
 </document>
