@@ -79,16 +79,16 @@ import Foundation
     }
 
     // The document shared Serializer
-    open lazy var serializer:Serializer=JSONSerializer(document: self)
+    open lazy var serializer:Serializer = JSONSerializer(document: self)
 
     // This deserializer is replaced by your `AppDynamics` in app contexts.
-    open lazy var dynamics:Dynamics=BartlebysDynamics()
+    open var dynamics:Dynamics = BartlebysDynamics()
 
     // Keep a reference to the document file Wrapper
-    open lazy var documentFileWrapper:FileWrapper=FileWrapper(directoryWithFileWrappers:[:])
+    open var documentFileWrapper:FileWrapper = FileWrapper(directoryWithFileWrappers:[:])
 
     // The Document Metadata
-    @objc dynamic open lazy var metadata=DocumentMetadata()
+    @objc dynamic open var metadata = DocumentMetadata()
 
     // Bartleby's Synchronized File System for this document.
     public var bsfs:BSFS{
