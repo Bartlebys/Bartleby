@@ -22,7 +22,7 @@ import Foundation
 	// 
 	public var result_fields:[String]?
 	// the sort (MONGO DB)
-	public var sort:[String:Any]?
+	public var sort:[String:Int] = [String:Int]()
 
     required public init(){
         super.init()
@@ -55,7 +55,7 @@ import Foundation
                     self.result_fields=casted
                 }
             case "sort":
-                if let casted=value as? [String:Any]{
+                if let casted=value as? [String:Int]{
                     self.sort=casted
                 }
             default:
@@ -98,7 +98,7 @@ import Foundation
 			let values = try decoder.container(keyedBy: CodingKeys.self)
 			self.ids = try values.decodeIfPresent([String].self,forKey:.ids)
 			self.result_fields = try values.decodeIfPresent([String].self,forKey:.result_fields)
-			self.sort = try values.decodeIfPresent([String:Any].self,forKey:.sort)
+			self.sort = try values.decode([String:Int].self,forKey:.sort)
         }
     }
 
@@ -107,7 +107,7 @@ import Foundation
 		var container = encoder.container(keyedBy: CodingKeys.self)
 		try container.encodeIfPresent(self.ids,forKey:.ids)
 		try container.encodeIfPresent(self.result_fields,forKey:.result_fields)
-		try container.encodeIfPresent(self.sort,forKey:.sort)
+		try container.encode(self.sort,forKey:.sort)
     }
 
 }

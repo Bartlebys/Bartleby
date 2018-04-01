@@ -20,9 +20,9 @@ import Foundation
 	// 
 	public var result_fields:[String]?
 	// the sort (MONGO DB)
-	public var sort:[String:Any]?
+	public var sort:[String:Int] = [String:Int]()
 	// the query (MONGO DB)
-	public var query:[String:Any]?
+	public var query:[String:String] = [String:String]()
 
     required public init(){
         super.init()
@@ -51,11 +51,11 @@ import Foundation
                     self.result_fields=casted
                 }
             case "sort":
-                if let casted=value as? [String:Any]{
+                if let casted=value as? [String:Int]{
                     self.sort=casted
                 }
             case "query":
-                if let casted=value as? [String:Any]{
+                if let casted=value as? [String:String]{
                     self.query=casted
                 }
             default:
@@ -97,8 +97,8 @@ import Foundation
         try self.quietThrowingChanges {
 			let values = try decoder.container(keyedBy: CodingKeys.self)
 			self.result_fields = try values.decodeIfPresent([String].self,forKey:.result_fields)
-			self.sort = try values.decodeIfPresent([String:Any].self,forKey:.sort)
-			self.query = try values.decodeIfPresent([String:Any].self,forKey:.query)
+			self.sort = try values.decode([String:Int].self,forKey:.sort)
+			self.query = try values.decode([String:String].self,forKey:.query)
         }
     }
 
@@ -106,8 +106,8 @@ import Foundation
 		try super.encode(to:encoder)
 		var container = encoder.container(keyedBy: CodingKeys.self)
 		try container.encodeIfPresent(self.result_fields,forKey:.result_fields)
-		try container.encodeIfPresent(self.sort,forKey:.sort)
-		try container.encodeIfPresent(self.query,forKey:.query)
+		try container.encode(self.sort,forKey:.sort)
+		try container.encode(self.query,forKey:.query)
     }
 
 }

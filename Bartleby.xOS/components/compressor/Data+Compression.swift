@@ -108,14 +108,14 @@ extension Data {
         // Allocate memory for one object of type compression_stream
         let streamPointer = UnsafeMutablePointer<compression_stream>.allocate(capacity: 1)
         defer {
-            streamPointer.deallocate(capacity: 1)
+            streamPointer.deallocate()
         }
 
         // Stream and its buffer
         var stream = streamPointer.pointee
         let dstBufferPointer = UnsafeMutablePointer<UInt8>.allocate(capacity: bufferSize)
         defer {
-            dstBufferPointer.deallocate(capacity: bufferSize)
+            dstBufferPointer.deallocate()
         }
 
         // Create the compression_stream and throw an error if failed

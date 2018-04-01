@@ -29,7 +29,7 @@ public protocol CollectibleCollection: Collectible {
     func stage(_ item: Collectible)
 
     // The undo manager (for automation)
-    weak var undoManager: UndoManager? { get }
+    var undoManager: UndoManager? { get }
 
     // The dataspace UID
     var spaceUID: String { get }
