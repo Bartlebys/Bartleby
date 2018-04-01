@@ -250,7 +250,7 @@ open class ViewsRecycler {
     /// - Parameter groupName: the array of group names
     /// - Returns: the collection of actives views
     open func getAllActiveViews(groupedBy groupNames:[String])->[XView]{
-        return self._viewsReferers.flatMap({ (referer) -> XView? in
+        return self._viewsReferers.compactMap({ (referer) -> XView? in
             if  ( groupNames.contains(referer.groupName) && !referer.available){
                 return referer.view
             }else{
@@ -266,7 +266,7 @@ open class ViewsRecycler {
     /// - Parameter groupName: the array of group names
     /// - Returns: the collection of actives views
     open func getAllViews(groupedBy groupNames:[String])->[XView]{
-        return self._viewsReferers.flatMap({ (referer) -> XView? in
+        return self._viewsReferers.compactMap({ (referer) -> XView? in
             if  groupNames.contains(referer.groupName){
                 return referer.view
             }else{
@@ -280,7 +280,7 @@ open class ViewsRecycler {
     ///
     /// - Returns: the collection of views
     open func getAllViews()->[XView]{
-        return self._viewsReferers.flatMap({ (referer) -> XView? in
+        return self._viewsReferers.compactMap({ (referer) -> XView? in
             return referer.view
         })
     }
