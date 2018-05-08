@@ -8,13 +8,15 @@
 
 import Foundation
 
-extension HTTPContext {
-    public convenience init(code: Int!, caller: String!, relatedURL: URL?, httpStatusCode: Int, responseString: String = "") {
+extension HTTPContext{
+
+    public convenience init(code: Int!, caller: String!, relatedURL: URL?, httpStatusCode: Int, responseString:String="") {
         self.init()
-        self.code = code
-        self.caller = caller
-        self.relatedURL = relatedURL
-        self.httpStatusCode = httpStatusCode
-        self.responseString = responseString
+        self.code=code
+        self.caller=caller
+        self.relatedURL=relatedURL
+        self.httpStatusCode=httpStatusCode
+        self.responseString=responseString
     }
+
 }

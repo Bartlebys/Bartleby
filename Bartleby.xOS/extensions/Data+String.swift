@@ -7,19 +7,21 @@
 
 import Foundation
 
-enum DataEncodingError: Error {
+enum  DataEncodingError:Error {
     case stringEncodingHasFailed
 }
 
-public extension Data {
-    public func optionalString(using: String.Encoding) -> String? {
+public extension Data{
+
+    public func optionalString(using:String.Encoding)->String?{
         return String(data: self, encoding: using)
     }
 
-    public func string(using: String.Encoding) throws -> String {
-        if let s = String(data: self, encoding: using) {
+    public func string(using:String.Encoding)throws->String{
+        if let s = String(data: self, encoding: using){
             return s
         }
         throw DataEncodingError.stringEncodingHasFailed
     }
+
 }

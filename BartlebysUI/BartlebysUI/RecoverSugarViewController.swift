@@ -6,48 +6,49 @@
 //  Copyright © 2017 Chaosmos SAS. All rights reserved.
 //
 
-import BartlebyKit
 import Cocoa
+import BartlebyKit
 
 open class RecoverSugarViewController: StepViewController {
-    open override var nibName: NSNib.Name { return NSNib.Name("RecoverSugarViewController") }
 
-    @IBOutlet var consignsLabel: NSTextField!
+    override open var nibName : NSNib.Name { return NSNib.Name("RecoverSugarViewController") }
 
-    @IBOutlet var codeTextField: NSTextField!
+    @IBOutlet weak var consignsLabel: NSTextField!
 
-    @IBOutlet var messageTextField: NSTextField!
+    @IBOutlet weak var codeTextField: NSTextField!
 
-    open override func viewDidLoad() {
+    @IBOutlet weak var messageTextField: NSTextField!
+
+    override open func viewDidLoad() {
         super.viewDidLoad()
         // Do view setup here.
     }
 
-    open override func viewWillAppear() {
+    override open func viewWillAppear() {
         super.viewWillAppear()
-        if let document = self.documentProvider?.getDocument() {
+        if let document=self.documentProvider?.getDocument(){
             document.send(IdentificationStates.recoverSugar)
-            let phoneNumber = document.metadata.currentUserFullPhoneNumber
-            consignsLabel.stringValue = NSLocalizedString("We have sent an activation code to: ", comment: "We have sent a activation code to: ") + phoneNumber
-            codeTextField.stringValue = ""
+            let phoneNumber=document.metadata.currentUserFullPhoneNumber
+            self.consignsLabel.stringValue=NSLocalizedString("We have sent an activation code to: ", comment: "We have sent a activation code to: ")+phoneNumber
+            self.codeTextField.stringValue=""
             /// IMPORTANT
-            if !document.metadata.secondaryAuthFactorRequired {
-                if let locker: Locker = try? Bartleby.registredObjectByUID(document.metadata.lockerUID) {
-                    codeTextField.stringValue = locker.code
-                    proceedToValidation()
+            if !document.metadata.secondaryAuthFactorRequired{
+                if let locker:Locker = try? Bartleby.registredObjectByUID(document.metadata.lockerUID){
+                    self.codeTextField.stringValue = locker.code
+                    self.proceedToValidation()
                 }
             }
 
-        } else {
-            messageTextField.stringValue = NSLocalizedString("Identification not found", comment: "Identification not found")
+        }else{
+            self.messageTextField.stringValue=NSLocalizedString("Identification not found", comment: "Identification not found")
         }
     }
 
-    open override func proceedToValidation() {
+    override open func proceedToValidation() {
         super.proceedToValidation()
-        let code = PString.trim(codeTextField.stringValue)
+        let code = PString.trim(self.codeTextField.stringValue)
         if code.count > 3 {
-            if let document = self.documentProvider?.getDocument() {
+            if let document=self.documentProvider?.getDocument(){
                 ////
                 /// Verifies the Locker
                 /// In case of success the Locker is returned with its gems.
@@ -59,31 +60,35 @@ open class RecoverSugarViewController: StepViewController {
                 VerifyLocker.execute(document.metadata.lockerUID,
                                      inDocumentWithUID: document.UID,
                                      code: code,
-                                     accessGranted: { locker in
-                                         let sugarCandidate = locker.gems
-                                         document.metadata.sugar = sugarCandidate
-                                         document.currentUser.status = .actived
-                                         do {
-                                             /// When the locker is verifyed use the sugar to retrieve the Collections and blocks data
-                                             try document.reloadCollectionData()
-                                             try document.metadata.putSomeSugarInYourBowl() // Save the key
-                                             document.send(IdentificationStates.sugarHasBeenRecovered)
-                                             self.identityWindowController?.identificationIsValid = true
-                                             self.stepDelegate?.didValidateStep(self.stepIndex)
-                                         } catch {
-                                             self.messageTextField.stringValue = NSLocalizedString("Unable to decrypt the package", comment: "Unable to decrypt the package")
+                                     accessGranted: { (locker) in
+                                        let sugarCandidate=locker.gems
+                                        document.metadata.sugar=sugarCandidate
+                                        document.currentUser.status = .actived
+                                        do{
+                                            /// When the locker is verifyed use the sugar to retrieve the Collections and blocks data
+                                            try document.reloadCollectionData()
+                                            try document.metadata.putSomeSugarInYourBowl() // Save the key
+                                            document.send(IdentificationStates.sugarHasBeenRecovered)
+                                            self.identityWindowController?.identificationIsValid=true
+                                            self.stepDelegate?.didValidateStep( self.stepIndex)
+                                        }catch{
+                                            self.messageTextField.stringValue=NSLocalizedString("Unable to decrypt the package", comment: "Unable to decrypt the package")
                                              document.log("\(error)", file: #file, function: #function, line: #line, category: Default.LOG_DEFAULT, decorative: false)
-                                         }
-                                     }, accessRefused: { context in
-                                         if let r = context.responseString {
-                                             var message = r.replacingOccurrences(of: "[\"", with: "")
-                                             message = message.replacingOccurrences(of: "\"]", with: "")
-                                             self.messageTextField.stringValue = message
-                                         }
+                                        }
+                }, accessRefused: { (context) in
+                    if let r=context.responseString{
+                        var message=r.replacingOccurrences(of: "[\"", with: "")
+                        message=message.replacingOccurrences(of: "\"]", with: "")
+                        self.messageTextField.stringValue=message
+                    }
                 })
+
             }
-        } else {
-            messageTextField.stringValue = NSLocalizedString("Invalid Activation code", comment: "Invalid Activation code")
+        }else{
+            self.messageTextField.stringValue=NSLocalizedString("Invalid Activation code", comment: "Invalid Activation code")
         }
+
     }
+    
 }
+

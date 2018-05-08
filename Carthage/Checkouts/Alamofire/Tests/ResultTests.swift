@@ -335,9 +335,8 @@ class ResultTestCase: BaseTestCase {
         struct ResultError: Error {}
         struct OtherError: Error {
             let error: Error
-            init(error _: Error) throws { throw ThrownError() }
+            init(error: Error) throws { throw ThrownError() }
         }
-
         struct ThrownError: Error {}
         let result: Result<String> = .failure(ResultError())
 
@@ -389,11 +388,11 @@ class ResultTestCase: BaseTestCase {
         result.withError { string = "\(type(of: $0))" }
 
         // Then
-        #if swift(>=3.2)
-            XCTAssertEqual(string, "ResultError #1")
-        #else
-            XCTAssertEqual(string, "(ResultError #1)")
-        #endif
+    #if swift(>=3.2)
+        XCTAssertEqual(string, "ResultError #1")
+    #else
+        XCTAssertEqual(string, "(ResultError #1)")
+    #endif
     }
 
     func testWithErrorDoesNotExecuteWhenSuccess() {

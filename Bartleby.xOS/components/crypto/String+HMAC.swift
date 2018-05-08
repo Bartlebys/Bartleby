@@ -9,6 +9,7 @@
 import Foundation
 
 public extension String {
+
     var md5: String {
         return HMAC.digestString(self, algo: HMACAlgorithms.MD5)
     }
@@ -32,4 +33,5 @@ public extension String {
     var sha512: String {
         return HMAC.digestString(self, algo: HMACAlgorithms.SHA512)
     }
+
 }

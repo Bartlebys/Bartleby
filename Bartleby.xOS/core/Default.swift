@@ -8,9 +8,10 @@
 
 import Foundation
 
-// MARK: - BartlebyConfiguration
 
-public protocol BartlebyConfiguration {
+// MARK: - BartlebyConfiguration
+public protocol  BartlebyConfiguration {
+
     // The Default base key used to encrypt / decrypt (the metadata)
     // We use a different key for the data (saved during the activation process)
     static var KEY: String { get }
@@ -37,10 +38,10 @@ public protocol BartlebyConfiguration {
     // Use NoCrypto as CryptoDelegate
     static var DISABLE_DATA_CRYPTO: Bool { get }
 
-    // If set to true the created instances will be remove on maintenance Purge
+    //If set to true the created instances will be remove on maintenance Purge
     static var EPHEMERAL_MODE: Bool { get set }
 
-    // Should the app try to be online by default
+    //Should the app try to be online by default
     static var ONLINE_BY_DEFAULT: Bool { get set }
 
     // Consignation
@@ -72,7 +73,7 @@ public protocol BartlebyConfiguration {
     static var DEVELOPER_MODE: Bool { get }
 
     // If set to true identification will not require second auth factor.
-    static var SECOND_AUTHENTICATION_FACTOR_IS_DISABLED: Bool { get }
+    static var SECOND_AUTHENTICATION_FACTOR_IS_DISABLED:Bool { get }
 
     // Supports by default KeyChained password synchronization between multiple local accounts (false is more secured)
     static var SUPPORTS_PASSWORD_SYNDICATION_BY_DEFAULT: Bool { get }
@@ -90,16 +91,18 @@ public protocol BartlebyConfiguration {
     static var AUTO_CREATE_A_USER_AUTOMATICALLY_IN_ISOLATED_MODE: Bool { get }
 }
 
+
 // MARK: - BartlebyDefaultConfiguration
 
 public struct BartlebyDefaultConfiguration: BartlebyConfiguration {
+
     // The Default base key used to encrypt / decrypt (the metadata)
     // We use a different key for the data (saved during the activation process)
-    public static let KEY: String = "zHfAKvIb5DexA5hB18Jih92fKyv01niSMU38l8hPRddwduaJ_client"
+    public static let KEY: String="zHfAKvIb5DexA5hB18Jih92fKyv01niSMU38l8hPRddwduaJ_client"
 
     // This 32Bytes string is used to validate the tokens consistency
     // Should be the same server and client side and should not be disclosed
-    public static let SHARED_SALT: String = "rQauWtd9SFheA2koarKhMmHDvKjlB12qOIzVLmvAf7lOH6xdjQlSV9WG4TBYkYxK"
+    public static let SHARED_SALT: String="rQauWtd9SFheA2koarKhMmHDvKjlB12qOIzVLmvAf7lOH6xdjQlSV9WG4TBYkYxK"
 
     // To conform to crypto legal context
     public static var KEY_SIZE: KeySize = .s128bits
@@ -113,41 +116,41 @@ public struct BartlebyDefaultConfiguration: BartlebyConfiguration {
     }
 
     // Bartleby Bprint
-    public static var ENABLE_GLOG: Bool = true
+    public static var ENABLE_GLOG: Bool=true
 
     // Should Bprint entries be printed
-    public static var PRINT_GLOG_ENTRIES: Bool = true
+    public static var PRINT_GLOG_ENTRIES: Bool=true
 
     // Use NoCrypto as CryptoDelegate (should be false)
     public static var DISABLE_DATA_CRYPTO: Bool { return false }
 
-    // If set to true the created instances will be remove on maintenance Purge
-    public static var EPHEMERAL_MODE = true
+    //If set to true the created instances will be remove on maintenance Purge
+    public static var EPHEMERAL_MODE=true
 
-    // Should the app try to be online by default
-    public static var ONLINE_BY_DEFAULT = true
+    //Should the app try to be online by default
+    public static var ONLINE_BY_DEFAULT=true
 
     // Consignation
-    public static var API_CALL_TRACKING_IS_ENABLED: Bool = true
-    public static var BPRINT_API_TRACKED_CALLS: Bool = true
+    public static var API_CALL_TRACKING_IS_ENABLED: Bool=true
+    public static var BPRINT_API_TRACKED_CALLS: Bool=true
 
     // Should we save the password by Default ?
-    public static var SAVE_PASSWORD_BY_DEFAULT: Bool = false
+    public static var SAVE_PASSWORD_BY_DEFAULT: Bool=false
 
     // If set to JSON for example would be Indented
-    public static var HUMAN_FORMATTED_SERIALIZATON_FORMAT: Bool = false
+    public static var HUMAN_FORMATTED_SERIALIZATON_FORMAT: Bool=false
 
     // The min password size
-    public static var MIN_PASSWORD_SIZE: UInt = 6
+    public static var MIN_PASSWORD_SIZE: UInt=6
 
     // Supervision loop interval (1 second min )
     public static var LOOP_TIME_INTERVAL_IN_SECONDS: Double = 1
 
     // To guarantee the sequential Execution use 1
-    public static var MAX_OPERATIONS_BUNCH_SIZE: Int = 10
+    public static var MAX_OPERATIONS_BUNCH_SIZE: Int=10
 
     // E.g : Default.DEFAULT_PASSWORD_CHAR_CART
-    public static var PASSWORD_CHAR_CART: String = Default.DEFAULT_PASSWORD_CHAR_CART
+    public static var PASSWORD_CHAR_CART: String=Default.DEFAULT_PASSWORD_CHAR_CART
 
     // If set to true the keyed changes are stored in the ManagedModel - When opening the Inspector this default value is remplaced by true
     public static var CHANGES_ARE_INSPECTABLES_BY_DEFAULT: Bool = false
@@ -177,52 +180,55 @@ public struct BartlebyDefaultConfiguration: BartlebyConfiguration {
 // MARK: - Default values
 
 public struct Default {
+
     // To prevent Int over flow server side.
-    public static let MAX_INT: Int = Int(Int32.max)
-    public static let NO_INT_INDEX = MAX_INT
+    static public let MAX_INT:Int=Int(Int32.max)
+    static public let NO_INT_INDEX=MAX_INT
 
     // Log categories
-    public static let LOG_DEFAULT = "Default"
-    public static let LOG_WARNING = "Warning"
-    public static let LOG_FAULT = "FAULT"
-    public static let LOG_BSFS = "BSFS"
-    public static let LOG_SECURITY = "SECURITY"
-    public static let LOG_IDENTITY = "IDENTITY"
+    static public let LOG_DEFAULT="Default"
+    static public let LOG_WARNING="Warning"
+    static public let LOG_FAULT="FAULT"
+    static public let LOG_BSFS="BSFS"
+    static public let LOG_SECURITY="SECURITY"
+    static public let LOG_IDENTITY="IDENTITY"
 
-    // MARK: UserDefault key/values
 
-    public static let SERVER_KEY = "user_default_server"
-    public static let USER_EMAIL_KEY = "user_default_email"
-    public static let USER_PASSWORD_KEY = "user_default_password"
+    //MARK: UserDefault key/values
+    static public let SERVER_KEY="user_default_server"
+    static public let USER_EMAIL_KEY="user_default_email"
+    static public let USER_PASSWORD_KEY="user_default_password"
 
-    // Misc constants
+    //Misc constants
 
-    public static let UID_KEY = "_id"
-    public static let TYPE_NAME_KEY = "typeName"
+    static public let UID_KEY = "_id"
+    static public let TYPE_NAME_KEY = "typeName"
 
-    public static let VOID_STRING = ""
-    public static let NO_STRING_ERROR: String = "NO_STRING_ERROR"
-    public static let NOT_OBSERVABLE: String = "NOT_OBSERVABLE"
-    public static let NO_UID: String = "NO_UID"
-    public static let NO_NAME: String = "NO_NAME"
-    public static let NO_COMMENT: String = "NO_COMMENT"
-    public static let NO_MESSAGE: String = "NO_MESSAGE"
-    public static let NO_KEY: String = "NO_KEY"
-    public static let NO_PATH: String = "NO_PATH"
-    public static let NO_GEM: String = "NO_GEM"
-    public static let NO_GROUP: String = "NO_GROUP"
-    public static let NO_METHOD: String = "NO_METHOD"
-    public static let NO_DIGEST: String = "NO_DIGEST"
-    public static let NO_PASSWORD: String = "NO_PASSWORD"
-    public static let NO_SUGAR: String = "NO_SUGAR"
-    public static let STRING_ENCODING = String.Encoding.utf8
+    static public let VOID_STRING=""
+    static public let NO_STRING_ERROR: String="NO_STRING_ERROR"
+    static public let NOT_OBSERVABLE: String="NOT_OBSERVABLE"
+    static public let NO_UID: String="NO_UID"
+    static public let NO_NAME: String="NO_NAME"
+    static public let NO_COMMENT: String="NO_COMMENT"
+    static public let NO_MESSAGE: String="NO_MESSAGE"
+    static public let NO_KEY: String="NO_KEY"
+    static public let NO_PATH: String="NO_PATH"
+    static public let NO_GEM: String="NO_GEM"
+    static public let NO_GROUP: String="NO_GROUP"
+    static public let NO_METHOD: String="NO_METHOD"
+    static public let NO_DIGEST: String="NO_DIGEST"
+    static public let NO_PASSWORD: String="NO_PASSWORD"
+    static public let NO_SUGAR: String="NO_SUGAR"
+    static public let STRING_ENCODING = String.Encoding.utf8
 
-    public static let CATEGORY_DOWNLOADS = "downloads" // Used on Downloads
-    public static let CATEGORY_UPLOADS = "uploads" // Used on Uploads
-    public static let CATEGORY_ASSEMBLIES = "assemblies" // Used when mounting a box
-
+    static public let CATEGORY_DOWNLOADS = "downloads" // Used on Downloads
+    static public let CATEGORY_UPLOADS = "uploads" // Used on Uploads
+    static public let CATEGORY_ASSEMBLIES = "assemblies" // Used when mounting a box
+    
     // A bunch of char in wich to pick to compose a random password
-    public static let DEFAULT_PASSWORD_CHAR_CART = "123456789ABCDEFGHJKMNPQRSTUVWXYZ"
+    static public let DEFAULT_PASSWORD_CHAR_CART="123456789ABCDEFGHJKMNPQRSTUVWXYZ"
 
-    public static let DESERIALIZATION_HAS_FAILED = NSLocalizedString("Deserialization has failed", comment: "Deserialization has failed")
+
+    static public let DESERIALIZATION_HAS_FAILED = NSLocalizedString("Deserialization has failed", comment: "Deserialization has failed")
+
 }

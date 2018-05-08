@@ -6,35 +6,37 @@
 //  Copyright © 2016 Chaosmos SAS. All rights reserved.
 //
 
-import BartlebyKit
 import Cocoa
+import BartlebyKit
 
-open class UpdatePasswordViewController: StepViewController {
-    open override var nibName: NSNib.Name { return NSNib.Name("UpdatePasswordViewController") }
+open class UpdatePasswordViewController: StepViewController{
 
-    @IBOutlet var passwordTextField: NSTextField!
+    override open var nibName : NSNib.Name { return NSNib.Name("UpdatePasswordViewController") }
 
-    @IBOutlet var refreshButton: NSButton!
+    @IBOutlet weak var passwordTextField: NSTextField!
 
-    @IBOutlet var messageTextField: NSTextField!
-    open override func viewDidLoad() {
+    @IBOutlet weak var refreshButton: NSButton!
+
+    @IBOutlet weak var messageTextField: NSTextField!
+    override open func viewDidLoad() {
         super.viewDidLoad()
         // Do view setup here.
     }
 
-    open override func viewWillAppear() {
+    override open func viewWillAppear() {
         super.viewWillAppear()
-        refresh(self)
+        self.refresh(self)
     }
 
-    @IBAction func refresh(_: Any) {
-        passwordTextField.stringValue = Bartleby.randomStringWithLength(8, signs: Bartleby.configuration.PASSWORD_CHAR_CART)
+    @IBAction func refresh(_ sender: Any) {
+        self.passwordTextField.stringValue=Bartleby.randomStringWithLength(8,signs:Bartleby.configuration.PASSWORD_CHAR_CART)
     }
 
-    open override func proceedToValidation() {
+    override open func proceedToValidation(){
         super.proceedToValidation()
-        documentProvider?.getDocument()?.send(IdentificationStates.updatePassword)
-        identityWindowController?.passwordCandidate = passwordTextField.stringValue
-        stepDelegate?.didValidateStep(stepIndex)
+        self.documentProvider?.getDocument()?.send(IdentificationStates.updatePassword)
+        self.identityWindowController?.passwordCandidate=self.passwordTextField.stringValue
+        self.stepDelegate?.didValidateStep( self.stepIndex)
     }
+
 }

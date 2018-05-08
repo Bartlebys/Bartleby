@@ -8,9 +8,11 @@
 
 import Foundation
 
-public protocol Exposed {
+
+public protocol Exposed{
+
     /// Return all the exposed instance variables names. Exposed means public and modifiable.
-    var exposedKeys: [String] { get }
+    var exposedKeys:[String] { get }
 
     /// Set the value of the given key
     ///
@@ -18,7 +20,8 @@ public protocol Exposed {
     /// - parameter key:   the key
     ///
     /// - throws: throws Exception when the key is not exposed
-    func setExposedValue(_ value: Any?, forKey key: String) throws
+    func setExposedValue(_ value:Any?, forKey key: String) throws
+
 
     /// Returns the value of an exposed key.
     ///
@@ -27,5 +30,6 @@ public protocol Exposed {
     /// - throws: throws Exception when the key is not exposed
     ///
     /// - returns: returns the value
-    func getExposedValueForKey(_ key: String) throws -> Any?
+    func getExposedValueForKey(_ key:String) throws -> Any?
+    
 }

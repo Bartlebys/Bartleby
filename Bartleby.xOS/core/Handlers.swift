@@ -7,11 +7,12 @@
 
 import Foundation
 
+
 /*
-
- # Notes on Handlers
-
- ## We expose 6 Handlers
+ 
+# Notes on Handlers
+ 
+## We expose 6 Handlers
 
  - CompletionHandler : a closure with a completion state
  - ProgressionHandler : a closure with a progression state
@@ -26,66 +27,69 @@ import Foundation
  So to monitor progression from an XPC : **we use Bidirectionnal XPC + Monitoring protocol for the progress**
 
  ## You can create a code Snippets for  :
-
- ```
- let onCompletion:CompletionHandler = { completion in
- }
- ```
- ```
- let onProgression:ProgressHandler = { progression in
- }
- ```
+ 
+     ```
+         let onCompletion:CompletionHandler = { completion in
+         }
+    ```
+    ```
+        let onProgression:ProgressHandler = { progression in
+        }
+    ```
  ## Chaining Handlers:
 
- You can chain an handler but keep in mind it can produce retain cycle
+    You can chain an handler but keep in mind it can produce retain cycle
  ```
- let onCompletion:CompletionHandler = { completion in
- previousHandler(completion) //<--- you can chain a previous handler
- }
+     let onCompletion:CompletionHandler = { completion in
+        previousHandler(completion) //<--- you can chain a previous handler
+     }  
  ```
-
+ 
  ## You can instanciate a ComposedHandler :
 
- ```
- let handler: ComposedHandler = {(progressionState, completionState) -> Void in
- if let progression=progressionState {
- }
- if let completion=completionState {
- }
- }
- ```
- */
+     ```
+         let handler: ComposedHandler = {(progressionState, completionState) -> Void in
+            if let progression=progressionState {
+            }
+            if let completion=completionState {
+            }
+         }
+     ```
+*/
+
+
 
 // MARK: -
 
 /*
  ProgressionHandler
 
- ```
- let onProgression:ProgressionHandler = { progression in
- previousHandler(progression)// Invoke
- ...
- }
- ```
- */
-public typealias ProgressionHandler = (_ progressionState: Progression) -> Void
+```
+let onProgression:ProgressionHandler = { progression in
+    previousHandler(progression)// Invoke
+    ...
+}
+```
+*/
+public typealias ProgressionHandler = (_ progressionState: Progression) -> ()
 
 /*
  CompletionHandler
  You can chain handlers:
-
+ 
  ```
  let onCompletion:CompletionHandler = { completion in
- previousHandler(completion)// Invoke
- ...
+    previousHandler(completion)// Invoke
+    ...
  }
  ```
  */
-public typealias CompletionHandler = (_ conpletionState: Completion) -> Void
+public typealias CompletionHandler = (_ conpletionState: Completion) -> ()
 
-public var VoidCompletionHandler: CompletionHandler = { _ in }
+public var VoidCompletionHandler:CompletionHandler = { completion in }
 
-public var VoidProgressionHandler: ProgressionHandler = { _ in }
+public var VoidProgressionHandler:ProgressionHandler = { progression in }
+
 
 /**
  A composed Closure with a progress and acompletion section
@@ -94,15 +98,18 @@ public var VoidProgressionHandler: ProgressionHandler = { _ in }
  You can instanciate a ComposedHandler :
  ```
  let handler: ComposedHandler = {(progressionState, completionState) -> Void in
- if let progression=progressionState {
- }
- if let completion=completionState {
- }
+    if let progression=progressionState {
+    }
+    if let completion=completionState {
+    }
  }
  ```
  Or you can create one from a Handlers instance by calling `composedHandler()`
  */
-public typealias ComposedHandler = (_ progressionState: Progression?, _ completionState: Completion?) -> Void
+public typealias ComposedHandler = (_ progressionState: Progression?, _ completionState: Completion?)->()
+
+
+
 
 // MARK: - Handlers
 
@@ -115,40 +122,48 @@ open class Handlers: NSObject {
     // MARK: Progression handlers
 
     open var progressionHandlersCount: Int {
-        return _progressionHandlers.count
+        get {
+            return self._progressionHandlers.count
+        }
     }
+
 
     fileprivate var _progressionHandlers: [ProgressionHandler] = []
 
     open func appendProgressHandler(_ ProgressionHandler: @escaping ProgressionHandler) {
-        _progressionHandlers.append(ProgressionHandler)
+        self._progressionHandlers.append(ProgressionHandler)
     }
 
     // Call all the progression handlers
     open func notify(_ progressionState: Progression) {
-        for handler in _progressionHandlers {
+        for handler in self._progressionHandlers {
             handler(progressionState)
         }
     }
 
     // MARK: Completion handlers
 
+
     open var completionHandlersCount: Int {
-        return _completionHandlers.count
+        get {
+            return self._completionHandlers.count
+        }
     }
 
     fileprivate var _completionHandlers: [CompletionHandler] = []
 
     open func appendCompletionHandler(_ handler: @escaping CompletionHandler) {
-        _completionHandlers.append(handler)
+        self._completionHandlers.append(handler)
     }
 
     // Call all the completion handlers
     open func on(_ completionState: Completion) {
-        for handler in _completionHandlers {
+        for handler in self._completionHandlers {
             handler(completionState)
         }
     }
+
+
 
     /**
      A factory to declare an explicit Handlers with no completion.
@@ -156,8 +171,9 @@ open class Handlers: NSObject {
      - returns: an Handlers instance
      */
     open static func withoutCompletion() -> Handlers {
-        return Handlers(completionHandler: nil)
+        return Handlers.init(completionHandler: nil)
     }
+
 
     /**
      Appends the chained handlers to the current Handlers
@@ -166,9 +182,12 @@ open class Handlers: NSObject {
      - parameter chainedHandlers: the handlers to be chained.
      */
     open func appendChainedHandlers(_ chainedHandlers: Handlers) {
-        appendCompletionHandler(chainedHandlers.on)
-        appendProgressHandler(chainedHandlers.notify)
+        self.appendCompletionHandler(chainedHandlers.on)
+        self.appendProgressHandler(chainedHandlers.notify)
+
+
     }
+
 
     /**
      Designated initializer
@@ -179,8 +198,8 @@ open class Handlers: NSObject {
      - returns: the instance.
      */
     public required init(completionHandler: CompletionHandler?) {
-        if let completionHandler = completionHandler {
-            _completionHandlers.append(completionHandler)
+        if let completionHandler=completionHandler {
+            self._completionHandlers.append(completionHandler)
         }
     }
 
@@ -193,9 +212,9 @@ open class Handlers: NSObject {
      - returns: the instance
      */
     public convenience init(completionHandler: CompletionHandler?, progressionHandler: ProgressionHandler?) {
-        self.init(completionHandler: completionHandler)
-        if let progressionHandler = progressionHandler {
-            _progressionHandlers.append(progressionHandler)
+        self.init(completionHandler:completionHandler)
+        if let progressionHandler=progressionHandler {
+            self._progressionHandlers.append(progressionHandler)
         }
     }
 
@@ -206,15 +225,16 @@ open class Handlers: NSObject {
      - returns: an instance of Handlers
      */
     open static func handlersFrom(_ composedHandler: @escaping ComposedHandler) -> Handlers {
+
         // Those handlers produce an adaptation
         // From the unique handler form
         // progress and completion handlers.
 
-        let handlers = Handlers { (onCompletion) -> Void in
+        let handlers=Handlers {(onCompletion) -> () in
             composedHandler(nil, onCompletion)
         }
 
-        handlers.appendProgressHandler { (onProgression) -> Void in
+        handlers.appendProgressHandler { (onProgression) -> () in
             composedHandler(onProgression, nil)
         }
         return handlers
@@ -229,12 +249,12 @@ open class Handlers: NSObject {
      - returns: the composed Handler
      */
     open func composedHandler() -> ComposedHandler {
-        let handler: ComposedHandler = { (progressionState, completionState) -> Void in
-            if let progressionState = progressionState {
-                self.notify(progressionState)
+        let handler: ComposedHandler = {(progressionState, completionState) -> Void in
+            if let progressionState=progressionState {
+                 self.notify(progressionState)
             }
-            if let completion = completionState {
-                self.on(completion)
+            if let completion=completionState {
+                 self.on(completion)
             }
         }
         return handler

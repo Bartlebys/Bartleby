@@ -6,19 +6,21 @@
 //
 //
 
-import BartlebyKit
 import Cocoa
+
+import BartlebyKit
 
 protocol PasterDelegate {
     func pasted()
 }
 
 class DecryptView: NSView {
-    var delegate: PasterDelegate?
+
+    var delegate:PasterDelegate?
 
     // MARK: - First Responder
 
-    override var acceptsFirstResponder: Bool { return true }
+    override var acceptsFirstResponder: Bool { return true  }
 
     override func becomeFirstResponder() -> Bool {
         return true
@@ -32,15 +34,17 @@ class DecryptView: NSView {
         return bounds
     }
 
+
     // MARK: - Pasteboard
 
-    @IBAction func cut(_: Any?) {
+    @IBAction func cut(_ sender: Any?) {
     }
 
-    @IBAction func copy(_: Any?) {
+    @IBAction func copy(_ sender: Any?) {
     }
 
-    @IBAction func paste(_: Any?) {
+    @IBAction func paste(_ sender:Any?){
         delegate?.pasted()
     }
+
 }

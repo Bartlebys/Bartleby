@@ -9,105 +9,109 @@
 //
 import Foundation
 #if !USE_EMBEDDED_MODULES
-#endif
+	#endif
 
 // MARK: Bartleby's Synchronized File System: a block references bytes
+@objc open class Block : ManagedModel{
 
-@objc open class Block: ManagedModel {
     // Universal type support
-    open override class func typeName() -> String {
+    override open class func typeName() -> String {
         return "Block"
     }
 
-    // The SHA1 digest of the block
-    @objc open dynamic var digest: String = Default.NO_DIGEST {
-        didSet {
-            if !self.wantsQuietChanges && digest != oldValue {
-                self.provisionChanges(forKey: "digest", oldValue: oldValue, newValue: digest)
-            }
-        }
-    }
+	//The SHA1 digest of the block
+	@objc dynamic open var digest:String = Default.NO_DIGEST {
+	    didSet { 
+	       if !self.wantsQuietChanges && digest != oldValue {
+	            self.provisionChanges(forKey: "digest",oldValue: oldValue,newValue: digest) 
+	       } 
+	    }
+	}
 
-    // The rank of the Block in the node
-    @objc open dynamic var rank: Int = 0
+	//The rank of the Block in the node
+	@objc dynamic open var rank:Int = 0
 
-    // The starting bytes of the block in the Node (== the position of the block in the file)
-    @objc open dynamic var startsAt: Int = 0
+	//The starting bytes of the block in the Node (== the position of the block in the file)
+	@objc dynamic open var startsAt:Int = 0
 
-    // The size of the Block
-    @objc open dynamic var size: Int = Default.MAX_INT
+	//The size of the Block
+	@objc dynamic open var size:Int = Default.MAX_INT
 
-    // The priority level of the block (higher priority produces the block to be synchronized before the lower priority blocks)
-    @objc open dynamic var priority: Int = 0
+	//The priority level of the block (higher priority produces the block to be synchronized before the lower priority blocks)
+	@objc dynamic open var priority:Int = 0
 
-    // If set to true the blocks should be compressed (using LZ4)
-    @objc open dynamic var compressed: Bool = true
+	//If set to true the blocks should be compressed (using LZ4)
+	@objc dynamic open var compressed:Bool = true
 
-    // If set to true the blocks will be crypted (using AES256)
-    @objc open dynamic var crypted: Bool = true
+	//If set to true the blocks will be crypted (using AES256)
+	@objc dynamic open var crypted:Bool = true
 
-    // The upload Progression State (not serializable, not supervisable directly by : self.addChangesSuperviser use self.uploadProgression.addChangesSuperviser)
-    @objc open dynamic var uploadProgression: Progression = Progression()
+	//The upload Progression State (not serializable, not supervisable directly by : self.addChangesSuperviser use self.uploadProgression.addChangesSuperviser)
+	@objc dynamic open var uploadProgression:Progression = Progression()
 
-    // The Download Progression State (not serializable, not supervisable directly by : self.addChangesSuperviser use self.downloadProgression.addChangesSuperviser)
-    @objc open dynamic var downloadProgression: Progression = Progression()
+	//The Download Progression State (not serializable, not supervisable directly by : self.addChangesSuperviser use self.downloadProgression.addChangesSuperviser)
+	@objc dynamic open var downloadProgression:Progression = Progression()
 
-    // Turned to true if there is an upload in progress (used for progress consolidation optimization)
-    @objc open dynamic var uploadInProgress: Bool = false
+	//Turned to true if there is an upload in progress (used for progress consolidation optimization)
+	@objc dynamic open var uploadInProgress:Bool = false
 
-    // Turned to true if there is an upload in progress (used for progress consolidation optimization)
-    @objc open dynamic var downloadInProgress: Bool = false
+	//Turned to true if there is an upload in progress (used for progress consolidation optimization)
+	@objc dynamic open var downloadInProgress:Bool = false
+
 
     // MARK: - Codable
 
-    public enum BlockCodingKeys: String, CodingKey {
-        case digest
-        case rank
-        case startsAt
-        case size
-        case priority
-        case compressed
-        case crypted
-        case uploadProgression
-        case downloadProgression
-        case uploadInProgress
-        case downloadInProgress
+
+    public enum BlockCodingKeys: String,CodingKey{
+		case digest
+		case rank
+		case startsAt
+		case size
+		case priority
+		case compressed
+		case crypted
+		case uploadProgression
+		case downloadProgression
+		case uploadInProgress
+		case downloadInProgress
     }
 
-    public required init(from decoder: Decoder) throws {
-        try super.init(from: decoder)
-        try quietThrowingChanges {
-            let values = try decoder.container(keyedBy: BlockCodingKeys.self)
-            self.digest = try values.decode(String.self, forKey: .digest)
-            self.rank = try values.decode(Int.self, forKey: .rank)
-            self.startsAt = try values.decode(Int.self, forKey: .startsAt)
-            self.size = try values.decode(Int.self, forKey: .size)
-            self.priority = try values.decode(Int.self, forKey: .priority)
-            self.compressed = try values.decode(Bool.self, forKey: .compressed)
-            self.crypted = try values.decode(Bool.self, forKey: .crypted)
+    required public init(from decoder: Decoder) throws{
+		try super.init(from: decoder)
+        try self.quietThrowingChanges {
+			let values = try decoder.container(keyedBy: BlockCodingKeys.self)
+			self.digest = try values.decode(String.self,forKey:.digest)
+			self.rank = try values.decode(Int.self,forKey:.rank)
+			self.startsAt = try values.decode(Int.self,forKey:.startsAt)
+			self.size = try values.decode(Int.self,forKey:.size)
+			self.priority = try values.decode(Int.self,forKey:.priority)
+			self.compressed = try values.decode(Bool.self,forKey:.compressed)
+			self.crypted = try values.decode(Bool.self,forKey:.crypted)
         }
     }
 
-    open override func encode(to encoder: Encoder) throws {
-        try super.encode(to: encoder)
-        var container = encoder.container(keyedBy: BlockCodingKeys.self)
-        try container.encode(digest, forKey: .digest)
-        try container.encode(rank, forKey: .rank)
-        try container.encode(startsAt, forKey: .startsAt)
-        try container.encode(size, forKey: .size)
-        try container.encode(priority, forKey: .priority)
-        try container.encode(compressed, forKey: .compressed)
-        try container.encode(crypted, forKey: .crypted)
+    override open func encode(to encoder: Encoder) throws {
+		try super.encode(to:encoder)
+		var container = encoder.container(keyedBy: BlockCodingKeys.self)
+		try container.encode(self.digest,forKey:.digest)
+		try container.encode(self.rank,forKey:.rank)
+		try container.encode(self.startsAt,forKey:.startsAt)
+		try container.encode(self.size,forKey:.size)
+		try container.encode(self.priority,forKey:.priority)
+		try container.encode(self.compressed,forKey:.compressed)
+		try container.encode(self.crypted,forKey:.crypted)
     }
+
 
     // MARK: - Exposed (Bartleby's KVC like generative implementation)
 
     /// Return all the exposed instance variables keys. (Exposed == public and modifiable).
-    open override var exposedKeys: [String] {
-        var exposed = super.exposedKeys
-        exposed.append(contentsOf: ["digest", "rank", "startsAt", "size", "priority", "compressed", "crypted", "uploadProgression", "downloadProgression", "uploadInProgress", "downloadInProgress"])
+    override  open var exposedKeys:[String] {
+        var exposed=super.exposedKeys
+        exposed.append(contentsOf:["digest","rank","startsAt","size","priority","compressed","crypted","uploadProgression","downloadProgression","uploadInProgress","downloadInProgress"])
         return exposed
     }
+
 
     /// Set the value of the given key
     ///
@@ -115,56 +119,57 @@ import Foundation
     /// - parameter key:   the key
     ///
     /// - throws: throws an Exception when the key is not exposed
-    open override func setExposedValue(_ value: Any?, forKey key: String) throws {
+    override  open func setExposedValue(_ value:Any?, forKey key: String) throws {
         switch key {
-        case "digest":
-            if let casted = value as? String {
-                digest = casted
-            }
-        case "rank":
-            if let casted = value as? Int {
-                rank = casted
-            }
-        case "startsAt":
-            if let casted = value as? Int {
-                startsAt = casted
-            }
-        case "size":
-            if let casted = value as? Int {
-                size = casted
-            }
-        case "priority":
-            if let casted = value as? Int {
-                priority = casted
-            }
-        case "compressed":
-            if let casted = value as? Bool {
-                compressed = casted
-            }
-        case "crypted":
-            if let casted = value as? Bool {
-                crypted = casted
-            }
-        case "uploadProgression":
-            if let casted = value as? Progression {
-                uploadProgression = casted
-            }
-        case "downloadProgression":
-            if let casted = value as? Progression {
-                downloadProgression = casted
-            }
-        case "uploadInProgress":
-            if let casted = value as? Bool {
-                uploadInProgress = casted
-            }
-        case "downloadInProgress":
-            if let casted = value as? Bool {
-                downloadInProgress = casted
-            }
-        default:
-            return try super.setExposedValue(value, forKey: key)
+            case "digest":
+                if let casted=value as? String{
+                    self.digest=casted
+                }
+            case "rank":
+                if let casted=value as? Int{
+                    self.rank=casted
+                }
+            case "startsAt":
+                if let casted=value as? Int{
+                    self.startsAt=casted
+                }
+            case "size":
+                if let casted=value as? Int{
+                    self.size=casted
+                }
+            case "priority":
+                if let casted=value as? Int{
+                    self.priority=casted
+                }
+            case "compressed":
+                if let casted=value as? Bool{
+                    self.compressed=casted
+                }
+            case "crypted":
+                if let casted=value as? Bool{
+                    self.crypted=casted
+                }
+            case "uploadProgression":
+                if let casted=value as? Progression{
+                    self.uploadProgression=casted
+                }
+            case "downloadProgression":
+                if let casted=value as? Progression{
+                    self.downloadProgression=casted
+                }
+            case "uploadInProgress":
+                if let casted=value as? Bool{
+                    self.uploadInProgress=casted
+                }
+            case "downloadInProgress":
+                if let casted=value as? Bool{
+                    self.downloadInProgress=casted
+                }
+            default:
+                return try super.setExposedValue(value, forKey: key)
         }
     }
+
 
     /// Returns the value of an exposed key.
     ///
@@ -173,48 +178,45 @@ import Foundation
     /// - throws: throws Exception when the key is not exposed
     ///
     /// - returns: returns the value
-    open override func getExposedValueForKey(_ key: String) throws -> Any? {
+    override  open func getExposedValueForKey(_ key:String) throws -> Any?{
         switch key {
-        case "digest":
-            return digest
-        case "rank":
-            return rank
-        case "startsAt":
-            return startsAt
-        case "size":
-            return size
-        case "priority":
-            return priority
-        case "compressed":
-            return compressed
-        case "crypted":
-            return crypted
-        case "uploadProgression":
-            return uploadProgression
-        case "downloadProgression":
-            return downloadProgression
-        case "uploadInProgress":
-            return uploadInProgress
-        case "downloadInProgress":
-            return downloadInProgress
-        default:
-            return try super.getExposedValueForKey(key)
+            case "digest":
+               return self.digest
+            case "rank":
+               return self.rank
+            case "startsAt":
+               return self.startsAt
+            case "size":
+               return self.size
+            case "priority":
+               return self.priority
+            case "compressed":
+               return self.compressed
+            case "crypted":
+               return self.crypted
+            case "uploadProgression":
+               return self.uploadProgression
+            case "downloadProgression":
+               return self.downloadProgression
+            case "uploadInProgress":
+               return self.uploadInProgress
+            case "downloadInProgress":
+               return self.downloadInProgress
+            default:
+                return try super.getExposedValueForKey(key)
         }
     }
-
     // MARK: - Initializable
-
-    public required init() {
+    required public init() {
         super.init()
     }
 
     // MARK: - UniversalType
-
-    open override class var collectionName: String {
+    override  open class var collectionName:String{
         return "blocks"
     }
 
-    open override var d_collectionName: String {
+    override  open var d_collectionName:String{
         return Block.collectionName
     }
 }

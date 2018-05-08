@@ -8,7 +8,10 @@
 
 import Foundation
 
+
+
 public protocol CollectionMetadatumProtocol {
+
     // The collection name
     var collectionName: String { get }
 
@@ -17,4 +20,5 @@ public protocol CollectionMetadatumProtocol {
 
     // Should the collection be volatile ? == persist in memory only
     var inMemory: Bool { get set }
+
 }

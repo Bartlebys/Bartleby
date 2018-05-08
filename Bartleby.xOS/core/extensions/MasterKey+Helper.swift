@@ -10,46 +10,47 @@ import Foundation
     import Cocoa
 #endif
 
-extension MasterKey {
-    #if os(OSX)
-        open static func save(from document: BartlebyDocument) {
-            do {
-                // Create a master key from the current document.
-                let masterKey = MasterKey()
-                masterKey.password = document.currentUser.password ?? Default.NO_PASSWORD
-                masterKey.key = document.metadata.sugar
+extension MasterKey{
 
-                // Ask where to save its crypted data
-                let encoded = try JSON.encoder.encode(masterKey)
-                let data = try Bartleby.cryptoDelegate.encryptData(encoded, useKey: Bartleby.configuration.KEY)
-                let url = document.fileURL
-                let ext = (url?.pathExtension == nil) ? "" : "." + url!.pathExtension
-                let name = url?.lastPathComponent.replacingOccurrences(of: ext, with: "") ?? NSLocalizedString("Untitled", comment: "Untitled")
-                if let window = document.windowControllers.first?.window {
-                    let savePanel = NSSavePanel()
-                    savePanel.message = NSLocalizedString("Where do you want to save the key?", comment: "Where do you want to save the key?")
-                    savePanel.prompt = NSLocalizedString("Save", comment: "Save")
-                    savePanel.nameFieldStringValue = name
-                    savePanel.canCreateDirectories = true
-                    savePanel.allowedFileTypes = ["bky"]
-                    savePanel.beginSheetModal(for: window, completionHandler: { result in
-                        if result == NSApplication.ModalResponse.OK {
-                            if let url = savePanel.url {
-                                syncOnMain {
-                                    do {
-                                        try data.write(to: url, options: Data.WritingOptions.atomic)
-                                    } catch {
-                                        document.log("\(error)", category: Default.LOG_IDENTITY)
-                                    }
+    #if os(OSX)
+    open static func save(from document:BartlebyDocument){
+        do{
+            // Create a master key from the current document.
+            let masterKey = MasterKey()
+            masterKey.password = document.currentUser.password ?? Default.NO_PASSWORD
+            masterKey.key = document.metadata.sugar
+
+            // Ask where to save its crypted data
+            let encoded = try JSON.encoder.encode(masterKey)
+            let data = try Bartleby.cryptoDelegate.encryptData(encoded, useKey: Bartleby.configuration.KEY)
+            let url = document.fileURL
+            let ext = (url?.pathExtension == nil) ? "" : "."+url!.pathExtension
+            let name = url?.lastPathComponent.replacingOccurrences(of:ext, with: "") ?? NSLocalizedString("Untitled", comment: "Untitled")
+            if let window=document.windowControllers.first?.window{
+                let savePanel = NSSavePanel()
+                savePanel.message = NSLocalizedString("Where do you want to save the key?", comment: "Where do you want to save the key?")
+                savePanel.prompt = NSLocalizedString("Save", comment: "Save")
+                savePanel.nameFieldStringValue = name
+                savePanel.canCreateDirectories = true
+                savePanel.allowedFileTypes=["bky"]
+                savePanel.beginSheetModal(for:window,completionHandler: { (result) in
+                    if result==NSApplication.ModalResponse.OK {
+                        if let url = savePanel.url {
+                            syncOnMain{
+                                do{
+                                    try data.write(to: url, options: Data.WritingOptions.atomic)
+                                }catch{
+                                    document.log("\(error)",category:Default.LOG_IDENTITY)
                                 }
                             }
                         }
-                        savePanel.close()
-                    })
-                }
-            } catch {
-                document.log("\(error)", category: Default.LOG_IDENTITY)
+                    }
+                    savePanel.close()
+                })
             }
+        }catch{
+            document.log("\(error)",category:Default.LOG_IDENTITY)
         }
+    }
     #endif
 }

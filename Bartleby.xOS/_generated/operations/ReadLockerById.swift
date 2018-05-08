@@ -10,117 +10,121 @@
 //
 import Foundation
 #if !USE_EMBEDDED_MODULES
-    import Alamofire
+	import Alamofire
 #endif
 
-@objc(ReadLockerById) open class ReadLockerById: ManagedModel {
+@objc(ReadLockerById) open class ReadLockerById : ManagedModel{
+
     // Universal type support
-    open override class func typeName() -> String {
-        return "ReadLockerById"
+    override open class func typeName() -> String {
+           return "ReadLockerById"
     }
 
-    public static func execute(from documentUID: String,
-                               lockerId: String,
-                               sucessHandler success: @escaping (_ locker: Locker) -> Void,
-                               failureHandler failure: @escaping (_ context: HTTPContext) -> Void) {
+
+    public static func execute(from documentUID:String,
+						lockerId:String,
+						sucessHandler success:@escaping(_ locker:Locker)->(),
+						failureHandler failure:@escaping(_ context:HTTPContext)->()){
+	
         if let document = Bartleby.sharedInstance.getDocumentByUID(documentUID) {
-            let pathURL = document.baseURL.appendingPathComponent("locker/\(lockerId)")
-            let dictionary: [String: Any] = [String: Any]()
-            let urlRequest = HTTPManager.requestWithToken(inDocumentWithUID: document.UID, withActionName: "ReadLockerById", forMethod: "GET", and: pathURL)
-
+            let pathURL=document.baseURL.appendingPathComponent("locker/\(lockerId)")
+            let dictionary:[String:Any]=[String:Any]()
+            let urlRequest=HTTPManager.requestWithToken(inDocumentWithUID:document.UID,withActionName:"ReadLockerById" ,forMethod:"GET", and: pathURL)
+            
             do {
-                let r = try URLEncoding().encode(urlRequest, with: dictionary)
-                request(r).responseData(completionHandler: { response in
-
-                    let request = response.request
-                    let result = response.result
-                    let timeline = response.timeline
-                    let statusCode = response.response?.statusCode ?? 0
-
-                    let context = HTTPContext(code: 1_560_507_225,
-                                              caller: "ReadLockerById.execute",
-                                              relatedURL: request?.url,
-                                              httpStatusCode: statusCode)
-
-                    if let request = request {
-                        context.request = HTTPRequest(urlRequest: request)
+                let r=try URLEncoding().encode(urlRequest,with:dictionary)
+                request(r).responseData(completionHandler: { (response) in
+                  
+                    let request=response.request
+                    let result=response.result
+                    let timeline=response.timeline
+                    let statusCode=response.response?.statusCode ?? 0
+                    
+                    let context = HTTPContext( code: 1560507225,
+                        caller: "ReadLockerById.execute",
+                        relatedURL:request?.url,
+                        httpStatusCode: statusCode)
+                        
+                    if let request=request{
+                        context.request=HTTPRequest(urlRequest: request)
                     }
 
                     if let data = response.data, let utf8Text = String(data: data, encoding: .utf8) {
-                        context.responseString = utf8Text
+                        context.responseString=utf8Text
                     }
 
-                    let metrics = Metrics()
-                    metrics.httpContext = context
-                    metrics.operationName = "ReadLockerById"
-                    metrics.latency = timeline.latency
-                    metrics.requestDuration = timeline.requestDuration
-                    metrics.serializationDuration = timeline.serializationDuration
-                    metrics.totalDuration = timeline.totalDuration
-                    document.report(metrics)
+					let metrics=Metrics()
+					metrics.httpContext=context
+					metrics.operationName="ReadLockerById"
+					metrics.latency=timeline.latency
+					metrics.requestDuration=timeline.requestDuration
+					metrics.serializationDuration=timeline.serializationDuration
+					metrics.totalDuration=timeline.totalDuration
+					document.report(metrics)
 
                     // React according to the situation
-                    var reactions = Array<Reaction>()
-
+                    var reactions = Array<Reaction> ()
+            
                     if result.isFailure {
-                        let failureReaction = Reaction.dispatchAdaptiveMessage(
+                       let failureReaction =  Reaction.dispatchAdaptiveMessage(
                             context: context,
-                            title: NSLocalizedString("Unsuccessfull attempt", comment: "Unsuccessfull attempt"),
-                            body: "\(String(describing: result.value))\n\(#file)\n\(#function)\nhttp Status code: (\(statusCode))",
-                            transmit: { (_) -> Void in
+                            title: NSLocalizedString("Unsuccessfull attempt",comment: "Unsuccessfull attempt"),
+                            body:"\(String(describing: result.value))\n\(#file)\n\(#function)\nhttp Status code: (\(statusCode))",
+                            transmit:{ (selectedIndex) -> () in
                         })
                         reactions.append(failureReaction)
                         failure(context)
-
-                    } else {
-                        if 200 ... 299 ~= statusCode {
-                            do {
-                                if let data = response.data {
-                                    let instance = try JSON.decoder.decode(Locker.self, from: data)
-                                    success(instance)
-                                } else {
-                                    throw BartlebyOperationError.dataNotFound
-                                }
-                            } catch {
-                                let failureReaction = Reaction.dispatchAdaptiveMessage(
-                                    context: context,
-                                    title: "\(error)",
-                                    body: "\(String(describing: result.value))\n\(#file)\n\(#function)\nhttp Status code: (\(statusCode))",
-                                    transmit: { (_) -> Void in
-                                })
-                                reactions.append(failureReaction)
-                                failure(context)
-                            }
-                        } else {
+            
+                    }else{
+                          if 200...299 ~= statusCode {
+	                       do{
+	                            if let data = response.data{
+	                                let instance = try JSON.decoder.decode(Locker.self,from:data)
+	                                success(instance)
+	                              }else{
+	                                throw BartlebyOperationError.dataNotFound
+	                              }
+	                            }catch{
+	                                let failureReaction =  Reaction.dispatchAdaptiveMessage(
+	                                    context: context,
+	                                    title:"\(error)",
+	                                    body: "\(String(describing: result.value))\n\(#file)\n\(#function)\nhttp Status code: (\(statusCode))",
+	                                    transmit: { (selectedIndex) -> () in
+	                                })
+	                                reactions.append(failureReaction)
+	                                failure(context)
+	                            }
+                         }else{
                             // Bartlby does not currenlty discriminate status codes 100 & 101
                             // and treats any status code >= 300 the same way
                             // because we consider that failures differentiations could be done by the caller.
-                            let failureReaction = Reaction.dispatchAdaptiveMessage(
+                            let failureReaction =  Reaction.dispatchAdaptiveMessage(
                                 context: context,
-                                title: NSLocalizedString("Unsuccessfull attempt", comment: "Unsuccessfull attempt"),
-                                body: "\(String(describing: result.value))\n\(#file)\n\(#function)\nhttp Status code: (\(statusCode))",
-                                transmit: { (_) -> Void in
+                                title: NSLocalizedString("Unsuccessfull attempt",comment: "Unsuccessfull attempt"),
+                                body:"\(String(describing: result.value))\n\(#file)\n\(#function)\nhttp Status code: (\(statusCode))",
+                                transmit:{ (selectedIndex) -> () in
                             })
-                            reactions.append(failureReaction)
-                            failure(context)
+                           reactions.append(failureReaction)
+                           failure(context)
                         }
-                    }
-                    // Let s react according to the context.
-                    document.perform(reactions, forContext: context)
-                })
-            } catch {
-                let context = HTTPContext(code: 2,
-                                          caller: "ReadLockerById.execute",
-                                          relatedURL: nil,
-                                          httpStatusCode: 500)
+                        
+                 }
+                 //Let s react according to the context.
+                 document.perform(reactions, forContext: context)
+            })
+        }catch{
+                let context = HTTPContext( code:2 ,
+                caller: "ReadLockerById.execute",
+                relatedURL:nil,
+                httpStatusCode:500)
                 failure(context)
-            }
-        } else {
-            let context = HTTPContext(code: 1,
-                                      caller: "ReadLockerById.execute",
-                                      relatedURL: nil,
-                                      httpStatusCode: 417)
-            failure(context)
         }
+      }else{
+         let context = HTTPContext( code: 1,
+                caller: "ReadLockerById.execute",
+                relatedURL:nil,
+                httpStatusCode: 417)
+         failure(context)
+       }
     }
 }

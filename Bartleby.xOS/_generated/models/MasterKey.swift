@@ -12,50 +12,55 @@ import Foundation
 #endif
 
 // MARK: Bartleby's Core: Master keys are used to save a password + a key (mostly in user isolated mode)
+@objc open class MasterKey : UnManagedModel {
 
-@objc open class MasterKey: UnManagedModel {
     // DeclaredTypeName support
-    open override class func typeName() -> String {
+    override open class func typeName() -> String {
         return "MasterKey"
     }
 
-    // The password
-    @objc open dynamic var password: String = "en_EN"
 
-    //the key
-    @objc open dynamic var key: String = ""
+	//The password
+	@objc dynamic open var password:String = "en_EN"
+
+	//the key
+	@objc dynamic open var key:String = ""
+
 
     // MARK: - Codable
 
-    public enum MasterKeyCodingKeys: String, CodingKey {
-        case password
-        case key
+
+    public enum MasterKeyCodingKeys: String,CodingKey{
+		case password
+		case key
     }
 
-    public required init(from decoder: Decoder) throws {
-        try super.init(from: decoder)
-        try quietThrowingChanges {
-            let values = try decoder.container(keyedBy: MasterKeyCodingKeys.self)
-            self.password = try self.decodeCryptedString(codingKey: .password, from: values)
-            self.key = try self.decodeCryptedString(codingKey: .key, from: values)
+    required public init(from decoder: Decoder) throws{
+		try super.init(from: decoder)
+        try self.quietThrowingChanges {
+			let values = try decoder.container(keyedBy: MasterKeyCodingKeys.self)
+			self.password = try self.decodeCryptedString(codingKey: .password, from: values)
+			self.key = try self.decodeCryptedString(codingKey: .key, from: values)
         }
     }
 
-    open override func encode(to encoder: Encoder) throws {
-        try super.encode(to: encoder)
-        var container = encoder.container(keyedBy: MasterKeyCodingKeys.self)
-        try encodeCryptedString(value: password, codingKey: .password, container: &container)
-        try encodeCryptedString(value: key, codingKey: .key, container: &container)
+    override open func encode(to encoder: Encoder) throws {
+		try super.encode(to:encoder)
+		var container = encoder.container(keyedBy: MasterKeyCodingKeys.self)
+		try self.encodeCryptedString(value: self.password, codingKey: .password, container: &container)
+		try self.encodeCryptedString(value: self.key, codingKey: .key, container: &container)
     }
+
 
     // MARK: - Exposed (Bartleby's KVC like generative implementation)
 
     /// Return all the exposed instance variables keys. (Exposed == public and modifiable).
-    open override var exposedKeys: [String] {
-        var exposed = super.exposedKeys
-        exposed.append(contentsOf: ["password", "key"])
+    override  open var exposedKeys:[String] {
+        var exposed=super.exposedKeys
+        exposed.append(contentsOf:["password","key"])
         return exposed
     }
+
 
     /// Set the value of the given key
     ///
@@ -63,20 +68,21 @@ import Foundation
     /// - parameter key:   the key
     ///
     /// - throws: throws an Exception when the key is not exposed
-    open override func setExposedValue(_ value: Any?, forKey key: String) throws {
+    override  open func setExposedValue(_ value:Any?, forKey key: String) throws {
         switch key {
-        case "password":
-            if let casted = value as? String {
-                password = casted
-            }
-        case "key":
-            if let casted = value as? String {
-                self.key = casted
-            }
-        default:
-            return try super.setExposedValue(value, forKey: key)
+            case "password":
+                if let casted=value as? String{
+                    self.password=casted
+                }
+            case "key":
+                if let casted=value as? String{
+                    self.key=casted
+                }
+            default:
+                return try super.setExposedValue(value, forKey: key)
         }
     }
+
 
     /// Returns the value of an exposed key.
     ///
@@ -85,20 +91,18 @@ import Foundation
     /// - throws: throws Exception when the key is not exposed
     ///
     /// - returns: returns the value
-    open override func getExposedValueForKey(_ key: String) throws -> Any? {
+    override  open func getExposedValueForKey(_ key:String) throws -> Any?{
         switch key {
-        case "password":
-            return password
-        case "key":
-            return self.key
-        default:
-            return try super.getExposedValueForKey(key)
+            case "password":
+               return self.password
+            case "key":
+               return self.key
+            default:
+                return try super.getExposedValueForKey(key)
         }
     }
-
     // MARK: - Initializable
-
-    public required init() {
+     required public init() {
         super.init()
     }
 }

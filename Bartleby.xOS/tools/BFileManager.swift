@@ -8,7 +8,9 @@
 
 import Foundation
 
-open class BFileManager: NSObject, BartlebyFileIO {
+
+open class BFileManager: NSObject,BartlebyFileIO {
+
     // IMPORTANT NOTICE
     // When using BFileManager via XPC remember that the Handlers closure are not on your App Main Queue.
     // You should dispatch on the Main Queue if you perform any UI related action.
@@ -26,7 +28,7 @@ open class BFileManager: NSObject, BartlebyFileIO {
      - returns: N/A
      */
     open func createDirectoryAtPath(_ path: String,
-                                    handlers: Handlers) {
+                                      handlers: Handlers) {
         do {
             try FileManager.default.createDirectory(atPath: path, withIntermediateDirectories: true, attributes: nil)
             handlers.on(Completion.successState())
@@ -43,14 +45,15 @@ open class BFileManager: NSObject, BartlebyFileIO {
 
      - returns: N/A
      */
-    open func readData(contentsOfFile path: String,
-                       handlers: Handlers) {
+    open func readData( contentsOfFile path: String,
+                                         handlers: Handlers) {
         do {
-            let data = try Data(contentsOf: URL(fileURLWithPath: path), options: [])
+            let data=try Data(contentsOf: URL(fileURLWithPath: path), options: [])
             handlers.on(Completion.successState(data: data))
         } catch let error as NSError {
             handlers.on(Completion.failureStateFromError(error))
         }
+
     }
 
     /**
@@ -62,15 +65,17 @@ open class BFileManager: NSObject, BartlebyFileIO {
 
      - returns: N/A
      */
-    open func writeData(_ data: Data,
-                        path: String,
-                        handlers: Handlers) {
+    open func writeData( _ data: Data,
+                           path: String,
+                           handlers: Handlers) {
         do {
-            try data.write(to: URL(fileURLWithPath: path), options: [])
+            try data.write(to: URL(fileURLWithPath: path), options:[])
             handlers.on(Completion.successState())
         } catch let error as NSError {
             handlers.on(Completion.failureStateFromError(error))
         }
+
+
     }
 
     /**
@@ -80,9 +85,10 @@ open class BFileManager: NSObject, BartlebyFileIO {
      - parameter handlers:            the progress and completion handlers
      */
     open func readString(contentsOfFile path: String,
-                         handlers: Handlers) {
+                                          handlers: Handlers) {
+
         do {
-            let data = try Data(contentsOf: URL(fileURLWithPath: path), options: [])
+            let data=try Data(contentsOf: URL(fileURLWithPath: path), options: [])
             if let s = String(data: data, encoding: Default.STRING_ENCODING) {
                 let read = Completion.successState()
                 read.setStringResult(s)
@@ -93,7 +99,9 @@ open class BFileManager: NSObject, BartlebyFileIO {
         } catch let error as NSError {
             handlers.on(Completion.failureStateFromError(error))
         }
+
     }
+
 
     /**
      Writes String to the given path
@@ -106,15 +114,16 @@ open class BFileManager: NSObject, BartlebyFileIO {
 
      - returns: N/A
      */
-    open func writeString(_ string: String,
-                          path: String,
-                          handlers: Handlers) {
+    open func writeString( _ string: String,
+                             path: String,
+                             handlers: Handlers) {
         do {
             try string.write(toFile: path, atomically: true, encoding: Default.STRING_ENCODING)
             handlers.on(Completion.successState())
         } catch let error as NSError {
             handlers.on(Completion.failureStateFromError(error))
         }
+
     }
 
     /**
@@ -126,13 +135,14 @@ open class BFileManager: NSObject, BartlebyFileIO {
      - returns:  N/A
      */
     open func itemExistsAtPath(_ path: String,
-                               handlers: Handlers) {
+                                 handlers: Handlers) {
         var isADirectory: ObjCBool = false
         if FileManager.default.fileExists(atPath: path, isDirectory: &isADirectory) {
             handlers.on(Completion.successState())
         } else {
             handlers.on(Completion.failureState("Unexisting item: " + path, statusCode: .not_Found))
         }
+
     }
 
     /**
@@ -144,7 +154,7 @@ open class BFileManager: NSObject, BartlebyFileIO {
      - returns:  N/A
      */
     open func fileExistsAtPath(_ path: String,
-                               handlers: Handlers) {
+                                 handlers: Handlers) {
         var isADirectory: ObjCBool = false
         if FileManager.default.fileExists(atPath: path, isDirectory: &isADirectory) {
             if isADirectory.boolValue {
@@ -155,6 +165,7 @@ open class BFileManager: NSObject, BartlebyFileIO {
         } else {
             handlers.on(Completion.failureState("Unexisting item: " + path, statusCode: .not_Found))
         }
+
     }
 
     /**
@@ -166,7 +177,7 @@ open class BFileManager: NSObject, BartlebyFileIO {
      - returns:  N/A
      */
     open func directoryExistsAtPath(_ path: String,
-                                    handlers: Handlers) {
+                                      handlers: Handlers) {
         var isADirectory: ObjCBool = false
         if FileManager.default.fileExists(atPath: path, isDirectory: &isADirectory) {
             if isADirectory.boolValue {
@@ -177,6 +188,7 @@ open class BFileManager: NSObject, BartlebyFileIO {
         } else {
             handlers.on(Completion.failureState("Unexisting item: " + path, statusCode: .not_Found))
         }
+
     }
 
     /**
@@ -187,13 +199,14 @@ open class BFileManager: NSObject, BartlebyFileIO {
      - parameter handlers:            the progress and completion handlers
      */
     open func removeItemAtPath(_ path: String,
-                               handlers: Handlers) {
+                                 handlers: Handlers) {
         do {
             try FileManager.default.removeItem(atPath: path)
             handlers.on(Completion.successState())
         } catch let error as NSError {
             handlers.on(Completion.failureStateFromError(error))
         }
+
     }
 
     /**
@@ -206,14 +219,15 @@ open class BFileManager: NSObject, BartlebyFileIO {
      - returns: N/A
      */
     open func copyItemAtPath(_ srcPath: String,
-                             toPath dstPath: String,
-                             handlers: Handlers) {
+                               toPath dstPath: String,
+                                      handlers: Handlers) {
         do {
             try FileManager.default.copyItem(atPath: srcPath, toPath: dstPath)
             handlers.on(Completion.successState())
         } catch let error as NSError {
             handlers.on(Completion.failureStateFromError(error))
         }
+
     }
 
     /**
@@ -226,8 +240,8 @@ open class BFileManager: NSObject, BartlebyFileIO {
      - returns: N/A
      */
     open func moveItemAtPath(_ srcPath: String,
-                             toPath dstPath: String,
-                             handlers: Handlers) {
+                               toPath dstPath: String,
+                                      handlers: Handlers) {
         do {
             try FileManager.default.moveItem(atPath: srcPath, toPath: dstPath)
             handlers.on(Completion.successState())
@@ -235,6 +249,7 @@ open class BFileManager: NSObject, BartlebyFileIO {
             handlers.on(Completion.failureStateFromError(error))
         }
     }
+
 
     /**
      Lists the content of the directory
@@ -245,14 +260,15 @@ open class BFileManager: NSObject, BartlebyFileIO {
      - returns: N/A
      */
     open func contentsOfDirectoryAtPath(_ path: String,
-                                        handlers: Handlers) {
+                                          handlers: Handlers) {
         do {
-            let content = try FileManager.default.contentsOfDirectory(atPath: path)
+            let content=try FileManager.default.contentsOfDirectory(atPath: path)
             let c = Completion.successState()
             c.setStringArrayResult(content)
             handlers.on(c)
         } catch let error as NSError {
             handlers.on(Completion.failureStateFromError(error))
         }
+        
     }
 }

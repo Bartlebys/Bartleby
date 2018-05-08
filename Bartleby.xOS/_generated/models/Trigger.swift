@@ -12,110 +12,115 @@ import Foundation
 #endif
 
 // MARK: Bartleby's Core: a Trigger encapsulates a bunch of that's modelizes a state transformation
+@objc open class Trigger : UnManagedModel {
 
-@objc open class Trigger: UnManagedModel {
     // DeclaredTypeName support
-    open override class func typeName() -> String {
+    override open class func typeName() -> String {
         return "Trigger"
     }
 
-    // The index is injected server side (each observationUID) has it own counter)
-    @objc open dynamic var index: Int = -1
 
-    // The dataSpace UID
-    @objc open dynamic var spaceUID: String?
+	//The index is injected server side (each observationUID) has it own counter)
+	@objc dynamic open var index:Int = -1
 
-    // The observation UID
-    @objc open dynamic var observationUID: String?
+	//The dataSpace UID
+	@objc dynamic open var spaceUID:String?
 
-    // The user.UID of the sender
-    @objc open dynamic var senderUID: String?
+	//The observation UID
+	@objc dynamic open var observationUID:String?
 
-    // The UID of the instance of Bartleby client that has created the trigger.
-    @objc open dynamic var runUID: String?
+	//The user.UID of the sender
+	@objc dynamic open var senderUID:String?
 
-    // The action that has initiated the trigger
-    @objc open dynamic var origin: String?
+	//The UID of the instance of Bartleby client that has created the trigger.
+	@objc dynamic open var runUID:String?
 
-    // The targetted collection name
-    @objc open dynamic var targetCollectionName: String = ""
+	//The action that has initiated the trigger
+	@objc dynamic open var origin:String?
 
-    // The server side creation date ( informative, use index for ranking)
-    @objc open dynamic var creationDate: Date?
+	//The targetted collection name
+	@objc dynamic open var targetCollectionName:String = ""
 
-    // The action name
-    @objc open dynamic var action: String = ""
+	//The server side creation date ( informative, use index for ranking)
+	@objc dynamic open var creationDate:Date?
 
-    // A coma separated UIDS list
-    @objc open dynamic var UIDS: String = ""
+	//The action name
+	@objc dynamic open var action:String = ""
 
-    // The sseDbProcessingDuration is computed server side in SSE context only not when calling Triggers endpoints (it can be used for QOS computation)
-    @objc open dynamic var sseDbProcessingDuration: Double = -1
+	//A coma separated UIDS list
+	@objc dynamic open var UIDS:String = ""
 
-    // A collection of JSON payload
-    @objc open dynamic var payloads: [Data]?
+	//The sseDbProcessingDuration is computed server side in SSE context only not when calling Triggers endpoints (it can be used for QOS computation)
+	@objc dynamic open var sseDbProcessingDuration:Double = -1
+
+	//A collection of JSON payload
+	@objc dynamic open var payloads:[Data]?
+
 
     // MARK: - Codable
 
-    public enum TriggerCodingKeys: String, CodingKey {
-        case index
-        case spaceUID
-        case observationUID
-        case senderUID
-        case runUID
-        case origin
-        case targetCollectionName
-        case creationDate
-        case action
-        case UIDS
-        case sseDbProcessingDuration
-        case payloads
+
+    public enum TriggerCodingKeys: String,CodingKey{
+		case index
+		case spaceUID
+		case observationUID
+		case senderUID
+		case runUID
+		case origin
+		case targetCollectionName
+		case creationDate
+		case action
+		case UIDS
+		case sseDbProcessingDuration
+		case payloads
     }
 
-    public required init(from decoder: Decoder) throws {
-        try super.init(from: decoder)
-        try quietThrowingChanges {
-            let values = try decoder.container(keyedBy: TriggerCodingKeys.self)
-            self.index = try values.decode(Int.self, forKey: .index)
-            self.spaceUID = try values.decodeIfPresent(String.self, forKey: .spaceUID)
-            self.observationUID = try values.decodeIfPresent(String.self, forKey: .observationUID)
-            self.senderUID = try values.decodeIfPresent(String.self, forKey: .senderUID)
-            self.runUID = try values.decodeIfPresent(String.self, forKey: .runUID)
-            self.origin = try values.decodeIfPresent(String.self, forKey: .origin)
-            self.targetCollectionName = try values.decode(String.self, forKey: .targetCollectionName)
-            self.creationDate = try values.decodeIfPresent(Date.self, forKey: .creationDate)
-            self.action = try values.decode(String.self, forKey: .action)
-            self.UIDS = try values.decode(String.self, forKey: .UIDS)
-            self.sseDbProcessingDuration = try values.decode(Double.self, forKey: .sseDbProcessingDuration)
-            self.payloads = try values.decodeIfPresent([Data].self, forKey: .payloads)
+    required public init(from decoder: Decoder) throws{
+		try super.init(from: decoder)
+        try self.quietThrowingChanges {
+			let values = try decoder.container(keyedBy: TriggerCodingKeys.self)
+			self.index = try values.decode(Int.self,forKey:.index)
+			self.spaceUID = try values.decodeIfPresent(String.self,forKey:.spaceUID)
+			self.observationUID = try values.decodeIfPresent(String.self,forKey:.observationUID)
+			self.senderUID = try values.decodeIfPresent(String.self,forKey:.senderUID)
+			self.runUID = try values.decodeIfPresent(String.self,forKey:.runUID)
+			self.origin = try values.decodeIfPresent(String.self,forKey:.origin)
+			self.targetCollectionName = try values.decode(String.self,forKey:.targetCollectionName)
+			self.creationDate = try values.decodeIfPresent(Date.self,forKey:.creationDate)
+			self.action = try values.decode(String.self,forKey:.action)
+			self.UIDS = try values.decode(String.self,forKey:.UIDS)
+			self.sseDbProcessingDuration = try values.decode(Double.self,forKey:.sseDbProcessingDuration)
+			self.payloads = try values.decodeIfPresent([Data].self,forKey:.payloads)
         }
     }
 
-    open override func encode(to encoder: Encoder) throws {
-        try super.encode(to: encoder)
-        var container = encoder.container(keyedBy: TriggerCodingKeys.self)
-        try container.encode(index, forKey: .index)
-        try container.encodeIfPresent(spaceUID, forKey: .spaceUID)
-        try container.encodeIfPresent(observationUID, forKey: .observationUID)
-        try container.encodeIfPresent(senderUID, forKey: .senderUID)
-        try container.encodeIfPresent(runUID, forKey: .runUID)
-        try container.encodeIfPresent(origin, forKey: .origin)
-        try container.encode(targetCollectionName, forKey: .targetCollectionName)
-        try container.encodeIfPresent(creationDate, forKey: .creationDate)
-        try container.encode(action, forKey: .action)
-        try container.encode(UIDS, forKey: .UIDS)
-        try container.encode(sseDbProcessingDuration, forKey: .sseDbProcessingDuration)
-        try container.encodeIfPresent(payloads, forKey: .payloads)
+    override open func encode(to encoder: Encoder) throws {
+		try super.encode(to:encoder)
+		var container = encoder.container(keyedBy: TriggerCodingKeys.self)
+		try container.encode(self.index,forKey:.index)
+		try container.encodeIfPresent(self.spaceUID,forKey:.spaceUID)
+		try container.encodeIfPresent(self.observationUID,forKey:.observationUID)
+		try container.encodeIfPresent(self.senderUID,forKey:.senderUID)
+		try container.encodeIfPresent(self.runUID,forKey:.runUID)
+		try container.encodeIfPresent(self.origin,forKey:.origin)
+		try container.encode(self.targetCollectionName,forKey:.targetCollectionName)
+		try container.encodeIfPresent(self.creationDate,forKey:.creationDate)
+		try container.encode(self.action,forKey:.action)
+		try container.encode(self.UIDS,forKey:.UIDS)
+		try container.encode(self.sseDbProcessingDuration,forKey:.sseDbProcessingDuration)
+		try container.encodeIfPresent(self.payloads,forKey:.payloads)
     }
+
 
     // MARK: - Exposed (Bartleby's KVC like generative implementation)
 
     /// Return all the exposed instance variables keys. (Exposed == public and modifiable).
-    open override var exposedKeys: [String] {
-        var exposed = super.exposedKeys
-        exposed.append(contentsOf: ["index", "spaceUID", "observationUID", "senderUID", "runUID", "origin", "targetCollectionName", "creationDate", "action", "UIDS", "sseDbProcessingDuration", "payloads"])
+    override  open var exposedKeys:[String] {
+        var exposed=super.exposedKeys
+        exposed.append(contentsOf:["index","spaceUID","observationUID","senderUID","runUID","origin","targetCollectionName","creationDate","action","UIDS","sseDbProcessingDuration","payloads"])
         return exposed
     }
+
 
     /// Set the value of the given key
     ///
@@ -123,60 +128,61 @@ import Foundation
     /// - parameter key:   the key
     ///
     /// - throws: throws an Exception when the key is not exposed
-    open override func setExposedValue(_ value: Any?, forKey key: String) throws {
+    override  open func setExposedValue(_ value:Any?, forKey key: String) throws {
         switch key {
-        case "index":
-            if let casted = value as? Int {
-                index = casted
-            }
-        case "spaceUID":
-            if let casted = value as? String {
-                spaceUID = casted
-            }
-        case "observationUID":
-            if let casted = value as? String {
-                observationUID = casted
-            }
-        case "senderUID":
-            if let casted = value as? String {
-                senderUID = casted
-            }
-        case "runUID":
-            if let casted = value as? String {
-                runUID = casted
-            }
-        case "origin":
-            if let casted = value as? String {
-                origin = casted
-            }
-        case "targetCollectionName":
-            if let casted = value as? String {
-                targetCollectionName = casted
-            }
-        case "creationDate":
-            if let casted = value as? Date {
-                creationDate = casted
-            }
-        case "action":
-            if let casted = value as? String {
-                action = casted
-            }
-        case "UIDS":
-            if let casted = value as? String {
-                UIDS = casted
-            }
-        case "sseDbProcessingDuration":
-            if let casted = value as? Double {
-                sseDbProcessingDuration = casted
-            }
-        case "payloads":
-            if let casted = value as? [Data] {
-                payloads = casted
-            }
-        default:
-            return try super.setExposedValue(value, forKey: key)
+            case "index":
+                if let casted=value as? Int{
+                    self.index=casted
+                }
+            case "spaceUID":
+                if let casted=value as? String{
+                    self.spaceUID=casted
+                }
+            case "observationUID":
+                if let casted=value as? String{
+                    self.observationUID=casted
+                }
+            case "senderUID":
+                if let casted=value as? String{
+                    self.senderUID=casted
+                }
+            case "runUID":
+                if let casted=value as? String{
+                    self.runUID=casted
+                }
+            case "origin":
+                if let casted=value as? String{
+                    self.origin=casted
+                }
+            case "targetCollectionName":
+                if let casted=value as? String{
+                    self.targetCollectionName=casted
+                }
+            case "creationDate":
+                if let casted=value as? Date{
+                    self.creationDate=casted
+                }
+            case "action":
+                if let casted=value as? String{
+                    self.action=casted
+                }
+            case "UIDS":
+                if let casted=value as? String{
+                    self.UIDS=casted
+                }
+            case "sseDbProcessingDuration":
+                if let casted=value as? Double{
+                    self.sseDbProcessingDuration=casted
+                }
+            case "payloads":
+                if let casted=value as? [Data]{
+                    self.payloads=casted
+                }
+            default:
+                return try super.setExposedValue(value, forKey: key)
         }
     }
+
 
     /// Returns the value of an exposed key.
     ///
@@ -185,40 +191,38 @@ import Foundation
     /// - throws: throws Exception when the key is not exposed
     ///
     /// - returns: returns the value
-    open override func getExposedValueForKey(_ key: String) throws -> Any? {
+    override  open func getExposedValueForKey(_ key:String) throws -> Any?{
         switch key {
-        case "index":
-            return index
-        case "spaceUID":
-            return spaceUID
-        case "observationUID":
-            return observationUID
-        case "senderUID":
-            return senderUID
-        case "runUID":
-            return runUID
-        case "origin":
-            return origin
-        case "targetCollectionName":
-            return targetCollectionName
-        case "creationDate":
-            return creationDate
-        case "action":
-            return action
-        case "UIDS":
-            return UIDS
-        case "sseDbProcessingDuration":
-            return sseDbProcessingDuration
-        case "payloads":
-            return payloads
-        default:
-            return try super.getExposedValueForKey(key)
+            case "index":
+               return self.index
+            case "spaceUID":
+               return self.spaceUID
+            case "observationUID":
+               return self.observationUID
+            case "senderUID":
+               return self.senderUID
+            case "runUID":
+               return self.runUID
+            case "origin":
+               return self.origin
+            case "targetCollectionName":
+               return self.targetCollectionName
+            case "creationDate":
+               return self.creationDate
+            case "action":
+               return self.action
+            case "UIDS":
+               return self.UIDS
+            case "sseDbProcessingDuration":
+               return self.sseDbProcessingDuration
+            case "payloads":
+               return self.payloads
+            default:
+                return try super.getExposedValueForKey(key)
         }
     }
-
     // MARK: - Initializable
-
-    public required init() {
+     required public init() {
         super.init()
     }
 }

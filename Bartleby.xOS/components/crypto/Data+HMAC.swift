@@ -8,7 +8,9 @@
 
 import Foundation
 
+
 public extension Data {
+
     var md5: String {
         return HMAC.digestData(self, algo: HMACAlgorithms.MD5)
     }

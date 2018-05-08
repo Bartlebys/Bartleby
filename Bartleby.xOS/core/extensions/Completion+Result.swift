@@ -14,51 +14,58 @@ import Foundation
 // The result is serialized in the opaque NSdata data property.
 public extension Completion {
 
-    // MARK: -  Generic Serializable result
+    // MARK:-  Generic Serializable result
 
+    
     ///  Stores the serializabale result
     ///
     /// - Parameter result: the serializable result
     func setResult<T: Codable>(_ result: T) {
-        data = try? JSON.encoder.encode(result)
+        self.data = try? JSON.encoder.encode(result)
     }
+
+
 
     ///  Gets the deserialized result
     ///  If the result is an external reference the reference is resolved automatically
     /// - Returns: the deserialized result
     func getResult<T: Codable>() -> T? {
-        if let data = self.data {
+        if let data=self.data {
             return try? JSON.decoder.decode(T.self, from: data)
         }
         return nil
     }
+
 
     // MARK: - External Reference result
 
     /// Store an external reference in the result
     ///
     /// - Parameter ref: the reference
-    func setExternalReferenceResult<T: Collectible>(from ref: T) {
-        let externalRef = StringValue()
-        externalRef.value = ref.UID
-        data = try? JSON.encoder.encode(externalRef)
+    func setExternalReferenceResult<T: Collectible>(from ref:T) {
+        let externalRef=StringValue()
+        externalRef.value=ref.UID
+        self.data = try? JSON.encoder.encode(externalRef)
     }
+
 
     /// Retrieve the stored reference
     ///
     /// - Returns: the external reference UID
-    func getResultExternalReference() -> String? {
-        if let data = self.data {
-            let stringValue = try? JSON.decoder.decode(StringValue.self, from: data)
+    func getResultExternalReference() ->String? {
+        if let data = self.data{
+            let stringValue =  try? JSON.decoder.decode(StringValue.self, from: data)
             return stringValue?.value
         }
         return nil
     }
 
+
     // MARK: - String result
 
+
     func setStringResult(_ s: String) {
-        data = s.data(using: Default.STRING_ENCODING)?.base64EncodedData(options: .endLineWithCarriageReturn)
+        self.data = s.data(using: Default.STRING_ENCODING)?.base64EncodedData(options: .endLineWithCarriageReturn)
     }
 
     func getStringResult() -> String? {
@@ -71,15 +78,15 @@ public extension Completion {
     }
 
     // MARK: - Array of String result
-
+    
     func setStringArrayResult(_ stringArray: [String]) {
         do {
-            data = try JSONSerialization.data(withJSONObject: stringArray, options: .prettyPrinted)
+            self.data = try JSONSerialization.data(withJSONObject: stringArray, options: .prettyPrinted)
         } catch {
-            data = nil
+            self.data = nil
         }
     }
-
+    
     func getStringArrayResult() -> [String]? {
         if let data = self.data {
             do {
@@ -87,21 +94,22 @@ public extension Completion {
                     return stringArray
                 }
             } catch {
+                
             }
         }
-        return nil
+        return  nil
     }
-
+    
     // MARK: - Dictionary result
-
+    
     func setDictionaryResult(_ dict: [String: String]) {
         do {
-            data = try JSONSerialization.data(withJSONObject: dict, options: .prettyPrinted)
+            self.data = try JSONSerialization.data(withJSONObject: dict, options: .prettyPrinted)
         } catch {
-            data = nil
+            self.data = nil
         }
     }
-
+    
     func getDictionaryResult() -> [String: String]? {
         if let data = self.data {
             do {
@@ -109,8 +117,9 @@ public extension Completion {
                     return dict
                 }
             } catch {
+                
             }
         }
-        return nil
+        return  nil
     }
 }

@@ -6,8 +6,9 @@
 //  Adapted from : https://github.com/bleuground/LiViD/blob/59906df8c65ec9ee21fca15d037626d40dfaef17/LiViD/Data%2BCompression.swift
 //
 
-import Compression
 import Foundation
+import Compression
+
 
 @available(iOS 9.0, OSX 10.11, watchOS 2.0, tvOS 9.0, *)
 extension Data {
@@ -34,7 +35,7 @@ extension Data {
      - parameter bufferSize: the size of buffer in bytes to use during compression
      - returns: A `Data` object created by encoding the receiver's contents using the provided compression algorithm.
      */
-    public func compress(algorithm compression: CompressionAlgorithm, bufferSize: size_t) throws -> Data {
+    public func compress(algorithm compression: CompressionAlgorithm, bufferSize: size_t) throws -> Data{
         return try compress(compression, operation: .compression, bufferSize: bufferSize)
     }
 
@@ -154,13 +155,14 @@ extension Data {
 
             case COMPRESSION_STATUS_ERROR:
                 throw CompressionError.processError
-
+                
             default:
                 break
             }
-
+            
         } while status == COMPRESSION_STATUS_OK
-
+        
         return outputData.copy() as! Data
     }
 }
+

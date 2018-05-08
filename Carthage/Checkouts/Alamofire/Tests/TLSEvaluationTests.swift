@@ -291,7 +291,7 @@ class TLSEvaluationExpiredLeafCertificateTestCase: BaseTestCase {
         // Given
         let certificates = [TestCertificates.leaf]
         let policies: [String: ServerTrustPolicy] = [
-            expiredHost: .pinCertificates(certificates: certificates, validateCertificateChain: true, validateHost: true),
+            expiredHost: .pinCertificates(certificates: certificates, validateCertificateChain: true, validateHost: true)
         ]
 
         let manager = SessionManager(
@@ -327,11 +327,11 @@ class TLSEvaluationExpiredLeafCertificateTestCase: BaseTestCase {
             TestCertificates.leaf,
             TestCertificates.intermediateCA1,
             TestCertificates.intermediateCA2,
-            TestCertificates.rootCA,
+            TestCertificates.rootCA
         ]
 
         let policies: [String: ServerTrustPolicy] = [
-            expiredHost: .pinCertificates(certificates: certificates, validateCertificateChain: true, validateHost: true),
+            expiredHost: .pinCertificates(certificates: certificates, validateCertificateChain: true, validateHost: true)
         ]
 
         let manager = SessionManager(
@@ -365,7 +365,7 @@ class TLSEvaluationExpiredLeafCertificateTestCase: BaseTestCase {
         // Given
         let certificates = [TestCertificates.leaf]
         let policies: [String: ServerTrustPolicy] = [
-            expiredHost: .pinCertificates(certificates: certificates, validateCertificateChain: false, validateHost: true),
+            expiredHost: .pinCertificates(certificates: certificates, validateCertificateChain: false, validateHost: true)
         ]
 
         let manager = SessionManager(
@@ -393,7 +393,7 @@ class TLSEvaluationExpiredLeafCertificateTestCase: BaseTestCase {
         // Given
         let certificates = [TestCertificates.intermediateCA2]
         let policies: [String: ServerTrustPolicy] = [
-            expiredHost: .pinCertificates(certificates: certificates, validateCertificateChain: false, validateHost: true),
+            expiredHost: .pinCertificates(certificates: certificates, validateCertificateChain: false, validateHost: true)
         ]
 
         let manager = SessionManager(
@@ -421,7 +421,7 @@ class TLSEvaluationExpiredLeafCertificateTestCase: BaseTestCase {
         // Given
         let certificates = [TestCertificates.rootCA]
         let policies: [String: ServerTrustPolicy] = [
-            expiredHost: .pinCertificates(certificates: certificates, validateCertificateChain: false, validateHost: true),
+            expiredHost: .pinCertificates(certificates: certificates, validateCertificateChain: false, validateHost: true)
         ]
 
         let manager = SessionManager(
@@ -455,7 +455,7 @@ class TLSEvaluationExpiredLeafCertificateTestCase: BaseTestCase {
         // Given
         let publicKeys = [TestPublicKeys.leaf]
         let policies: [String: ServerTrustPolicy] = [
-            expiredHost: .pinPublicKeys(publicKeys: publicKeys, validateCertificateChain: true, validateHost: true),
+            expiredHost: .pinPublicKeys(publicKeys: publicKeys, validateCertificateChain: true, validateHost: true)
         ]
 
         let manager = SessionManager(
@@ -489,7 +489,7 @@ class TLSEvaluationExpiredLeafCertificateTestCase: BaseTestCase {
         // Given
         let publicKeys = [TestPublicKeys.leaf]
         let policies: [String: ServerTrustPolicy] = [
-            expiredHost: .pinPublicKeys(publicKeys: publicKeys, validateCertificateChain: false, validateHost: true),
+            expiredHost: .pinPublicKeys(publicKeys: publicKeys, validateCertificateChain: false, validateHost: true)
         ]
 
         let manager = SessionManager(
@@ -517,7 +517,7 @@ class TLSEvaluationExpiredLeafCertificateTestCase: BaseTestCase {
         // Given
         let publicKeys = [TestPublicKeys.intermediateCA2]
         let policies: [String: ServerTrustPolicy] = [
-            expiredHost: .pinPublicKeys(publicKeys: publicKeys, validateCertificateChain: false, validateHost: true),
+            expiredHost: .pinPublicKeys(publicKeys: publicKeys, validateCertificateChain: false, validateHost: true)
         ]
 
         let manager = SessionManager(
@@ -545,7 +545,7 @@ class TLSEvaluationExpiredLeafCertificateTestCase: BaseTestCase {
         // Given
         let publicKeys = [TestPublicKeys.rootCA]
         let policies: [String: ServerTrustPolicy] = [
-            expiredHost: .pinPublicKeys(publicKeys: publicKeys, validateCertificateChain: false, validateHost: true),
+            expiredHost: .pinPublicKeys(publicKeys: publicKeys, validateCertificateChain: false, validateHost: true)
         ]
 
         let manager = SessionManager(
@@ -606,8 +606,8 @@ class TLSEvaluationExpiredLeafCertificateTestCase: BaseTestCase {
         let policies = [
             expiredHost: ServerTrustPolicy.customEvaluation { _, _ in
                 // Implement a custom evaluation routine here...
-                true
-            },
+                return true
+            }
         ]
 
         let manager = SessionManager(
@@ -636,8 +636,8 @@ class TLSEvaluationExpiredLeafCertificateTestCase: BaseTestCase {
         let policies = [
             expiredHost: ServerTrustPolicy.customEvaluation { _, _ in
                 // Implement a custom evaluation routine here...
-                false
-            },
+                return false
+            }
         ]
 
         let manager = SessionManager(

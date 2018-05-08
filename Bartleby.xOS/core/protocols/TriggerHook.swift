@@ -9,13 +9,17 @@
 import Foundation
 
 public protocol TriggerHook {
+
+
     /// Called by the Document before trigger integration
     ///
     /// - Parameter trigger: the trigger
-    func triggerWillBeIntegrated(trigger: Trigger)
+    func triggerWillBeIntegrated(trigger:Trigger)
 
     /// Called by the Document after trigger integration
     ///
     /// - Parameter trigger: the trigger
-    func triggerHasBeenIntegrated(trigger: Trigger)
+    func triggerHasBeenIntegrated(trigger:Trigger)
+
+
 }

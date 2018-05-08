@@ -6,46 +6,50 @@
 //
 //
 
-import BartlebyKit
 import Cocoa
+import BartlebyKit
 
-class OperationViewController: NSViewController, Editor {
-    typealias EditorOf = PushOperation
+class OperationViewController: NSViewController,Editor{
 
-    var UID: String = Bartleby.createUID()
+    typealias EditorOf=PushOperation
 
-    override var nibName: NSNib.Name { return NSNib.Name("OperationViewController") }
+    var UID:String=Bartleby.createUID()
 
-    @objc dynamic weak var selectedItem: EditorOf?
+    override var nibName : NSNib.Name { return NSNib.Name("OperationViewController") }
 
-    override var representedObject: Any? {
-        willSet {
-            if let _ = self.selectedItem {
+    @objc dynamic weak var selectedItem:EditorOf?
+
+    override var representedObject: Any?{
+        willSet{
+            if let _=self.selectedItem{
                 self.selectedItem?.removeChangesSuperviser(self)
             }
         }
-        didSet {
-            self.selectedItem = representedObject as? EditorOf
+        didSet{
+            self.selectedItem=representedObject as? EditorOf
         }
     }
+
 
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do view setup here.
     }
 
-    @IBAction func pushSelectedOperation(_: AnyObject) {
-        if let operation = self.selectedItem {
-            let ops = [operation]
-            let handlers = Handlers(completionHandler: { completion in
-                glog("\(completion)", file: #file, function: #function, line: #line)
+
+    @IBAction func pushSelectedOperation(_ sender: AnyObject) {
+        if let operation=self.selectedItem{
+            let ops=[operation]
+            let handlers=Handlers(completionHandler: { (completion) in
+                glog("\(completion)", file:#file, function:#function, line:#line)
             })
-            handlers.appendProgressHandler({ progression in
-                glog("\(progression)", file: #file, function: #function, line: #line)
+            handlers.appendProgressHandler({ (progression) in
+                glog("\(progression)", file:#file, function:#function, line:#line)
             })
-            if let document = self.selectedItem?.referentDocument {
+            if let document=self.selectedItem?.referentDocument{
                 document.pushSortedOperations(ops, handlers: handlers)
             }
         }
     }
+    
 }

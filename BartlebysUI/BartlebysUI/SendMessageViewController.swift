@@ -9,12 +9,15 @@
 import Cocoa
 
 open class SendMessageViewController: StepViewController {
+
+
     // @TODO
 
-    open override var nibName: NSNib.Name { return NSNib.Name("SendMessageViewController") }
+    override open var nibName : NSNib.Name { return NSNib.Name("SendMessageViewController") }
 
-    open override func viewDidLoad() {
+    override open func viewDidLoad() {
         super.viewDidLoad()
         // Do view setup here.
     }
+    
 }

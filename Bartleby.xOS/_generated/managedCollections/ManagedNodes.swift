@@ -9,7 +9,7 @@
 //
 import Foundation
 #if os(OSX)
-    import AppKit
+import AppKit
 #endif
 #if !USE_EMBEDDED_MODULES
 #endif
@@ -23,27 +23,29 @@ public extension Notification.Name {
     }
 }
 
+
 // MARK: A  collection controller of "nodes"
 
 // This controller implements data automation features.
 
-@objc open class ManagedNodes: ManagedModel, IterableCollectibleCollection {
-    open var collectedType: Collectible.Type { return Node.self }
+@objc open class ManagedNodes : ManagedModel,IterableCollectibleCollection{
+
+    open var collectedType:Collectible.Type { return Node.self }
 
     // Staged "nodes" identifiers (used to determine what should be committed on the next loop)
-    fileprivate var _staged = [String]()
+    fileprivate var _staged=[String]()
 
     // Store the  "nodes" identifiers to be deleted on the next loop
-    fileprivate var _deleted = [String]()
+    fileprivate var _deleted=[String]()
 
     // Ordered UIDS
-    fileprivate var _UIDS = [String]()
+    fileprivate var _UIDS=[String]()
 
     // The "nodes" list (computed by _rebuildFromStorage and on operations)
-    @objc fileprivate dynamic var _items = [Node]() {
+    @objc fileprivate dynamic var _items=[Node]()  {
         didSet {
             if !self.wantsQuietChanges && _items != oldValue {
-                self.provisionChanges(forKey: "_items", oldValue: oldValue, newValue: _items)
+                self.provisionChanges(forKey: "_items",oldValue: oldValue,newValue: _items)
             }
         }
     }
@@ -56,38 +58,39 @@ public extension Notification.Name {
     // https://developer.apple.com/library/content/documentation/Swift/Conceptual/BuildingCocoaApps/AdoptingCocoaDesignPatterns.html
     // So we use a strongly typed `Node for the storage
     // While the API deals with `Collectible` instances.
-    fileprivate var _storage = [String: Node]()
+    fileprivate var _storage=[String:Node]()
 
-    fileprivate func _rebuildFromStorage() {
-        _UIDS = [String]()
-        _items = [Node]()
-        for (UID, item) in _storage {
-            _UIDS.append(UID)
-            _items.append(item)
+
+    fileprivate func _rebuildFromStorage(){
+        self._UIDS=[String]()
+        self._items=[Node]()
+        for (UID,item) in self._storage{
+            self._UIDS.append(UID)
+            self._items.append(item)
         }
     }
 
     /// Marks that a collectible instance should be committed.
     ///
     /// - Parameter item: the collectible instance
-    open func stage(_ item: Collectible) {
-        if !_staged.contains(item.UID) {
-            _staged.append(item.UID)
+    open func stage(_ item: Collectible){
+        if !self._staged.contains(item.UID){
+            self._staged.append(item.UID)
         }
         // When operation off line The staging may have already occur in previous session.
         // So we need to mark shouldBeSaved even if the element is already staged
-        shouldBeSaved = true
-        referentDocument?.hasChanged()
+        self.shouldBeSaved = true
+        self.referentDocument?.hasChanged()
     }
 
     /// Replace the items in the proxy (advanced feature)
     ///
     /// - Parameter items: the collectible item
     /// - Returns: N/A
-    open func replaceProxyData(_ items: [Collectible]) {
-        if let collection = items as? [Node] {
-            _items = [Node]()
-            append(collection, commit: false, isUndoable: false)
+    open func replaceProxyData(_ items:[Collectible]){
+        if let collection = items as? [Node]{
+            self._items = [Node]()
+            self.append(collection, commit: false, isUndoable: false)
         }
     }
 
@@ -96,95 +99,96 @@ public extension Notification.Name {
     /// We use this to offer better performances during collection proxy deserialization phase
     /// This method may be removed in next versions
     /// - Returns: the collected items
-    open func getItems() -> [Collectible] {
-        return _items
+    open func getItems()->[Collectible]{
+        return self._items
     }
 
     // Used to determine if the wrapper should be saved.
-    open var shouldBeSaved: Bool = false
+    open var shouldBeSaved:Bool=false
 
     // Universal type support
-    open override class func typeName() -> String {
+    override open class func typeName() -> String {
         return "ManagedNodes"
     }
 
-    open var spaceUID: String { return referentDocument?.spaceUID ?? Default.NO_UID }
+    open var spaceUID:String { return self.referentDocument?.spaceUID ?? Default.NO_UID }
 
     /// Init with prefetched content
     ///
     /// - parameter items: itels
     ///
     /// - returns: the instance
-    public required init(items: [Node], within document: BartlebyDocument) {
+    required public init(items:[Node], within document:BartlebyDocument) {
         super.init()
-        referentDocument = document
-        for item in items {
-            let UID = item.UID
-            _UIDS.append(UID)
-            _storage[UID] = item
-            _items = items
+        self.referentDocument = document
+        for item in items{
+            let UID=item.UID
+            self._UIDS.append(UID)
+            self._storage[UID]=item
+            self._items=items
         }
     }
 
-    public required init() {
+    required public init() {
         super.init()
     }
 
     // Should be called to propagate references (Collection, ReferentDocument, Owned relations)
     // And to propagate the selections
-    open func propagate() {
+    open func propagate(){
         #if BARTLEBY_CORE_DEBUG
-            if referentDocument == nil {
-                glog("Document Reference is nil during Propagation on ManagedNodes", file: #file, function: #function, line: #line, category: Default.LOG_FAULT, decorative: false)
-            }
+        if self.referentDocument == nil{
+            glog("Document Reference is nil during Propagation on ManagedNodes", file: #file, function: #function, line: #line, category: Default.LOG_FAULT, decorative: false)
+        }
         #endif
 
-        let selectedUIDS = _selectedUIDS
+        let selectedUIDS = self._selectedUIDS
         var selected = [Node]()
-        for item in self {
+        for item in self{
             // Reference the collection
-            item.collection = self
+            item.collection=self
             // Re-build the own relation.
-            item.ownedBy.forEach({ ownerUID in
-                if let o = Bartleby.registredManagedModelByUID(ownerUID) {
-                    if !o.owns.contains(item.UID) {
+            item.ownedBy.forEach({ (ownerUID) in
+                if let o = Bartleby.registredManagedModelByUID(ownerUID){
+                    if !o.owns.contains(item.UID){
                         o.owns.append(item.UID)
                     }
-                } else {
+                }else{
                     // If the owner is not already available defer the homologous ownership registration.
                     Bartleby.appendToDeferredOwnershipsList(item, ownerUID: ownerUID)
                 }
             })
-            if selectedUIDS.contains(item.UID) {
+            if selectedUIDS.contains(item.UID){
                 selected.append(item)
             }
         }
-        selectedNodes = selected
+        self.selectedNodes = selected
     }
 
     open func generate() -> AnyIterator<Node> {
         var nextIndex = -1
-        let limit = _storage.count - 1
+        let limit=self._storage.count-1
         return AnyIterator {
             nextIndex += 1
-            if nextIndex > limit {
+            if (nextIndex > limit) {
                 return nil
             }
-            let key = self._UIDS[nextIndex]
+            let key=self._UIDS[nextIndex]
             return self._storage[key]
         }
     }
 
+
     open subscript(index: Int) -> Node {
-        let key = _UIDS[index]
-        return _storage[key]!
+        let key=self._UIDS[index]
+        return self._storage[key]!
     }
 
-    open var startIndex: Int {
+    open var startIndex:Int {
         return 0
     }
 
-    open var endIndex: Int {
+    open var endIndex:Int {
         return self._UIDS.count
     }
 
@@ -194,94 +198,98 @@ public extension Notification.Name {
     ///   `endIndex`.
     /// - Returns: The index value immediately after `i`.
     open func index(after i: Int) -> Int {
-        return i + 1
+        return i+1
     }
 
-    open var count: Int {
+
+    open var count:Int {
         return self._storage.count
     }
 
-    open func indexOf(element: @escaping (Node) throws -> Bool) rethrows -> Int? {
-        return _getIndexOf(element as! Collectible)
+    open func indexOf(element:@escaping(Node) throws -> Bool) rethrows -> Int?{
+        return self._getIndexOf(element as! Collectible)
     }
 
-    open func item(at index: Int) -> Collectible? {
-        if index >= 0 && index < _storage.count {
+    open func item(at index:Int)->Collectible?{
+        if index >= 0 && index < self._storage.count{
             return self[index]
-        } else {
-            referentDocument?.log("Index Error \(index)", file: #file, function: #function, line: #line, category: Default.LOG_WARNING, decorative: false)
+        }else{
+            self.referentDocument?.log("Index Error \(index)", file: #file, function: #function, line: #line, category: Default.LOG_WARNING, decorative: false)
         }
         return nil
     }
 
-    fileprivate func _getIndexOf(_ item: Collectible) -> Int? {
-        return _UIDS.index(of: item.UID)
+    fileprivate func _getIndexOf(_ item:Collectible)->Int?{
+        return self._UIDS.index(of: item.UID)
     }
 
     /**
-     An iterator that permit dynamic approaches.
-     - parameter on: the closure
-     */
-    open func superIterate(_ on: @escaping (_ element: Collectible) -> Void) {
-        for UID in _UIDS {
-            let item = _storage[UID]!
+    An iterator that permit dynamic approaches.
+    - parameter on: the closure
+    */
+    open func superIterate(_ on:@escaping(_ element: Collectible)->()){
+        for UID in self._UIDS {
+            let item=self._storage[UID]!
             on(item)
         }
     }
 
+
     /// Commit all the staged changes and planned deletions.
-    open func commitChanges() {
-        if _staged.count > 0 {
-            var changedNodes = [Node]()
-            for itemUID in _staged {
-                if let o: Node = try? Bartleby.registredObjectByUID(itemUID) {
+    open func commitChanges(){
+        if self._staged.count>0{
+            var changedNodes=[Node]()
+            for itemUID in self._staged{
+                if let o:Node = try? Bartleby.registredObjectByUID(itemUID){
                     changedNodes.append(o)
                 }
             }
-            let tobeUpdated = changedNodes.filter { $0.commitCounter > 0 }
-            let toBeCreated = changedNodes.filter { $0.commitCounter == 0 }
-            if toBeCreated.count > 0 {
-                CreateNodes.commit(toBeCreated, in: referentDocument!)
-            }
-            if tobeUpdated.count > 0 {
-                UpdateNodes.commit(tobeUpdated, in: referentDocument!)
-            }
+			let tobeUpdated = changedNodes.filter { $0.commitCounter > 0  }
+			let toBeCreated = changedNodes.filter { $0.commitCounter == 0 }
+			if toBeCreated.count > 0 {
+			    CreateNodes.commit(toBeCreated, in:self.referentDocument!)
+			}
+			if tobeUpdated.count > 0 {
+			    UpdateNodes.commit(tobeUpdated, in:self.referentDocument!)
+			}
 
-            hasBeenCommitted()
-            _staged.removeAll()
+            self.hasBeenCommitted()
+            self._staged.removeAll()
         }
-
-        if _deleted.count > 0 {
-            var toBeDeletedNodes = [Node]()
-            for itemUID in _deleted {
-                if let o: Node = try? Bartleby.registredObjectByUID(itemUID) {
+     
+        if self._deleted.count > 0 {
+            var toBeDeletedNodes=[Node]()
+            for itemUID in self._deleted{
+                if let o:Node = try? Bartleby.registredObjectByUID(itemUID){
                     toBeDeletedNodes.append(o)
                 }
             }
             if toBeDeletedNodes.count > 0 {
-                DeleteNodes.commit(toBeDeletedNodes, from: referentDocument!)
+                DeleteNodes.commit(toBeDeletedNodes, from: self.referentDocument!)
                 Bartleby.unRegister(toBeDeletedNodes)
             }
-            _deleted.removeAll()
+            self._deleted.removeAll()
         }
     }
 
-    open override class var collectionName: String {
+    override open class var collectionName:String{
         return Node.collectionName
     }
 
-    open override var d_collectionName: String {
+    override open var d_collectionName:String{
         return Node.collectionName
     }
+
 
     // MARK: - Exposed (Bartleby's KVC like generative implementation)
 
     /// Return all the exposed instance variables keys. (Exposed == public and modifiable).
-    open override var exposedKeys: [String] {
-        var exposed = super.exposedKeys
-        exposed.append(contentsOf: ["_storage", "_staged"])
+    override open var exposedKeys:[String] {
+        var exposed=super.exposedKeys
+        exposed.append(contentsOf:["_storage","_staged"])
         return exposed
     }
+
 
     /// Set the value of the given key
     ///
@@ -289,20 +297,21 @@ public extension Notification.Name {
     /// - parameter key:   the key
     ///
     /// - throws: throws an Exception when the key is not exposed
-    open override func setExposedValue(_ value: Any?, forKey key: String) throws {
+    override open func setExposedValue(_ value:Any?, forKey key: String) throws {
         switch key {
-        case "_storage":
-            if let casted = value as? [String: Node] {
-                _storage = casted
-            }
-        case "_staged":
-            if let casted = value as? [String] {
-                _staged = casted
-            }
-        default:
-            return try super.setExposedValue(value, forKey: key)
+            case "_storage":
+                if let casted=value as? [String:Node]{
+                    self._storage=casted
+                }
+            case "_staged":
+                if let casted=value as? [String]{
+                    self._staged=casted
+                }
+            default:
+                return try super.setExposedValue(value, forKey: key)
         }
     }
+
 
     /// Returns the value of an exposed key.
     ///
@@ -311,84 +320,93 @@ public extension Notification.Name {
     /// - throws: throws Exception when the key is not exposed
     ///
     /// - returns: returns the value
-    open override func getExposedValueForKey(_ key: String) throws -> Any? {
+    override open func getExposedValueForKey(_ key:String) throws -> Any?{
         switch key {
-        case "_storage":
-            return _storage
-        case "_staged":
-            return _staged
-        default:
-            return try super.getExposedValueForKey(key)
+            case "_storage":
+               return self._storage
+            case "_staged":
+               return self._staged
+            default:
+                return try super.getExposedValueForKey(key)
         }
     }
 
-    // MARK: - Codable
 
-    public enum CodingKeys: String, CodingKey {
-        case _storage
-        case _staged
-        case _deleted
+
+
+
+    
+     // MARK: - Codable
+
+
+    public enum CodingKeys: String,CodingKey{
+		case _storage
+		case _staged
+		case _deleted
     }
 
-    public required init(from decoder: Decoder) throws {
-        try super.init(from: decoder)
-        try quietThrowingChanges {
-            let values = try decoder.container(keyedBy: CodingKeys.self)
-            self._storage = try values.decode([String: Node].self, forKey: ._storage)
-            self._staged = try values.decode([String].self, forKey: ._staged)
-            self._deleted = try values.decode([String].self, forKey: ._deleted)
-            self._rebuildFromStorage()
+    required public init(from decoder: Decoder) throws{
+		try super.init(from: decoder)
+        try self.quietThrowingChanges {
+			let values = try decoder.container(keyedBy: CodingKeys.self)
+			self._storage = try values.decode([String:Node].self,forKey:._storage)
+			self._staged = try values.decode([String].self,forKey:._staged)
+			self._deleted = try values.decode([String].self,forKey:._deleted)
+			self._rebuildFromStorage()
         }
     }
 
-    open override func encode(to encoder: Encoder) throws {
-        try super.encode(to: encoder)
-        var container = encoder.container(keyedBy: CodingKeys.self)
-        try container.encode(_storage, forKey: ._storage)
-        try container.encode(_staged, forKey: ._staged)
-        try container.encode(_deleted, forKey: ._deleted)
+    override open func encode(to encoder: Encoder) throws {
+		try super.encode(to:encoder)
+		var container = encoder.container(keyedBy: CodingKeys.self)
+		try container.encode(self._storage,forKey:._storage)
+		try container.encode(self._staged,forKey:._staged)
+		try container.encode(self._deleted,forKey:._deleted)
     }
+    
+
 
     // MARK: - Upsert
+
 
     /// Updates or creates an item
     ///
     /// - Parameters:
     ///   - item: the Node    ///   - commit: should we commit the `Upsertion`?
     /// - Returns: N/A
-    open func upsert(_ item: Collectible, commit: Bool = true) {
-        do {
-            if _UIDS.contains(item.UID) {
+    open func upsert(_ item: Collectible, commit:Bool=true){
+        do{
+            if self._UIDS.contains(item.UID){
                 // it is an update
                 // we must patch it
-                let currentInstance = _storage[item.UID]!
-                if commit == false {
-                    var catched: Error?
+                let currentInstance=_storage[item.UID]!
+                if commit==false{
+                    var catched:Error?
                     // When upserting from a trigger
                     // We do not want to produce Larsen effect on data.
                     // So we lock the auto commit observer before to merge
                     // And we unlock the autoCommit Observer after the merging.
                     currentInstance.doNotCommit {
-                        do {
+                        do{
                             try currentInstance.mergeWith(item)
-                        } catch {
-                            catched = error
+                        }catch{
+                            catched=error
                         }
                     }
-                    if catched != nil {
+                    if catched != nil{
                         throw catched!
                     }
-                } else {
+                }else{
                     try currentInstance.mergeWith(item)
                 }
-            } else {
+            }else{
                 // It is a creation
-                add(item, commit: commit, isUndoable: false)
+                self.add(item, commit:commit,isUndoable:false)
             }
-        } catch {
-            referentDocument?.log("\(error)", file: #file, function: #function, line: #line, category: Default.LOG_DEFAULT, decorative: false)
+        }catch{
+            self.referentDocument?.log("\(error)", file: #file, function: #function, line: #line, category: Default.LOG_DEFAULT, decorative: false)
         }
-        shouldBeSaved = true
+        self.shouldBeSaved = true
     }
 
     // MARK: Add
@@ -398,9 +416,10 @@ public extension Notification.Name {
     ///   - item: the Node    ///   - commit: should we commit the addition?
     ///   - isUndoable: is the addition reversible by the undo manager?
     /// - Returns: N/A
-    open func add(_ item: Collectible, commit: Bool = true, isUndoable: Bool) {
-        insertObject(item, inItemsAtIndex: _storage.count, commit: commit, isUndoable: isUndoable)
+    open func add(_ item:Collectible, commit:Bool=true,isUndoable:Bool){
+        self.insertObject(item, inItemsAtIndex: _storage.count, commit:commit,isUndoable:isUndoable)
     }
+
 
     /// Ads some items
     ///
@@ -409,40 +428,42 @@ public extension Notification.Name {
     ///   - commit: should we commit the additions?
     ///   - isUndoable: are the additions reversible by the undo manager?
     /// - Returns: N/A
-    open func append(_ items: [Collectible], commit: Bool, isUndoable: Bool) {
-        if let items = items as? [Node] {
-            _items.append(contentsOf: items)
-            for item in items {
+    open func append(_ items:[Collectible],commit:Bool, isUndoable:Bool){
+        if let items  = items as? [Node] {
+            self._items.append(contentsOf:items)
+            for item in items{
                 item.collection = self
-                _UIDS.append(item.UID)
-                _storage[item.UID] = item
+                self._UIDS.append(item.UID)
+                self._storage[item.UID]=item
             }
             #if os(OSX) && !USE_EMBEDDED_MODULES
-                if let arrayController = self.arrayController {
-                    // Re-arrange (in case the user has sorted a column)
-                    arrayController.rearrangeObjects()
-                }
+            if let arrayController = self.arrayController{
+                // Re-arrange (in case the user has sorted a column)
+                arrayController.rearrangeObjects()
+            }
             #endif
-
-            if isUndoable {
+  
+            if isUndoable{
                 // Add the inverse of this invocation to the undo stack
                 if let undoManager: UndoManager = self.undoManager {
-                    beginUndoGrouping()
-                    undoManager.registerUndo(withTarget: self, handler: { targetSelf in
-                        targetSelf.removeObjects(items, commit: commit)
+                    self.beginUndoGrouping()
+                    undoManager.registerUndo(withTarget: self, handler: { (targetSelf) in
+                        targetSelf.removeObjects(items, commit:commit)
                     })
                     if !undoManager.isUndoing {
                         undoManager.setActionName(NSLocalizedString("Add Node", comment: "AddNode undo action"))
                     }
                 }
             }
-            if commit == true {
-                CreateNodes.commit(items, in: referentDocument!)
+            if commit==true {
+               CreateNodes.commit(items, in:self.referentDocument!)
             }
 
-            shouldBeSaved = true
+            self.shouldBeSaved = true
         }
     }
+
+
 
     // MARK: Insert
 
@@ -454,89 +475,92 @@ public extension Notification.Name {
     ///   - commit: should we commit the addition?
     ///   - isUndoable: is the addition reversible by the undo manager?
     /// - Returns: N/A
-    open func insertObject(_ item: Collectible, inItemsAtIndex index: Int, commit: Bool = true, isUndoable: Bool) {
-        if let item = item as? Node {
+    open func insertObject(_ item: Collectible, inItemsAtIndex index: Int, commit:Bool=true,isUndoable:Bool) {
+        if let item = item as? Node{
             item.collection = self
-            _UIDS.insert(item.UID, at: index)
-            _items.insert(item, at: index)
-            _storage[item.UID] = item
-
-            if isUndoable {
+            self._UIDS.insert(item.UID, at: index)
+            self._items.insert(item, at:index)
+            self._storage[item.UID]=item
+  
+            if isUndoable{
                 // Add the inverse of this invocation to the undo stack
                 if let undoManager: UndoManager = self.undoManager {
-                    beginUndoGrouping()
-                    undoManager.registerUndo(withTarget: self, handler: { targetSelf in
-                        targetSelf.removeObjectWithID(item.UID, commit: commit)
+                    self.beginUndoGrouping()
+                    undoManager.registerUndo(withTarget: self, handler: { (targetSelf) in
+                        targetSelf.removeObjectWithID(item.UID, commit:commit)
                     })
                     if !undoManager.isUndoing {
                         undoManager.setActionName(NSLocalizedString("Add Node", comment: "AddNode undo action"))
                     }
                 }
             }
-
+            
             #if os(OSX) && !USE_EMBEDDED_MODULES
-                if let arrayController = self.arrayController {
-                    // Re-arrange (in case the user has sorted a column)
-                    arrayController.rearrangeObjects()
-                }
+            if let arrayController = self.arrayController{
+                // Re-arrange (in case the user has sorted a column)
+                arrayController.rearrangeObjects()
+            }
             #endif
 
-            if commit == true {
-                CreateNode.commit(item, in: referentDocument!)
+            if commit==true {
+               CreateNode.commit(item, in:self.referentDocument!)
             }
-            shouldBeSaved = true
+            self.shouldBeSaved = true
         }
     }
+
+
+
 
     // MARK: Remove
 
     /**
-     Removes an object at a given index from the collection.
+    Removes an object at a given index from the collection.
 
-     - parameter index:  the index in the collection (not the ArrayController arranged object)
-     - parameter commit: should we commit the removal?
-     */
-    open func removeObjectFromItemsAtIndex(_ index: Int, commit: Bool = true) {
-        guard _storage.count > index else {
+    - parameter index:  the index in the collection (not the ArrayController arranged object)
+    - parameter commit: should we commit the removal?
+    */
+    open func removeObjectFromItemsAtIndex(_ index: Int, commit:Bool=true) {
+        guard self._storage.count > index else {
             return
         }
-        let item: Node = self[index]
+        let item : Node =  self[index]
 
-        // Add the inverse of this invocation to the undo stack
+      // Add the inverse of this invocation to the undo stack
         if let undoManager: UndoManager = self.undoManager {
-            beginUndoGrouping()
+            self.beginUndoGrouping()
             // Add the inverse of this invocation to the undo stack
             let serializedData = item.serialize()
-            undoManager.registerUndo(withTarget: self, handler: { targetSelf in
+             undoManager.registerUndo(withTarget: self, handler: { (targetSelf) in
                 targetSelf.addObjectFrom(serializedData)
-            })
+             })
             if !undoManager.isUndoing {
                 undoManager.setActionName(NSLocalizedString("Remove Node", comment: "Remove Node undo action"))
             }
         }
-
+        
         // Remove the item from the collection
-        let UID = item.UID
-        _UIDS.remove(at: index)
-        _items.remove(at: index)
-        _storage.removeValue(forKey: UID)
-        if let stagedIdx = self._staged.index(of: UID) {
-            _staged.remove(at: stagedIdx)
+        let UID=item.UID
+        self._UIDS.remove(at: index)
+        self._items.remove(at: index)
+        self._storage.removeValue(forKey: UID)
+        if let stagedIdx=self._staged.index(of: UID){
+            self._staged.remove(at: stagedIdx)
         }
-
-        if commit == true {
-            _deleted.append(UID)
+    
+        if commit==true{
+           self._deleted.append(UID)
         }
 
         #if os(OSX) && !USE_EMBEDDED_MODULES
-            if let arrayController = self.arrayController {
+            if let arrayController = self.arrayController{
                 // Re-arrange (in case the user has sorted a column)
                 arrayController.rearrangeObjects()
             }
         #endif
 
         try? item.erase()
-        shouldBeSaved = true
+        self.shouldBeSaved = true
     }
 
     /// Add an Object from an opaque serialized Data
@@ -544,47 +568,48 @@ public extension Notification.Name {
     /// Used by the UndoManager.
     ///
     /// - Parameter data: the serialized Object
-    open func addObjectFrom(_ data: Data) {
-        do {
-            if let node: Node = try self.referentDocument?.serializer.deserialize(data, register: true) {
-                if let owners = Bartleby.registredManagedModelByUIDs(node.ownedBy) {
-                    for owner in owners {
+    open func addObjectFrom(_ data:Data){
+        do{
+            if let node:Node = try self.referentDocument?.serializer.deserialize(data,register:true){
+                if let owners = Bartleby.registredManagedModelByUIDs(node.ownedBy){
+                    for owner in owners{
                         // Re associate the relations.
-                        if !owner.owns.contains(node.UID) {
+                        if !owner.owns.contains(node.UID){
                             owner.owns.append(node.UID)
                         }
                     }
                 }
-                add(node, commit: true, isUndoable: false)
+                self.add(node, commit: true, isUndoable:false)
             }
-        } catch {
-            referentDocument?.log("\(error)")
+        }catch{
+            self.referentDocument?.log("\(error)")
         }
     }
 
-    open func removeObjects(_ items: [Collectible], commit: Bool = true) {
-        for item in items {
-            removeObject(item, commit: commit)
+
+    open func removeObjects(_ items: [Collectible],commit:Bool=true){
+        for item in items{
+            self.removeObject(item,commit:commit)
         }
     }
 
-    open func removeObject(_ item: Collectible, commit: Bool = true) {
-        if let instance = item as? Node {
-            if let idx = self._getIndexOf(instance) {
-                removeObjectFromItemsAtIndex(idx, commit: commit)
+    open func removeObject(_ item: Collectible, commit:Bool=true){
+        if let instance=item as? Node{
+            if let idx=self._getIndexOf(instance){
+                self.removeObjectFromItemsAtIndex(idx, commit:commit)
             }
         }
     }
 
-    open func removeObjectWithIDS(_ ids: [String], commit: Bool = true) {
-        for uid in ids {
-            removeObjectWithID(uid, commit: commit)
+    open func removeObjectWithIDS(_ ids: [String],commit:Bool=true){
+        for uid in ids{
+            self.removeObjectWithID(uid,commit:commit)
         }
     }
 
-    open func removeObjectWithID(_ id: String, commit: Bool = true) {
-        if let idx = self.index(where: { $0.UID == id }) {
-            removeObjectFromItemsAtIndex(idx, commit: commit)
+    open func removeObjectWithID(_ id:String, commit:Bool=true){
+        if let idx=self.index(where:{ return $0.UID==id } ){
+            self.removeObjectFromItemsAtIndex(idx, commit:commit)
         }
     }
 
@@ -594,12 +619,12 @@ public extension Notification.Name {
     ///
     /// - Parameter isIncluded: the filtering closure
     /// - Returns: the filtered Collection
-    open func filteredCopy(_ isIncluded: (Collectible) -> Bool) -> CollectibleCollection {
-        let filteredCollection = ManagedNodes()
-        for item in _items {
-            if isIncluded(item) {
+    open func filteredCopy(_ isIncluded: (Collectible)-> Bool) -> CollectibleCollection{
+        let filteredCollection=ManagedNodes()
+        for item in self._items{
+            if isIncluded(item){
                 filteredCollection._UIDS.append(item.UID)
-                filteredCollection._storage[item.UID] = item
+                filteredCollection._storage[item.UID]=item
                 filteredCollection._items.append(item)
             }
         }
@@ -608,102 +633,109 @@ public extension Notification.Name {
 
     // MARK: - Selection management Facilities
 
-    #if os(OSX) && !USE_EMBEDDED_MODULES
 
-        fileprivate var _KVOContext: Int = 0
+#if os(OSX) && !USE_EMBEDDED_MODULES
 
-        // We auto-configure most of the array controller.
-        // And set up  indexes selection observation layer.
-        open weak var arrayController: NSArrayController? {
-            willSet {
-                // Remove observer on previous array Controller
-                arrayController?.removeObserver(self, forKeyPath: "selectionIndexes", context: &self._KVOContext)
-            }
-            didSet {
-                // self.referentDocument?.setValue(self, forKey: "nodes")
-                arrayController?.objectClass = Node.self
-                arrayController?.entityName = Node.className()
-                arrayController?.bind(NSBindingName("content"), to: self, withKeyPath: "_items", options: nil)
-                // Add observer
-                arrayController?.addObserver(self, forKeyPath: "selectionIndexes", options: .new, context: &self._KVOContext)
-                let indexesSet = NSMutableIndexSet()
-                for instanceUID in self._selectedUIDS {
-                    if let idx = self._UIDS.index(of: instanceUID) {
-                        indexesSet.add(idx)
-                    }
-                }
-                arrayController?.setSelectionIndexes(indexesSet as IndexSet)
-            }
+    fileprivate var _KVOContext: Int = 0
+
+    // We auto-configure most of the array controller.
+    // And set up  indexes selection observation layer.
+    open weak var arrayController:NSArrayController? {
+        willSet{
+        // Remove observer on previous array Controller
+            arrayController?.removeObserver(self, forKeyPath: "selectionIndexes", context: &self._KVOContext)
         }
-
-        // KVO on ArrayController selectionIndexes
-
-        // Note :
-        // If you use an ArrayController & Bartleby automation
-        // to modify the current selection you should use the array controller
-        // e.g: referentDocument.nodes.arrayController?.setSelectedObjects(nodes)
-        // Do not use document.nodes.selectedNodes=nodes
-
-        open override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey: Any]?, context: UnsafeMutableRawPointer?) {
-            guard context == &_KVOContext else {
-                // If the context does not match, this message
-                // must be intended for our superclass.
-                super.observeValue(forKeyPath: keyPath, of: object, change: change, context: context)
-                return
-            }
-            if let keyPath = keyPath, let object = object {
-                if keyPath == "selectionIndexes" && (object as? NSArrayController) == arrayController {
-                    if let items = self.arrayController?.selectedObjects as? [Node] {
-                        selectedNodes = items
-                    }
+        didSet{
+            //self.referentDocument?.setValue(self, forKey: "nodes")
+            arrayController?.objectClass=Node.self
+            arrayController?.entityName=Node.className()
+            arrayController?.bind(NSBindingName("content"), to: self, withKeyPath: "_items", options: nil)
+            // Add observer
+            arrayController?.addObserver(self, forKeyPath: "selectionIndexes", options: .new, context: &self._KVOContext)
+            let indexesSet = NSMutableIndexSet()
+            for instanceUID in self._selectedUIDS{
+                if let idx = self._UIDS.index(of:instanceUID){
+                    indexesSet.add(idx)
                 }
             }
-        }
+            arrayController?.setSelectionIndexes(indexesSet as IndexSet)
 
-        deinit {
-            self.arrayController?.removeObserver(self, forKeyPath: "selectionIndexes")
-        }
-
-    #endif
-
-    fileprivate var _selectedUIDS: [String] {
-        set {
-            syncOnMain {
-                if let nodes = self.selectedNodes {
-                    let _selectedUIDS: [String] = nodes.map({ (node) -> String in
-                        node.UID
-                    })
-                    self.referentDocument?.metadata.saveStateOf(_selectedUIDS, identified: self.selectedNodesUIDSKeys)
-                }
-            }
-        }
-        get {
-            return syncOnMainAndReturn { () -> [String] in
-                self.referentDocument?.metadata.getStateOf(identified: self.selectedNodesUIDSKeys) ?? [String]()
-            }
         }
     }
 
-    open let selectedNodesUIDSKeys = "selectedNodesUIDSKeys"
+    // KVO on ArrayController selectionIndexes
 
     // Note :
     // If you use an ArrayController & Bartleby automation
     // to modify the current selection you should use the array controller
     // e.g: referentDocument.nodes.arrayController?.setSelectedObjects(nodes)
-    @objc open dynamic var selectedNodes: [Node]? {
-        didSet {
+    // Do not use document.nodes.selectedNodes=nodes
+
+    override open func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey : Any]?, context: UnsafeMutableRawPointer?) {
+        guard context == &_KVOContext else {
+            // If the context does not match, this message
+            // must be intended for our superclass.
+            super.observeValue(forKeyPath: keyPath, of: object, change: change, context: context)
+            return
+        }
+        if let keyPath = keyPath, let object = object {
+            if keyPath=="selectionIndexes" &&  (object as? NSArrayController) == self.arrayController {
+                if let items = self.arrayController?.selectedObjects as? [Node] {
+                    self.selectedNodes=items
+                }
+            }
+        }
+    }
+
+
+    deinit{
+        self.arrayController?.removeObserver(self, forKeyPath: "selectionIndexes")
+    }
+
+#endif
+
+
+    fileprivate var _selectedUIDS:[String]{
+        set{
+            syncOnMain {
+                if let nodes = self.selectedNodes {
+                    let _selectedUIDS:[String]=nodes.map({ (node) -> String in
+                        return node.UID
+                    })
+                    self.referentDocument?.metadata.saveStateOf(_selectedUIDS, identified: self.selectedNodesUIDSKeys)
+                }
+            }
+        }
+        get{
+            return syncOnMainAndReturn{ () -> [String] in
+                return self.referentDocument?.metadata.getStateOf(identified: self.selectedNodesUIDSKeys) ?? [String]()
+            }
+        }
+    }
+
+    open let selectedNodesUIDSKeys="selectedNodesUIDSKeys"
+
+    // Note :
+    // If you use an ArrayController & Bartleby automation
+    // to modify the current selection you should use the array controller
+    // e.g: referentDocument.nodes.arrayController?.setSelectedObjects(nodes)
+    @objc dynamic open var selectedNodes:[Node]?{
+        didSet{
             syncOnMain {
                 if let nodes = selectedNodes {
-                    let UIDS: [String] = nodes.map({ (node) -> String in
-                        node.UID
+                    let UIDS:[String]=nodes.map({ (node) -> String in
+                        return node.UID
                     })
                     self._selectedUIDS = UIDS
                 }
-                NotificationCenter.default.post(name: Notification.Name.Nodes.selectionChanged, object: nil)
+                NotificationCenter.default.post(name:Notification.Name.Nodes.selectionChanged, object: nil)
             }
         }
     }
 
     // A facility
-    open var firstSelectedNode: Node? { return selectedNodes?.first }
+    open var firstSelectedNode:Node? { return self.selectedNodes?.first }
+
+
+
 }

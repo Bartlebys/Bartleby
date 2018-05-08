@@ -8,7 +8,8 @@
 
 import Foundation
 
-public enum KeySize {
+
+public enum KeySize{
     case s128bits
     case s192bits
     case s256bits

@@ -8,32 +8,39 @@
 
 import Foundation
 
+
 // Box Delegation is related to synchronization
 // and content replacement
-public protocol BoxDelegate {
-    /// BSFS sends to BoxDelegate
-    /// The delegate invokes proceed asynchronously giving the time to perform required actions
-    ///
-    /// - Parameter node: the node that will be moved or copied
-    func moveIsReady(node: Node, to relativePath: String, proceed: () -> Void)
+public protocol BoxDelegate{
+
 
     /// BSFS sends to BoxDelegate
     /// The delegate invokes proceed asynchronously giving the time to perform required actions
     ///
     /// - Parameter node: the node that will be moved or copied
-    func copyIsReady(node: Node, to relativePath: String, proceed: () -> Void)
+    func moveIsReady(node:Node,to relativePath:String,proceed:()->())
+
+
+    /// BSFS sends to BoxDelegate
+    /// The delegate invokes proceed asynchronously giving the time to perform required actions
+    ///
+    /// - Parameter node: the node that will be moved or copied
+    func copyIsReady(node:Node,to relativePath:String,proceed:()->())
+
 
     /// BSFS sends to BoxDelegate
     /// The delegate invokes proceed asynchronously giving the time to perform required actions
     ///
     /// - Parameter node: the node that will be Updated
-    func deletionIsReady(node: Node, proceed: () -> Void)
+    func deletionIsReady(node:Node,proceed:()->())
+
 
     /// BSFS sends to BoxDelegate
     /// The delegate invokes proceed asynchronously giving the time to perform required actions
     ///
     /// - Parameter node: the node that will be Updated
-    func nodeIsReady(node: Node, proceed: () -> Void)
+    func nodeIsReady(node:Node,proceed:()->())
+
 
     /// Should we allow the replacement of content node
     ///
@@ -42,5 +49,7 @@ public protocol BoxDelegate {
     ///   - path: the path
     ///   - accessor: the accessor
     /// - Returns: true if allowed respond false by default (override required)
-    func allowReplaceContent(of node: Node, withContentAt path: String, by accessor: NodeAccessor) -> Bool
+    func allowReplaceContent(of node:Node, withContentAt path:String, by accessor:NodeAccessor)->Bool
+    
+    
 }

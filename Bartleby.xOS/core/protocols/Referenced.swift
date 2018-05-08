@@ -8,6 +8,6 @@
 
 import Foundation
 
-public protocol Referenced {
-    var referentDocument: BartlebyDocument? { get set }
+public protocol Referenced{
+    var referentDocument:BartlebyDocument? { get set }
 }

@@ -8,10 +8,13 @@
 
 import Foundation
 
-public enum DocumentStates: StateMessage {
+
+public enum DocumentStates:StateMessage{
+    
     case collectionsDataHasBeenDecrypted
     case documentWillSave
     case documentDidSave
 
     case cleanUp
+
 }

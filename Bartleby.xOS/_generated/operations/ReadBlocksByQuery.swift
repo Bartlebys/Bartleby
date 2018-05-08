@@ -10,33 +10,33 @@
 //
 import Foundation
 #if !USE_EMBEDDED_MODULES
-    import Alamofire
+	import Alamofire
 #endif
-@objc public class ReadBlocksByQueryParameters: ManagedModel {
-    // Universal type support
-    open override class func typeName() -> String {
-        return "ReadBlocksByQueryParameters"
-    }
+@objc public class ReadBlocksByQueryParameters : ManagedModel {
+		// Universal type support
+	override open class func typeName() -> String {
+		 return "ReadBlocksByQueryParameters"
+	}
+	// 
+	public var result_fields:[String]?
+	// the sort (MONGO DB)
+	public var sort:[String:Int] = [String:Int]()
+	// the query (MONGO DB)
+	public var query:[String:String] = [String:String]()
 
-    //
-    public var result_fields: [String]?
-    // the sort (MONGO DB)
-    public var sort: [String: Int] = [String: Int]()
-    // the query (MONGO DB)
-    public var query: [String: String] = [String: String]()
-
-    public required init() {
+    required public init(){
         super.init()
     }
 
     // MARK: - Exposed (Bartleby's KVC like generative implementation)
 
     /// Return all the exposed instance variables keys. (Exposed == public and modifiable).
-    open override var exposedKeys: [String] {
-        var exposed = super.exposedKeys
-        exposed.append(contentsOf: ["result_fields", "sort", "query"])
+    override  open var exposedKeys:[String] {
+        var exposed=super.exposedKeys
+        exposed.append(contentsOf:["result_fields","sort","query"])
         return exposed
     }
+
 
     /// Set the value of the given key
     ///
@@ -44,24 +44,25 @@ import Foundation
     /// - parameter key:   the key
     ///
     /// - throws: throws an Exception when the key is not exposed
-    open override func setExposedValue(_ value: Any?, forKey key: String) throws {
+    override  open func setExposedValue(_ value:Any?, forKey key: String) throws {
         switch key {
-        case "result_fields":
-            if let casted = value as? [String] {
-                result_fields = casted
-            }
-        case "sort":
-            if let casted = value as? [String: Int] {
-                sort = casted
-            }
-        case "query":
-            if let casted = value as? [String: String] {
-                query = casted
-            }
-        default:
-            return try super.setExposedValue(value, forKey: key)
+            case "result_fields":
+                if let casted=value as? [String]{
+                    self.result_fields=casted
+                }
+            case "sort":
+                if let casted=value as? [String:Int]{
+                    self.sort=casted
+                }
+            case "query":
+                if let casted=value as? [String:String]{
+                    self.query=casted
+                }
+            default:
+                return try super.setExposedValue(value, forKey: key)
         }
     }
+
 
     /// Returns the value of an exposed key.
     ///
@@ -70,154 +71,159 @@ import Foundation
     /// - throws: throws Exception when the key is not exposed
     ///
     /// - returns: returns the value
-    open override func getExposedValueForKey(_ key: String) throws -> Any? {
+    override  open func getExposedValueForKey(_ key:String) throws -> Any?{
         switch key {
-        case "result_fields":
-            return result_fields
-        case "sort":
-            return sort
-        case "query":
-            return query
-        default:
-            return try super.getExposedValueForKey(key)
+            case "result_fields":
+               return self.result_fields
+            case "sort":
+               return self.sort
+            case "query":
+               return self.query
+            default:
+                return try super.getExposedValueForKey(key)
         }
     }
-
     // MARK: - Codable
 
-    public enum CodingKeys: String, CodingKey {
-        case result_fields
-        case sort
-        case query
+
+    public enum CodingKeys: String,CodingKey{
+		case result_fields
+		case sort
+		case query
     }
 
-    public required init(from decoder: Decoder) throws {
-        try super.init(from: decoder)
-        try quietThrowingChanges {
-            let values = try decoder.container(keyedBy: CodingKeys.self)
-            self.result_fields = try values.decodeIfPresent([String].self, forKey: .result_fields)
-            self.sort = try values.decode([String: Int].self, forKey: .sort)
-            self.query = try values.decode([String: String].self, forKey: .query)
+    required public init(from decoder: Decoder) throws{
+		try super.init(from: decoder)
+        try self.quietThrowingChanges {
+			let values = try decoder.container(keyedBy: CodingKeys.self)
+			self.result_fields = try values.decodeIfPresent([String].self,forKey:.result_fields)
+			self.sort = try values.decode([String:Int].self,forKey:.sort)
+			self.query = try values.decode([String:String].self,forKey:.query)
         }
     }
 
-    open override func encode(to encoder: Encoder) throws {
-        try super.encode(to: encoder)
-        var container = encoder.container(keyedBy: CodingKeys.self)
-        try container.encodeIfPresent(result_fields, forKey: .result_fields)
-        try container.encode(sort, forKey: .sort)
-        try container.encode(query, forKey: .query)
+    override open func encode(to encoder: Encoder) throws {
+		try super.encode(to:encoder)
+		var container = encoder.container(keyedBy: CodingKeys.self)
+		try container.encodeIfPresent(self.result_fields,forKey:.result_fields)
+		try container.encode(self.sort,forKey:.sort)
+		try container.encode(self.query,forKey:.query)
     }
+
 }
 
-@objc(ReadBlocksByQuery) open class ReadBlocksByQuery: ManagedModel {
+@objc(ReadBlocksByQuery) open class ReadBlocksByQuery : ManagedModel{
+
     // Universal type support
-    open override class func typeName() -> String {
-        return "ReadBlocksByQuery"
+    override open class func typeName() -> String {
+           return "ReadBlocksByQuery"
     }
 
-    public static func execute(from documentUID: String,
-                               parameters: ReadBlocksByQueryParameters,
-                               sucessHandler success: @escaping (_ blocks: [Block]) -> Void,
-                               failureHandler failure: @escaping (_ context: HTTPContext) -> Void) {
+
+    public static func execute(from documentUID:String,
+						parameters:ReadBlocksByQueryParameters,
+						sucessHandler success:@escaping(_ blocks:[Block])->(),
+						failureHandler failure:@escaping(_ context:HTTPContext)->()){
+	
         if let document = Bartleby.sharedInstance.getDocumentByUID(documentUID) {
-            let pathURL = document.baseURL.appendingPathComponent("blocksByQuery")
-            let dictionary: [String: Any]? = parameters.dictionaryRepresentation()
-            let urlRequest = HTTPManager.requestWithToken(inDocumentWithUID: document.UID, withActionName: "ReadBlocksByQuery", forMethod: "GET", and: pathURL)
-
+            let pathURL=document.baseURL.appendingPathComponent("blocksByQuery")
+            let dictionary:[String:Any]? = parameters.dictionaryRepresentation()
+            let urlRequest=HTTPManager.requestWithToken(inDocumentWithUID:document.UID,withActionName:"ReadBlocksByQuery" ,forMethod:"GET", and: pathURL)
+            
             do {
-                let r = try URLEncoding().encode(urlRequest, with: dictionary)
-                request(r).responseData(completionHandler: { response in
-
-                    let request = response.request
-                    let result = response.result
-                    let timeline = response.timeline
-                    let statusCode = response.response?.statusCode ?? 0
-
-                    let context = HTTPContext(code: 1_393_776_414,
-                                              caller: "ReadBlocksByQuery.execute",
-                                              relatedURL: request?.url,
-                                              httpStatusCode: statusCode)
-
-                    if let request = request {
-                        context.request = HTTPRequest(urlRequest: request)
+                let r=try URLEncoding().encode(urlRequest,with:dictionary)
+                request(r).responseData(completionHandler: { (response) in
+                  
+                    let request=response.request
+                    let result=response.result
+                    let timeline=response.timeline
+                    let statusCode=response.response?.statusCode ?? 0
+                    
+                    let context = HTTPContext( code: 1393776414,
+                        caller: "ReadBlocksByQuery.execute",
+                        relatedURL:request?.url,
+                        httpStatusCode: statusCode)
+                        
+                    if let request=request{
+                        context.request=HTTPRequest(urlRequest: request)
                     }
 
                     if let data = response.data, let utf8Text = String(data: data, encoding: .utf8) {
-                        context.responseString = utf8Text
+                        context.responseString=utf8Text
                     }
 
-                    let metrics = Metrics()
-                    metrics.httpContext = context
-                    metrics.operationName = "ReadBlocksByQuery"
-                    metrics.latency = timeline.latency
-                    metrics.requestDuration = timeline.requestDuration
-                    metrics.serializationDuration = timeline.serializationDuration
-                    metrics.totalDuration = timeline.totalDuration
-                    document.report(metrics)
+					let metrics=Metrics()
+					metrics.httpContext=context
+					metrics.operationName="ReadBlocksByQuery"
+					metrics.latency=timeline.latency
+					metrics.requestDuration=timeline.requestDuration
+					metrics.serializationDuration=timeline.serializationDuration
+					metrics.totalDuration=timeline.totalDuration
+					document.report(metrics)
 
                     // React according to the situation
-                    var reactions = Array<Reaction>()
-
+                    var reactions = Array<Reaction> ()
+            
                     if result.isFailure {
-                        let failureReaction = Reaction.dispatchAdaptiveMessage(
+                       let failureReaction =  Reaction.dispatchAdaptiveMessage(
                             context: context,
-                            title: NSLocalizedString("Unsuccessfull attempt", comment: "Unsuccessfull attempt"),
-                            body: "\(String(describing: result.value))\n\(#file)\n\(#function)\nhttp Status code: (\(statusCode))",
-                            transmit: { (_) -> Void in
+                            title: NSLocalizedString("Unsuccessfull attempt",comment: "Unsuccessfull attempt"),
+                            body:"\(String(describing: result.value))\n\(#file)\n\(#function)\nhttp Status code: (\(statusCode))",
+                            transmit:{ (selectedIndex) -> () in
                         })
                         reactions.append(failureReaction)
                         failure(context)
-
-                    } else {
-                        if 200 ... 299 ~= statusCode {
-                            do {
-                                if let data = response.data {
-                                    let instance = try JSON.decoder.decode([Block].self, from: data)
-                                    success(instance)
-                                } else {
-                                    throw BartlebyOperationError.dataNotFound
-                                }
-                            } catch {
-                                let failureReaction = Reaction.dispatchAdaptiveMessage(
-                                    context: context,
-                                    title: "\(error)",
-                                    body: "\(String(describing: result.value))\n\(#file)\n\(#function)\nhttp Status code: (\(statusCode))",
-                                    transmit: { (_) -> Void in
-                                })
-                                reactions.append(failureReaction)
-                                failure(context)
-                            }
-                        } else {
+            
+                    }else{
+                          if 200...299 ~= statusCode {
+	                        do{
+	                            if let data = response.data{
+	                                let instance = try JSON.decoder.decode([Block].self,from:data)
+	                                success(instance)
+	                              }else{
+	                                throw BartlebyOperationError.dataNotFound
+	                              }
+	                            }catch{
+	                                let failureReaction =  Reaction.dispatchAdaptiveMessage(
+	                                    context: context,
+	                                    title:"\(error)",
+	                                    body: "\(String(describing: result.value))\n\(#file)\n\(#function)\nhttp Status code: (\(statusCode))",
+	                                    transmit: { (selectedIndex) -> () in
+	                                })
+	                                reactions.append(failureReaction)
+	                                failure(context)
+	                            }
+                         }else{
                             // Bartlby does not currenlty discriminate status codes 100 & 101
                             // and treats any status code >= 300 the same way
                             // because we consider that failures differentiations could be done by the caller.
-                            let failureReaction = Reaction.dispatchAdaptiveMessage(
+                            let failureReaction =  Reaction.dispatchAdaptiveMessage(
                                 context: context,
-                                title: NSLocalizedString("Unsuccessfull attempt", comment: "Unsuccessfull attempt"),
-                                body: "\(String(describing: result.value))\n\(#file)\n\(#function)\nhttp Status code: (\(statusCode))",
-                                transmit: { (_) -> Void in
+                                title: NSLocalizedString("Unsuccessfull attempt",comment: "Unsuccessfull attempt"),
+                                body:"\(String(describing: result.value))\n\(#file)\n\(#function)\nhttp Status code: (\(statusCode))",
+                                transmit:{ (selectedIndex) -> () in
                             })
-                            reactions.append(failureReaction)
-                            failure(context)
+                           reactions.append(failureReaction)
+                           failure(context)
                         }
-                    }
-                    // Let s react according to the context.
-                    document.perform(reactions, forContext: context)
-                })
-            } catch {
-                let context = HTTPContext(code: 2,
-                                          caller: "ReadBlocksByQuery.execute",
-                                          relatedURL: nil,
-                                          httpStatusCode: 500)
+                        
+                 }
+                 //Let s react according to the context.
+                 document.perform(reactions, forContext: context)
+            })
+        }catch{
+                let context = HTTPContext( code:2 ,
+                caller: "ReadBlocksByQuery.execute",
+                relatedURL:nil,
+                httpStatusCode:500)
                 failure(context)
-            }
-        } else {
-            let context = HTTPContext(code: 1,
-                                      caller: "ReadBlocksByQuery.execute",
-                                      relatedURL: nil,
-                                      httpStatusCode: 417)
-            failure(context)
         }
+      }else{
+         let context = HTTPContext( code: 1,
+                caller: "ReadBlocksByQuery.execute",
+                relatedURL:nil,
+                httpStatusCode: 417)
+         failure(context)
+       }
     }
 }

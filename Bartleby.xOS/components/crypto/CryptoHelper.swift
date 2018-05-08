@@ -9,45 +9,49 @@
 import Foundation
 
 /*
- This is a simple wrapper built on the top of CommonCrypto.
- You must `#import <CommonCrypto/CommonCrypto.h>` in a Bridging headera to use it.
+    This is a simple wrapper built on the top of CommonCrypto.
+    You must `#import <CommonCrypto/CommonCrypto.h>` in a Bridging headera to use it.
 
- Note on Strings:
+    Note on Strings: 
+    
+    **IMPORTANT!**
+    Don't use EncryptData, DecryptData on Utf8 strings.
 
- **IMPORTANT!**
- Don't use EncryptData, DecryptData on Utf8 strings.
+    Always Use symetric calls :
 
- Always Use symetric calls :
-
- - 'encryptString' / 'decryptString' if you need for example to copy and paste the sample
- - 'encryptStringToData' / 'decryptStringFromData' for example for faster serialization
+    - 'encryptString' / 'decryptString' if you need for example to copy and paste the sample
+    - 'encryptStringToData' / 'decryptStringFromData' for example for faster serialization
 
  */
 open class CryptoHelper: NSObject, CryptoDelegate {
+
     /// The salt is used in conjunction with the key (for initialization vector...)
     let salt: String
 
     // Options
-    var options: CCOptions = UInt32(kCCOptionPKCS7Padding)
+    var options: CCOptions=UInt32(kCCOptionPKCS7Padding)
 
-    var _keySize = kCCKeySizeAES128
+    var _keySize=kCCKeySizeAES128
+
 
     /// The designated initializer
     ///
     /// - Parameters:
     ///   - key: the key to use
     ///   - salt: the salf
-    public init(salt: String = "ea1f-56cb-41cf-59bf-6b09-87e8-2aca-5dfz", keySize: KeySize = .s128bits) {
-        self.salt = salt
+    public init(salt: String="ea1f-56cb-41cf-59bf-6b09-87e8-2aca-5dfz",keySize:KeySize = .s128bits) {
+        self.salt=salt
         switch keySize {
         case .s128bits:
-            _keySize = kCCKeySizeAES128
+            self._keySize=kCCKeySizeAES128
         case .s192bits:
-            _keySize = kCCKeySizeAES192
+            self._keySize=kCCKeySizeAES192
         case .s256bits:
-            _keySize = kCCKeySizeAES256
+            self._keySize=kCCKeySizeAES256
         }
     }
+
+
 
     /// The CryptoErrors
     ///
@@ -57,10 +61,12 @@ open class CryptoHelper: NSObject, CryptoDelegate {
     /// - decryptBase64Failure: a base 64 decoding error
     enum CryptoError: Error {
         case keyIsInvalid
-        case errorWithStatusCode(cryptStatus: Int)
-        case codingError(message: String)
+        case errorWithStatusCode(cryptStatus:Int)
+        case codingError(message:String)
         case decryptBase64Failure
     }
+
+
 
     // MARK: - Encryption + Base64 encoding / decoding
 
@@ -73,14 +79,14 @@ open class CryptoHelper: NSObject, CryptoDelegate {
 
      - returns: A base 64 string representing a crypted buffer (eg. suitable for copy and paste)
      */
-    open func encryptString(_ string: String, useKey: String) throws -> String {
-        if let data = string.data(using: String.Encoding.utf8, allowLossyConversion: false) {
-            let crypted = try encryptData(data, useKey: useKey)
+    open func encryptString(_ string: String,useKey:String) throws ->String {
+        if let data=string.data(using: String.Encoding.utf8, allowLossyConversion:false) {
+            let crypted=try encryptData(data,useKey: useKey)
             // (!) IMPORTANT
             // the crypted data may produces invalid UTF8 data producing nil Strings
             // We need to base64 encode any NSData.
-            let b64Data = crypted.base64EncodedData(options: .endLineWithCarriageReturn)
-            if let cryptedString = String(data: b64Data, encoding: String.Encoding.utf8) {
+            let b64Data=crypted.base64EncodedData(options: .endLineWithCarriageReturn)
+            if let cryptedString=String(data: b64Data, encoding:String.Encoding.utf8) {
                 return cryptedString
             } else {
                 throw CryptoError.codingError(message: "Invalid crypted data (not UTF8)")
@@ -99,20 +105,21 @@ open class CryptoHelper: NSObject, CryptoDelegate {
 
      - returns: A string
      */
-    open func decryptString(_ string: String, useKey: String) throws -> String {
-        if let data = string.data(using: String.Encoding.utf8, allowLossyConversion: false) {
-            if let b64Data = Data(base64Encoded: data, options: [.ignoreUnknownCharacters]) {
-                let decrypted = try decryptData(b64Data, useKey: useKey)
-                if let decryptedString = String(data: decrypted, encoding: String.Encoding.utf8) {
+    open func decryptString(_ string: String,useKey:String) throws ->String {
+        if let data=string.data(using: String.Encoding.utf8, allowLossyConversion:false) {
+            if let b64Data=Data(base64Encoded: data, options: [.ignoreUnknownCharacters]) {
+                let decrypted=try decryptData(b64Data,useKey: useKey)
+                if let decryptedString=String(data: decrypted, encoding:String.Encoding.utf8) {
                     return decryptedString
-                } else {
-                    throw CryptoError.codingError(message: "utf8 decoding error (decrypted string)")
+                }else{
+                     throw CryptoError.codingError(message: "utf8 decoding error (decrypted string)")
                 }
             }
             throw CryptoError.decryptBase64Failure
         }
         throw CryptoError.codingError(message: "utf8 decoding error")
     }
+
 
     // MARK: - Raw Data encryption
 
@@ -125,8 +132,8 @@ open class CryptoHelper: NSObject, CryptoDelegate {
 
      - returns: An encrypted buffer
      */
-    open func encryptData(_ data: Data, useKey: String) throws -> Data {
-        return try _proceedTo(CCOperation(kCCEncrypt), on: data, useKey: useKey)
+    open func encryptData(_ data: Data,useKey:String) throws ->Data {
+        return try self._proceedTo(CCOperation(kCCEncrypt), on: data,useKey: useKey)
     }
 
     /**
@@ -138,27 +145,29 @@ open class CryptoHelper: NSObject, CryptoDelegate {
 
      - returns: A decrypted buffer
      */
-    open func decryptData(_ data: Data, useKey: String) throws -> Data {
-        return try _proceedTo(CCOperation(kCCDecrypt), on: data, useKey: useKey)
+    open func decryptData(_ data: Data,useKey:String) throws ->Data {
+        return try self._proceedTo(CCOperation(kCCDecrypt), on:data,useKey: useKey)
     }
+
 
     // MARK: - String encryption without reencoding
 
     // (the crypted data is not a valid String but this approach is faster)
 
-    public func encryptStringToData(_ string: String, useKey: String) throws -> Data {
-        if let data = string.data(using: .utf8) {
-            return try encryptData(data, useKey: useKey)
-        } else {
+    public func encryptStringToData(_ string:String,useKey:String)throws->Data{
+        if let data=string.data(using: .utf8){
+            return try encryptData(data,useKey: useKey)
+        }else{
             throw CryptoError.codingError(message: "UTF8 encoding issue")
         }
     }
 
-    public func decryptStringFromData(_ data: Data, useKey: String) throws -> String {
-        let decrypted = try decryptData(data, useKey: useKey)
-        if let string = String(data: decrypted, encoding: .utf8) {
+    
+    public func decryptStringFromData(_ data:Data,useKey:String)throws->String{
+        let decrypted = try decryptData(data,useKey:useKey)
+        if let string = String(data: decrypted, encoding:.utf8){
             return string
-        } else {
+        }else{
             throw CryptoError.codingError(message: "UTF8 decoding issue")
         }
     }
@@ -169,11 +178,14 @@ open class CryptoHelper: NSObject, CryptoDelegate {
         return string.md5
     }
 
+
+
     // MARK: - Crypt operation
 
-    fileprivate func _proceedTo(_ operation: CCOperation, on data: Data, useKey: String) throws -> Data {
-        if let d = useKey.data(using: Default.STRING_ENCODING, allowLossyConversion: false) {
-            let data = try _cryptOperation(data, keyData: d, operation: operation)
+
+    fileprivate func _proceedTo(_ operation: CCOperation, on data: Data,useKey:String) throws ->Data {
+        if let d=useKey.data(using: Default.STRING_ENCODING, allowLossyConversion:false) {
+            let data = try self._cryptOperation(data, keyData: d, operation: operation)
             return data
         } else {
             throw CryptoError.keyIsInvalid
@@ -191,24 +203,24 @@ open class CryptoHelper: NSObject, CryptoDelegate {
     fileprivate func _cryptOperation(_ data: Data, keyData: Data, operation: CCOperation) throws -> Data {
         let keyBytes = (keyData as NSData).bytes.bindMemory(to: UInt8.self, capacity: keyData.count)
         let dataLength = Int(data.count)
-        let dataBytes = (data as NSData).bytes.bindMemory(to: UInt8.self, capacity: data.count)
+        let dataBytes  = (data as NSData).bytes.bindMemory(to: UInt8.self, capacity: data.count)
         let outData: NSMutableData! = NSMutableData(length: Int(dataLength) + kCCBlockSizeAES128)
         let cryptPointer = UnsafeMutableRawPointer(outData.mutableBytes)
-        let cryptLength = size_t(outData.length)
-        let keyLength = size_t(_keySize)
+        let cryptLength  = size_t(outData.length)
+        let keyLength    = size_t(_keySize)
         let algoritm: CCAlgorithm = UInt32(kCCAlgorithmAES)
         var numBytesProcessed: size_t = 0
         let cryptStatus = CCCrypt(operation,
-                                  algoritm,
-                                  options,
-                                  keyBytes,
-                                  keyLength,
-                                  nil, // We donnot use an initialization vector
-                                  dataBytes,
-                                  dataLength,
-                                  cryptPointer,
-                                  cryptLength,
-                                  &numBytesProcessed)
+            algoritm,
+            options,
+            keyBytes,
+            keyLength,
+            nil, // We donnot use an initialization vector
+            dataBytes,
+            dataLength,
+            cryptPointer,
+            cryptLength,
+            &numBytesProcessed)
         if UInt32(cryptStatus) == UInt32(kCCSuccess) {
             outData.length = Int(numBytesProcessed)
             return outData as Data
@@ -216,4 +228,6 @@ open class CryptoHelper: NSObject, CryptoDelegate {
             throw CryptoError.errorWithStatusCode(cryptStatus: Int(cryptStatus))
         }
     }
+
 }
+

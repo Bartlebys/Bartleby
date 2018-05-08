@@ -1,4 +1,4 @@
-//
+    //
 //  main.swift
 //  bartleby
 //
@@ -8,10 +8,10 @@
 
 import Foundation
 
-// Instanciate the facade
-let facade = BartlebysCommandFacade()
+//Instanciate the facade
+let facade=BartlebysCommandFacade()
 facade.actOnArguments()
 
-var holdOn = true
-let runLoop = RunLoop.current
-while holdOn && runLoop.run(mode: RunLoopMode.defaultRunLoopMode, before: NSDate.distantFuture) {}
+var holdOn=true
+let runLoop=RunLoop.current
+while (holdOn && runLoop.run(mode: RunLoopMode.defaultRunLoopMode, before: NSDate.distantFuture) ) {}

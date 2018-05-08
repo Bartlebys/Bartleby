@@ -8,27 +8,31 @@
 
 import Foundation
 
-extension ManagedModel: JSONString {
+extension ManagedModel:JSONString{
 
-    // MARK: -  JSONString
+    // MARK:-  JSONString
 
-    open func toJSONString(_ prettyPrint: Bool) -> String {
+    open func toJSONString(_ prettyPrint:Bool)->String{
         let encoder = prettyPrint ? JSON.prettyEncoder : JSON.encoder
-        do {
+        do{
             let data = try encoder.encode(self)
             return data.optionalString(using: Default.STRING_ENCODING) ?? Default.DESERIALIZATION_HAS_FAILED
-        } catch {
+        }catch{
             return Default.DESERIALIZATION_HAS_FAILED
         }
     }
 
+
     // MARK: - CustomStringConvertible
 
-    open override var description: String {
-        if self is Descriptible {
-            return (self as! Descriptible).toString()
-        } else {
-            return toJSONString(true)
+    override open var description: String {
+        get {
+            if self is Descriptible {
+                return (self as! Descriptible).toString()
+            }else{
+                return self.toJSONString(true)
+            }
         }
     }
+    
 }

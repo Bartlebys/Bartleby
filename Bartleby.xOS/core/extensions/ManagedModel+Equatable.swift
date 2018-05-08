@@ -15,13 +15,16 @@ import Foundation
 // So we have decided to create global functions equalityOf(...)
 // The Equatable implementation relies on this function
 
-extension ManagedModel {
-    public static func == (lhs: ManagedModel, rhs: ManagedModel) -> Bool {
+
+extension ManagedModel{
+    public static func ==(lhs: ManagedModel, rhs: ManagedModel) -> Bool {
         return equalityOf(lhs, rhs)
     }
 }
 
-public func equalityOf(_ lhs: ManagedModel?, _ rhs: ManagedModel?) -> Bool {
+public func equalityOf(_ lhs: ManagedModel?, _ rhs: ManagedModel?)-> Bool {
     let equality = lhs?.UID == rhs?.UID
     return equality
 }
+
+

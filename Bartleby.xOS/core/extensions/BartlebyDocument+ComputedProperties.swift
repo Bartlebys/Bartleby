@@ -8,27 +8,37 @@
 
 import Foundation
 
-public extension BartlebyDocument {
+
+public extension BartlebyDocument{
+
     // This is the BartlebyDocument UID
-    public var UID: String {
-        return metadata.persistentUID
+    public var UID:String{
+        get{
+            return self.metadata.persistentUID
+        }
     }
 
     // The spaceUID can be shared between multiple documents-registries
     // It defines a dataSpace in wich a user can perform operations.
     // A user can `live` in one data space only.
     public var spaceUID: String {
-        return metadata.spaceUID
-    }
-
-    /// The current document user
-    @objc public dynamic var currentUser: User {
-        if let currentUser = self.metadata.currentUser {
-            return currentUser
-        } else {
-            return User()
+        get {
+            return self.metadata.spaceUID
         }
     }
+
+
+    /// The current document user
+    @objc dynamic public var currentUser: User {
+        get {
+            if let currentUser=self.metadata.currentUser {
+                return currentUser
+            } else {
+                return User()
+            }
+        }
+    }
+
 
     // The file extension for crypted data
     public static var DATA_EXTENSION: String { return (Bartleby.cryptoDelegate is NoCrypto) ? ".json" : ".data" }
@@ -40,7 +50,8 @@ public extension BartlebyDocument {
     internal var _bsfsDataFileName: String { return "bsfs" + BartlebyDocument.DATA_EXTENSION }
 
     // The collection server base URL
-    @objc public dynamic var baseURL: URL {
-        return metadata.collaborationServerURL ?? Bartleby.configuration.API_BASE_URL
+    @objc public dynamic var baseURL:URL{
+        return self.metadata.collaborationServerURL ?? Bartleby.configuration.API_BASE_URL
     }
+    
 }

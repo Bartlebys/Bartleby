@@ -6,47 +6,49 @@
 //  Copyright © 2017 Chaosmos SAS. All rights reserved.
 //
 
-import BartlebyKit
 import Cocoa
+import BartlebyKit
 
 open class ConfirmUpdatePasswordActivationCode: StepViewController {
-    @IBOutlet var consignsLabel: NSTextField!
 
-    @IBOutlet var messageTextField: NSTextField!
+    @IBOutlet weak var consignsLabel: NSTextField!
 
-    @IBOutlet var codeTextField: NSTextField!
+    @IBOutlet weak var messageTextField: NSTextField!
 
-    var code = Bartleby.randomStringWithLength(8, signs: Bartleby.configuration.PASSWORD_CHAR_CART)
+    @IBOutlet weak var codeTextField: NSTextField!
 
-    var confirmationIsImpossible = false
+    var code=Bartleby.randomStringWithLength(8,signs:Bartleby.configuration.PASSWORD_CHAR_CART)
 
-    open override var nibName: NSNib.Name { return NSNib.Name("ConfirmUpdatePasswordActivationCode") }
+    var confirmationIsImpossible=false
 
-    open override func viewDidLoad() {
+
+    override open var nibName : NSNib.Name { return NSNib.Name("ConfirmUpdatePasswordActivationCode") }
+
+    override open func viewDidLoad() {
         super.viewDidLoad()
     }
 
-    open override func viewWillAppear() {
+    override open func viewWillAppear() {
         super.viewWillAppear()
-        if let document = self.documentProvider?.getDocument() {
-            consignsLabel.stringValue = NSLocalizedString("We have sent a confirmation code to: ", comment: "We have sent a confirmation code to: ") + document.currentUser.fullPhoneNumber
+        if let document=self.documentProvider?.getDocument(){
+            self.consignsLabel.stringValue=NSLocalizedString("We have sent a confirmation code to: ", comment: "We have sent a confirmation code to: ")+document.currentUser.fullPhoneNumber
         }
-        messageTextField.stringValue = ""
+        self.messageTextField.stringValue=""
 
-        codeTextField.stringValue = ""
-        if Bartleby.configuration.DEVELOPER_MODE {
-            print(code)
+        self.codeTextField.stringValue=""
+        if Bartleby.configuration.DEVELOPER_MODE{
+            print(self.code)
         }
     }
 
-    open override func viewDidAppear() {
+    override open func viewDidAppear() {
         super.viewDidAppear()
-        stepDelegate?.disableActions()
-        if let document = self.documentProvider?.getDocument() {
-            if let serverURL = document.metadata.collaborationServerURL {
+        self.stepDelegate?.disableActions()
+        if let document = self.documentProvider?.getDocument(){
+            if let serverURL = document.metadata.collaborationServerURL{
                 document.currentUser.login(sucessHandler: {
-                    let email = document.currentUser.email
-                    let phoneNumber = document.currentUser.phoneNumber
+                    let email =  document.currentUser.email
+                    let phoneNumber =  document.currentUser.phoneNumber
 
                     // we need now  relay the activation code
                     RelayActivationCode.execute(baseURL: serverURL,
@@ -56,47 +58,48 @@ open class ConfirmUpdatePasswordActivationCode: StepViewController {
                                                 code: self.code,
                                                 title: NSLocalizedString("Your activation code", comment: "Your activation code"),
                                                 body: NSLocalizedString("Your activation code is: \n$code", comment: "Your activation code is"),
-                                                sucessHandler: { _ in
+                                                sucessHandler: { (context) in
                                                     self.stepDelegate?.enableActions()
-                                                }, failureHandler: { context in
-                                                    self._confirmationIsImpossible()
-                                                    document.log("\(String(describing: context.responseString))", file: #file, function: #function, line: #line, category: Default.LOG_WARNING, decorative: false)
+                    }, failureHandler: { (context) in
+                         self._confirmationIsImpossible()
+                        document.log("\(String(describing: context.responseString))", file: #file, function: #function, line: #line, category: Default.LOG_WARNING, decorative: false)
                     })
 
-                }, failureHandler: { _ in
+                }, failureHandler: { (context) in
                     self._confirmationIsImpossible()
                 })
             }
-        } else {
-            _confirmationIsImpossible()
+        }else{
+            self._confirmationIsImpossible()
         }
     }
 
-    fileprivate func _confirmationIsImpossible() {
-        confirmationIsImpossible = true
-        messageTextField.stringValue = NSLocalizedString("The confirmation is impossible. For security reason you must contact your support supervisor.", comment: "The confirmation is impossible. For security reason you must contact your support supervisor.")
-        stepDelegate?.enableActions()
+    fileprivate func _confirmationIsImpossible(){
+        self.confirmationIsImpossible=true
+        self.messageTextField.stringValue=NSLocalizedString("The confirmation is impossible. For security reason you must contact your support supervisor.", comment: "The confirmation is impossible. For security reason you must contact your support supervisor.")
+        self.stepDelegate?.enableActions()
     }
 
-    open override func proceedToValidation() {
+
+    override open func proceedToValidation() {
         super.proceedToValidation()
-        stepDelegate?.disableActions()
+        self.stepDelegate?.disableActions()
         if let document = self.documentProvider?.getDocument(),
-            let candidatePassword = self.identityWindowController?.passwordCandidate {
-            if confirmationIsImpossible == false {
-                if PString.trim(code) == PString.trim(codeTextField.stringValue) {
+            let candidatePassword=self.identityWindowController?.passwordCandidate {
+            if self.confirmationIsImpossible==false{
+                if PString.trim(self.code)==PString.trim(self.codeTextField.stringValue){
                     // Will produce the syndication
-                    IdentitiesManager.synchronize(document, password: candidatePassword, completed: { completion in
-                        if completion.success {
+                    IdentitiesManager.synchronize(document,password:candidatePassword, completed: { (completion) in
+                        if completion.success{
                             self.identityWindowController?.passwordHasBeenChanged()
-                        } else {
+                        }else{
                             self.identityWindowController?.enableActions()
-                            self.messageTextField.stringValue = NSLocalizedString("Password change has failed. For security reason you must contact your support supervisor.", comment: "Password change has failed. For security reason you must contact your support supervisor.")
+                             self.messageTextField.stringValue=NSLocalizedString("Password change has failed. For security reason you must contact your support supervisor.", comment: "Password change has failed. For security reason you must contact your support supervisor.")
                         }
                     })
 
-                } else {
-                    messageTextField.stringValue = NSLocalizedString("The activation code is not correct!", comment: "The activation code is not correct!")
+                }else{
+                    self.messageTextField.stringValue=NSLocalizedString("The activation code is not correct!", comment: "The activation code is not correct!")
                 }
             }
         }

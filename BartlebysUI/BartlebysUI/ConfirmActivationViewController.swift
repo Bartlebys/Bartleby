@@ -6,45 +6,48 @@
 //  Copyright © 2016 Chaosmos SAS. All rights reserved.
 //
 
-import BartlebyKit
 import Cocoa
+import BartlebyKit
 
-open class ConfirmActivationViewController: StepViewController {
-    open override var nibName: NSNib.Name { return NSNib.Name("ConfirmActivationViewController") }
+open class ConfirmActivationViewController: StepViewController{
 
-    @IBOutlet var confirmLabel: NSTextField!
 
-    @IBOutlet var codeTextField: NSTextField!
+    override open var nibName : NSNib.Name { return NSNib.Name("ConfirmActivationViewController") }
 
-    @IBOutlet var messageTextField: NSTextField!
+    @IBOutlet weak var confirmLabel: NSTextField!
 
-    var locker: Locker?
+    @IBOutlet weak var codeTextField: NSTextField!
 
-    open override func viewWillAppear() {
+    @IBOutlet weak var messageTextField: NSTextField!
+
+    var locker:Locker?
+
+    override open func viewWillAppear() {
         super.viewWillAppear()
-        if let document = self.documentProvider?.getDocument() {
+        if let document=self.documentProvider?.getDocument(){
             document.send(IdentificationStates.confirmAccount)
-            if let locker: Locker = try? Bartleby.registredObjectByUID(document.metadata.lockerUID) {
-                self.locker = locker
-                confirmLabel.stringValue = NSLocalizedString("We have sent a confirmation code to: ", comment: "We have sent a confirmation code to: ") + document.currentUser.fullPhoneNumber
-                codeTextField.stringValue = ""
-            } else {
-                confirmLabel.stringValue = NSLocalizedString("Locker not found", comment: "Locker not found")
+            if let locker:Locker = try? Bartleby.registredObjectByUID(document.metadata.lockerUID) {
+                self.locker=locker
+                self.confirmLabel.stringValue=NSLocalizedString("We have sent a confirmation code to: ", comment: "We have sent a confirmation code to: ")+document.currentUser.fullPhoneNumber
+                self.codeTextField.stringValue=""
+            }else{
+                self.confirmLabel.stringValue=NSLocalizedString("Locker not found", comment: "Locker not found")
             }
         }
     }
 
-    open override func proceedToValidation() {
+    override open func proceedToValidation(){
         super.proceedToValidation()
-        stepDelegate?.disableActions()
-        if let locker = self.locker {
-            if codeTextField.stringValue == locker.code {
-                documentProvider?.getDocument()?.send(IdentificationStates.accountHasBeenConfirmed)
-                stepDelegate?.didValidateStep(stepIndex)
-            } else {
-                messageTextField.stringValue = NSLocalizedString("The activation code is not correct!", comment: "The activation code is not correct!")
-                stepDelegate?.enableActions()
+        self.stepDelegate?.disableActions()
+        if let locker=self.locker{
+            if codeTextField.stringValue == locker.code{
+                self.documentProvider?.getDocument()?.send(IdentificationStates.accountHasBeenConfirmed)
+                self.stepDelegate?.didValidateStep(self.stepIndex)
+            }else{
+                self.messageTextField.stringValue=NSLocalizedString("The activation code is not correct!", comment: "The activation code is not correct!")
+                self.stepDelegate?.enableActions()
             }
         }
     }
+    
 }

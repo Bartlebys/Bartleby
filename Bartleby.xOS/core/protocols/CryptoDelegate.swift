@@ -8,6 +8,7 @@
 
 import Foundation
 
+
 /*
 
  Note on Strings:
@@ -22,25 +23,23 @@ import Foundation
 
  */
 public protocol CryptoDelegate {
+
     // Those function are work by pairs.
     // Do not combinate.
 
     // MARK: - Encryption + Base64 encoding / decoding
-
-    func encryptString(_ string: String, useKey: String) throws -> String
-    func decryptString(_ string: String, useKey: String) throws -> String
+    func encryptString(_ string: String,useKey:String)throws->String
+    func decryptString(_ string: String,useKey:String)throws->String
 
     // MARK: - Raw Data encryption
+    func encryptData(_ data: Data,useKey:String)throws ->Data
+    func decryptData(_ data: Data,useKey:String)throws ->Data
 
-    func encryptData(_ data: Data, useKey: String) throws -> Data
-    func decryptData(_ data: Data, useKey: String) throws -> Data
-
-    // MARK: - String encryption without reencoding (the crypted data is not a valid String but this approach is faster)
-
-    func encryptStringToData(_ string: String, useKey: String) throws -> Data
-    func decryptStringFromData(_ data: Data, useKey: String) throws -> String
+     // MARK: - String encryption without reencoding (the crypted data is not a valid String but this approach is faster)
+    func encryptStringToData(_ string:String,useKey:String)throws->Data
+    func decryptStringFromData(_ data:Data,useKey:String)throws->String
 
     // MARK: -
-
     static func hashString(_ string: String) -> String
+
 }

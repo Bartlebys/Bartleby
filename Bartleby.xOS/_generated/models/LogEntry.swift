@@ -12,92 +12,97 @@ import Foundation
 #endif
 
 // MARK: Bartleby's Core: A single print entry
+@objc open class LogEntry : UnManagedModel {
 
-@objc open class LogEntry: UnManagedModel {
     // DeclaredTypeName support
-    open override class func typeName() -> String {
+    override open class func typeName() -> String {
         return "LogEntry"
     }
 
-    // The print entry counter
-    @objc open dynamic var counter: Int = -1
 
-    // The referent line
-    @objc open dynamic var line: Int = -1
+	//The print entry counter
+	@objc dynamic open var counter:Int = -1
 
-    // The elasped duration
-    @objc open dynamic var elapsed: Double = -1
+	//The referent line
+	@objc dynamic open var line:Int = -1
 
-    //the message
-    @objc open dynamic var message: String = "no message"
+	//The elasped duration
+	@objc dynamic open var elapsed:Double = -1
 
-    //the file
-    @objc open dynamic var file: String = "no file"
+	//the message
+	@objc dynamic open var message:String = "no message"
 
-    //the function
-    @objc open dynamic var function: String = "no function"
+	//the file
+	@objc dynamic open var file:String = "no file"
 
-    //the category
-    @objc open dynamic var category: String = "no category"
+	//the function
+	@objc dynamic open var function:String = "no function"
 
-    // Is the entry decorative or significant? decoration includes separators, etc...
-    @objc open dynamic var decorative: Bool = false
+	//the category
+	@objc dynamic open var category:String = "no category"
 
-    // Is the entry decorative or significant? decoration includes separators, etc...
-    @objc private dynamic var _runUID: String = Bartleby.runUID
+	//Is the entry decorative or significant? decoration includes separators, etc...
+	@objc dynamic open var decorative:Bool = false
+
+	//Is the entry decorative or significant? decoration includes separators, etc...
+	@objc dynamic private var _runUID:String = Bartleby.runUID
+
 
     // MARK: - Codable
 
-    public enum LogEntryCodingKeys: String, CodingKey {
-        case counter
-        case line
-        case elapsed
-        case message
-        case file
-        case function
-        case category
-        case decorative
-        case _runUID
+
+    public enum LogEntryCodingKeys: String,CodingKey{
+		case counter
+		case line
+		case elapsed
+		case message
+		case file
+		case function
+		case category
+		case decorative
+		case _runUID
     }
 
-    public required init(from decoder: Decoder) throws {
-        try super.init(from: decoder)
-        try quietThrowingChanges {
-            let values = try decoder.container(keyedBy: LogEntryCodingKeys.self)
-            self.counter = try values.decode(Int.self, forKey: .counter)
-            self.line = try values.decode(Int.self, forKey: .line)
-            self.elapsed = try values.decode(Double.self, forKey: .elapsed)
-            self.message = try values.decode(String.self, forKey: .message)
-            self.file = try values.decode(String.self, forKey: .file)
-            self.function = try values.decode(String.self, forKey: .function)
-            self.category = try values.decode(String.self, forKey: .category)
-            self.decorative = try values.decode(Bool.self, forKey: .decorative)
-            self._runUID = try values.decode(String.self, forKey: ._runUID)
+    required public init(from decoder: Decoder) throws{
+		try super.init(from: decoder)
+        try self.quietThrowingChanges {
+			let values = try decoder.container(keyedBy: LogEntryCodingKeys.self)
+			self.counter = try values.decode(Int.self,forKey:.counter)
+			self.line = try values.decode(Int.self,forKey:.line)
+			self.elapsed = try values.decode(Double.self,forKey:.elapsed)
+			self.message = try values.decode(String.self,forKey:.message)
+			self.file = try values.decode(String.self,forKey:.file)
+			self.function = try values.decode(String.self,forKey:.function)
+			self.category = try values.decode(String.self,forKey:.category)
+			self.decorative = try values.decode(Bool.self,forKey:.decorative)
+			self._runUID = try values.decode(String.self,forKey:._runUID)
         }
     }
 
-    open override func encode(to encoder: Encoder) throws {
-        try super.encode(to: encoder)
-        var container = encoder.container(keyedBy: LogEntryCodingKeys.self)
-        try container.encode(counter, forKey: .counter)
-        try container.encode(line, forKey: .line)
-        try container.encode(elapsed, forKey: .elapsed)
-        try container.encode(message, forKey: .message)
-        try container.encode(file, forKey: .file)
-        try container.encode(function, forKey: .function)
-        try container.encode(category, forKey: .category)
-        try container.encode(decorative, forKey: .decorative)
-        try container.encode(_runUID, forKey: ._runUID)
+    override open func encode(to encoder: Encoder) throws {
+		try super.encode(to:encoder)
+		var container = encoder.container(keyedBy: LogEntryCodingKeys.self)
+		try container.encode(self.counter,forKey:.counter)
+		try container.encode(self.line,forKey:.line)
+		try container.encode(self.elapsed,forKey:.elapsed)
+		try container.encode(self.message,forKey:.message)
+		try container.encode(self.file,forKey:.file)
+		try container.encode(self.function,forKey:.function)
+		try container.encode(self.category,forKey:.category)
+		try container.encode(self.decorative,forKey:.decorative)
+		try container.encode(self._runUID,forKey:._runUID)
     }
+
 
     // MARK: - Exposed (Bartleby's KVC like generative implementation)
 
     /// Return all the exposed instance variables keys. (Exposed == public and modifiable).
-    open override var exposedKeys: [String] {
-        var exposed = super.exposedKeys
-        exposed.append(contentsOf: ["counter", "line", "elapsed", "message", "file", "function", "category", "decorative"])
+    override  open var exposedKeys:[String] {
+        var exposed=super.exposedKeys
+        exposed.append(contentsOf:["counter","line","elapsed","message","file","function","category","decorative"])
         return exposed
     }
+
 
     /// Set the value of the given key
     ///
@@ -105,44 +110,45 @@ import Foundation
     /// - parameter key:   the key
     ///
     /// - throws: throws an Exception when the key is not exposed
-    open override func setExposedValue(_ value: Any?, forKey key: String) throws {
+    override  open func setExposedValue(_ value:Any?, forKey key: String) throws {
         switch key {
-        case "counter":
-            if let casted = value as? Int {
-                counter = casted
-            }
-        case "line":
-            if let casted = value as? Int {
-                line = casted
-            }
-        case "elapsed":
-            if let casted = value as? Double {
-                elapsed = casted
-            }
-        case "message":
-            if let casted = value as? String {
-                message = casted
-            }
-        case "file":
-            if let casted = value as? String {
-                file = casted
-            }
-        case "function":
-            if let casted = value as? String {
-                function = casted
-            }
-        case "category":
-            if let casted = value as? String {
-                category = casted
-            }
-        case "decorative":
-            if let casted = value as? Bool {
-                decorative = casted
-            }
-        default:
-            return try super.setExposedValue(value, forKey: key)
+            case "counter":
+                if let casted=value as? Int{
+                    self.counter=casted
+                }
+            case "line":
+                if let casted=value as? Int{
+                    self.line=casted
+                }
+            case "elapsed":
+                if let casted=value as? Double{
+                    self.elapsed=casted
+                }
+            case "message":
+                if let casted=value as? String{
+                    self.message=casted
+                }
+            case "file":
+                if let casted=value as? String{
+                    self.file=casted
+                }
+            case "function":
+                if let casted=value as? String{
+                    self.function=casted
+                }
+            case "category":
+                if let casted=value as? String{
+                    self.category=casted
+                }
+            case "decorative":
+                if let casted=value as? Bool{
+                    self.decorative=casted
+                }
+            default:
+                return try super.setExposedValue(value, forKey: key)
         }
     }
+
 
     /// Returns the value of an exposed key.
     ///
@@ -151,32 +157,30 @@ import Foundation
     /// - throws: throws Exception when the key is not exposed
     ///
     /// - returns: returns the value
-    open override func getExposedValueForKey(_ key: String) throws -> Any? {
+    override  open func getExposedValueForKey(_ key:String) throws -> Any?{
         switch key {
-        case "counter":
-            return counter
-        case "line":
-            return line
-        case "elapsed":
-            return elapsed
-        case "message":
-            return message
-        case "file":
-            return file
-        case "function":
-            return function
-        case "category":
-            return category
-        case "decorative":
-            return decorative
-        default:
-            return try super.getExposedValueForKey(key)
+            case "counter":
+               return self.counter
+            case "line":
+               return self.line
+            case "elapsed":
+               return self.elapsed
+            case "message":
+               return self.message
+            case "file":
+               return self.file
+            case "function":
+               return self.function
+            case "category":
+               return self.category
+            case "decorative":
+               return self.decorative
+            default:
+                return try super.getExposedValueForKey(key)
         }
     }
-
     // MARK: - Initializable
-
-    public required init() {
+     required public init() {
         super.init()
     }
 }

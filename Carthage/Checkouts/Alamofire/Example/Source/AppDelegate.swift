@@ -26,14 +26,16 @@ import UIKit
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate, UISplitViewControllerDelegate {
+
     var window: UIWindow?
 
     // MARK: - UIApplicationDelegate
 
     func application(
-        _: UIApplication,
-        didFinishLaunchingWithOptions _: [UIApplicationLaunchOptionsKey: Any]?)
-        -> Bool {
+        _ application: UIApplication,
+        didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?)
+        -> Bool
+    {
         let splitViewController = window!.rootViewController as! UISplitViewController
         let navigationController = splitViewController.viewControllers.last as! UINavigationController
         navigationController.topViewController!.navigationItem.leftBarButtonItem = splitViewController.displayModeButtonItem
@@ -45,13 +47,15 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UISplitViewControllerDele
     // MARK: - UISplitViewControllerDelegate
 
     func splitViewController(
-        _: UISplitViewController,
+        _ splitViewController: UISplitViewController,
         collapseSecondary secondaryViewController: UIViewController,
-        onto _: UIViewController)
-        -> Bool {
+        onto primaryViewController: UIViewController)
+        -> Bool
+    {
         if
             let secondaryAsNavController = secondaryViewController as? UINavigationController,
-            let topAsDetailController = secondaryAsNavController.topViewController as? DetailViewController {
+            let topAsDetailController = secondaryAsNavController.topViewController as? DetailViewController
+        {
             return topAsDetailController.request == nil
         }
 

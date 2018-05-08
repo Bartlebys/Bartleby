@@ -8,6 +8,9 @@
 
 import Foundation
 
-public protocol Mergeable {
+
+public protocol Mergeable{
+
     func mergeWith(_ instance: Exposed) throws
+
 }

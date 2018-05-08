@@ -6,85 +6,87 @@
 //  Copyright © 2016 Chaosmos SAS. All rights reserved.
 //
 
-import BartlebyKit
 import Cocoa
+import BartlebyKit
 
-open class SetupCollaborativeServerViewController: StepViewController {
-    open override var nibName: NSNib.Name { return NSNib.Name("SetupCollaborativeServerViewController") }
+open class SetupCollaborativeServerViewController: StepViewController{
 
-    @IBOutlet var box: NSBox!
+    override open var nibName : NSNib.Name { return NSNib.Name("SetupCollaborativeServerViewController") }
 
-    @IBOutlet var explanationsTextField: NSTextField!
+    @IBOutlet weak var box: NSBox!
 
-    @IBOutlet var serverComboBox: NSComboBox!
+    @IBOutlet weak var explanationsTextField: NSTextField!
 
-    @IBOutlet var messageTextField: NSTextField!
+    @IBOutlet weak var serverComboBox: NSComboBox!
 
-    open override func viewWillAppear() {
+    @IBOutlet weak var messageTextField: NSTextField!
+
+    override open func viewWillAppear() {
         super.viewWillAppear()
-        documentProvider?.getDocument()?.send(IdentificationStates.selectTheServer)
-        explanationsTextField.stringValue = NSLocalizedString("Select or register a Collaborative Server  API URL.", comment: "Select the Collaborative Server API URL")
-        if let _ = self.documentProvider?.getDocument() {
-            var servers = Bartleby.configuration.defaultBaseURLList
+        self.documentProvider?.getDocument()?.send(IdentificationStates.selectTheServer)
+        self.explanationsTextField.stringValue=NSLocalizedString("Select or register a Collaborative Server  API URL.", comment: "Select the Collaborative Server API URL")
+        if let _ = self.documentProvider?.getDocument(){
+            var servers=Bartleby.configuration.defaultBaseURLList
             servers.append(NSLocalizedString("Add a Server", comment: "Add a Server"))
-            serverComboBox.addItems(withObjectValues: servers)
-            serverComboBox.selectItem(at: 0)
+            self.serverComboBox.addItems(withObjectValues:servers)
+            self.serverComboBox.selectItem(at: 0)
         }
     }
 
-    open override func proceedToValidation() {
+    override open func proceedToValidation(){
         super.proceedToValidation()
-        if let document = self.documentProvider?.getDocument(),
-            let identityWindowController = self.identityWindowController {
-            if let serverURL: URL = URL(string: self.serverComboBox.stringValue) {
-                stepDelegate?.disableActions()
-                syncOnMain {
+        if let document=self.documentProvider?.getDocument(),
+            let identityWindowController=self.identityWindowController{
+            if let serverURL:URL=URL(string:self.serverComboBox.stringValue){
+                self.stepDelegate?.disableActions()
+                syncOnMain{
                     HTTPManager.apiIsReachable(serverURL, successHandler: {
                         self.documentProvider?.getDocument()?.send(IdentificationStates.serverHasBeenSelected)
-                        if let identification = identityWindowController.identification {
+                        if let identification=identityWindowController.identification{
                             // We prefer to wait for reachability response before to disable the actions
                             // The server is Reachable
-                            self.messageTextField.stringValue = ""
+                            self.messageTextField.stringValue=""
 
                             // Should we create a USER?
-                            var matchingProfile: UserProfile?
-                            var userHasBeenFound = false
+                            var matchingProfile:UserProfile?
+                            var userHasBeenFound=false
 
                             // Check if we should reuse a password or an external ID.
-                            matchingProfile = IdentitiesManager.profileMatching(identification: identification, inDocument: document)
-                            if let matchingProfile = matchingProfile {
+                            matchingProfile=IdentitiesManager.profileMatching(identification: identification, inDocument: document)
+                            if let matchingProfile=matchingProfile{
                                 if document.spaceUID == matchingProfile.documentSpaceUID &&
-                                    PString.trim(document.baseURL.absoluteString) == PString.trim(matchingProfile.url.absoluteString) {
+                                    PString.trim(document.baseURL.absoluteString) == PString.trim(matchingProfile.url.absoluteString){
                                     if let user = matchingProfile.user {
                                         // We should reuse the user.
-                                        document.users.add(user, commit: false, isUndoable: false)
+                                        document.users.add(user, commit: false,isUndoable: false)
                                         document.metadata.configureCurrentUser(user)
-                                        userHasBeenFound = true
+                                        userHasBeenFound=true
                                     }
                                 }
                             }
 
-                            if userHasBeenFound == false {
+
+                            if userHasBeenFound==false{
                                 // In rare situation we prefer to push manually the entities
                                 // To do so we do not commit the object created by the newManagedModel() factory
-                                var user: User = document.newManagedModel(commit: false)
+                                var user:User=document.newManagedModel(commit:false)
 
-                                user.email = identification.email
-                                user.phoneCountryCode = identification.phoneCountryCode
-                                user.phoneNumber = identification.phoneNumber
-                                let externalID = identification.externalID
-                                if externalID != Default.NO_UID {
-                                    user.externalID = externalID
+                                user.email=identification.email
+                                user.phoneCountryCode=identification.phoneCountryCode
+                                user.phoneNumber=identification.phoneNumber
+                                let externalID=identification.externalID
+                                if externalID != Default.NO_UID{
+                                    user.externalID=externalID
                                 }
-                                user.supportsPasswordSyndication = identification.supportsPasswordSyndication
+                                user.supportsPasswordSyndication=identification.supportsPasswordSyndication
 
-                                if let matchingProfile = matchingProfile {
-                                    if let matchingUser = matchingProfile.user {
-                                        if user.supportsPasswordSyndication == true {
-                                            user.password = matchingUser.password
-                                            let externalID = matchingUser.externalID
-                                            if externalID != Default.NO_UID {
-                                                user.externalID = externalID
+                                if let matchingProfile=matchingProfile {
+                                    if let matchingUser=matchingProfile.user{
+                                        if user.supportsPasswordSyndication == true{
+                                            user.password=matchingUser.password
+                                            let externalID=matchingUser.externalID
+                                            if externalID != Default.NO_UID{
+                                                user.externalID=externalID
                                             }
                                         }
                                     }
@@ -92,88 +94,94 @@ open class SetupCollaborativeServerViewController: StepViewController {
                                 document.metadata.configureCurrentUser(user)
                             }
 
-                            func __postCreationPhase(user: User) {
+                            func __postCreationPhase(user:User){
                                 // The user has been successfully pushed
                                 // Let's login
                                 user.login(sucessHandler: {
-                                    let locker: Locker = document.newManagedModel(commit: false)
-                                    locker.startDate = Date() // now
-                                    locker.endDate = Date.distantFuture //
+                                    let locker:Locker=document.newManagedModel(commit:false)
+                                    locker.startDate=Date()// now
+                                    locker.endDate=Date.distantFuture//
                                     locker.doNotCommit {
-                                        locker.gems = document.metadata.sugar
-                                        locker.associatedDocumentUID = document.UID
-                                        locker.subjectUID = document.UID
-                                        locker.userUID = user.UID
+                                        locker.gems=document.metadata.sugar
+                                        locker.associatedDocumentUID=document.UID
+                                        locker.subjectUID=document.UID
+                                        locker.userUID=user.UID
                                         locker.mode = .persistent
                                         // Store the locker UID
-                                        document.metadata.lockerUID = locker.UID
+                                        document.metadata.lockerUID=locker.UID
 
-                                        CreateLocker.execute(locker, in: document.UID, sucessHandler: { context in
-                                            let email = user.email
-                                            let phoneNumber = user.fullPhoneNumber
+                                        CreateLocker.execute(locker, in:  document.UID, sucessHandler: { (context) in
+                                            let email=user.email
+                                            let phoneNumber=user.fullPhoneNumber
 
-                                            // The Locker has been successfully pushed
-                                            // we need now  to confirm the account
-                                            RelayActivationCode.execute(baseURL: serverURL,
-                                                                        documentUID: document.UID,
-                                                                        toEmail: email,
-                                                                        toPhoneNumber: phoneNumber,
-                                                                        code: locker.code, title: NSLocalizedString("Your activation code", comment: "Your activation code"),
-                                                                        body: NSLocalizedString("Your activation code is: \n$code", comment: "Your activation code is"),
-                                                                        sucessHandler: { _ in
-                                                                            self.stepDelegate?.didValidateStep(self.stepIndex)
-                                                                        }, failureHandler: { context in
-                                                                            self.stepDelegate?.enableActions()
-                                                                            document.log("\(String(describing: context.responseString))", file: #file, function: #function, line: #line, category: Default.LOG_WARNING, decorative: false)
-                                            })
+                                                // The Locker has been successfully pushed
+                                                // we need now  to confirm the account
+                                                RelayActivationCode.execute(baseURL: serverURL,
+                                                                            documentUID: document.UID,
+                                                                            toEmail: email,
+                                                                            toPhoneNumber: phoneNumber,
+                                                                            code: locker.code, title: NSLocalizedString("Your activation code", comment: "Your activation code"),
+                                                                            body: NSLocalizedString("Your activation code is: \n$code", comment: "Your activation code is"),
+                                                                            sucessHandler: { (context) in
+                                                                                self.stepDelegate?.didValidateStep( self.stepIndex)
+                                                }, failureHandler: { (context) in
+                                                    self.stepDelegate?.enableActions()
+                                                    document.log("\(String(describing: context.responseString))", file: #file, function: #function, line: #line, category: Default.LOG_WARNING, decorative: false)
+                                                })
 
-                                        }, failureHandler: { context in
+
+                                        }, failureHandler: { (context) in
                                             self.stepDelegate?.enableActions()
-                                            self.messageTextField.stringValue = "\(String(describing: context.responseString))"
+                                            self.messageTextField.stringValue="\(String(describing: context.responseString))"
                                             document.log("\(String(describing: context.message))", file: #file, function: #function, line: #line, category: Default.LOG_WARNING, decorative: false)
                                         })
+
                                     }
-                                }, failureHandler: { context in
+                                }, failureHandler: { (context) in
                                     self.stepDelegate?.enableActions()
-                                    self.messageTextField.stringValue = "\(String(describing: context.message))"
+                                    self.messageTextField.stringValue="\(String(describing: context.message))"
                                     document.log("\(String(describing: context.responseString))", file: #file, function: #function, line: #line, category: Default.LOG_WARNING, decorative: false)
                                 })
                             }
-                            do {
+                            do{
                                 // This will create and save the sugar cryptic key.
                                 try document.metadata.cookThePie()
-                                document.metadata.collaborationServerURL = serverURL
-                                let user = document.users[0]
-                                if userHasBeenFound {
+                                document.metadata.collaborationServerURL=serverURL
+                                let user=document.users[0]
+                                if userHasBeenFound{
                                     __postCreationPhase(user: user)
-                                } else {
+                                }else{
                                     self.documentProvider?.getDocument()?.send(IdentificationStates.createTheUser)
-                                    CreateUser.execute(user, in: document.UID, sucessHandler: { _ in
-                                        self.documentProvider?.getDocument()?.send(IdentificationStates.userHasBeenCreated)
+                                    CreateUser.execute(user, in: document.UID, sucessHandler: { (context) in
+                                         self.documentProvider?.getDocument()?.send(IdentificationStates.userHasBeenCreated)
                                         __postCreationPhase(user: user)
-                                    }, failureHandler: { context in
+                                    }, failureHandler: { (context) in
                                         self.stepDelegate?.enableActions()
-                                        self.messageTextField.stringValue = "\(String(describing: context.responseString))"
+                                        self.messageTextField.stringValue="\(String(describing: context.responseString))"
                                         document.log("\(String(describing: context.responseString))", file: #file, function: #function, line: #line, category: Default.LOG_WARNING, decorative: false)
                                     })
                                 }
-
-                            } catch {
+                                
+                            }catch{
                                 self.stepDelegate?.enableActions()
-                                self.messageTextField.stringValue = "\(error)"
+                                self.messageTextField.stringValue="\(error)"
                                 document.log("\(error)", file: #file, function: #function, line: #line, category: Default.LOG_WARNING, decorative: false)
+                                
                             }
                         }
 
-                    }, failureHandler: { context in
+
+                    }, failureHandler: { (context) in
                         self.stepDelegate?.enableActions()
-                        self.messageTextField.stringValue = NSLocalizedString("The server is not Reachable. Check carefully the URL.", comment: "The server is not Reachable. Check carefully the URL") + " Error code = \(context.httpStatusCode)"
+                        self.messageTextField.stringValue=NSLocalizedString("The server is not Reachable. Check carefully the URL.", comment: "The server is not Reachable. Check carefully the URL")+" Error code = \(context.httpStatusCode)"
                     })
                 }
-            } else {
-                stepDelegate?.enableActions()
-                messageTextField.stringValue = NSLocalizedString("This URL is not valid", comment: "This URL is not valid")
+            }else{
+                self.stepDelegate?.enableActions()
+                self.messageTextField.stringValue=NSLocalizedString("This URL is not valid", comment: "This URL is not valid")
             }
         }
     }
+    
+    
 }

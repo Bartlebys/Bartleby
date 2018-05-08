@@ -10,22 +10,26 @@ import Foundation
 
 // MARK: - Progression
 
-extension Progression: Descriptible {
+extension Progression:Descriptible {
+
     public func toString() -> String {
         var dataString = ""
-        if let data = data {
-            if data.count > 0 {
+        if let data = data{
+            if data.count > 0{
                 dataString = "\(data.count) bytes of data."
             }
         }
-        let percent = String(format: "%.2f", currentPercentProgress)
-        let elapsed = String(format: "%.2f", elapsedTime)
-        let remaining = String(format: "%.0f", floor(self.remaining))
-        return "\(percent)% (\(currentTaskIndex)/\(totalTaskCount)) Elapsed: \(elapsed)s Remaining:\(remaining)s | \(dataString): \(message) [\(category)-\(externalIdentifier)]"
+        let percent = String(format:"%.2f",self.currentPercentProgress)
+        let elapsed = String(format:"%.2f",self.elapsedTime)
+        let remaining = String(format:"%.0f",floor(self.remaining))
+        return "\(percent)% (\(self.currentTaskIndex)/\(self.totalTaskCount)) Elapsed: \(elapsed)s Remaining:\(remaining)s | \(dataString): \(message) [\(category)-\(externalIdentifier)]"
     }
+
 }
 
+
 public extension Progression {
+
     /**
      The initializer of the Progression state
 
@@ -44,57 +48,61 @@ public extension Progression {
         self.currentPercentProgress = currentPercentProgress
         self.message = message
         self.data = data
-        startTime = CFAbsoluteTimeGetCurrent()
+        self.startTime=CFAbsoluteTimeGetCurrent()
     }
+
 
     /// Update progression from Foundation.Progress
     ///
     /// - Parameter progress: the progress
-    public func updateProgression(from progress: Foundation.Progress) {
-        currentTaskIndex = min(Int(progress.completedUnitCount) + 1, Int(progress.totalUnitCount))
-        totalTaskCount = Int(progress.totalUnitCount)
-        currentPercentProgress = Double(currentTaskIndex) * Double(100) / Double(totalTaskCount)
+    public func updateProgression(from progress:Foundation.Progress){
+        self.currentTaskIndex=min(Int(progress.completedUnitCount)+1,Int(progress.totalUnitCount))
+        self.totalTaskCount=Int(progress.totalUnitCount)
+        self.currentPercentProgress=Double(self.currentTaskIndex)*Double(100)/Double(self.totalTaskCount)
     }
 
+
+
     ///  Proportionnal Probable duration
-    public var probableDuration: Double {
-        if currentPercentProgress == 0 {
+    public var probableDuration:Double{
+        if self.currentPercentProgress==0{
             return -1 // We donnot want to predict the unpredictable
         }
         // c    100
         //    x
         // e     ?
-        return elapsedTime * 100 / currentPercentProgress
+        return self.elapsedTime * 100 / self.currentPercentProgress
     }
 
+
     // Remaining by projection
-    public var remaining: Double {
-        return probableDuration - elapsedTime
+    public var remaining:Double{
+        return self.probableDuration-self.elapsedTime
     }
 
     /// Returns the elapsed time since the instanciation of the progression State
-    public var elapsedTime: Double {
-        if let startTime = self.startTime {
+    public var elapsedTime:Double{
+        if let startTime=self.startTime{
             return CFAbsoluteTimeGetCurrent() - startTime
 
-        } else {
+        }else{
             return 0
         }
     }
 
     /// Returns a rounded version of the probable duration.
-    public var roundedProbableDuration: Int {
-        return Int(ceil(probableDuration))
+    public var roundedProbableDuration:Int{
+        return Int(ceil(self.probableDuration))
     }
 
     /// Returns a rounded version of the probable duration.
-    public var roundedRemaining: Int {
-        return Int(ceil(remaining))
+    public var roundedRemaining:Int{
+        return Int(ceil(self.remaining))
     }
 
     ///  Returns a rounded version of the elapsed time
-    public var roundedElapsedTime: Int {
-        return Int(ceil(elapsedTime))
+    public var roundedElapsedTime:Int{
+        return Int(ceil(self.elapsedTime))
     }
 
     /**
@@ -105,9 +113,9 @@ public extension Progression {
 
      - returns: the state
      */
-    public func identifiedBy(_ category: String, identity: String) -> Progression {
-        self.category = category
-        externalIdentifier = identity
+    public func identifiedBy(_ category:String,identity:String)->Progression{
+        self.category=category
+        self.externalIdentifier=identity
         return self
     }
 
@@ -117,6 +125,8 @@ public extension Progression {
      - returns: return value description
      */
     public static func defaultState() -> Progression {
-        return Progression(currentTaskIndex: 0, totalTaskCount: 0, currentPercentProgress: 0, message: "", data: nil)
+         return Progression(currentTaskIndex: 0, totalTaskCount: 0, currentPercentProgress: 0, message: "", data: nil)
     }
+
+
 }

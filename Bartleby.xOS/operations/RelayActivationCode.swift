@@ -12,7 +12,10 @@ import Foundation
     import Alamofire
 #endif
 
+
 open class RelayActivationCode {
+
+
     /// Relays the activation code (over SSL)
     ///
     /// - Parameters:
@@ -25,121 +28,124 @@ open class RelayActivationCode {
     ///   - body: the body `$code` will be replaced by the code server side
     ///   - success: the success closure
     ///   - failure: the failure closure
-    open static func execute(baseURL: URL,
-                             documentUID: String,
-                             toEmail: String,
-                             toPhoneNumber: String,
-                             code: String,
-                             title: String,
-                             body: String,
-                             sucessHandler success: @escaping (_ context: HTTPContext) -> Void,
-                             failureHandler failure: @escaping (_ context: HTTPContext) -> Void) {
+    static open func execute(    baseURL:URL,
+                                documentUID:String,
+                                toEmail:String,
+                                toPhoneNumber:String,
+                                code:String,
+                                title:String,
+                                body:String,
+        sucessHandler success: @escaping(_ context:HTTPContext)->(),
+        failureHandler failure:@escaping (_ context: HTTPContext)->()) {
+
         /// This operation is special
         /// It may occur on a document that is not available locally
         /// Check IdentityManager for details
 
-        let pathURL = baseURL.appendingPathComponent("relay")
-        let dictionary: Dictionary < String, String >= [
-            "toEmail": toEmail,
-            "toPhoneNumber": toPhoneNumber,
-            "code": code,
-            "title": title,
-            "body": body,
+        let pathURL=baseURL.appendingPathComponent("relay")
+        let dictionary: Dictionary<String, String>=[
+            "toEmail":toEmail,
+            "toPhoneNumber":toPhoneNumber,
+            "code":code,
+            "title":title,
+            "body":body
         ]
 
-        let urlRequest = HTTPManager.requestWithToken(inDocumentWithUID: documentUID, withActionName: "RelayActivationCode", forMethod: "POST", and: pathURL)
+        let urlRequest=HTTPManager.requestWithToken(inDocumentWithUID:documentUID, withActionName:"RelayActivationCode", forMethod:"POST", and: pathURL)
         do {
-            let r = try JSONEncoding().encode(urlRequest, with: dictionary)
-            request(r).validate().responseJSON(completionHandler: { response in
+            let r=try JSONEncoding().encode(urlRequest,with:dictionary)
+            request(r).validate().responseJSON(completionHandler: { (response) in
 
                 // Store the response
-                let request = response.request
-                let result = response.result
-                let timeline = response.timeline
-                let statusCode = response.response?.statusCode ?? 0
+                let request=response.request
+                let result=response.result
+                let timeline=response.timeline
+                let statusCode=response.response?.statusCode ?? 0
 
-                let metrics = Metrics()
-                metrics.operationName = "RelayActivationCode"
-                metrics.latency = timeline.latency
-                metrics.requestDuration = timeline.requestDuration
-                metrics.serializationDuration = timeline.serializationDuration
-                metrics.totalDuration = timeline.totalDuration
+                let metrics=Metrics()
+                metrics.operationName="RelayActivationCode"
+                metrics.latency=timeline.latency
+                metrics.requestDuration=timeline.requestDuration
+                metrics.serializationDuration=timeline.serializationDuration
+                metrics.totalDuration=timeline.totalDuration
 
                 // Bartleby consignation
-                let context = HTTPContext(code: 667,
-                                          caller: "RelayActivationCode.execute",
-                                          relatedURL: request?.url,
-                                          httpStatusCode: statusCode)
+                let context = HTTPContext( code: 667,
+                                           caller: "RelayActivationCode.execute",
+                                           relatedURL:request?.url,
+                                           httpStatusCode: statusCode)
 
-                if let request = request {
-                    context.request = HTTPRequest(urlRequest: request)
+                if let request=request{
+                    context.request=HTTPRequest(urlRequest: request)
                 }
 
                 if let data = response.data, let utf8Text = String(data: data, encoding: .utf8) {
-                    context.responseString = utf8Text
+                    context.responseString=utf8Text
                 }
-                metrics.httpContext = context
+                metrics.httpContext=context
 
-                if Bartleby.configuration.DEVELOPER_MODE {
+                if Bartleby.configuration.DEVELOPER_MODE{
                     print(context)
                 }
-
+                
                 // React according to the situation
-                var reactions = Array<Reaction>()
+                var reactions = Array<Reaction> ()
 
                 if result.isFailure {
                     let m = NSLocalizedString("Relay failure",
                                               comment: "Relay failure description")
-                    let failureReaction = Reaction.dispatchAdaptiveMessage(
+                    let failureReaction =  Reaction.dispatchAdaptiveMessage(
                         context: context,
                         title: NSLocalizedString("Unsuccessfull attempt result.isFailure is true",
                                                  comment: "Unsuccessfull attempt"),
-                        body: "\(m) \n \(response)" + "\n\(#file)\n\(#function)\nhttp Status code: (\(statusCode))",
-                        transmit: { (_) -> Void in
+                        body:"\(m) \n \(response)" + "\n\(#file)\n\(#function)\nhttp Status code: (\(statusCode))",
+                        transmit:{ (selectedIndex) -> () in
                     })
                     reactions.append(failureReaction)
                     failure(context)
-                } else {
-                    if 200 ... 299 ~= statusCode {
+                }else{
+                    if 200...299 ~= statusCode {
                         success(context)
-                    } else {
+                    }else{
                         // Bartlby does not currenlty discriminate status codes 100 & 101
                         // and treats any status code >= 300 the same way
                         // because we consider that failures differentiations could be done by the caller.
 
-                        let m = NSLocalizedString("Relay failure",
-                                                  comment: "Relay failure description")
-                        let failureReaction = Reaction.dispatchAdaptiveMessage(
+                        let m=NSLocalizedString("Relay failure",
+                                                comment: "Relay failure description")
+                        let failureReaction =  Reaction.dispatchAdaptiveMessage(
                             context: context,
                             title: NSLocalizedString("Unsuccessfull attempt",
                                                      comment: "Unsuccessfull attempt"),
                             body: "\(m) \n \(response)" + "\n\(#file)\n\(#function)\nhttp Status code: (\(statusCode))",
-                            transmit: { (_) -> Void in
+                            transmit:{ (selectedIndex) -> () in
                         })
                         reactions.append(failureReaction)
                         failure(context)
                     }
                 }
-                if let document = Bartleby.sharedInstance.getDocumentByUID(documentUID) {
+                if let document=Bartleby.sharedInstance.getDocumentByUID(documentUID){
                     // report the metrics
                     document.report(metrics)
-                    // Let's react according to the context.
+                    //Let's react according to the context.
                     document.perform(reactions, forContext: context)
-                } else {
+                }else{
                     // Not normal
-                    if let url = request?.url {
-                        Bartleby.sharedInstance.report(metrics, forURL: url)
+                    if let url=request?.url{
+                        Bartleby.sharedInstance.report(metrics,forURL:url)
                     }
                 }
 
             })
-        } catch {
-            let context = HTTPContext(code: 2,
-                                      caller: "RelayActivationCode.execute",
-                                      relatedURL: nil,
-                                      httpStatusCode: 500)
+        }catch{
+            let context = HTTPContext( code:2 ,
+                                       caller: "RelayActivationCode.execute",
+                                       relatedURL:nil,
+                                       httpStatusCode:500)
             context.responseString = "{\"message\":\"\(error)}"
             failure(context)
         }
+        
     }
+    
 }

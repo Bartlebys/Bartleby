@@ -26,30 +26,33 @@ import Foundation
 //
 //  tasks.start()
 
-public struct SequenceOfTasks<T: Any> {
-    fileprivate var _items: [T]
 
-    public var taskHandler: (_ item: T, _ index: Int, _ sequence: SequenceOfTasks) -> Void = { _, index, sequence in sequence.runTask(at: index + 1) }
+public struct SequenceOfTasks<T:Any> {
 
-    public var end: CompletionHandler
+    fileprivate var _items:[T]
 
-    fileprivate var _index: Int = 0
+    public var taskHandler:(_ item:T,_ index:Int,_ sequence:SequenceOfTasks)->() = { item,index,sequence in sequence.runTask(at:index+1) }
 
-    public init(items: [T], end: @escaping CompletionHandler) {
-        _items = items
+    public var end:CompletionHandler
+    
+    fileprivate var _index:Int = 0
+    
+    public init(items:[T],end:@escaping CompletionHandler ) {
+        self._items = items
         self.end = end
     }
-
-    public func start() {
-        runTask(at: 0)
+    
+    public func start(){
+        self.runTask(at: 0)
     }
-
-    public func runTask(at index: Int) {
-        if index == _items.count {
-            end(Completion.successState())
-        } else {
-            let item = _items[index]
-            taskHandler(item, index, self)
+    
+    public func runTask(at index:Int){
+        if index == _items.count{
+            self.end(Completion.successState())
+        }else{
+            let item = self._items[index]
+            self.taskHandler(item,index,self)
         }
     }
+
 }

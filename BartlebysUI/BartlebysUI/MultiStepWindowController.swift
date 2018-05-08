@@ -6,13 +6,15 @@
 //  Copyright © 2018 Lylo Media Group SA. All rights reserved.
 //
 
-import BartlebyKit
 import Cocoa
+import BartlebyKit
 
 // A window view controller used to display sequential view controllers
 // used by the IdentityWindowController
-open class MultiStepWindowController: NSWindowController, DocumentProvider, StepNavigation {
-    open override var windowNibName: NSNib.Name? { return NSNib.Name("MultiStepWindowController") }
+open class MultiStepWindowController: NSWindowController,DocumentProvider,StepNavigation {
+
+
+    override open var windowNibName: NSNib.Name? { return NSNib.Name("MultiStepWindowController") }
 
     // MARK: - DocumentProvider
 
@@ -20,153 +22,164 @@ open class MultiStepWindowController: NSWindowController, DocumentProvider, Step
     /// Generally used in  with `DocumentDependent` protocol
     ///
     /// - Returns: the document
-    public func getDocument() -> BartlebyDocument? {
-        return document as? BartlebyDocument
+    public func getDocument() -> BartlebyDocument?{
+        return self.document as? BartlebyDocument
     }
 
-    public fileprivate(set) var steps: [StepViewController] = [StepViewController]()
 
-    open var onCompletion: (_ reference: MultiStepWindowController) -> Void = { reference in
+    public fileprivate(set) var steps:[StepViewController] = [StepViewController]()
+
+
+    open var onCompletion:(_ reference:MultiStepWindowController)->() = { reference in
         reference.close()
     }
 
     // MARK: - Outlets
 
-    @IBOutlet var tabView: NSTabView!
+    @IBOutlet weak var tabView: NSTabView!
 
-    @IBOutlet var leftButton: NSButton!
+    @IBOutlet weak var leftButton: NSButton!
 
-    @IBOutlet var rightButton: NSButton!
+    @IBOutlet weak var rightButton: NSButton!
 
-    @IBOutlet var progressIndicator: NSProgressIndicator!
+    @IBOutlet weak var progressIndicator: NSProgressIndicator!
+
 
     // MARK: - Life cycle
 
-    open override func windowDidLoad() {
+    override open func windowDidLoad() {
         super.windowDidLoad()
     }
 
     // MARK: - Actions
 
-    @IBAction func leftAction(_: Any) {
+    @IBAction func leftAction(_ sender: Any) {
     }
 
-    @IBAction func rightAction(_: Any) {
-        currentStep?.proceedToValidation()
+    @IBAction func rightAction(_ sender: Any) {
+        self.currentStep?.proceedToValidation()
     }
+
 
     // MARK: - StepNavigation
 
-    public func didValidateStep(_: Int) {
-        nextStep()
-        enableActions()
+
+    public func didValidateStep(_ step: Int) {
+        self.nextStep()
+        self.enableActions()
     }
 
-    public func disableActions() {
-        enableProgressIndicator()
-        leftButton.isEnabled = false
-        rightButton.isEnabled = false
+
+    public func disableActions(){
+        self.enableProgressIndicator()
+        self.leftButton.isEnabled=false
+        self.rightButton.isEnabled=false
     }
 
-    public func enableActions() {
-        disableProgressIndicator()
-        leftButton.isEnabled = true
-        rightButton.isEnabled = true
+    public func enableActions(){
+        self.disableProgressIndicator()
+        self.leftButton.isEnabled=true
+        self.rightButton.isEnabled=true
     }
 
-    public func enableProgressIndicator() {
-        progressIndicator.isHidden = false
-        progressIndicator.startAnimation(self)
+    public func enableProgressIndicator(){
+        self.progressIndicator.isHidden=false
+        self.progressIndicator.startAnimation(self)
     }
 
-    public func disableProgressIndicator() {
-        progressIndicator.isHidden = true
-        progressIndicator.stopAnimation(self)
+    public func disableProgressIndicator(){
+        self.progressIndicator.isHidden=true
+        self.progressIndicator.stopAnimation(self)
     }
 
     // MARK: -
 
-    var currentStep: Step? {
-        let vc = tabView.selectedTabViewItem?.viewController
+    var currentStep:Step?{
+        let vc =  self.tabView.selectedTabViewItem?.viewController
         return vc as? Step
     }
 
-    internal var _currentStepIndex: Int = -1
+    internal var _currentStepIndex:Int = -1
 
-    var currentStepIndex: Int {
-        return _currentStepIndex
+    var currentStepIndex:Int  {
+        return self._currentStepIndex
     }
 
-    func setCurrentStepIndex(_ index: Int) {
-        _currentStepIndex = index
-        if tabView.tabViewItems.count > index && index >= 0 {
-            tabView.selectTabViewItem(at: index)
-        } else {
-            onCompletion(self)
+    func setCurrentStepIndex(_ index:Int){
+        self._currentStepIndex = index
+        if self.tabView.tabViewItems.count > index && index >= 0{
+            self.tabView.selectTabViewItem(at: index)
+        }else{
+            self.onCompletion(self)
         }
     }
 
-    func nextStep() {
-        setCurrentStepIndex(currentStepIndex + 1)
+
+    func nextStep(){
+        self.setCurrentStepIndex(self.currentStepIndex + 1)
     }
+
 
     /// Appends a view Controller to the stack
     ///
     /// - Parameters:
     ///   - viewController: an StepViewController children
     ///   - selectImmediately: display immediately the added view Controller
-    public func append(viewController: StepViewController, selectImmediately: Bool) {
-        let viewControllerItem = NSTabViewItem(viewController: viewController)
+    public func append(viewController:StepViewController,selectImmediately:Bool){
+
+        let viewControllerItem = NSTabViewItem(viewController:viewController)
         viewController.documentProvider = self
         viewController.stepDelegate = self
-        viewController.stepIndex = tabView.tabViewItems.count
+        viewController.stepIndex = self.tabView.tabViewItems.count
 
-        steps.append(viewController)
+        self.steps.append(viewController)
 
-        tabView.addTabViewItem(viewControllerItem)
-        if selectImmediately {
-            setCurrentStepIndex(viewController.stepIndex)
+        self.tabView.addTabViewItem(viewControllerItem)
+        if selectImmediately{
+            self.setCurrentStepIndex(viewController.stepIndex)
         }
     }
+
 
     /// Removes the viewController
     ///
     /// - Parameter viewController: the view controller to remove
-    public func remove(viewController: StepViewController) {
-        let nb = tabView.tabViewItems.count
-        if let idx = self.steps.index(of: viewController) {
-            steps.remove(at: idx)
+    public func remove(viewController:StepViewController){
+        let nb=self.tabView.tabViewItems.count
+        if let idx = self.steps.index(of: viewController){
+            self.steps.remove(at: idx)
         }
-        for i in 0 ..< nb {
-            let item = tabView.tabViewItems[i]
-            if item.viewController == viewController {
-                tabView.removeTabViewItem(item)
+        for i in 0..<nb{
+            let item=self.tabView.tabViewItems[i]
+            if item.viewController==viewController{
+                self.tabView.removeTabViewItem(item)
                 break
             }
         }
     }
 
-    internal func removeAllSuccessors() {
-        for item in tabView.tabViewItems.reversed() {
-            if tabView.tabViewItems.count > currentStepIndex {
-                tabView.removeTabViewItem(item)
-            } else {
+   internal func removeAllSuccessors(){
+        for item in self.tabView.tabViewItems.reversed(){
+            if self.tabView.tabViewItems.count > self.currentStepIndex{
+                self.tabView.removeTabViewItem(item)
+            }else{
                 break
             }
         }
 
-        for idx in currentStepIndex ..< steps.count {
-            let vc = steps[idx]
-            remove(viewController: vc)
+        for idx in  self.currentStepIndex..<self.steps.count{
+            let vc = self.steps[idx]
+            self.remove(viewController: vc)
         }
+
     }
 
-    internal func currentStepIs(_ viewController: StepViewController) -> Bool {
-        if tabView.tabViewItems.count > currentStepIndex {
-            let item = tabView.tabViewItems[self.currentStepIndex]
-            let matching = item.viewController?.className == viewController.className
+    internal func currentStepIs(_ viewController:StepViewController)->Bool{
+        if self.tabView.tabViewItems.count > self.currentStepIndex{
+            let item=self.tabView.tabViewItems[self.currentStepIndex]
+            let matching=item.viewController?.className==viewController.className
             return matching
-        } else {
+        }else{
             return false
         }
     }

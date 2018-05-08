@@ -63,7 +63,7 @@ class CacheTestCase: BaseTestCase {
                 CacheControl.maxAgeNonExpired,
                 CacheControl.maxAgeExpired,
                 CacheControl.noCache,
-                CacheControl.noStore,
+                CacheControl.noStore
             ]
         }
     }
@@ -121,13 +121,13 @@ class CacheTestCase: BaseTestCase {
     // MARK: - Cache Priming Methods
 
     /**
-     Executes a request for all `Cache-Control` header values to load the response into the `URLCache`.
+        Executes a request for all `Cache-Control` header values to load the response into the `URLCache`.
 
-     This implementation leverages dispatch groups to execute all the requests as well as wait an additional
-     second before returning. This ensures the cache contains responses for all requests that are at least
-     one second old. This allows the tests to distinguish whether the subsequent responses come from the cache
-     or the network based on the timestamp of the response.
-     */
+        This implementation leverages dispatch groups to execute all the requests as well as wait an additional
+        second before returning. This ensures the cache contains responses for all requests that are at least
+        one second old. This allows the tests to distinguish whether the subsequent responses come from the cache
+        or the network based on the timestamp of the response.
+    */
     func primeCachedResponses() {
         let dispatchGroup = DispatchGroup()
         let serialQueue = DispatchQueue(label: "org.alamofire.cache-tests")
@@ -184,7 +184,8 @@ class CacheTestCase: BaseTestCase {
         cachePolicy: NSURLRequest.CachePolicy = .useProtocolCachePolicy,
         queue: DispatchQueue = DispatchQueue.main,
         completion: @escaping (URLRequest?, HTTPURLResponse?) -> Void)
-        -> URLRequest {
+        -> URLRequest
+    {
         let urlRequest = self.urlRequest(cacheControl: cacheControl, cachePolicy: cachePolicy)
         let request = manager.request(urlRequest)
 
@@ -203,7 +204,8 @@ class CacheTestCase: BaseTestCase {
     func executeTest(
         cachePolicy: NSURLRequest.CachePolicy,
         cacheControl: String,
-        shouldReturnCachedResponse: Bool) {
+        shouldReturnCachedResponse: Bool)
+    {
         // Given
         let expectation = self.expectation(description: "GET request to httpbin")
         var response: HTTPURLResponse?
@@ -240,15 +242,15 @@ class CacheTestCase: BaseTestCase {
     // MARK: - Cache Helper Methods
 
     private func isCachedResponseForNoStoreHeaderExpected() -> Bool {
-        #if os(iOS)
-            if #available(iOS 8.3, *) {
-                return false
-            } else {
-                return true
-            }
-        #else
+    #if os(iOS)
+        if #available(iOS 8.3, *) {
             return false
-        #endif
+        } else {
+            return true
+        }
+    #else
+        return false
+    #endif
     }
 
     // MARK: - Tests

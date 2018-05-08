@@ -8,9 +8,10 @@
 
 import Foundation
 
+
 // MARK: - Step
 
-public protocol Step {
-    var stepIndex: Int { get set }
+public protocol Step{
+    var stepIndex:Int { get set }
     func proceedToValidation()
 }

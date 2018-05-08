@@ -11,27 +11,30 @@ import Foundation
     import Alamofire
 #endif
 
+
+
 /// A cancelable Upload Block Operation
 public class UploadBlock {
+
     // https://github.com/Alamofire/Alamofire#uploading-data-to-a-server
     // We could may be resume if necessary.
     // But with our block oriented approach it is not a priority
 
-    enum UploadBlockError: Error {
-        case responseIssue(message: String)
+    enum UploadBlockError:Error{
+        case responseIssue(message:String)
     }
 
-    internal var _uploadRequest: UploadRequest?
+    internal var _uploadRequest:UploadRequest?
 
-    internal var _sucessHandler: (_ context: HTTPContext) -> Void
+    internal var _sucessHandler:(_ context:HTTPContext)->()
 
-    internal var _failureHandler: (_ context: HTTPContext) -> Void
+    internal var _failureHandler:(_ context:HTTPContext)->()
 
-    internal var _cancelationHandler: () -> Void
+    internal var _cancelationHandler:()->()
 
-    internal var _block: Block
+    internal var _block:Block
 
-    internal var _documentUID: String
+    internal var _documentUID:String
 
     /// Initializer
     ///
@@ -40,142 +43,147 @@ public class UploadBlock {
     ///   - documentUID: its document UID
     ///   - success: the success closure
     ///   - failure: the failure closure
-    public init(block: Block, documentUID: String,
-                sucessHandler success: @escaping (_ context: HTTPContext) -> Void,
-                failureHandler failure: @escaping (_ context: HTTPContext) -> Void,
-                cancelationHandler cancel: @escaping () -> Void) {
-        _block = block
-        _documentUID = documentUID
-        _sucessHandler = success
-        _failureHandler = failure
-        _cancelationHandler = cancel
+    public init(block:Block,documentUID:String,
+                sucessHandler success: @escaping(_ context:HTTPContext)->(),
+                failureHandler failure: @escaping(_ context:HTTPContext)->(),
+                cancelationHandler cancel: @escaping()->()){
+        self._block=block
+        self._documentUID=documentUID
+        self._sucessHandler=success
+        self._failureHandler=failure
+        self._cancelationHandler=cancel
     }
 
     /// Cancels the operation
-    public func cancel() {
-        if let uploadRequest = self._uploadRequest {
+    public func cancel(){
+        if let uploadRequest = self._uploadRequest{
             uploadRequest.cancel()
         }
-        _cancelationHandler()
+        self._cancelationHandler()
     }
 
-    public var blockUID: String { return _block.UID }
+    public var blockUID:String{ return _block.UID }
 
-    public func execute() {
+    public func execute(){
+
         if let document = Bartleby.sharedInstance.getDocumentByUID(self._documentUID) {
-            let pathURL = document.baseURL.appendingPathComponent("block/\(_block.UID)")
-            if let data = self._block.data {
-                let r = HTTPManager.requestWithToken(inDocumentWithUID: document.UID, withActionName: "UploadBlock", forMethod: "POST", and: pathURL)
-                _uploadRequest = upload(data, with: r)
-                _uploadRequest!.responseString(completionHandler: { response in
+            let pathURL = document.baseURL.appendingPathComponent("block/\(self._block.UID)")
+            if let data=self._block.data{
+                let r=HTTPManager.requestWithToken(inDocumentWithUID:document.UID,withActionName:"UploadBlock" ,forMethod:"POST", and: pathURL)
+                self._uploadRequest = upload(data, with: r)
+                self._uploadRequest!.responseString(completionHandler: { (response) in
 
                     // Store the response
-                    let request = response.request
-                    let result = response.result
-                    let statusCode = response.response?.statusCode ?? 0
+                    let request=response.request
+                    let result=response.result
+                    let statusCode=response.response?.statusCode ?? 0
 
                     // Bartleby consignation
-                    let context = HTTPContext(code: 826,
-                                              caller: "UpdateBlock.execute",
-                                              relatedURL: request?.url,
-                                              httpStatusCode: statusCode)
+                    let context = HTTPContext( code: 826,
+                                               caller: "UpdateBlock.execute",
+                                               relatedURL:request?.url,
+                                               httpStatusCode: statusCode)
 
-                    if let request = request {
-                        context.request = HTTPRequest(urlRequest: request)
+                    if let request=request{
+                        context.request=HTTPRequest(urlRequest: request)
                     }
 
                     if let data = response.data, let utf8Text = String(data: data, encoding: .utf8) {
-                        context.responseString = utf8Text
+                        context.responseString=utf8Text
                     }
 
                     // React according to the situation
-                    var reactions = Array<Reaction>()
+                    var reactions = Array<Reaction> ()
 
                     if result.isFailure {
                         let m = NSLocalizedString("Upload of a block failure",
                                                   comment: "Upload of a block failure description")
-                        let failureReaction = Reaction.dispatchAdaptiveMessage(
+                        let failureReaction =  Reaction.dispatchAdaptiveMessage(
                             context: context,
                             title: NSLocalizedString("Unsuccessfull attempt result.isFailure is true",
                                                      comment: "Unsuccessfull attempt"),
-                            body: "\(m) \n \(response)" + "\n\(#file)\n\(#function)\nhttp Status code: (\(statusCode))",
-                            transmit: { (_) -> Void in
+                            body:"\(m) \n \(response)" + "\n\(#file)\n\(#function)\nhttp Status code: (\(statusCode))",
+                            transmit:{ (selectedIndex) -> () in
                         })
                         reactions.append(failureReaction)
                         self._failureHandler(context)
 
-                    } else {
-                        if 200 ... 299 ~= statusCode {
-                            do {
-                                if let data = response.data {
+                    }else{
+
+                        if 200...299 ~= statusCode {
+
+                            do{
+                                if let data = response.data{
                                     // Acknowledge the trigger if there is one
                                     // We don't incorporate Metrics reports
                                     // Because Upload & Downloads are not comparable with the other requests.
 
-                                    let jsonObject = try JSONSerialization.jsonObject(with: data, options: [])
+                                    let jsonObject = try JSONSerialization.jsonObject(with: data, options:[])
 
                                     if let dictionary = jsonObject as? [String: Any] {
-                                        if let index = dictionary["triggerIndex"] as? NSNumber {
-                                            let acknowledgment = Acknowledgment()
-                                            acknowledgment.httpContext = context
-                                            acknowledgment.operationName = "UploadBlock"
-                                            acknowledgment.triggerIndex = index.intValue
-                                            acknowledgment.uids = [self._block.UID]
+                                        if let index=dictionary["triggerIndex"] as? NSNumber{
+                                            let acknowledgment=Acknowledgment()
+                                            acknowledgment.httpContext=context
+                                            acknowledgment.operationName="UploadBlock"
+                                            acknowledgment.triggerIndex=index.intValue
+                                            acknowledgment.uids=[self._block.UID]
                                             document.record(acknowledgment)
-                                        } else {
+                                        }else{
                                             throw UploadBlockError.responseIssue(message: "triggerIndex not found")
                                         }
-                                    } else {
+                                    }else{
                                         throw UploadBlockError.responseIssue(message: "dictionary is not available")
                                     }
                                     self._sucessHandler(context)
-                                } else {
+                                }else{
                                     throw UploadBlockError.responseIssue(message: "Data not found")
                                 }
-                            } catch {
+                            }catch{
                                 // JSON de serialization issue
-                                let context = HTTPContext(code: 827,
-                                                          caller: "UpdateBlock.execute",
-                                                          relatedURL: nil,
-                                                          httpStatusCode: statusCode)
-                                context.message = "\(error)"
+                                let context = HTTPContext( code:827 ,
+                                                           caller: "UpdateBlock.execute",
+                                                           relatedURL:nil,
+                                                           httpStatusCode:statusCode)
+                                context.message="\(error)"
                                 self._failureHandler(context)
                             }
 
-                        } else {
+                        }else{
                             // Bartlby does not currenlty discriminate status codes 100 & 101
                             // and treats any status code >= 300 the same way
                             // because we consider that failures differentiations could be done by the caller.
 
-                            let m = NSLocalizedString("Upload of a block failure",
-                                                      comment: "update of block failure description")
-                            let failureReaction = Reaction.dispatchAdaptiveMessage(
+                            let m=NSLocalizedString("Upload of a block failure",
+                                                    comment: "update of block failure description")
+                            let failureReaction =  Reaction.dispatchAdaptiveMessage(
                                 context: context,
                                 title: NSLocalizedString("Unsuccessfull attempt",
                                                          comment: "Unsuccessfull attempt"),
                                 body: "\(m) \n \(response)" + "\n\(#file)\n\(#function)\nhttp Status code: (\(statusCode))",
-                                transmit: { (_) -> Void in
+                                transmit:{ (selectedIndex) -> () in
                             })
                             reactions.append(failureReaction)
                             self._failureHandler(context)
                         }
-
-                        // Let's react according to the context.
+                        
+                        
+                        //Let's react according to the context.
                         document.perform(reactions, forContext: context)
                     }
                 })
 
-            } else {
+            }else{
                 // Bartleby consignation
-                let context = HTTPContext(code: 827,
-                                          caller: "UpdateBlock.execute",
-                                          relatedURL: nil,
-                                          httpStatusCode: 500)
-                _failureHandler(context)
+                let context = HTTPContext( code: 827,
+                                           caller: "UpdateBlock.execute",
+                                           relatedURL:nil,
+                                           httpStatusCode:500)
+                self._failureHandler(context)
             }
 
-        } else {
-            glog(NSLocalizedString("Document is missing", comment: "Document is missing") + " _documentUID =\(_documentUID)", file: #file, function: #function, line: #line, category: Default.LOG_DEFAULT, decorative: false)
+        }else{
+            glog(NSLocalizedString("Document is missing", comment: "Document is missing")+" _documentUID =\(self._documentUID)", file: #file, function: #function, line: #line, category: Default.LOG_DEFAULT, decorative: false)
         }
     }
 }
+

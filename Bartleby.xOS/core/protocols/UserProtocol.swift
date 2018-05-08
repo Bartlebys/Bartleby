@@ -8,9 +8,12 @@
 
 import Foundation
 
+
+
 // The user protocol defines the minimal contract
 // To be a good bartleby Citizen.
 public protocol UserProtocol: Collectible {
+
     associatedtype Status
     associatedtype VerificationMethod
 
@@ -31,4 +34,5 @@ public protocol UserProtocol: Collectible {
     var activationCode: String { get set }
 
     var status: Status { get set }
+
 }

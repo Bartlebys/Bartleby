@@ -8,10 +8,13 @@
 
 import Foundation
 
+
 /// This extension is used to access to the window controller
 /// when the steps controllers are embedded in the IdentityWindowController
-public extension StepViewController {
-    public var identityWindowController: IdentityWindowController? {
-        return documentProvider as? IdentityWindowController
+public extension StepViewController{
+
+    public var identityWindowController:IdentityWindowController?{
+        return self.documentProvider as? IdentityWindowController
     }
+
 }

@@ -8,20 +8,22 @@
 
 import Foundation
 
-extension ManagedModel: Mergeable {
+extension ManagedModel:Mergeable{
+
     /// Merge the instance with another
     ///
     /// - parameter instance: the instance
     open func mergeWith(_ instance: Exposed) throws {
-        let preservedId = _id
-        for key in instance.exposedKeys {
-            if exposedKeys.contains(key) {
+        let preservedId = self._id
+        for key in instance.exposedKeys{
+            if self.exposedKeys.contains(key){
                 let value = try instance.getExposedValueForKey(key)
-                try setExposedValue(value, forKey: key)
-            } else {
-                log("Attempt to merge an unexisting key \(key) on \(instance))", file: #file, function: #function, line: #line, category: logsCategoryFor(self), decorative: false)
+                try self.setExposedValue(value, forKey: key)
+            }else{
+                self.log("Attempt to merge an unexisting key \(key) on \(instance))", file: #file, function: #function, line: #line, category: logsCategoryFor(self), decorative: false)
             }
         }
-        _id = preservedId
+        self._id = preservedId
     }
+
 }

@@ -8,6 +8,7 @@
 
 import Foundation
 
+
 @available(iOS 9.0, OSX 10.11, watchOS 2.0, tvOS 9.0, *)
 public enum CompressionError: Error {
     /**

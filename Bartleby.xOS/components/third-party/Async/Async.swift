@@ -29,7 +29,6 @@
 import Foundation
 
 // MARK: - DSL for GCD queues
-
 /**
  `GCD` is a convenience enum with cases to get `DispatchQueue` of different quality of service classes, as provided by `DispatchQueue.global` or `DispatchQueue` for main thread or a specific custom queue.
  let mainQueue = GCD.main
@@ -47,13 +46,14 @@ private enum GCD {
         case .userInitiated: return .global(qos: .userInitiated)
         case .utility: return .global(qos: .utility)
         case .background: return .global(qos: .background)
-        case let .custom(queue): return queue
+        case .custom(let queue): return queue
         }
     }
 }
 
-// MARK: - Async – Struct
 
+
+// MARK: - Async – Struct
 /**
  The **Async** struct is the main part of the Async.framework. Handles an internally `@convention(block) () -> Swift.Void`.
  Chainable dispatch blocks with GCD:
@@ -105,8 +105,8 @@ public typealias Async = AsyncBlock<Void, Void>
 
 public struct AsyncBlock<In, Out> {
 
-    // MARK: - Private properties and init
 
+    // MARK: - Private properties and init
     /**
      Private property to hold internally on to a `@convention(block) () -> Swift.Void`
      */
@@ -124,11 +124,11 @@ public struct AsyncBlock<In, Out> {
     private init(_ block: DispatchWorkItem, input: Reference<In>? = nil, output: Reference<Out> = Reference()) {
         self.block = block
         self.input = input
-        output_ = output
+        self.output_ = output
     }
 
-    // MARK: - Static methods
 
+    // MARK: - Static methods
     /**
      Sends the a block to be run asynchronously on the main thread.
      - parameters:
@@ -138,7 +138,7 @@ public struct AsyncBlock<In, Out> {
      - SeeAlso: Has parity with non-static method
      */
     @discardableResult
-    public static func main<O>(after seconds: Double? = nil, _ block: @escaping (() -> O)) -> AsyncBlock<Void, O> {
+    public static func main<O>(after seconds: Double? = nil, _ block: @escaping(() -> O)) -> AsyncBlock<Void, O> {
         return AsyncBlock.async(after: seconds, block: block, queue: .main)
     }
 
@@ -151,7 +151,7 @@ public struct AsyncBlock<In, Out> {
      - SeeAlso: Has parity with non-static method
      */
     @discardableResult
-    public static func userInteractive<O>(after seconds: Double? = nil, _ block: @escaping (() -> O)) -> AsyncBlock<Void, O> {
+    public static func userInteractive<O>(after seconds: Double? = nil, _ block: @escaping (()->O)) -> AsyncBlock<Void, O> {
         return AsyncBlock.async(after: seconds, block: block, queue: .userInteractive)
     }
 
@@ -164,7 +164,7 @@ public struct AsyncBlock<In, Out> {
      - SeeAlso: Has parity with non-static method
      */
     @discardableResult
-    public static func userInitiated<O>(after seconds: Double? = nil, _ block: @escaping (() -> O)) -> AsyncBlock<Void, O> {
+    public static func userInitiated<O>(after seconds: Double? = nil, _ block: @escaping (()->O)) -> AsyncBlock<Void, O> {
         return Async.async(after: seconds, block: block, queue: .userInitiated)
     }
 
@@ -207,8 +207,8 @@ public struct AsyncBlock<In, Out> {
         return Async.async(after: seconds, block: block, queue: .custom(queue: queue))
     }
 
-    // MARK: - Private static methods
 
+    // MARK: - Private static methods
     /**
      Convenience for dispatch_async(). Encapsulates the block in a "true" GCD block using DISPATCH_BLOCK_INHERIT_QOS_CLASS.
      - parameters:
@@ -234,8 +234,8 @@ public struct AsyncBlock<In, Out> {
         return AsyncBlock<Void, O>(block, output: reference)
     }
 
-    // MARK: - Instance methods (matches static ones)
 
+    // MARK: - Instance methods (matches static ones)
     /**
      Sends the a block to be run asynchronously on the main thread, after the current block has finished.
      - parameters:
@@ -315,7 +315,6 @@ public struct AsyncBlock<In, Out> {
     }
 
     // MARK: - Instance methods
-
     /**
      Convenience function to call `dispatch_block_cancel()` on the encapsulated block.
      Cancels the current block, if it hasn't already begun running to GCD.
@@ -336,6 +335,7 @@ public struct AsyncBlock<In, Out> {
         block.cancel()
     }
 
+
     /**
      Convenience function to call `dispatch_block_wait()` on the encapsulated block.
      Waits for the current block to finish, on any given thread.
@@ -351,8 +351,8 @@ public struct AsyncBlock<In, Out> {
         return block.wait(timeout: timeout)
     }
 
-    // MARK: Private instance methods
 
+    // MARK: Private instance methods
     /**
      Convenience for `dispatch_block_notify()` to
      - parameters:
@@ -379,12 +379,12 @@ public struct AsyncBlock<In, Out> {
         }
 
         // See Async.async() for comments
-        return AsyncBlock<Out, O>(dispatchWorkItem, input: output_, output: reference)
+        return AsyncBlock<Out, O>(dispatchWorkItem, input: self.output_, output: reference)
     }
 }
 
-// MARK: - Apply - DSL for `dispatch_apply`
 
+// MARK: - Apply - DSL for `dispatch_apply`
 /**
  `Apply` is an empty struct with convenience static functions to parallelize a for-loop, as provided by `dispatch_apply`.
  Apply.background(100) { i in
@@ -399,13 +399,14 @@ public struct AsyncBlock<In, Out> {
  - SeeAlso: Grand Central Dispatch, dispatch_apply
  */
 public struct Apply {
+
     /**
      Block is run any given amount of times on a queue with a quality of service of QOS_CLASS_USER_INTERACTIVE. The block is being passed an index parameter.
      - parameters:
      - iterations: How many times the block should be run. Index provided to block goes from `0..<iterations`
      - block: The block that is to be passed to be run on a .
      */
-    public static func userInteractive(_ iterations: Int, block: @escaping (Int) -> Void) {
+    public static func userInteractive(_ iterations: Int, block: @escaping (Int) -> ()) {
         GCD.userInteractive.queue.async {
             DispatchQueue.concurrentPerform(iterations: iterations, execute: block)
         }
@@ -417,7 +418,7 @@ public struct Apply {
      - iterations: How many times the block should be run. Index provided to block goes from `0..<iterations`
      - block: The block that is to be passed to be run on a .
      */
-    public static func userInitiated(_ iterations: Int, block: @escaping (Int) -> Void) {
+    public static func userInitiated(_ iterations: Int, block: @escaping (Int) -> ()) {
         GCD.userInitiated.queue.async {
             DispatchQueue.concurrentPerform(iterations: iterations, execute: block)
         }
@@ -429,7 +430,7 @@ public struct Apply {
      - iterations: How many times the block should be run. Index provided to block goes from `0..<iterations`
      - block: The block that is to be passed to be run on a .
      */
-    public static func utility(_ iterations: Int, block: @escaping (Int) -> Void) {
+    public static func utility(_ iterations: Int, block: @escaping (Int) -> ()) {
         GCD.utility.queue.async {
             DispatchQueue.concurrentPerform(iterations: iterations, execute: block)
         }
@@ -441,7 +442,7 @@ public struct Apply {
      - iterations: How many times the block should be run. Index provided to block goes from `0..<iterations`
      - block: The block that is to be passed to be run on a .
      */
-    public static func background(_ iterations: Int, block: @escaping (Int) -> Void) {
+    public static func background(_ iterations: Int, block: @escaping (Int) -> ()) {
         GCD.background.queue.async {
             DispatchQueue.concurrentPerform(iterations: iterations, execute: block)
         }
@@ -453,15 +454,15 @@ public struct Apply {
      - iterations: How many times the block should be run. Index provided to block goes from `0..<iterations`
      - block: The block that is to be passed to be run on a .
      */
-    public static func custom(queue: DispatchQueue, iterations: Int, block: @escaping (Int) -> Void) {
+    public static func custom(queue: DispatchQueue, iterations: Int, block: @escaping (Int) -> ()) {
         queue.async {
             DispatchQueue.concurrentPerform(iterations: iterations, execute: block)
         }
     }
 }
 
-// MARK: - AsyncGroup – Struct
 
+// MARK: - AsyncGroup – Struct
 /**
  The **AsyncGroup** struct facilitates working with groups of asynchronous blocks. Handles a internally `dispatch_group_t`.
  Multiple dispatch blocks with GCD:
@@ -498,7 +499,6 @@ public struct Apply {
 public struct AsyncGroup {
 
     // MARK: - Private properties and init
-
     /**
      Private property to internally on to a `dispatch_group_t`
      */
@@ -510,6 +510,7 @@ public struct AsyncGroup {
     public init() {
         group = DispatchGroup()
     }
+
 
     /**
      Convenience for `dispatch_group_async()`
@@ -538,8 +539,8 @@ public struct AsyncGroup {
         group.leave()
     }
 
-    // MARK: - Instance methods
 
+    // MARK: - Instance methods
     /**
      Sends the a block to be run asynchronously on the main thread, in the current group.
      - parameters:
@@ -612,44 +613,50 @@ public struct AsyncGroup {
     }
 }
 
-// MARK: - Extension for `qos_class_t`
 
+// MARK: - Extension for `qos_class_t`
 /**
  Extension to add description string for each quality of service class.
  */
 public extension qos_class_t {
+
     /**
      Description of the `qos_class_t`. E.g. "Main", "User Interactive", etc. for the given Quality of Service class.
      */
     var description: String {
-        switch self {
-        case qos_class_main(): return "Main"
-        case DispatchQoS.QoSClass.userInteractive.rawValue: return "User Interactive"
-        case DispatchQoS.QoSClass.userInitiated.rawValue: return "User Initiated"
-        case DispatchQoS.QoSClass.default.rawValue: return "Default"
-        case DispatchQoS.QoSClass.utility.rawValue: return "Utility"
-        case DispatchQoS.QoSClass.background.rawValue: return "Background"
-        case DispatchQoS.QoSClass.unspecified.rawValue: return "Unspecified"
-        default: return "Unknown"
+        get {
+            switch self {
+            case qos_class_main(): return "Main"
+            case DispatchQoS.QoSClass.userInteractive.rawValue: return "User Interactive"
+            case DispatchQoS.QoSClass.userInitiated.rawValue: return "User Initiated"
+            case DispatchQoS.QoSClass.default.rawValue: return "Default"
+            case DispatchQoS.QoSClass.utility.rawValue: return "Utility"
+            case DispatchQoS.QoSClass.background.rawValue: return "Background"
+            case DispatchQoS.QoSClass.unspecified.rawValue: return "Unspecified"
+            default: return "Unknown"
+            }
         }
     }
 }
 
-// MARK: - Extension for `DispatchQueue.GlobalAttributes`
 
+// MARK: - Extension for `DispatchQueue.GlobalAttributes`
 /**
  Extension to add description string for each quality of service class.
  */
 public extension DispatchQoS.QoSClass {
+
     var description: String {
-        switch self {
-        case DispatchQoS.QoSClass(rawValue: qos_class_main())!: return "Main"
-        case .userInteractive: return "User Interactive"
-        case .userInitiated: return "User Initiated"
-        case .default: return "Default"
-        case .utility: return "Utility"
-        case .background: return "Background"
-        case .unspecified: return "Unspecified"
+        get {
+            switch self {
+            case DispatchQoS.QoSClass(rawValue: qos_class_main())!: return "Main"
+            case .userInteractive: return "User Interactive"
+            case .userInitiated: return "User Initiated"
+            case .default: return "Default"
+            case .utility: return "Utility"
+            case .background: return "Background"
+            case .unspecified: return "Unspecified"
+            }
         }
     }
 }

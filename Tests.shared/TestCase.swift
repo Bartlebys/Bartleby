@@ -17,15 +17,17 @@ class TestObserver: NSObject, XCTestObservation {
     fileprivate var _failureCount = 0
 
     var hasSucceeded: Bool {
-        return _failureCount == 0
+        get {
+            return _failureCount == 0
+        }
     }
 
     func testCaseWillStart(_ testCase: XCTestCase) {
         print("\n#### \(testCase.name) ####\n")
     }
 
-    func testCase(_: XCTestCase, didFailWithDescription _: String, inFile _: String?, atLine _: Int) {
-        _failureCount += 1
+    func testCase(_ testCase: XCTestCase, didFailWithDescription description: String, inFile filePath: String?, atLine lineNumber: Int) {
+        self._failureCount += 1
     }
 }
 
@@ -38,6 +40,7 @@ class TestObserver: NSObject, XCTestObservation {
 /// - Provide a helper method for creating users
 /// - Clean all created users during static tear down
 class TestCase: XCTestCase {
+
     static let fm = FileManager.default
     let _fm = TestCase.fm
 
@@ -47,14 +50,15 @@ class TestCase: XCTestCase {
     static var assetPath = ""
     var assetPath: String = ""
 
-    fileprivate static var _creator: User?
+    fileprivate static var _creator: User? = nil
     fileprivate static var _createdUsers = [User]()
 
     fileprivate static var _testObserver = TestObserver()
 
     // We need a real local document to login.
-    fileprivate static var _document: BartlebyDocument?
-    static var document = _document!
+    fileprivate static var _document:BartlebyDocument?
+    static var document=_document!
+
 
     /// MARK: Behaviour after test run
 
@@ -66,26 +70,29 @@ class TestCase: XCTestCase {
 
     static var removeAsset = RemoveAssets.onSuccess
 
+
     override class func setUp() {
         super.setUp()
 
+
         Bartleby.sharedInstance.configureWith(TestsConfiguration.self)
-        TestCase._document = BartlebyDocument()
+        TestCase._document=BartlebyDocument()
         TestCase.document.configureSchema()
         Bartleby.sharedInstance.declare(TestCase.document)
         // By default we use kvid auth.
-        TestCase.document.metadata.identificationMethod = DocumentMetadata.IdentificationMethod.key
+        TestCase.document.metadata.identificationMethod=DocumentMetadata.IdentificationMethod.key
 
         // Initialize test case variable
         testName = NSStringFromClass(self)
-        TestCase._document?.log("==========================================================", file: #file, function: #function, line: #line, category: testName, decorative: true)
-        TestCase._document?.log("    \(testName)", file: #file, function: #function, line: #line, category: testName, decorative: true)
-        TestCase._document?.log("    on \(TestsConfiguration.API_BASE_URL)", file: #file, function: #function, line: #line, category: testName, decorative: true)
-        TestCase._document?.log("==========================================================", file: #file, function: #function, line: #line, category: testName, decorative: true)
+        TestCase._document?.log("==========================================================",file:#file,function:#function,line:#line,category:testName,decorative:true)
+        TestCase._document?.log("    \(testName)",file:#file,function:#function,line:#line,category:testName,decorative:true)
+        TestCase._document?.log("    on \(TestsConfiguration.API_BASE_URL)",file:#file,function:#function,line:#line,category:testName,decorative:true)
+        TestCase._document?.log("==========================================================",file:#file,function:#function,line:#line,category:testName,decorative:true)
+
 
         //        assetPath = NSTemporaryDirectory() + testName + "/"
         assetPath = Bartleby.getSearchPath(.desktopDirectory)! + "/\(testName)/"
-        glog("Asset path: \(assetPath)", file: #file, function: #function, line: #line)
+        glog("Asset path: \(assetPath)",file:#file,function:#function,line:#line)
 
         // Remove asset folder if it exists
         do {
@@ -97,20 +104,20 @@ class TestCase: XCTestCase {
             XCTFail("\(error)")
         }
 
-        if TestsConfiguration.ENABLE_TEST_OBSERVATION {
+        if TestsConfiguration.ENABLE_TEST_OBSERVATION{
             // Add test observer
             XCTestObservationCenter.shared.addTestObserver(_testObserver)
         }
 
         // Purge cookie for the domain
-        if let cookies = HTTPCookieStorage.shared.cookies(for: TestsConfiguration.API_BASE_URL as URL) {
+        if let cookies=HTTPCookieStorage.shared.cookies(for: TestsConfiguration.API_BASE_URL as URL) {
             for cookie in cookies {
                 HTTPCookieStorage.shared.deleteCookie(cookie)
             }
         }
 
-        if let cookies = HTTPCookieStorage.shared.cookies(for: TestsConfiguration.API_BASE_URL as URL) {
-            XCTAssertTrue((cookies.count == 0), "We should  have 0 cookie  #\(cookies.count)")
+        if let cookies=HTTPCookieStorage.shared.cookies(for: TestsConfiguration.API_BASE_URL as URL) {
+            XCTAssertTrue((cookies.count==0), "We should  have 0 cookie  #\(cookies.count)")
         }
 
         // Make sure created users list is clean
@@ -121,7 +128,7 @@ class TestCase: XCTestCase {
     override static func tearDown() {
         super.tearDown()
 
-        if TestsConfiguration.ENABLE_TEST_OBSERVATION {
+        if  TestsConfiguration.ENABLE_TEST_OBSERVATION{
             // Remove test observer
             XCTestObservationCenter.shared.removeTestObserver(_testObserver)
 
@@ -129,22 +136,24 @@ class TestCase: XCTestCase {
             if fm.fileExists(atPath: assetPath) && removeAsset != .never {
                 if (removeAsset == .always) || (_testObserver.hasSucceeded) {
                     do {
-                        try fm.removeItem(atPath: assetPath)
+                        try fm.removeItem(atPath: self.assetPath)
                     } catch {
-                        TestCase._document?.log("Error: \(error)", file: #file, function: #function, line: #line)
+                       TestCase._document?.log("Error: \(error)", file: #file, function: #function, line: #line)
                     }
                 }
             }
+
         }
 
         // Clean stored users
         _creator = nil
         _createdUsers.removeAll()
-        TestCase._document?.dumpLogsEntries({ (_) -> Bool in
-            true
-        }, fileName: NSStringFromClass(self))
+        TestCase._document?.dumpLogsEntries({ (entry) -> Bool in
+            return true
+            }, fileName: NSStringFromClass(self))
 
-        TestCase._document?.cleanUpLogs()
+         TestCase._document?.cleanUpLogs()
+
     }
 
     override func setUp() {
@@ -153,7 +162,7 @@ class TestCase: XCTestCase {
     }
 
     func waitForExpectations(_ timeout: TimeInterval = TestsConfiguration.TIME_OUT_DURATION) {
-        waitForExpectations(timeout: timeout, handler: nil)
+        self.waitForExpectations(timeout: timeout, handler: nil)
     }
 
     /**
@@ -190,27 +199,28 @@ class TestCase: XCTestCase {
         TestCase._createdUsers.append(user)
 
         // Create user on the server
-        CreateUser.execute(user, in: TestCase.document.UID, sucessHandler: { context in
+        CreateUser.execute(user, in:TestCase.document.UID, sucessHandler: { (context) in
 
             if autologin {
                 // Login if needed
-                user.login(sucessHandler: {
+                user.login( sucessHandler: {
                     handlers.on(Completion.successState())
 
-                }, failureHandler: { context in
-                    glog("Autologin of \(user.UID) has failed", file: #file, function: #function, line: #line, category: Default.LOG_DEFAULT)
-                    handlers.on(Completion.failureStateFromHTTPContext(context))
+                    }, failureHandler: { (context) in
+                        glog("Autologin of \(user.UID) has failed",file:#file,function:#function,line:#line,category: Default.LOG_DEFAULT)
+                        handlers.on(Completion.failureStateFromHTTPContext(context))
                 })
             } else {
                 handlers.on(Completion.successState())
             }
-        }) { context in
-            glog("Creation of \(user.UID) has failed", file: #file, function: #function, line: #line, category: Default.LOG_DEFAULT)
+        }) { (context) in
+            glog("Creation of \(user.UID) has failed",file:#file,function:#function,line:#line,category: Default.LOG_DEFAULT)
             handlers.on(Completion.failureStateFromHTTPContext(context))
         }
 
         // The user is returned
         return user
+
     }
 
     /**
@@ -224,19 +234,19 @@ class TestCase: XCTestCase {
             if let creator = TestCase._creator {
                 creator.logout(sucessHandler: {
                     handlers.on(Completion.successState())
-                }, failureHandler: { context in
-                    handlers.on(Completion.failureStateFromHTTPContext(context))
+                    }, failureHandler: { (context) in
+                        handlers.on(Completion.failureStateFromHTTPContext(context))
                 })
             } else {
                 handlers.on(Completion.failureState("Unable to delete users without creator", statusCode: .bad_Request))
             }
         } else {
             let user = TestCase._createdUsers.removeLast()
-            DeleteUser.execute(user, from: TestCase.document.UID, sucessHandler: { _ in
+            DeleteUser.execute(user, from:TestCase.document.UID, sucessHandler: { (context) in
                 // Delete recursively the next created user
                 self._deleteNextUser(handlers)
-            }, failureHandler: { context in
-                handlers.on(Completion.failureStateFromHTTPContext(context))
+                }, failureHandler: { (context) in
+                    handlers.on(Completion.failureStateFromHTTPContext(context))
             })
         }
     }
@@ -249,16 +259,17 @@ class TestCase: XCTestCase {
     func deleteCreatedUsers(_ handlers: Handlers) {
         if let creator = TestCase._creator {
             // Login the creator
-            creator.login(sucessHandler: {
+            creator.login( sucessHandler: {
                 // Delete each user with a recursive method
                 self._deleteNextUser(handlers)
-            }, failureHandler: { context in
-                handlers.on(Completion.failureStateFromHTTPContext(context))
+                }, failureHandler: { (context) in
+                    handlers.on(Completion.failureStateFromHTTPContext(context))
             })
         } else {
             handlers.on(Completion.failureState("Unable to delete users without creator", statusCode: .bad_Request))
         }
     }
+
 
     /**
      Writes a string to a given path.
@@ -269,12 +280,14 @@ class TestCase: XCTestCase {
 
      - throws: throws file issue
      */
-    func writeStrinToPath(_ string: String, path: String, createIntermediaryFolders: Bool = true) throws {
-        let fileURL = URL(fileURLWithPath: path)
-        let folderURL = fileURL.deletingLastPathComponent()
-        if createIntermediaryFolders {
-            try _fm.createDirectory(at: folderURL, withIntermediateDirectories: true, attributes: [:])
+    func writeStrinToPath(_ string:String,path:String,createIntermediaryFolders:Bool=true) throws -> () {
+        let fileURL=URL(fileURLWithPath:path)
+        let folderURL=fileURL.deletingLastPathComponent()
+        if createIntermediaryFolders{
+            try self._fm.createDirectory(at: folderURL, withIntermediateDirectories: true, attributes: [:])
         }
         try string.write(to: fileURL, atomically: true, encoding: Default.STRING_ENCODING)
     }
+    
+    
 }

@@ -204,7 +204,8 @@ class DownloadResponseTestCase: BaseTestCase {
             let data = try? Data(contentsOf: temporaryURL),
             let jsonObject = try? JSONSerialization.jsonObject(with: data, options: JSONSerialization.ReadingOptions(rawValue: 0)),
             let json = jsonObject as? [String: Any],
-            let args = json["args"] as? [String: String] {
+            let args = json["args"] as? [String: String]
+        {
             XCTAssertEqual(args["foo"], "bar")
         } else {
             XCTFail("args parameter in JSON should not be nil")
@@ -241,7 +242,8 @@ class DownloadResponseTestCase: BaseTestCase {
             let data = try? Data(contentsOf: fileURL),
             let jsonObject = try? JSONSerialization.jsonObject(with: data, options: []),
             let json = jsonObject as? [String: Any],
-            let headers = json["headers"] as? [String: String] {
+            let headers = json["headers"] as? [String: String]
+        {
             XCTAssertEqual(headers["Authorization"], "123456")
         } else {
             XCTFail("headers parameter in JSON should not be nil")
@@ -256,7 +258,7 @@ class DownloadResponseTestCase: BaseTestCase {
         var response: DefaultDownloadResponse?
 
         // When
-        Alamofire.download("https://httpbin.org/get", to: { _, _ in (fileURL, []) })
+        Alamofire.download("https://httpbin.org/get", to: { _, _ in (fileURL, [])})
             .response { resp in
                 response = resp
                 expectation.fulfill()
@@ -287,7 +289,7 @@ class DownloadResponseTestCase: BaseTestCase {
         var response: DefaultDownloadResponse?
 
         // When
-        Alamofire.download("https://httpbin.org/get", to: { _, _ in (fileURL, [.createIntermediateDirectories]) })
+        Alamofire.download("https://httpbin.org/get", to: { _, _ in (fileURL, [.createIntermediateDirectories])})
             .response { resp in
                 response = resp
                 expectation.fulfill()
@@ -317,7 +319,7 @@ class DownloadResponseTestCase: BaseTestCase {
             var response: DefaultDownloadResponse?
 
             // When
-            Alamofire.download("https://httpbin.org/get", to: { _, _ in (fileURL, []) })
+            Alamofire.download("https://httpbin.org/get", to: { _, _ in (fileURL, [])})
                 .response { resp in
                     response = resp
                     expectation.fulfill()
@@ -356,7 +358,7 @@ class DownloadResponseTestCase: BaseTestCase {
         var response: DefaultDownloadResponse?
 
         // When
-        Alamofire.download("https://httpbin.org/get", to: { _, _ in (fileURL, [.removePreviousFile]) })
+        Alamofire.download("https://httpbin.org/get", to: { _, _ in (fileURL, [.removePreviousFile])})
             .response { resp in
                 response = resp
                 expectation.fulfill()
@@ -482,7 +484,7 @@ class DownloadResumeDataTestCase: BaseTestCase {
 
     func testThatCancelledDownloadCanBeResumedWithResumeData() {
         // Given
-        let expectation1 = expectation(description: "Download should be cancelled")
+        let expectation1 = self.expectation(description: "Download should be cancelled")
         var cancelled = false
 
         var response1: DownloadResponse<Data>?
@@ -509,7 +511,7 @@ class DownloadResumeDataTestCase: BaseTestCase {
             return
         }
 
-        let expectation2 = expectation(description: "Download should complete")
+        let expectation2 = self.expectation(description: "Download should complete")
 
         var progressValues: [Double] = []
         var response2: DownloadResponse<Data>?
@@ -655,7 +657,7 @@ class DownloadResponseFlatMapTestCase: BaseTestCase {
 
         // When
         Alamofire.download(urlString, parameters: ["foo": "bar"]).responseJSON { resp in
-            response = resp.flatMap { _ in
+            response = resp.flatMap { json in
                 throw TransformError()
             }
 

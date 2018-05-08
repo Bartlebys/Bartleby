@@ -8,15 +8,17 @@
 
 import Foundation
 
-public extension PushOperation {
-    public func canBePushed() -> Bool {
-        if status == .none || status == .pending {
+public extension PushOperation{
+
+    public func canBePushed()->Bool{
+
+        if self.status == .none || self.status == .pending {
             return true
         }
 
-        if status == .completed {
-            if let completionState = self.completionState {
-                if completionState.success == false {
+        if self.status == .completed{
+            if let completionState=self.completionState{
+                if completionState.success==false{
                     return true // Retry
                 }
             }
@@ -24,4 +26,5 @@ public extension PushOperation {
 
         return false
     }
+
 }

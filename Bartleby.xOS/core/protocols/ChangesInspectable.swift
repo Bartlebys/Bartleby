@@ -8,6 +8,7 @@
 
 import Foundation
 
-public protocol ChangesInspectable {
-    var changedKeys: [KeyedChanges] { get set }
+
+public protocol ChangesInspectable{
+    var changedKeys:[KeyedChanges] { get set }
 }

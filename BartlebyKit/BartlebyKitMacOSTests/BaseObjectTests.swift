@@ -6,68 +6,74 @@
 //
 //
 
-import BartlebyKit
 import XCTest
+import BartlebyKit
 
 class BaseObjectTests: TestCase {
-    func test001_serializeDeserializeAUser() {
+
+    func test001_serializeDeserializeAUser(){
         let user = TestCase.document.newManagedModel() as User
         user.email = "tim@apple.com"
         user.password = "pruneau"
         let data = user.serialize()
 
-        do {
+        do{
             let deserialized = try JSON.decoder.decode(User.self, from: data)
             XCTAssert(deserialized.email == "tim@apple.com", "email \(deserialized.email)")
             XCTAssert(deserialized.password == "pruneau", "password \(deserialized.password ?? Default.NO_PASSWORD)")
-        } catch {
+        }catch{
             XCTFail("\(error)")
         }
     }
 
-    func test002_serializeDeserializeAUser() {
+
+    func test002_serializeDeserializeAUser(){
         let user = TestCase.document.newManagedModel() as User
         user.email = "tim@apple.com"
         user.password = "pruneau"
         let data = user.serialize()
-        do {
-            if let deserialized: [String: Any] = try JSONSerialization.jsonObject(with: data, options: JSONSerialization.ReadingOptions.allowFragments) as? [String: Any] {
-                if let email = deserialized["email"] as? String {
+        do{
+            if let deserialized:[String:Any] = try JSONSerialization.jsonObject(with: data, options: JSONSerialization.ReadingOptions.allowFragments) as? [String:Any]{
+                if let email = deserialized["email"] as? String{
                     XCTAssert(email == "tim@apple.com", "email \(email)")
-                } else {
+                }else{
                     XCTFail("email should be a String")
                 }
-                if let password = deserialized["password"] as? String {
+                if let password = deserialized["password"] as? String{
                     // The password should be crypted
                     XCTAssert(password != "pruneau", "password \(password)")
-                } else {
+                }else{
                     XCTFail("password should be a String")
                 }
 
-            } else {
+            }else{
                 XCTFail("Casting failure")
             }
 
-        } catch {
+        }catch{
             XCTFail("\(error)")
         }
     }
 
+
+
+    
+
     /*
-     func test_001Copy_using_NSCopying() {
-     let document=BartlebyDocument()
-     let user=User()
-     user.referentDocument=document
-     user.email="bartleby@barltebys.org"
-     user.creatorUID=user.UID
-     user.verificationMethod=User.VerificationMethod.byEmail
-     // Test NSCopying on BaseObject
-     if let copiedUser=user.copy() as? User {
-     XCTAssert(user.email == copiedUser.email, "users should be equivalent")
-     XCTAssertFalse(user === copiedUser, "users should be distinct instances")
-     } else {
-     XCTFail("Failure on copy")
-     }
-     }
-     */
+    func test_001Copy_using_NSCopying() {
+        let document=BartlebyDocument()
+        let user=User()
+        user.referentDocument=document
+        user.email="bartleby@barltebys.org"
+        user.creatorUID=user.UID
+        user.verificationMethod=User.VerificationMethod.byEmail
+        // Test NSCopying on BaseObject
+        if let copiedUser=user.copy() as? User {
+            XCTAssert(user.email == copiedUser.email, "users should be equivalent")
+            XCTAssertFalse(user === copiedUser, "users should be distinct instances")
+        } else {
+            XCTFail("Failure on copy")
+        }
+    }
+ */
 }

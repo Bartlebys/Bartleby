@@ -8,80 +8,84 @@ import Foundation
     import Alamofire
 #endif
 
+
 open class LoginUser {
-    open static func execute(_ user: User,
-                             sucessHandler success: @escaping () -> Void,
-                             failureHandler failure: @escaping (_ context: HTTPContext) -> Void) {
-        if let document = user.referentDocument {
-            let baseURL = document.baseURL
-            let pathURL = baseURL.appendingPathComponent("user/login")
+    
+    static open func execute(  _ user: User,
+                               sucessHandler success:@escaping ()->(),
+                               failureHandler failure:@escaping (_ context: HTTPContext)->()) {
+
+        if let document=user.referentDocument{
+
+            let baseURL=document.baseURL
+            let pathURL=baseURL.appendingPathComponent("user/login")
 
             // A valid document is required for any authentication.
             // So you must create a Document and use its spaceUID before to login.
-            let dictionary: Dictionary<String, AnyObject>? = ["userUID": user.UID as AnyObject, "password": user.cryptoPassword as AnyObject, "identification": document.metadata.identificationMethod.rawValue as AnyObject]
-            let urlRequest = HTTPManager.requestWithToken(inDocumentWithUID: document.UID, withActionName: "LoginUser", forMethod: "POST", and: pathURL)
+            let dictionary: Dictionary<String, AnyObject>?=["userUID":user.UID as AnyObject,"password":user.cryptoPassword as AnyObject, "identification":document.metadata.identificationMethod.rawValue as AnyObject]
+            let urlRequest=HTTPManager.requestWithToken(inDocumentWithUID:document.UID, withActionName:"LoginUser", forMethod:"POST", and: pathURL)
             do {
-                let r = try JSONEncoding().encode(urlRequest, with: dictionary)
+                let r=try JSONEncoding().encode(urlRequest,with:dictionary)
 
-                request(r).validate().responseData(completionHandler: { response in
+                request(r).validate().responseData(completionHandler: { (response) in
 
-                    let request = response.request
-                    let result = response.result
-                    let timeline = response.timeline
-                    let statusCode = response.response?.statusCode ?? 0
+                    let request=response.request
+                    let result=response.result
+                    let timeline=response.timeline
+                    let statusCode=response.response?.statusCode ?? 0
 
-                    let metrics = Metrics()
-                    metrics.operationName = "LoginUser"
-                    metrics.latency = timeline.latency
-                    metrics.requestDuration = timeline.requestDuration
-                    metrics.serializationDuration = timeline.serializationDuration
-                    metrics.totalDuration = timeline.totalDuration
-                    let context = HTTPContext(code: 100,
-                                              caller: "LoginUser.execute",
-                                              relatedURL: request?.url,
-                                              httpStatusCode: statusCode)
-                    if let request = request {
-                        context.request = HTTPRequest(urlRequest: request)
+                    let metrics=Metrics()
+                    metrics.operationName="LoginUser"
+                    metrics.latency=timeline.latency
+                    metrics.requestDuration=timeline.requestDuration
+                    metrics.serializationDuration=timeline.serializationDuration
+                    metrics.totalDuration=timeline.totalDuration
+                    let context = HTTPContext( code: 100,
+                                               caller: "LoginUser.execute",
+                                               relatedURL:request?.url,
+                                               httpStatusCode:statusCode)
+                    if let request=request{
+                        context.request=HTTPRequest(urlRequest: request)
                     }
 
                     if let data = response.data, let utf8Text = String(data: data, encoding: .utf8) {
-                        context.responseString = utf8Text
-                        if Bartleby.configuration.DEVELOPER_MODE {
-                            print("Login \(user.UID) \n\(user.email) \n\(String(describing: request?.url)) \npassword:\(user.password ?? Default.NO_PASSWORD) \ncryptoPassword:\(user.cryptoPassword) \nResult: \(utf8Text)")
+                        context.responseString=utf8Text
+                        if Bartleby.configuration.DEVELOPER_MODE{
+                             print("Login \(user.UID) \n\(user.email) \n\(String(describing:request?.url)) \npassword:\(user.password ?? Default.NO_PASSWORD) \ncryptoPassword:\(user.cryptoPassword) \nResult: \(utf8Text)")
                         }
                     }
-                    metrics.httpContext = context
+                    metrics.httpContext=context
                     document.report(metrics)
 
                     // React according to the situation
-                    var reactions = Array<Reaction>()
+                    var reactions = Array<Reaction> ()
                     reactions.append(Reaction.track(result: nil, context: context)) // Tracking
 
                     if result.isFailure {
-                        if user.UID == document.currentUser.UID {
-                            document.currentUser.loginHasSucceed = false
+                        if user.UID == document.currentUser.UID{
+                            document.currentUser.loginHasSucceed=false
                         }
                         let m = NSLocalizedString("authentication login",
                                                   comment: "authentication login failure description")
-                        let failureReaction = Reaction.dispatchAdaptiveMessage(
+                        let failureReaction =  Reaction.dispatchAdaptiveMessage(
                             context: context,
                             title: NSLocalizedString("Unsuccessfull attempt result.isFailure is true",
                                                      comment: "Unsuccessfull attempt"),
-                            body: "\(m) httpStatus code = \(statusCode)",
-                            transmit: { (_) -> Void in
+                            body:"\(m) httpStatus code = \(statusCode)" ,
+                            transmit: { (selectedIndex) -> () in
                         })
                         reactions.append(failureReaction)
                         failure(context)
                     } else {
-                        if 200 ... 299 ~= statusCode {
-                            if user.UID == document.currentUser.UID {
-                                document.currentUser.loginHasSucceed = true
+                        if 200...299 ~= statusCode {
+                            if user.UID == document.currentUser.UID{
+                                document.currentUser.loginHasSucceed=true
                             }
-                            if document.metadata.identificationMethod == .key {
-                                if let data = response.data {
-                                    if let kvids = try? JSON.decoder.decode([String].self, from: data) {
-                                        if kvids.count >= 2 {
-                                            document.metadata.identificationValue = kvids[1]
+                            if document.metadata.identificationMethod == .key{
+                                if let data = response.data{
+                                    if let kvids = try? JSON.decoder.decode([String].self, from: data){
+                                        if kvids.count>=2{
+                                            document.metadata.identificationValue=kvids[1]
                                             document.log("Login kvids \(kvids[0]):\(kvids[1]) ", file: #file, function: #function, line: #line, category: "Credentials", decorative: false)
                                         }
                                     }
@@ -94,38 +98,41 @@ open class LoginUser {
                             // because we consider that failures differentiations could be done by the caller.
                             let m = NSLocalizedString("authentication login",
                                                       comment: "authentication login failure description")
-                            let failureReaction = Reaction.dispatchAdaptiveMessage(
+                            let failureReaction =  Reaction.dispatchAdaptiveMessage(
                                 context: context,
                                 title: NSLocalizedString("Unsuccessfull attempt",
                                                          comment: "Unsuccessfull attempt"),
-                                body: "\(m) httpStatus code = \(statusCode)",
-                                transmit: { (_) -> Void in
+                                body:"\(m) httpStatus code = \(statusCode)" ,
+                                transmit: { (selectedIndex) -> () in
                             })
                             reactions.append(failureReaction)
                             failure(context)
                         }
+
                     }
-                    // Let's react according to the context.
+                    //Let's react according to the context.
                     document.perform(reactions, forContext: context)
                 })
-            } catch {
-                let context = HTTPContext(code: 2,
-                                          caller: "LoginUser.execute",
-                                          relatedURL: nil,
-                                          httpStatusCode: 500)
+            }catch{
+                let context = HTTPContext( code:2 ,
+                                           caller: "LoginUser.execute",
+                                           relatedURL:nil,
+                                           httpStatusCode:500)
                 context.responseString = "{\"message\":\"\(error)}"
                 failure(context)
             }
-        } else {
+        }else{
             // We don't want anymore detached logins.
             // A valid local document is required to proceed to login.
 
-            let context = HTTPContext(code: 1,
-                                      caller: "LoginUser.execute",
-                                      relatedURL: nil,
-                                      httpStatusCode: 417)
+            let context = HTTPContext( code: 1,
+                                       caller: "LoginUser.execute",
+                                       relatedURL:nil,
+                                       httpStatusCode:417)
             context.responseString = "{\"message\":\"Attempt to login without having created a document that holds the dataspace\"}"
             failure(context)
         }
+        
     }
+    
 }

@@ -8,7 +8,9 @@
 
 import Foundation
 
-public protocol DataUpdatable {
+
+public protocol DataUpdatable{
+
     /// Update an existing instance
     /// This approach is used by proxies.
     /// - Parameters:
@@ -16,5 +18,6 @@ public protocol DataUpdatable {
     ///   - provisionChanges: should we provision the changes?
     /// - Returns: the Serialiable fully typed instance
     /// - Throws: ...
-    func updateData(_ data: Data, provisionChanges: Bool) throws -> Serializable
+    func updateData(_ data: Data,provisionChanges:Bool) throws -> Serializable
+
 }

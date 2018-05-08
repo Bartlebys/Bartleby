@@ -9,186 +9,187 @@
 //
 import Foundation
 #if !USE_EMBEDDED_MODULES
-#endif
+	#endif
 
 // MARK: Bartleby's Core: a locker
+@objc open class Locker : ManagedModel{
 
-@objc open class Locker: ManagedModel {
     // Universal type support
-    open override class func typeName() -> String {
+    override open class func typeName() -> String {
         return "Locker"
     }
 
-    // The associated document UID.
-    @objc open dynamic var associatedDocumentUID: String? {
-        didSet {
-            if !wantsQuietChanges && associatedDocumentUID != oldValue {
-                provisionChanges(forKey: "associatedDocumentUID", oldValue: oldValue, newValue: associatedDocumentUID)
-            }
-        }
-    }
+	//The associated document UID.
+	@objc dynamic open var associatedDocumentUID:String? {
+	    didSet { 
+	       if !self.wantsQuietChanges && associatedDocumentUID != oldValue {
+	            self.provisionChanges(forKey: "associatedDocumentUID",oldValue: oldValue,newValue: associatedDocumentUID) 
+	       } 
+	    }
+	}
 
-    // The subject UID you want to lock
-    @objc open dynamic var subjectUID: String = Default.NO_UID {
-        didSet {
-            if !self.wantsQuietChanges && subjectUID != oldValue {
-                self.provisionChanges(forKey: "subjectUID", oldValue: oldValue, newValue: subjectUID)
-            }
-        }
-    }
+	//The subject UID you want to lock
+	@objc dynamic open var subjectUID:String = Default.NO_UID {
+	    didSet { 
+	       if !self.wantsQuietChanges && subjectUID != oldValue {
+	            self.provisionChanges(forKey: "subjectUID",oldValue: oldValue,newValue: subjectUID) 
+	       } 
+	    }
+	}
 
-    // The userUID that can unlock the locker
-    @objc open dynamic var userUID: String = Default.NO_UID {
-        didSet {
-            if !self.wantsQuietChanges && userUID != oldValue {
-                self.provisionChanges(forKey: "userUID", oldValue: oldValue, newValue: userUID)
-            }
-        }
-    }
+	//The userUID that can unlock the locker
+	@objc dynamic open var userUID:String = Default.NO_UID {
+	    didSet { 
+	       if !self.wantsQuietChanges && userUID != oldValue {
+	            self.provisionChanges(forKey: "userUID",oldValue: oldValue,newValue: userUID) 
+	       } 
+	    }
+	}
 
-    //the locker mode
-    public enum Mode: String {
-        case autoDestructive
-        case persistent
-    }
+	//the locker mode
+	public enum Mode:String{
+		case autoDestructive = "autoDestructive"
+		case persistent = "persistent"
+	}
+	open var mode:Mode = .autoDestructive  {
+	    didSet { 
+	       if !self.wantsQuietChanges && mode != oldValue {
+	            self.provisionChanges(forKey: "mode",oldValue: oldValue.rawValue,newValue: mode.rawValue)  
+	       } 
+	    }
+	}
 
-    open var mode: Mode = .autoDestructive {
-        didSet {
-            if !self.wantsQuietChanges && mode != oldValue {
-                self.provisionChanges(forKey: "mode", oldValue: oldValue.rawValue, newValue: mode.rawValue)
-            }
-        }
-    }
+	//the locker mode
+	public enum VerificationMethod:String{
+		case online = "online"
+		case offline = "offline"
+	}
+	open var verificationMethod:VerificationMethod = .online  {
+	    didSet { 
+	       if !self.wantsQuietChanges && verificationMethod != oldValue {
+	            self.provisionChanges(forKey: "verificationMethod",oldValue: oldValue.rawValue,newValue: verificationMethod.rawValue)  
+	       } 
+	    }
+	}
 
-    //the locker mode
-    public enum VerificationMethod: String {
-        case online
-        case offline
-    }
+	//the locker Security If set to .skipSecondaryAuthFactor mode the GetActivationCode will return the Locker (it skips second auth factor)
+	public enum Security:String{
+		case skipSecondaryAuthFactor = "skipSecondaryAuthFactor"
+		case secondaryAuthFactorRequired = "secondaryAuthFactorRequired"
+	}
+	open var security:Security = .secondaryAuthFactorRequired  {
+	    didSet { 
+	       if !self.wantsQuietChanges && security != oldValue {
+	            self.provisionChanges(forKey: "security",oldValue: oldValue.rawValue,newValue: security.rawValue)  
+	       } 
+	    }
+	}
 
-    open var verificationMethod: VerificationMethod = .online {
-        didSet {
-            if !self.wantsQuietChanges && verificationMethod != oldValue {
-                self.provisionChanges(forKey: "verificationMethod", oldValue: oldValue.rawValue, newValue: verificationMethod.rawValue)
-            }
-        }
-    }
+	//This code should be cryptable / decryptable
+	@objc dynamic open var code:String = Bartleby.randomStringWithLength(6,signs:"0123456789ABCDEFGHJKMNPQRZTUVW") {
+	    didSet { 
+	       if !self.wantsQuietChanges && code != oldValue {
+	            self.provisionChanges(forKey: "code",oldValue: oldValue,newValue: code) 
+	       } 
+	    }
+	}
 
-    //the locker Security If set to .skipSecondaryAuthFactor mode the GetActivationCode will return the Locker (it skips second auth factor)
-    public enum Security: String {
-        case skipSecondaryAuthFactor
-        case secondaryAuthFactorRequired
-    }
+	//The number of attempts
+	@objc dynamic open var numberOfAttempt:Int = 3  {
+	    didSet { 
+	       if !self.wantsQuietChanges && numberOfAttempt != oldValue {
+	            self.provisionChanges(forKey: "numberOfAttempt",oldValue: oldValue,newValue: numberOfAttempt)  
+	       } 
+	    }
+	}
 
-    open var security: Security = .secondaryAuthFactorRequired {
-        didSet {
-            if !self.wantsQuietChanges && security != oldValue {
-                self.provisionChanges(forKey: "security", oldValue: oldValue.rawValue, newValue: security.rawValue)
-            }
-        }
-    }
+	@objc dynamic open var startDate:Date = Date()  {
+	    didSet { 
+	       if !self.wantsQuietChanges && startDate != oldValue {
+	            self.provisionChanges(forKey: "startDate",oldValue: oldValue,newValue: startDate)  
+	       } 
+	    }
+	}
 
-    // This code should be cryptable / decryptable
-    @objc open dynamic var code: String = Bartleby.randomStringWithLength(6, signs: "0123456789ABCDEFGHJKMNPQRZTUVW") {
-        didSet {
-            if !self.wantsQuietChanges && code != oldValue {
-                self.provisionChanges(forKey: "code", oldValue: oldValue, newValue: code)
-            }
-        }
-    }
+	@objc dynamic open var endDate:Date = Date()  {
+	    didSet { 
+	       if !self.wantsQuietChanges && endDate != oldValue {
+	            self.provisionChanges(forKey: "endDate",oldValue: oldValue,newValue: endDate)  
+	       } 
+	    }
+	}
 
-    // The number of attempts
-    @objc open dynamic var numberOfAttempt: Int = 3 {
-        didSet {
-            if !self.wantsQuietChanges && numberOfAttempt != oldValue {
-                self.provisionChanges(forKey: "numberOfAttempt", oldValue: oldValue, newValue: numberOfAttempt)
-            }
-        }
-    }
+	//Thoses data gems will be return on success (the gems are crypted client side)
+	@objc dynamic open var gems:String = Default.NO_GEM {
+	    didSet { 
+	       if !self.wantsQuietChanges && gems != oldValue {
+	            self.provisionChanges(forKey: "gems",oldValue: oldValue,newValue: gems) 
+	       } 
+	    }
+	}
 
-    @objc open dynamic var startDate: Date = Date() {
-        didSet {
-            if !self.wantsQuietChanges && startDate != oldValue {
-                self.provisionChanges(forKey: "startDate", oldValue: oldValue, newValue: startDate)
-            }
-        }
-    }
-
-    @objc open dynamic var endDate: Date = Date() {
-        didSet {
-            if !self.wantsQuietChanges && endDate != oldValue {
-                self.provisionChanges(forKey: "endDate", oldValue: oldValue, newValue: endDate)
-            }
-        }
-    }
-
-    // Thoses data gems will be return on success (the gems are crypted client side)
-    @objc open dynamic var gems: String = Default.NO_GEM {
-        didSet {
-            if !self.wantsQuietChanges && gems != oldValue {
-                self.provisionChanges(forKey: "gems", oldValue: oldValue, newValue: gems)
-            }
-        }
-    }
 
     // MARK: - Codable
 
-    public enum LockerCodingKeys: String, CodingKey {
-        case associatedDocumentUID
-        case subjectUID
-        case userUID
-        case mode
-        case verificationMethod
-        case security
-        case code
-        case numberOfAttempt
-        case startDate
-        case endDate
-        case gems
+
+    public enum LockerCodingKeys: String,CodingKey{
+		case associatedDocumentUID
+		case subjectUID
+		case userUID
+		case mode
+		case verificationMethod
+		case security
+		case code
+		case numberOfAttempt
+		case startDate
+		case endDate
+		case gems
     }
 
-    public required init(from decoder: Decoder) throws {
-        try super.init(from: decoder)
-        try quietThrowingChanges {
-            let values = try decoder.container(keyedBy: LockerCodingKeys.self)
-            self.associatedDocumentUID = try values.decodeIfPresent(String.self, forKey: .associatedDocumentUID)
-            self.subjectUID = try values.decode(String.self, forKey: .subjectUID)
-            self.userUID = try values.decode(String.self, forKey: .userUID)
-            self.mode = Locker.Mode(rawValue: try values.decode(String.self, forKey: .mode)) ?? .autoDestructive
-            self.verificationMethod = Locker.VerificationMethod(rawValue: try values.decode(String.self, forKey: .verificationMethod)) ?? .online
-            self.security = Locker.Security(rawValue: try values.decode(String.self, forKey: .security)) ?? .secondaryAuthFactorRequired
-            self.code = try self.decodeCryptedString(codingKey: .code, from: values)
-            self.numberOfAttempt = try values.decode(Int.self, forKey: .numberOfAttempt)
-            self.startDate = try values.decode(Date.self, forKey: .startDate)
-            self.endDate = try values.decode(Date.self, forKey: .endDate)
-            self.gems = try self.decodeCryptedString(codingKey: .gems, from: values)
+    required public init(from decoder: Decoder) throws{
+		try super.init(from: decoder)
+        try self.quietThrowingChanges {
+			let values = try decoder.container(keyedBy: LockerCodingKeys.self)
+			self.associatedDocumentUID = try values.decodeIfPresent(String.self,forKey:.associatedDocumentUID)
+			self.subjectUID = try values.decode(String.self,forKey:.subjectUID)
+			self.userUID = try values.decode(String.self,forKey:.userUID)
+			self.mode = Locker.Mode(rawValue: try values.decode(String.self,forKey:.mode)) ?? .autoDestructive
+			self.verificationMethod = Locker.VerificationMethod(rawValue: try values.decode(String.self,forKey:.verificationMethod)) ?? .online
+			self.security = Locker.Security(rawValue: try values.decode(String.self,forKey:.security)) ?? .secondaryAuthFactorRequired
+			self.code = try self.decodeCryptedString(codingKey: .code, from: values)
+			self.numberOfAttempt = try values.decode(Int.self,forKey:.numberOfAttempt)
+			self.startDate = try values.decode(Date.self,forKey:.startDate)
+			self.endDate = try values.decode(Date.self,forKey:.endDate)
+			self.gems = try self.decodeCryptedString(codingKey: .gems, from: values)
         }
     }
 
-    open override func encode(to encoder: Encoder) throws {
-        try super.encode(to: encoder)
-        var container = encoder.container(keyedBy: LockerCodingKeys.self)
-        try container.encodeIfPresent(associatedDocumentUID, forKey: .associatedDocumentUID)
-        try container.encode(subjectUID, forKey: .subjectUID)
-        try container.encode(userUID, forKey: .userUID)
-        try container.encode(mode.rawValue, forKey: .mode)
-        try container.encode(verificationMethod.rawValue, forKey: .verificationMethod)
-        try container.encode(security.rawValue, forKey: .security)
-        try encodeCryptedString(value: code, codingKey: .code, container: &container)
-        try container.encode(numberOfAttempt, forKey: .numberOfAttempt)
-        try container.encode(startDate, forKey: .startDate)
-        try container.encode(endDate, forKey: .endDate)
-        try encodeCryptedString(value: gems, codingKey: .gems, container: &container)
+    override open func encode(to encoder: Encoder) throws {
+		try super.encode(to:encoder)
+		var container = encoder.container(keyedBy: LockerCodingKeys.self)
+		try container.encodeIfPresent(self.associatedDocumentUID,forKey:.associatedDocumentUID)
+		try container.encode(self.subjectUID,forKey:.subjectUID)
+		try container.encode(self.userUID,forKey:.userUID)
+		try container.encode(self.mode.rawValue ,forKey:.mode)
+		try container.encode(self.verificationMethod.rawValue ,forKey:.verificationMethod)
+		try container.encode(self.security.rawValue ,forKey:.security)
+		try self.encodeCryptedString(value: self.code, codingKey: .code, container: &container)
+		try container.encode(self.numberOfAttempt,forKey:.numberOfAttempt)
+		try container.encode(self.startDate,forKey:.startDate)
+		try container.encode(self.endDate,forKey:.endDate)
+		try self.encodeCryptedString(value: self.gems, codingKey: .gems, container: &container)
     }
+
 
     // MARK: - Exposed (Bartleby's KVC like generative implementation)
 
     /// Return all the exposed instance variables keys. (Exposed == public and modifiable).
-    open override var exposedKeys: [String] {
-        var exposed = super.exposedKeys
-        exposed.append(contentsOf: ["associatedDocumentUID", "subjectUID", "userUID", "mode", "verificationMethod", "security", "code", "numberOfAttempt", "startDate", "endDate", "gems"])
+    override  open var exposedKeys:[String] {
+        var exposed=super.exposedKeys
+        exposed.append(contentsOf:["associatedDocumentUID","subjectUID","userUID","mode","verificationMethod","security","code","numberOfAttempt","startDate","endDate","gems"])
         return exposed
     }
+
 
     /// Set the value of the given key
     ///
@@ -196,56 +197,57 @@ import Foundation
     /// - parameter key:   the key
     ///
     /// - throws: throws an Exception when the key is not exposed
-    open override func setExposedValue(_ value: Any?, forKey key: String) throws {
+    override  open func setExposedValue(_ value:Any?, forKey key: String) throws {
         switch key {
-        case "associatedDocumentUID":
-            if let casted = value as? String {
-                associatedDocumentUID = casted
-            }
-        case "subjectUID":
-            if let casted = value as? String {
-                subjectUID = casted
-            }
-        case "userUID":
-            if let casted = value as? String {
-                userUID = casted
-            }
-        case "mode":
-            if let casted = value as? Locker.Mode {
-                mode = casted
-            }
-        case "verificationMethod":
-            if let casted = value as? Locker.VerificationMethod {
-                verificationMethod = casted
-            }
-        case "security":
-            if let casted = value as? Locker.Security {
-                security = casted
-            }
-        case "code":
-            if let casted = value as? String {
-                code = casted
-            }
-        case "numberOfAttempt":
-            if let casted = value as? Int {
-                numberOfAttempt = casted
-            }
-        case "startDate":
-            if let casted = value as? Date {
-                startDate = casted
-            }
-        case "endDate":
-            if let casted = value as? Date {
-                endDate = casted
-            }
-        case "gems":
-            if let casted = value as? String {
-                gems = casted
-            }
-        default:
-            return try super.setExposedValue(value, forKey: key)
+            case "associatedDocumentUID":
+                if let casted=value as? String{
+                    self.associatedDocumentUID=casted
+                }
+            case "subjectUID":
+                if let casted=value as? String{
+                    self.subjectUID=casted
+                }
+            case "userUID":
+                if let casted=value as? String{
+                    self.userUID=casted
+                }
+            case "mode":
+                if let casted=value as? Locker.Mode{
+                    self.mode=casted
+                }
+            case "verificationMethod":
+                if let casted=value as? Locker.VerificationMethod{
+                    self.verificationMethod=casted
+                }
+            case "security":
+                if let casted=value as? Locker.Security{
+                    self.security=casted
+                }
+            case "code":
+                if let casted=value as? String{
+                    self.code=casted
+                }
+            case "numberOfAttempt":
+                if let casted=value as? Int{
+                    self.numberOfAttempt=casted
+                }
+            case "startDate":
+                if let casted=value as? Date{
+                    self.startDate=casted
+                }
+            case "endDate":
+                if let casted=value as? Date{
+                    self.endDate=casted
+                }
+            case "gems":
+                if let casted=value as? String{
+                    self.gems=casted
+                }
+            default:
+                return try super.setExposedValue(value, forKey: key)
         }
     }
+
 
     /// Returns the value of an exposed key.
     ///
@@ -254,48 +256,45 @@ import Foundation
     /// - throws: throws Exception when the key is not exposed
     ///
     /// - returns: returns the value
-    open override func getExposedValueForKey(_ key: String) throws -> Any? {
+    override  open func getExposedValueForKey(_ key:String) throws -> Any?{
         switch key {
-        case "associatedDocumentUID":
-            return associatedDocumentUID
-        case "subjectUID":
-            return subjectUID
-        case "userUID":
-            return userUID
-        case "mode":
-            return mode
-        case "verificationMethod":
-            return verificationMethod
-        case "security":
-            return security
-        case "code":
-            return code
-        case "numberOfAttempt":
-            return numberOfAttempt
-        case "startDate":
-            return startDate
-        case "endDate":
-            return endDate
-        case "gems":
-            return gems
-        default:
-            return try super.getExposedValueForKey(key)
+            case "associatedDocumentUID":
+               return self.associatedDocumentUID
+            case "subjectUID":
+               return self.subjectUID
+            case "userUID":
+               return self.userUID
+            case "mode":
+               return self.mode
+            case "verificationMethod":
+               return self.verificationMethod
+            case "security":
+               return self.security
+            case "code":
+               return self.code
+            case "numberOfAttempt":
+               return self.numberOfAttempt
+            case "startDate":
+               return self.startDate
+            case "endDate":
+               return self.endDate
+            case "gems":
+               return self.gems
+            default:
+                return try super.getExposedValueForKey(key)
         }
     }
-
     // MARK: - Initializable
-
-    public required init() {
+    required public init() {
         super.init()
     }
 
     // MARK: - UniversalType
-
-    open override class var collectionName: String {
+    override  open class var collectionName:String{
         return "lockers"
     }
 
-    open override var d_collectionName: String {
+    override  open var d_collectionName:String{
         return Locker.collectionName
     }
 }

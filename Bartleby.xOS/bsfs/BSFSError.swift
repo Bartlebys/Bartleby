@@ -9,8 +9,8 @@
 import Foundation
 
 /// BSFS error
-enum BSFSError: Error {
+enum BSFSError:Error{
     case boxDelegateIsNotAvailable
-    case attemptToMountBoxMultipleTime(boxUID: String)
+    case attemptToMountBoxMultipleTime(boxUID:String)
     case nodeIsNotAssemblable
 }
