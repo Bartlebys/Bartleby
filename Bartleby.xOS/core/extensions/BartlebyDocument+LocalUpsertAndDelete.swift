@@ -8,7 +8,7 @@
 
 import Foundation
 
-// MARK:- Local Instance(s) UD(s)
+// MARK: - Local Instance(s) UD(s)
 
 // All the upsert and delete are done on GlobalQueue.Main.get()
 // like the data integration in BartlebyDocument+Trigger (_integrateContiguousData)
@@ -22,11 +22,11 @@ public extension BartlebyDocument {
 
      - parameter instance: the instance
      */
-    public func upsert(_ instance: Collectible){
-        if let collection=self.collectionByName(instance.d_collectionName) {
-            collection.upsert(instance, commit:false)
+    public func upsert(_ instance: Collectible) {
+        if let collection = self.collectionByName(instance.d_collectionName) {
+            collection.upsert(instance, commit: false)
         }
-        self.hasChanged()
+        hasChanged()
     }
 
     /**
@@ -35,33 +35,30 @@ public extension BartlebyDocument {
 
      - parameter instances: the instances
      */
-    public func upsert(_ instances: [Collectible]){
+    public func upsert(_ instances: [Collectible]) {
         for instance in instances {
-            self.upsert(instance)
+            upsert(instance)
         }
-        self.hasChanged()
+        hasChanged()
     }
 
     // MARK: read
 
-
-
     // MARK: delete
-
 
     /// Deletes explicitly an instance.
     ///
     /// - Parameter instance:  the instance
-    public func delete(_ instance: Collectible){
-        do{
+    public func delete(_ instance: Collectible) {
+        do {
             // We do not pass the eraserUID, because we want to perform
             // That explicit deletion in any case.
             // If we have passed the self.UID when self is Co-Owned it would not have been erased
             // Details on: https://github.com/Bartlebys/Bartleby/blob/master/Documents/Relationships.md
-            try instance.erase(commit:false, eraserUID: Default.NO_UID)
-            self.hasChanged()
-        }catch{
-             glog("\(error)", file: #file, function: #function, line: #line, category: Default.LOG_FAULT, decorative: false)
+            try instance.erase(commit: false, eraserUID: Default.NO_UID)
+            hasChanged()
+        } catch {
+            glog("\(error)", file: #file, function: #function, line: #line, category: Default.LOG_FAULT, decorative: false)
         }
     }
 
@@ -70,12 +67,11 @@ public extension BartlebyDocument {
 
      - parameter instances: the instances
      */
-    public func delete(_ instances: [Collectible]){
+    public func delete(_ instances: [Collectible]) {
         for instance in instances {
-            self.delete(instance)
+            delete(instance)
         }
     }
-
 
     /**
      Deletes a Collectible instance by its UID
@@ -83,15 +79,14 @@ public extension BartlebyDocument {
      - parameter instanceUID: the instance UID
 
      */
-    public func deleteById(_ instanceUID: String){
-        do{
-            if let instance=Bartleby.registredManagedModelByUID(instanceUID){
-                try instance.erase(commit:false)
+    public func deleteById(_ instanceUID: String) {
+        do {
+            if let instance = Bartleby.registredManagedModelByUID(instanceUID) {
+                try instance.erase(commit: false)
             }
-        }catch{
+        } catch {
             glog("\(error)", file: #file, function: #function, line: #line, category: Default.LOG_FAULT, decorative: false)
         }
-
     }
 
     /**
@@ -100,10 +95,9 @@ public extension BartlebyDocument {
      - parameter instancesUIDs: an array of instances' UID
 
      */
-    public func deleteByIds(_ instancesUIDs: [String]){
+    public func deleteByIds(_ instancesUIDs: [String]) {
         for instanceUID in instancesUIDs {
-            self.deleteById(instanceUID)
+            deleteById(instanceUID)
         }
     }
-    
 }

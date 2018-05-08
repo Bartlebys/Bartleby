@@ -9,36 +9,33 @@
 //
 import Foundation
 #if !USE_EMBEDDED_MODULES
-	import Alamofire
+    import Alamofire
 #endif
 
-@objc public class DeleteNodes : ManagedModel,BartlebyOperation{
-
+@objc public class DeleteNodes: ManagedModel, BartlebyOperation {
     // Universal type support
-    override open class func typeName() -> String {
+    open override class func typeName() -> String {
         return "DeleteNodes"
     }
 
-    override open class var collectionName:String{ return "embeddedInPushOperations" }
+    open override class var collectionName: String { return "embeddedInPushOperations" }
 
-    override open var d_collectionName:String{ return "embeddedInPushOperations" }
+    open override var d_collectionName: String { return "embeddedInPushOperations" }
 
-    fileprivate var _payload:Data?
+    fileprivate var _payload: Data?
 
-    required public init() {
+    public required init() {
         super.init()
     }
-
 
     // MARK: - Exposed (Bartleby's KVC like generative implementation)
 
     /// Return all the exposed instance variables keys. (Exposed == public and modifiable).
-    override  open var exposedKeys:[String] {
-        var exposed=super.exposedKeys
-        exposed.append(contentsOf:["_payload"])
+    open override var exposedKeys: [String] {
+        var exposed = super.exposedKeys
+        exposed.append(contentsOf: ["_payload"])
         return exposed
     }
-
 
     /// Set the value of the given key
     ///
@@ -46,17 +43,16 @@ import Foundation
     /// - parameter key:   the key
     ///
     /// - throws: throws an Exception when the key is not exposed
-    override  open func setExposedValue(_ value:Any?, forKey key: String) throws {
+    open override func setExposedValue(_ value: Any?, forKey key: String) throws {
         switch key {
-            case "_payload":
-                if let casted=value as? Data{
-                    self._payload=casted
-                }
-            default:
-                return try super.setExposedValue(value, forKey: key)
+        case "_payload":
+            if let casted = value as? Data {
+                _payload = casted
+            }
+        default:
+            return try super.setExposedValue(value, forKey: key)
         }
     }
-
 
     /// Returns the value of an exposed key.
     ///
@@ -65,243 +61,237 @@ import Foundation
     /// - throws: throws Exception when the key is not exposed
     ///
     /// - returns: returns the value
-    override  open func getExposedValueForKey(_ key:String) throws -> Any?{
+    open override func getExposedValueForKey(_ key: String) throws -> Any? {
         switch key {
-            case "_payload":
-               return self._payload
-            default:
-                return try super.getExposedValueForKey(key)
+        case "_payload":
+            return _payload
+        default:
+            return try super.getExposedValueForKey(key)
         }
     }
+
     // MARK: - Codable
 
-
-    public enum payloadCodingKeys: String,CodingKey{
-		case _payload
+    public enum payloadCodingKeys: String, CodingKey {
+        case _payload
     }
 
-    required public init(from decoder: Decoder) throws{
-		try super.init(from: decoder)
-        try self.quietThrowingChanges {
-			let values = try decoder.container(keyedBy: payloadCodingKeys.self)
-			self._payload = try values.decode(Data.self,forKey:._payload)
+    public required init(from decoder: Decoder) throws {
+        try super.init(from: decoder)
+        try quietThrowingChanges {
+            let values = try decoder.container(keyedBy: payloadCodingKeys.self)
+            self._payload = try values.decode(Data.self, forKey: ._payload)
         }
     }
 
-    override open func encode(to encoder: Encoder) throws {
-		try super.encode(to:encoder)
-		var container = encoder.container(keyedBy: payloadCodingKeys.self)
-		try container.encode(self._payload,forKey:._payload)
+    open override func encode(to encoder: Encoder) throws {
+        try super.encode(to: encoder)
+        var container = encoder.container(keyedBy: payloadCodingKeys.self)
+        try container.encode(_payload, forKey: ._payload)
     }
 
-
     /**
-    Creates the operation and proceeds to commit
+     Creates the operation and proceeds to commit
 
-    - parameter nodes: the instance
-    - parameter document:     the document
-    */
-    static func commit(_ nodes:[Node], from document:BartlebyDocument){
+     - parameter nodes: the instance
+     - parameter document:     the document
+     */
+    static func commit(_ nodes: [Node], from document: BartlebyDocument) {
         // The operation instance is serialized in a pushOperation
         // That's why we donnot use the document factory to create this instance.
         let operationInstance = DeleteNodes()
         operationInstance.UID = Bartleby.createUID()
         operationInstance.referentDocument = document
-        let context=Context(code:3363643088, caller: "\(operationInstance.runTimeTypeName()).commit")
-        do{
+        let context = Context(code: 3_363_643_088, caller: "\(operationInstance.runTimeTypeName()).commit")
+        do {
             operationInstance._payload = try JSON.encoder.encode(nodes.self)
-            let ic:ManagedPushOperations = try document.getCollection()
+            let ic: ManagedPushOperations = try document.getCollection()
             // Create the pushOperation
-            let pushOperation:PushOperation = document.newManagedModel(commit: false, isUndoable: false)
-            pushOperation.quietChanges{
+            let pushOperation: PushOperation = document.newManagedModel(commit: false, isUndoable: false)
+            pushOperation.quietChanges {
                 pushOperation.commandUID = operationInstance.UID
                 pushOperation.collection = ic
                 pushOperation.counter += 1
                 pushOperation.status = PushOperation.Status.pending
                 pushOperation.creationDate = Date()
-				let stringIDS=PString.ltrim(nodes.reduce("", { $0+","+$1.UID }),characters:",")
-				pushOperation.summary="\(operationInstance.runTimeTypeName())(\(stringIDS))"
+                let stringIDS = PString.ltrim(nodes.reduce("", { $0 + "," + $1.UID }), characters: ",")
+                pushOperation.summary = "\(operationInstance.runTimeTypeName())(\(stringIDS))"
                 pushOperation.creatorUID = document.metadata.currentUserUID
                 operationInstance.creatorUID = document.metadata.currentUserUID
-                
             }
             pushOperation.operationName = DeleteNodes.typeName()
             pushOperation.serialized = operationInstance.serialize()
-        }catch{
+        } catch {
             document.dispatchAdaptiveMessage(context,
                                              title: "Structural Error",
                                              body: "Operation collection is missing in \(operationInstance.runTimeTypeName())",
-                onSelectedIndex: { (selectedIndex) -> () in
+                                             onSelectedIndex: { (_) -> Void in
             })
             glog("\(error)", file: #file, function: #function, line: #line, category: Default.LOG_WARNING, decorative: false)
         }
     }
 
-
-    open func push(sucessHandler success:@escaping (_ context:HTTPContext)->(),
-        failureHandler failure:@escaping (_ context:HTTPContext)->()){
-            do{
-                let nodes = try JSON.decoder.decode([Node].self, from:self._payload ?? Data())
-                // The unitary operation are not always idempotent
-                // so we do not want to push multiple times unintensionnaly.
-                // Check BartlebyDocument+Operations.swift to understand Operation status
-                let pushOperation = try self._getOperation()
-                // Provision the operation
-                if  pushOperation.canBePushed(){
-                    pushOperation.status=PushOperation.Status.inProgress
-                    type(of: self).execute(nodes,
-                        from:self.documentUID,
-                        sucessHandler: { (context: HTTPContext) -> () in
-                            pushOperation.counter=pushOperation.counter+1
-                            pushOperation.status=PushOperation.Status.completed
-                            pushOperation.responseData = try? JSON.encoder.encode(context)
-                            pushOperation.lastInvocationDate=Date()
-                            let completion=Completion.successStateFromHTTPContext(context)
-                            completion.setResult(context)
-                            pushOperation.completionState=completion
-                            success(context)
-                        },
-                        failureHandler: {(context: HTTPContext) -> () in
-                            pushOperation.counter=pushOperation.counter+1
-                            pushOperation.status=PushOperation.Status.completed
-                            pushOperation.responseData = try? JSON.encoder.encode(context)
-                            pushOperation.lastInvocationDate=Date()
-                            let completion=Completion.failureStateFromHTTPContext(context)
-                            completion.setResult(context)
-                            pushOperation.completionState=completion
-                            failure(context)
-                        }
-                    )
-                }else{
-                    self.referentDocument?.log("DeleteNodes can't be pushed \(pushOperation.status)", file: #file, function: #function, line: #line, category: Default.LOG_FAULT, decorative: false)
-                }
-            }catch{
-                let context = HTTPContext( code:3 ,
-                caller: "DeleteNodes.execute",
-                relatedURL:nil,
-                httpStatusCode:StatusOfCompletion.undefined.rawValue)
-                context.message="\(error)"
-                failure(context)
-                self.referentDocument?.log("\(error)", file: #file, function: #function, line: #line, category: Default.LOG_WARNING, decorative: false)
+    open func push(sucessHandler success: @escaping (_ context: HTTPContext) -> Void,
+                   failureHandler failure: @escaping (_ context: HTTPContext) -> Void) {
+        do {
+            let nodes = try JSON.decoder.decode([Node].self, from: _payload ?? Data())
+            // The unitary operation are not always idempotent
+            // so we do not want to push multiple times unintensionnaly.
+            // Check BartlebyDocument+Operations.swift to understand Operation status
+            let pushOperation = try _getOperation()
+            // Provision the operation
+            if pushOperation.canBePushed() {
+                pushOperation.status = PushOperation.Status.inProgress
+                type(of: self).execute(nodes,
+                                       from: documentUID,
+                                       sucessHandler: { (context: HTTPContext) -> Void in
+                                           pushOperation.counter = pushOperation.counter + 1
+                                           pushOperation.status = PushOperation.Status.completed
+                                           pushOperation.responseData = try? JSON.encoder.encode(context)
+                                           pushOperation.lastInvocationDate = Date()
+                                           let completion = Completion.successStateFromHTTPContext(context)
+                                           completion.setResult(context)
+                                           pushOperation.completionState = completion
+                                           success(context)
+                                       },
+                                       failureHandler: { (context: HTTPContext) -> Void in
+                                           pushOperation.counter = pushOperation.counter + 1
+                                           pushOperation.status = PushOperation.Status.completed
+                                           pushOperation.responseData = try? JSON.encoder.encode(context)
+                                           pushOperation.lastInvocationDate = Date()
+                                           let completion = Completion.failureStateFromHTTPContext(context)
+                                           completion.setResult(context)
+                                           pushOperation.completionState = completion
+                                           failure(context)
+                                       }
+                )
+            } else {
+                referentDocument?.log("DeleteNodes can't be pushed \(pushOperation.status)", file: #file, function: #function, line: #line, category: Default.LOG_FAULT, decorative: false)
             }
-
+        } catch {
+            let context = HTTPContext(code: 3,
+                                      caller: "DeleteNodes.execute",
+                                      relatedURL: nil,
+                                      httpStatusCode: StatusOfCompletion.undefined.rawValue)
+            context.message = "\(error)"
+            failure(context)
+            referentDocument?.log("\(error)", file: #file, function: #function, line: #line, category: Default.LOG_WARNING, decorative: false)
+        }
     }
 
-    internal func _getOperation()throws->PushOperation{
+    internal func _getOperation() throws -> PushOperation {
         if let document = Bartleby.sharedInstance.getDocumentByUID(self.documentUID) {
-            if let idx=document.pushOperations.index(where: { $0.commandUID==self.UID }){
+            if let idx = document.pushOperations.index(where: { $0.commandUID == self.UID }) {
                 return document.pushOperations[idx]
             }
-            throw BartlebyOperationError.operationNotFound(UID:"DeleteNodes: \(self.UID)")
+            throw BartlebyOperationError.operationNotFound(UID: "DeleteNodes: \(UID)")
         }
-        throw BartlebyOperationError.documentNotFound(documentUID:"DeleteNodes: \(self.documentUID)")
+        throw BartlebyOperationError.documentNotFound(documentUID: "DeleteNodes: \(documentUID)")
     }
 
-    
-
-    open class func execute(_ nodes:[Node],
-            from documentUID:String,
-            sucessHandler success: @escaping(_ context:HTTPContext)->(),
-            failureHandler failure: @escaping(_ context:HTTPContext)->()){
-            if let document = Bartleby.sharedInstance.getDocumentByUID(documentUID) {
-                let pathURL = document.baseURL.appendingPathComponent("nodes")
-                var parameters = [String: Any]()
-                parameters["ids"] = nodes.map{$0.UID}
-                let urlRequest=HTTPManager.requestWithToken(inDocumentWithUID:document.UID,withActionName:"DeleteNodes" ,forMethod:"DELETE", and: pathURL)
-                do {
-                    let r=try JSONEncoding().encode(urlRequest,with:parameters)
-                    request(r).responseJSON(completionHandler: { (response) in
+    open class func execute(_ nodes: [Node],
+                            from documentUID: String,
+                            sucessHandler success: @escaping (_ context: HTTPContext) -> Void,
+                            failureHandler failure: @escaping (_ context: HTTPContext) -> Void) {
+        if let document = Bartleby.sharedInstance.getDocumentByUID(documentUID) {
+            let pathURL = document.baseURL.appendingPathComponent("nodes")
+            var parameters = [String: Any]()
+            parameters["ids"] = nodes.map { $0.UID }
+            let urlRequest = HTTPManager.requestWithToken(inDocumentWithUID: document.UID, withActionName: "DeleteNodes", forMethod: "DELETE", and: pathURL)
+            do {
+                let r = try JSONEncoding().encode(urlRequest, with: parameters)
+                request(r).responseJSON(completionHandler: { response in
 
                     // Store the response
-                    let request=response.request
-                    let result=response.result
-                    let timeline=response.timeline
-                    let statusCode=response.response?.statusCode ?? 0
+                    let request = response.request
+                    let result = response.result
+                    let timeline = response.timeline
+                    let statusCode = response.response?.statusCode ?? 0
 
                     // Bartleby consignation
-                    let context = HTTPContext( code: 3511792751,
-                        caller: "DeleteNodes.execute",
-                        relatedURL:request?.url,
-                        httpStatusCode: statusCode)
+                    let context = HTTPContext(code: 3_511_792_751,
+                                              caller: "DeleteNodes.execute",
+                                              relatedURL: request?.url,
+                                              httpStatusCode: statusCode)
 
-                    if let request=request{
-                        context.request=HTTPRequest(urlRequest: request)
+                    if let request = request {
+                        context.request = HTTPRequest(urlRequest: request)
                     }
 
                     if let data = response.data, let utf8Text = String(data: data, encoding: .utf8) {
-                        context.responseString=utf8Text
+                        context.responseString = utf8Text
                     }
                     // React according to the situation
-                    var reactions = Array<Reaction> ()
+                    var reactions = Array<Reaction>()
 
                     if result.isFailure {
                         let m = NSLocalizedString("deleteByIds  of nodes",
-                            comment: "deleteByIds of nodes failure description")
-                        let failureReaction =  Reaction.dispatchAdaptiveMessage(
+                                                  comment: "deleteByIds of nodes failure description")
+                        let failureReaction = Reaction.dispatchAdaptiveMessage(
                             context: context,
                             title: NSLocalizedString("Unsuccessfull attempt result.isFailure is true",
-                            comment: "Unsuccessfull attempt"),
-                            body:"\(m) \n \(response)" + "\n\(#file)\n\(#function)\nhttp Status code: (\(statusCode))",
-                            transmit:{ (selectedIndex) -> () in
+                                                     comment: "Unsuccessfull attempt"),
+                            body: "\(m) \n \(response)" + "\n\(#file)\n\(#function)\nhttp Status code: (\(statusCode))",
+                            transmit: { (_) -> Void in
                         })
                         reactions.append(failureReaction)
                         failure(context)
-                    }else{
-                        if 200...299 ~= statusCode {
+                    } else {
+                        if 200 ... 299 ~= statusCode {
                             // Acknowledge the trigger if there is one
-                            if let dictionary = result.value as? Dictionary< String,AnyObject > {
-                                if let index=dictionary["triggerIndex"] as? NSNumber,
-                                    let triggerRelayDuration=dictionary["triggerRelayDuration"] as? NSNumber{
-										if index.intValue >= 0 {
-										    // -2 means the trigger relay has been discarded (the status code can be in 200...299
-										    // -1 means an error has occured (the status code should be >299
-										    let acknowledgment=Acknowledgment()
-										    acknowledgment.httpContext=context
-										    acknowledgment.operationName="DeleteNodes"
-										    acknowledgment.triggerIndex=index.intValue
-										    acknowledgment.latency=timeline.latency
-										    acknowledgment.requestDuration=timeline.requestDuration
-										    acknowledgment.serializationDuration=timeline.serializationDuration
-										    acknowledgment.totalDuration=timeline.totalDuration
-										    acknowledgment.triggerRelayDuration=triggerRelayDuration.doubleValue
-										    acknowledgment.uids=nodes.map({$0.UID})
-										    document.record(acknowledgment)
-										    document.report(acknowledgment) // Acknowlegments are also metrics
-										}
+                            if let dictionary = result.value as? Dictionary<String, AnyObject> {
+                                if let index = dictionary["triggerIndex"] as? NSNumber,
+                                    let triggerRelayDuration = dictionary["triggerRelayDuration"] as? NSNumber {
+                                    if index.intValue >= 0 {
+                                        // -2 means the trigger relay has been discarded (the status code can be in 200...299
+                                        // -1 means an error has occured (the status code should be >299
+                                        let acknowledgment = Acknowledgment()
+                                        acknowledgment.httpContext = context
+                                        acknowledgment.operationName = "DeleteNodes"
+                                        acknowledgment.triggerIndex = index.intValue
+                                        acknowledgment.latency = timeline.latency
+                                        acknowledgment.requestDuration = timeline.requestDuration
+                                        acknowledgment.serializationDuration = timeline.serializationDuration
+                                        acknowledgment.totalDuration = timeline.totalDuration
+                                        acknowledgment.triggerRelayDuration = triggerRelayDuration.doubleValue
+                                        acknowledgment.uids = nodes.map({ $0.UID })
+                                        document.record(acknowledgment)
+                                        document.report(acknowledgment) // Acknowlegments are also metrics
+                                    }
                                 }
                             }
                             success(context)
-                        }else{
+                        } else {
                             // Bartlby does not currenlty discriminate status codes 100 & 101
                             // and treats any status code >= 300 the same way
                             // because we consider that failures differentiations could be done by the caller.
 
-                            let m=NSLocalizedString("deleteByIds of nodes",
-                                    comment: "deleteByIds of nodes failure description")
-                            let failureReaction =  Reaction.dispatchAdaptiveMessage(
+                            let m = NSLocalizedString("deleteByIds of nodes",
+                                                      comment: "deleteByIds of nodes failure description")
+                            let failureReaction = Reaction.dispatchAdaptiveMessage(
                                 context: context,
                                 title: NSLocalizedString("Unsuccessfull attempt",
-                                comment: "Unsuccessfull attempt"),
+                                                         comment: "Unsuccessfull attempt"),
                                 body: "\(m) \n \(response)" + "\n\(#file)\n\(#function)\nhttp Status code: (\(statusCode))",
-                                transmit:{ (selectedIndex) -> () in
-                                })
+                                transmit: { (_) -> Void in
+                            })
                             reactions.append(failureReaction)
                             failure(context)
                         }
-                     }
-                    //Let's react according to the context.
+                    }
+                    // Let's react according to the context.
                     document.perform(reactions, forContext: context)
                 })
-                }catch{
-                    let context = HTTPContext( code:2 ,
-                    caller: "DeleteNodes.execute",
-                    relatedURL:nil,
-                    httpStatusCode:StatusOfCompletion.undefined.rawValue)
-                    context.message="\(error)"
-                    failure(context)
-                }
-
-            }else{
-                glog(NSLocalizedString("Document is missing", comment: "Document is missing")+" documentUID =\(documentUID)", file: #file, function: #function, line: #line, category: Default.LOG_WARNING, decorative: false)
+            } catch {
+                let context = HTTPContext(code: 2,
+                                          caller: "DeleteNodes.execute",
+                                          relatedURL: nil,
+                                          httpStatusCode: StatusOfCompletion.undefined.rawValue)
+                context.message = "\(error)"
+                failure(context)
             }
-        }}
+
+        } else {
+            glog(NSLocalizedString("Document is missing", comment: "Document is missing") + " documentUID =\(documentUID)", file: #file, function: #function, line: #line, category: Default.LOG_WARNING, decorative: false)
+        }
+} }

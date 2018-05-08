@@ -12,105 +12,101 @@ import Foundation
 #endif
 
 // MARK: Bartleby's Core: a value object used to record metrics
-@objc open class Metrics : UnManagedModel {
 
+@objc open class Metrics: UnManagedModel {
     // DeclaredTypeName support
-    override open class func typeName() -> String {
+    open override class func typeName() -> String {
         return "Metrics"
     }
 
+    // The referent document
+    @objc open dynamic var referentDocument: BartlebyDocument?
 
-	//The referent document
-	@objc dynamic open var referentDocument:BartlebyDocument?
+    // The action name e.g: UpdateUser
+    @objc open dynamic var operationName: String = Default.NO_NAME
 
-	//The action name e.g: UpdateUser
-	@objc dynamic open var operationName:String = Default.NO_NAME
+    // The metrics entry counter
+    @objc open dynamic var counter: Int = -1
 
-	//The metrics entry counter
-	@objc dynamic open var counter:Int = -1
+    // The elasped time since app started up.
+    @objc open dynamic var elapsed: Double = 0
 
-	//The elasped time since app started up.
-	@objc dynamic open var elapsed:Double = 0
+    // The time interval in seconds from the time the request started to the initial response from the server.
+    @objc open dynamic var latency: Double = 0
 
-	//The time interval in seconds from the time the request started to the initial response from the server.
-	@objc dynamic open var latency:Double = 0
+    // The time interval in seconds from the time the request started to the time the request completed.
+    @objc open dynamic var requestDuration: Double = 0
 
-	//The time interval in seconds from the time the request started to the time the request completed.
-	@objc dynamic open var requestDuration:Double = 0
+    // The time interval in seconds from the time the request completed to the time response serialization completed.
+    @objc open dynamic var serializationDuration: Double = 0
 
-	// The time interval in seconds from the time the request completed to the time response serialization completed.
-	@objc dynamic open var serializationDuration:Double = 0
+    // The time interval in seconds from the time the request started to the time response serialization completed.
+    @objc open dynamic var totalDuration: Double = 0
 
-	//The time interval in seconds from the time the request started to the time response serialization completed.
-	@objc dynamic open var totalDuration:Double = 0
+    // The full http context
+    @objc open dynamic var httpContext: HTTPContext?
 
-	//The full http context
-	@objc dynamic open var httpContext:HTTPContext?
+    //the verification method
+    public enum StreamOrientation: String {
+        case upStream
+        case downStream
+    }
 
-	//the verification method
-	public enum StreamOrientation:String{
-		case upStream = "upStream"
-		case downStream = "downStream"
-	}
-	open var streamOrientation:StreamOrientation = .upStream
-
+    open var streamOrientation: StreamOrientation = .upStream
 
     // MARK: - Codable
 
-
-    public enum MetricsCodingKeys: String,CodingKey{
-		case referentDocument
-		case operationName
-		case counter
-		case elapsed
-		case latency
-		case requestDuration
-		case serializationDuration
-		case totalDuration
-		case httpContext
-		case streamOrientation
+    public enum MetricsCodingKeys: String, CodingKey {
+        case referentDocument
+        case operationName
+        case counter
+        case elapsed
+        case latency
+        case requestDuration
+        case serializationDuration
+        case totalDuration
+        case httpContext
+        case streamOrientation
     }
 
-    required public init(from decoder: Decoder) throws{
-		try super.init(from: decoder)
-        try self.quietThrowingChanges {
-			let values = try decoder.container(keyedBy: MetricsCodingKeys.self)
-			self.operationName = try values.decode(String.self,forKey:.operationName)
-			self.counter = try values.decode(Int.self,forKey:.counter)
-			self.elapsed = try values.decode(Double.self,forKey:.elapsed)
-			self.latency = try values.decode(Double.self,forKey:.latency)
-			self.requestDuration = try values.decode(Double.self,forKey:.requestDuration)
-			self.serializationDuration = try values.decode(Double.self,forKey:.serializationDuration)
-			self.totalDuration = try values.decode(Double.self,forKey:.totalDuration)
-			self.httpContext = try values.decodeIfPresent(HTTPContext.self,forKey:.httpContext)
-			self.streamOrientation = Metrics.StreamOrientation(rawValue: try values.decode(String.self,forKey:.streamOrientation)) ?? .upStream
+    public required init(from decoder: Decoder) throws {
+        try super.init(from: decoder)
+        try quietThrowingChanges {
+            let values = try decoder.container(keyedBy: MetricsCodingKeys.self)
+            self.operationName = try values.decode(String.self, forKey: .operationName)
+            self.counter = try values.decode(Int.self, forKey: .counter)
+            self.elapsed = try values.decode(Double.self, forKey: .elapsed)
+            self.latency = try values.decode(Double.self, forKey: .latency)
+            self.requestDuration = try values.decode(Double.self, forKey: .requestDuration)
+            self.serializationDuration = try values.decode(Double.self, forKey: .serializationDuration)
+            self.totalDuration = try values.decode(Double.self, forKey: .totalDuration)
+            self.httpContext = try values.decodeIfPresent(HTTPContext.self, forKey: .httpContext)
+            self.streamOrientation = Metrics.StreamOrientation(rawValue: try values.decode(String.self, forKey: .streamOrientation)) ?? .upStream
         }
     }
 
-    override open func encode(to encoder: Encoder) throws {
-		try super.encode(to:encoder)
-		var container = encoder.container(keyedBy: MetricsCodingKeys.self)
-		try container.encode(self.operationName,forKey:.operationName)
-		try container.encode(self.counter,forKey:.counter)
-		try container.encode(self.elapsed,forKey:.elapsed)
-		try container.encode(self.latency,forKey:.latency)
-		try container.encode(self.requestDuration,forKey:.requestDuration)
-		try container.encode(self.serializationDuration,forKey:.serializationDuration)
-		try container.encode(self.totalDuration,forKey:.totalDuration)
-		try container.encodeIfPresent(self.httpContext,forKey:.httpContext)
-		try container.encode(self.streamOrientation.rawValue ,forKey:.streamOrientation)
+    open override func encode(to encoder: Encoder) throws {
+        try super.encode(to: encoder)
+        var container = encoder.container(keyedBy: MetricsCodingKeys.self)
+        try container.encode(operationName, forKey: .operationName)
+        try container.encode(counter, forKey: .counter)
+        try container.encode(elapsed, forKey: .elapsed)
+        try container.encode(latency, forKey: .latency)
+        try container.encode(requestDuration, forKey: .requestDuration)
+        try container.encode(serializationDuration, forKey: .serializationDuration)
+        try container.encode(totalDuration, forKey: .totalDuration)
+        try container.encodeIfPresent(httpContext, forKey: .httpContext)
+        try container.encode(streamOrientation.rawValue, forKey: .streamOrientation)
     }
-
 
     // MARK: - Exposed (Bartleby's KVC like generative implementation)
 
     /// Return all the exposed instance variables keys. (Exposed == public and modifiable).
-    override  open var exposedKeys:[String] {
-        var exposed=super.exposedKeys
-        exposed.append(contentsOf:["referentDocument","operationName","counter","elapsed","latency","requestDuration","serializationDuration","totalDuration","httpContext","streamOrientation"])
+    open override var exposedKeys: [String] {
+        var exposed = super.exposedKeys
+        exposed.append(contentsOf: ["referentDocument", "operationName", "counter", "elapsed", "latency", "requestDuration", "serializationDuration", "totalDuration", "httpContext", "streamOrientation"])
         return exposed
     }
-
 
     /// Set the value of the given key
     ///
@@ -118,53 +114,52 @@ import Foundation
     /// - parameter key:   the key
     ///
     /// - throws: throws an Exception when the key is not exposed
-    override  open func setExposedValue(_ value:Any?, forKey key: String) throws {
+    open override func setExposedValue(_ value: Any?, forKey key: String) throws {
         switch key {
-            case "referentDocument":
-                if let casted=value as? BartlebyDocument{
-                    self.referentDocument=casted
-                }
-            case "operationName":
-                if let casted=value as? String{
-                    self.operationName=casted
-                }
-            case "counter":
-                if let casted=value as? Int{
-                    self.counter=casted
-                }
-            case "elapsed":
-                if let casted=value as? Double{
-                    self.elapsed=casted
-                }
-            case "latency":
-                if let casted=value as? Double{
-                    self.latency=casted
-                }
-            case "requestDuration":
-                if let casted=value as? Double{
-                    self.requestDuration=casted
-                }
-            case "serializationDuration":
-                if let casted=value as? Double{
-                    self.serializationDuration=casted
-                }
-            case "totalDuration":
-                if let casted=value as? Double{
-                    self.totalDuration=casted
-                }
-            case "httpContext":
-                if let casted=value as? HTTPContext{
-                    self.httpContext=casted
-                }
-            case "streamOrientation":
-                if let casted=value as? Metrics.StreamOrientation{
-                    self.streamOrientation=casted
-                }
-            default:
-                return try super.setExposedValue(value, forKey: key)
+        case "referentDocument":
+            if let casted = value as? BartlebyDocument {
+                referentDocument = casted
+            }
+        case "operationName":
+            if let casted = value as? String {
+                operationName = casted
+            }
+        case "counter":
+            if let casted = value as? Int {
+                counter = casted
+            }
+        case "elapsed":
+            if let casted = value as? Double {
+                elapsed = casted
+            }
+        case "latency":
+            if let casted = value as? Double {
+                latency = casted
+            }
+        case "requestDuration":
+            if let casted = value as? Double {
+                requestDuration = casted
+            }
+        case "serializationDuration":
+            if let casted = value as? Double {
+                serializationDuration = casted
+            }
+        case "totalDuration":
+            if let casted = value as? Double {
+                totalDuration = casted
+            }
+        case "httpContext":
+            if let casted = value as? HTTPContext {
+                httpContext = casted
+            }
+        case "streamOrientation":
+            if let casted = value as? Metrics.StreamOrientation {
+                streamOrientation = casted
+            }
+        default:
+            return try super.setExposedValue(value, forKey: key)
         }
     }
-
 
     /// Returns the value of an exposed key.
     ///
@@ -173,34 +168,36 @@ import Foundation
     /// - throws: throws Exception when the key is not exposed
     ///
     /// - returns: returns the value
-    override  open func getExposedValueForKey(_ key:String) throws -> Any?{
+    open override func getExposedValueForKey(_ key: String) throws -> Any? {
         switch key {
-            case "referentDocument":
-               return self.referentDocument
-            case "operationName":
-               return self.operationName
-            case "counter":
-               return self.counter
-            case "elapsed":
-               return self.elapsed
-            case "latency":
-               return self.latency
-            case "requestDuration":
-               return self.requestDuration
-            case "serializationDuration":
-               return self.serializationDuration
-            case "totalDuration":
-               return self.totalDuration
-            case "httpContext":
-               return self.httpContext
-            case "streamOrientation":
-               return self.streamOrientation
-            default:
-                return try super.getExposedValueForKey(key)
+        case "referentDocument":
+            return referentDocument
+        case "operationName":
+            return operationName
+        case "counter":
+            return counter
+        case "elapsed":
+            return elapsed
+        case "latency":
+            return latency
+        case "requestDuration":
+            return requestDuration
+        case "serializationDuration":
+            return serializationDuration
+        case "totalDuration":
+            return totalDuration
+        case "httpContext":
+            return httpContext
+        case "streamOrientation":
+            return streamOrientation
+        default:
+            return try super.getExposedValueForKey(key)
         }
     }
+
     // MARK: - Initializable
-     required public init() {
+
+    public required init() {
         super.init()
     }
 }

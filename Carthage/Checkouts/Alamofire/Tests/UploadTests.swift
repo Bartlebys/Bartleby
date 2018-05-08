@@ -172,7 +172,7 @@ class UploadDataTestCase: BaseTestCase {
         let urlString = "https://httpbin.org/post"
         let data: Data = {
             var text = ""
-            for _ in 1...3_000 {
+            for _ in 1 ... 3000 {
                 text += "Lorem ipsum dolor sit amet, consectetur adipiscing elit. "
             }
 
@@ -260,7 +260,7 @@ class UploadMultipartFormDataTestCase: BaseTestCase {
             to: urlString,
             encodingCompletion: { result in
                 switch result {
-                case .success(let upload, _, _):
+                case let .success(upload, _, _):
                     upload.response { resp in
                         response = resp
                         expectation.fulfill()
@@ -282,8 +282,7 @@ class UploadMultipartFormDataTestCase: BaseTestCase {
         if
             let request = response?.request,
             let multipartFormData = formData,
-            let contentType = request.value(forHTTPHeaderField: "Content-Type")
-        {
+            let contentType = request.value(forHTTPHeaderField: "Content-Type") {
             XCTAssertEqual(contentType, multipartFormData.contentType)
         } else {
             XCTFail("Content-Type header value should not be nil")
@@ -308,7 +307,7 @@ class UploadMultipartFormDataTestCase: BaseTestCase {
             to: urlString,
             encodingCompletion: { result in
                 switch result {
-                case .success(let upload, _, _):
+                case let .success(upload, _, _):
                     upload.response { resp in
                         response = resp
                         expectation.fulfill()
@@ -425,8 +424,7 @@ class UploadMultipartFormDataTestCase: BaseTestCase {
         if
             let request = request,
             let multipartFormData = formData,
-            let contentType = request.value(forHTTPHeaderField: "Content-Type")
-        {
+            let contentType = request.value(forHTTPHeaderField: "Content-Type") {
             XCTAssertEqual(contentType, multipartFormData.contentType, "Content-Type header value should match")
         } else {
             XCTFail("Content-Type header value should not be nil")
@@ -525,77 +523,76 @@ class UploadMultipartFormDataTestCase: BaseTestCase {
         if
             let request = request,
             let multipartFormData = formData,
-            let contentType = request.value(forHTTPHeaderField: "Content-Type")
-        {
+            let contentType = request.value(forHTTPHeaderField: "Content-Type") {
             XCTAssertEqual(contentType, multipartFormData.contentType, "Content-Type header value should match")
         } else {
             XCTFail("Content-Type header value should not be nil")
         }
     }
 
-#if os(macOS)
-    func testThatUploadingMultipartFormDataOnBackgroundSessionWritesDataToFileToAvoidCrash() {
-        // Given
-        let manager: SessionManager = {
-            let identifier = "org.alamofire.uploadtests.\(UUID().uuidString)"
-            let configuration = URLSessionConfiguration.background(withIdentifier: identifier)
+    #if os(macOS)
+        func testThatUploadingMultipartFormDataOnBackgroundSessionWritesDataToFileToAvoidCrash() {
+            // Given
+            let manager: SessionManager = {
+                let identifier = "org.alamofire.uploadtests.\(UUID().uuidString)"
+                let configuration = URLSessionConfiguration.background(withIdentifier: identifier)
 
-            return SessionManager(configuration: configuration, serverTrustPolicyManager: nil)
-        }()
+                return SessionManager(configuration: configuration, serverTrustPolicyManager: nil)
+            }()
 
-        let urlString = "https://httpbin.org/post"
-        let french = "français".data(using: .utf8, allowLossyConversion: false)!
-        let japanese = "日本語".data(using: .utf8, allowLossyConversion: false)!
+            let urlString = "https://httpbin.org/post"
+            let french = "français".data(using: .utf8, allowLossyConversion: false)!
+            let japanese = "日本語".data(using: .utf8, allowLossyConversion: false)!
 
-        let expectation = self.expectation(description: "multipart form data upload should succeed")
+            let expectation = self.expectation(description: "multipart form data upload should succeed")
 
-        var request: URLRequest?
-        var response: HTTPURLResponse?
-        var data: Data?
-        var error: Error?
-        var streamingFromDisk: Bool?
+            var request: URLRequest?
+            var response: HTTPURLResponse?
+            var data: Data?
+            var error: Error?
+            var streamingFromDisk: Bool?
 
-        // When
-        manager.upload(
-            multipartFormData: { multipartFormData in
-                multipartFormData.append(french, withName: "french")
-                multipartFormData.append(japanese, withName: "japanese")
-            },
-            to: urlString,
-            encodingCompletion: { result in
-                switch result {
-                case let .success(upload, uploadStreamingFromDisk, _):
-                    streamingFromDisk = uploadStreamingFromDisk
+            // When
+            manager.upload(
+                multipartFormData: { multipartFormData in
+                    multipartFormData.append(french, withName: "french")
+                    multipartFormData.append(japanese, withName: "japanese")
+                },
+                to: urlString,
+                encodingCompletion: { result in
+                    switch result {
+                    case let .success(upload, uploadStreamingFromDisk, _):
+                        streamingFromDisk = uploadStreamingFromDisk
 
-                    upload.response { defaultResponse in
-                        request = defaultResponse.request
-                        response = defaultResponse.response
-                        data = defaultResponse.data
-                        error = defaultResponse.error
+                        upload.response { defaultResponse in
+                            request = defaultResponse.request
+                            response = defaultResponse.response
+                            data = defaultResponse.data
+                            error = defaultResponse.error
 
+                            expectation.fulfill()
+                        }
+                    case .failure:
                         expectation.fulfill()
                     }
-                case .failure:
-                    expectation.fulfill()
                 }
+            )
+
+            waitForExpectations(timeout: timeout, handler: nil)
+
+            // Then
+            XCTAssertNotNil(request, "request should not be nil")
+            XCTAssertNotNil(response, "response should not be nil")
+            XCTAssertNotNil(data, "data should not be nil")
+            XCTAssertNil(error, "error should be nil")
+
+            if let streamingFromDisk = streamingFromDisk {
+                XCTAssertTrue(streamingFromDisk, "streaming from disk should be true")
+            } else {
+                XCTFail("streaming from disk should not be nil")
             }
-        )
-
-        waitForExpectations(timeout: timeout, handler: nil)
-
-        // Then
-        XCTAssertNotNil(request, "request should not be nil")
-        XCTAssertNotNil(response, "response should not be nil")
-        XCTAssertNotNil(data, "data should not be nil")
-        XCTAssertNil(error, "error should be nil")
-
-        if let streamingFromDisk = streamingFromDisk {
-            XCTAssertTrue(streamingFromDisk, "streaming from disk should be true")
-        } else {
-            XCTFail("streaming from disk should not be nil")
         }
-    }
-#endif
+    #endif
 
     // MARK: Combined Test Execution
 
@@ -604,7 +601,7 @@ class UploadMultipartFormDataTestCase: BaseTestCase {
         let urlString = "https://httpbin.org/post"
         let loremData1: Data = {
             var loremValues: [String] = []
-            for _ in 1...1_500 {
+            for _ in 1 ... 1500 {
                 loremValues.append("Lorem ipsum dolor sit amet, consectetur adipiscing elit.")
             }
 
@@ -612,7 +609,7 @@ class UploadMultipartFormDataTestCase: BaseTestCase {
         }()
         let loremData2: Data = {
             var loremValues: [String] = []
-            for _ in 1...1_500 {
+            for _ in 1 ... 1500 {
                 loremValues.append("Lorem ipsum dolor sit amet, nam no graeco recusabo appellantur.")
             }
 
@@ -636,7 +633,7 @@ class UploadMultipartFormDataTestCase: BaseTestCase {
             to: urlString,
             encodingCompletion: { result in
                 switch result {
-                case .success(let upload, _, _):
+                case let .success(upload, _, _):
                     upload
                         .uploadProgress { progress in
                             uploadProgressValues.append(progress.fractionCompleted)

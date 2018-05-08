@@ -30,10 +30,8 @@ import Foundation
 // ` if let deserializedTimedText = try d.deserialize(typeName: TimedText.typeName(), data: data, document: nil) as? TimedText{
 //      ...
 // }`
-open class BartlebysDynamics:Dynamics{
-
-    public init(){
-        
+open class BartlebysDynamics: Dynamics {
+    public init() {
     }
 
     /// Deserializes dynamically an entity based on its Class name.
@@ -43,206 +41,203 @@ open class BartlebysDynamics:Dynamics{
     ///   - data: the encoded data
     ///   - document: the document to register In the instance (if set to nil the instance will not be registred
     /// - Returns: the dynamic instance that you cast..?
-    open func deserialize(typeName:String,data:Data,document:BartlebyDocument?)throws->Any{
+    open func deserialize(typeName: String, data: Data, document: BartlebyDocument?) throws -> Any {
+        var instance: Decodable!
 
-        var instance : Decodable!
-
-        if let document = document{
-            defer{
-                if let managedModel = instance as? ManagedModel{
-                    if (managedModel is BartlebyCollection) || (managedModel is BartlebyOperation){
+        if let document = document {
+            defer {
+                if let managedModel = instance as? ManagedModel {
+                    if (managedModel is BartlebyCollection) || (managedModel is BartlebyOperation) {
                         // Add the document reference
-                        managedModel.referentDocument=document
-                    }else{
+                        managedModel.referentDocument = document
+                    } else {
                         // Add the collection reference
                         // Calls the Bartleby.register(self)
-                        managedModel.collection=document.collectionByName(managedModel.d_collectionName)
+                        managedModel.collection = document.collectionByName(managedModel.d_collectionName)
                     }
                 }
             }
         }
-        if typeName == "ReadUsersByQuery"{ instance = try JSON.decoder.decode(ReadUsersByQuery.self, from: data); return instance }
-        if typeName == "DeleteUsers"{ instance = try JSON.decoder.decode(DeleteUsers.self, from: data); return instance }
-        if typeName == "UpdateUsers"{ instance = try JSON.decoder.decode(UpdateUsers.self, from: data); return instance }
-        if typeName == "ReadUsersByIds"{ instance = try JSON.decoder.decode(ReadUsersByIds.self, from: data); return instance }
-        if typeName == "CreateUsers"{ instance = try JSON.decoder.decode(CreateUsers.self, from: data); return instance }
-        if typeName == "DeleteUser"{ instance = try JSON.decoder.decode(DeleteUser.self, from: data); return instance }
-        if typeName == "UpdateUser"{ instance = try JSON.decoder.decode(UpdateUser.self, from: data); return instance }
-        if typeName == "CreateUser"{ instance = try JSON.decoder.decode(CreateUser.self, from: data); return instance }
-        if typeName == "ReadUserById"{ instance = try JSON.decoder.decode(ReadUserById.self, from: data); return instance }
-        if typeName == "ReadNodesByQuery"{ instance = try JSON.decoder.decode(ReadNodesByQuery.self, from: data); return instance }
-        if typeName == "DeleteNodes"{ instance = try JSON.decoder.decode(DeleteNodes.self, from: data); return instance }
-        if typeName == "UpdateNodes"{ instance = try JSON.decoder.decode(UpdateNodes.self, from: data); return instance }
-        if typeName == "ReadNodesByIds"{ instance = try JSON.decoder.decode(ReadNodesByIds.self, from: data); return instance }
-        if typeName == "CreateNodes"{ instance = try JSON.decoder.decode(CreateNodes.self, from: data); return instance }
-        if typeName == "DeleteNode"{ instance = try JSON.decoder.decode(DeleteNode.self, from: data); return instance }
-        if typeName == "UpdateNode"{ instance = try JSON.decoder.decode(UpdateNode.self, from: data); return instance }
-        if typeName == "CreateNode"{ instance = try JSON.decoder.decode(CreateNode.self, from: data); return instance }
-        if typeName == "ReadNodeById"{ instance = try JSON.decoder.decode(ReadNodeById.self, from: data); return instance }
-        if typeName == "ReadLockersByQuery"{ instance = try JSON.decoder.decode(ReadLockersByQuery.self, from: data); return instance }
-        if typeName == "DeleteLockers"{ instance = try JSON.decoder.decode(DeleteLockers.self, from: data); return instance }
-        if typeName == "UpdateLockers"{ instance = try JSON.decoder.decode(UpdateLockers.self, from: data); return instance }
-        if typeName == "ReadLockersByIds"{ instance = try JSON.decoder.decode(ReadLockersByIds.self, from: data); return instance }
-        if typeName == "CreateLockers"{ instance = try JSON.decoder.decode(CreateLockers.self, from: data); return instance }
-        if typeName == "DeleteLocker"{ instance = try JSON.decoder.decode(DeleteLocker.self, from: data); return instance }
-        if typeName == "UpdateLocker"{ instance = try JSON.decoder.decode(UpdateLocker.self, from: data); return instance }
-        if typeName == "CreateLocker"{ instance = try JSON.decoder.decode(CreateLocker.self, from: data); return instance }
-        if typeName == "ReadLockerById"{ instance = try JSON.decoder.decode(ReadLockerById.self, from: data); return instance }
-        if typeName == "ReadLocalizedDataByQuery"{ instance = try JSON.decoder.decode(ReadLocalizedDataByQuery.self, from: data); return instance }
-        if typeName == "DeleteLocalizedData"{ instance = try JSON.decoder.decode(DeleteLocalizedData.self, from: data); return instance }
-        if typeName == "ReadLocalizedDataByIds"{ instance = try JSON.decoder.decode(ReadLocalizedDataByIds.self, from: data); return instance }
-        if typeName == "UpsertLocalizedData"{ instance = try JSON.decoder.decode(UpsertLocalizedData.self, from: data); return instance }
-        if typeName == "DeleteLocalizedDatum"{ instance = try JSON.decoder.decode(DeleteLocalizedDatum.self, from: data); return instance }
-        if typeName == "UpsertLocalizedDatum"{ instance = try JSON.decoder.decode(UpsertLocalizedDatum.self, from: data); return instance }
-        if typeName == "ReadLocalizedDatumById"{ instance = try JSON.decoder.decode(ReadLocalizedDatumById.self, from: data); return instance }
-        if typeName == "ReadBoxesByQuery"{ instance = try JSON.decoder.decode(ReadBoxesByQuery.self, from: data); return instance }
-        if typeName == "DeleteBoxes"{ instance = try JSON.decoder.decode(DeleteBoxes.self, from: data); return instance }
-        if typeName == "UpdateBoxes"{ instance = try JSON.decoder.decode(UpdateBoxes.self, from: data); return instance }
-        if typeName == "ReadBoxesByIds"{ instance = try JSON.decoder.decode(ReadBoxesByIds.self, from: data); return instance }
-        if typeName == "CreateBoxes"{ instance = try JSON.decoder.decode(CreateBoxes.self, from: data); return instance }
-        if typeName == "DeleteBox"{ instance = try JSON.decoder.decode(DeleteBox.self, from: data); return instance }
-        if typeName == "UpdateBox"{ instance = try JSON.decoder.decode(UpdateBox.self, from: data); return instance }
-        if typeName == "CreateBox"{ instance = try JSON.decoder.decode(CreateBox.self, from: data); return instance }
-        if typeName == "ReadBoxById"{ instance = try JSON.decoder.decode(ReadBoxById.self, from: data); return instance }
-        if typeName == "ReadBlocksByQuery"{ instance = try JSON.decoder.decode(ReadBlocksByQuery.self, from: data); return instance }
-        if typeName == "DeleteBlocks"{ instance = try JSON.decoder.decode(DeleteBlocks.self, from: data); return instance }
-        if typeName == "UpdateBlocks"{ instance = try JSON.decoder.decode(UpdateBlocks.self, from: data); return instance }
-        if typeName == "ReadBlocksByIds"{ instance = try JSON.decoder.decode(ReadBlocksByIds.self, from: data); return instance }
-        if typeName == "CreateBlocks"{ instance = try JSON.decoder.decode(CreateBlocks.self, from: data); return instance }
-        if typeName == "DeleteBlock"{ instance = try JSON.decoder.decode(DeleteBlock.self, from: data); return instance }
-        if typeName == "UpdateBlock"{ instance = try JSON.decoder.decode(UpdateBlock.self, from: data); return instance }
-        if typeName == "CreateBlock"{ instance = try JSON.decoder.decode(CreateBlock.self, from: data); return instance }
-        if typeName == "ReadBlockById"{ instance = try JSON.decoder.decode(ReadBlockById.self, from: data); return instance }
-        if typeName == "ManagedUsers"{ instance = try JSON.decoder.decode(ManagedUsers.self, from: data); return instance }
-        if typeName == "User"{ instance = try JSON.decoder.decode(User.self, from: data); return instance }
-        if typeName == "Trigger"{ instance = try JSON.decoder.decode(Trigger.self, from: data); return instance }
-        if typeName == "StringValue"{ instance = try JSON.decoder.decode(StringValue.self, from: data); return instance }
-        if typeName == "Report"{ instance = try JSON.decoder.decode(Report.self, from: data); return instance }
-        if typeName == "ManagedPushOperations"{ instance = try JSON.decoder.decode(ManagedPushOperations.self, from: data); return instance }
-        if typeName == "PushOperation"{ instance = try JSON.decoder.decode(PushOperation.self, from: data); return instance }
-        if typeName == "Progression"{ instance = try JSON.decoder.decode(Progression.self, from: data); return instance }
-        if typeName == "ManagedNodes"{ instance = try JSON.decoder.decode(ManagedNodes.self, from: data); return instance }
-        if typeName == "Node"{ instance = try JSON.decoder.decode(Node.self, from: data); return instance }
-        if typeName == "Metrics"{ instance = try JSON.decoder.decode(Metrics.self, from: data); return instance }
-        if typeName == "MasterKey"{ instance = try JSON.decoder.decode(MasterKey.self, from: data); return instance }
-        if typeName == "ManagedModel"{ instance = try JSON.decoder.decode(ManagedModel.self, from: data); return instance }
-        if typeName == "LogEntry"{ instance = try JSON.decoder.decode(LogEntry.self, from: data); return instance }
-        if typeName == "ManagedLockers"{ instance = try JSON.decoder.decode(ManagedLockers.self, from: data); return instance }
-        if typeName == "Locker"{ instance = try JSON.decoder.decode(Locker.self, from: data); return instance }
-        if typeName == "ManagedLocalizedData"{ instance = try JSON.decoder.decode(ManagedLocalizedData.self, from: data); return instance }
-        if typeName == "LocalizedDatum"{ instance = try JSON.decoder.decode(LocalizedDatum.self, from: data); return instance }
-        if typeName == "KeyedData"{ instance = try JSON.decoder.decode(KeyedData.self, from: data); return instance }
-        if typeName == "KeyedChanges"{ instance = try JSON.decoder.decode(KeyedChanges.self, from: data); return instance }
-        if typeName == "HTTPRequest"{ instance = try JSON.decoder.decode(HTTPRequest.self, from: data); return instance }
-        if typeName == "HTTPContext"{ instance = try JSON.decoder.decode(HTTPContext.self, from: data); return instance }
-        if typeName == "DocumentMetadata"{ instance = try JSON.decoder.decode(DocumentMetadata.self, from: data); return instance }
-        if typeName == "DataValue"{ instance = try JSON.decoder.decode(DataValue.self, from: data); return instance }
-        if typeName == "Container"{ instance = try JSON.decoder.decode(Container.self, from: data); return instance }
-        if typeName == "Completion"{ instance = try JSON.decoder.decode(Completion.self, from: data); return instance }
-        if typeName == "CollectionMetadatum"{ instance = try JSON.decoder.decode(CollectionMetadatum.self, from: data); return instance }
-        if typeName == "ManagedBoxes"{ instance = try JSON.decoder.decode(ManagedBoxes.self, from: data); return instance }
-        if typeName == "Box"{ instance = try JSON.decoder.decode(Box.self, from: data); return instance }
-        if typeName == "ManagedBlocks"{ instance = try JSON.decoder.decode(ManagedBlocks.self, from: data); return instance }
-        if typeName == "Block"{ instance = try JSON.decoder.decode(Block.self, from: data); return instance }
-        if typeName == "Acknowledgment"{ instance = try JSON.decoder.decode(Acknowledgment.self, from: data); return instance }
+        if typeName == "ReadUsersByQuery" { instance = try JSON.decoder.decode(ReadUsersByQuery.self, from: data); return instance }
+        if typeName == "DeleteUsers" { instance = try JSON.decoder.decode(DeleteUsers.self, from: data); return instance }
+        if typeName == "UpdateUsers" { instance = try JSON.decoder.decode(UpdateUsers.self, from: data); return instance }
+        if typeName == "ReadUsersByIds" { instance = try JSON.decoder.decode(ReadUsersByIds.self, from: data); return instance }
+        if typeName == "CreateUsers" { instance = try JSON.decoder.decode(CreateUsers.self, from: data); return instance }
+        if typeName == "DeleteUser" { instance = try JSON.decoder.decode(DeleteUser.self, from: data); return instance }
+        if typeName == "UpdateUser" { instance = try JSON.decoder.decode(UpdateUser.self, from: data); return instance }
+        if typeName == "CreateUser" { instance = try JSON.decoder.decode(CreateUser.self, from: data); return instance }
+        if typeName == "ReadUserById" { instance = try JSON.decoder.decode(ReadUserById.self, from: data); return instance }
+        if typeName == "ReadNodesByQuery" { instance = try JSON.decoder.decode(ReadNodesByQuery.self, from: data); return instance }
+        if typeName == "DeleteNodes" { instance = try JSON.decoder.decode(DeleteNodes.self, from: data); return instance }
+        if typeName == "UpdateNodes" { instance = try JSON.decoder.decode(UpdateNodes.self, from: data); return instance }
+        if typeName == "ReadNodesByIds" { instance = try JSON.decoder.decode(ReadNodesByIds.self, from: data); return instance }
+        if typeName == "CreateNodes" { instance = try JSON.decoder.decode(CreateNodes.self, from: data); return instance }
+        if typeName == "DeleteNode" { instance = try JSON.decoder.decode(DeleteNode.self, from: data); return instance }
+        if typeName == "UpdateNode" { instance = try JSON.decoder.decode(UpdateNode.self, from: data); return instance }
+        if typeName == "CreateNode" { instance = try JSON.decoder.decode(CreateNode.self, from: data); return instance }
+        if typeName == "ReadNodeById" { instance = try JSON.decoder.decode(ReadNodeById.self, from: data); return instance }
+        if typeName == "ReadLockersByQuery" { instance = try JSON.decoder.decode(ReadLockersByQuery.self, from: data); return instance }
+        if typeName == "DeleteLockers" { instance = try JSON.decoder.decode(DeleteLockers.self, from: data); return instance }
+        if typeName == "UpdateLockers" { instance = try JSON.decoder.decode(UpdateLockers.self, from: data); return instance }
+        if typeName == "ReadLockersByIds" { instance = try JSON.decoder.decode(ReadLockersByIds.self, from: data); return instance }
+        if typeName == "CreateLockers" { instance = try JSON.decoder.decode(CreateLockers.self, from: data); return instance }
+        if typeName == "DeleteLocker" { instance = try JSON.decoder.decode(DeleteLocker.self, from: data); return instance }
+        if typeName == "UpdateLocker" { instance = try JSON.decoder.decode(UpdateLocker.self, from: data); return instance }
+        if typeName == "CreateLocker" { instance = try JSON.decoder.decode(CreateLocker.self, from: data); return instance }
+        if typeName == "ReadLockerById" { instance = try JSON.decoder.decode(ReadLockerById.self, from: data); return instance }
+        if typeName == "ReadLocalizedDataByQuery" { instance = try JSON.decoder.decode(ReadLocalizedDataByQuery.self, from: data); return instance }
+        if typeName == "DeleteLocalizedData" { instance = try JSON.decoder.decode(DeleteLocalizedData.self, from: data); return instance }
+        if typeName == "ReadLocalizedDataByIds" { instance = try JSON.decoder.decode(ReadLocalizedDataByIds.self, from: data); return instance }
+        if typeName == "UpsertLocalizedData" { instance = try JSON.decoder.decode(UpsertLocalizedData.self, from: data); return instance }
+        if typeName == "DeleteLocalizedDatum" { instance = try JSON.decoder.decode(DeleteLocalizedDatum.self, from: data); return instance }
+        if typeName == "UpsertLocalizedDatum" { instance = try JSON.decoder.decode(UpsertLocalizedDatum.self, from: data); return instance }
+        if typeName == "ReadLocalizedDatumById" { instance = try JSON.decoder.decode(ReadLocalizedDatumById.self, from: data); return instance }
+        if typeName == "ReadBoxesByQuery" { instance = try JSON.decoder.decode(ReadBoxesByQuery.self, from: data); return instance }
+        if typeName == "DeleteBoxes" { instance = try JSON.decoder.decode(DeleteBoxes.self, from: data); return instance }
+        if typeName == "UpdateBoxes" { instance = try JSON.decoder.decode(UpdateBoxes.self, from: data); return instance }
+        if typeName == "ReadBoxesByIds" { instance = try JSON.decoder.decode(ReadBoxesByIds.self, from: data); return instance }
+        if typeName == "CreateBoxes" { instance = try JSON.decoder.decode(CreateBoxes.self, from: data); return instance }
+        if typeName == "DeleteBox" { instance = try JSON.decoder.decode(DeleteBox.self, from: data); return instance }
+        if typeName == "UpdateBox" { instance = try JSON.decoder.decode(UpdateBox.self, from: data); return instance }
+        if typeName == "CreateBox" { instance = try JSON.decoder.decode(CreateBox.self, from: data); return instance }
+        if typeName == "ReadBoxById" { instance = try JSON.decoder.decode(ReadBoxById.self, from: data); return instance }
+        if typeName == "ReadBlocksByQuery" { instance = try JSON.decoder.decode(ReadBlocksByQuery.self, from: data); return instance }
+        if typeName == "DeleteBlocks" { instance = try JSON.decoder.decode(DeleteBlocks.self, from: data); return instance }
+        if typeName == "UpdateBlocks" { instance = try JSON.decoder.decode(UpdateBlocks.self, from: data); return instance }
+        if typeName == "ReadBlocksByIds" { instance = try JSON.decoder.decode(ReadBlocksByIds.self, from: data); return instance }
+        if typeName == "CreateBlocks" { instance = try JSON.decoder.decode(CreateBlocks.self, from: data); return instance }
+        if typeName == "DeleteBlock" { instance = try JSON.decoder.decode(DeleteBlock.self, from: data); return instance }
+        if typeName == "UpdateBlock" { instance = try JSON.decoder.decode(UpdateBlock.self, from: data); return instance }
+        if typeName == "CreateBlock" { instance = try JSON.decoder.decode(CreateBlock.self, from: data); return instance }
+        if typeName == "ReadBlockById" { instance = try JSON.decoder.decode(ReadBlockById.self, from: data); return instance }
+        if typeName == "ManagedUsers" { instance = try JSON.decoder.decode(ManagedUsers.self, from: data); return instance }
+        if typeName == "User" { instance = try JSON.decoder.decode(User.self, from: data); return instance }
+        if typeName == "Trigger" { instance = try JSON.decoder.decode(Trigger.self, from: data); return instance }
+        if typeName == "StringValue" { instance = try JSON.decoder.decode(StringValue.self, from: data); return instance }
+        if typeName == "Report" { instance = try JSON.decoder.decode(Report.self, from: data); return instance }
+        if typeName == "ManagedPushOperations" { instance = try JSON.decoder.decode(ManagedPushOperations.self, from: data); return instance }
+        if typeName == "PushOperation" { instance = try JSON.decoder.decode(PushOperation.self, from: data); return instance }
+        if typeName == "Progression" { instance = try JSON.decoder.decode(Progression.self, from: data); return instance }
+        if typeName == "ManagedNodes" { instance = try JSON.decoder.decode(ManagedNodes.self, from: data); return instance }
+        if typeName == "Node" { instance = try JSON.decoder.decode(Node.self, from: data); return instance }
+        if typeName == "Metrics" { instance = try JSON.decoder.decode(Metrics.self, from: data); return instance }
+        if typeName == "MasterKey" { instance = try JSON.decoder.decode(MasterKey.self, from: data); return instance }
+        if typeName == "ManagedModel" { instance = try JSON.decoder.decode(ManagedModel.self, from: data); return instance }
+        if typeName == "LogEntry" { instance = try JSON.decoder.decode(LogEntry.self, from: data); return instance }
+        if typeName == "ManagedLockers" { instance = try JSON.decoder.decode(ManagedLockers.self, from: data); return instance }
+        if typeName == "Locker" { instance = try JSON.decoder.decode(Locker.self, from: data); return instance }
+        if typeName == "ManagedLocalizedData" { instance = try JSON.decoder.decode(ManagedLocalizedData.self, from: data); return instance }
+        if typeName == "LocalizedDatum" { instance = try JSON.decoder.decode(LocalizedDatum.self, from: data); return instance }
+        if typeName == "KeyedData" { instance = try JSON.decoder.decode(KeyedData.self, from: data); return instance }
+        if typeName == "KeyedChanges" { instance = try JSON.decoder.decode(KeyedChanges.self, from: data); return instance }
+        if typeName == "HTTPRequest" { instance = try JSON.decoder.decode(HTTPRequest.self, from: data); return instance }
+        if typeName == "HTTPContext" { instance = try JSON.decoder.decode(HTTPContext.self, from: data); return instance }
+        if typeName == "DocumentMetadata" { instance = try JSON.decoder.decode(DocumentMetadata.self, from: data); return instance }
+        if typeName == "DataValue" { instance = try JSON.decoder.decode(DataValue.self, from: data); return instance }
+        if typeName == "Container" { instance = try JSON.decoder.decode(Container.self, from: data); return instance }
+        if typeName == "Completion" { instance = try JSON.decoder.decode(Completion.self, from: data); return instance }
+        if typeName == "CollectionMetadatum" { instance = try JSON.decoder.decode(CollectionMetadatum.self, from: data); return instance }
+        if typeName == "ManagedBoxes" { instance = try JSON.decoder.decode(ManagedBoxes.self, from: data); return instance }
+        if typeName == "Box" { instance = try JSON.decoder.decode(Box.self, from: data); return instance }
+        if typeName == "ManagedBlocks" { instance = try JSON.decoder.decode(ManagedBlocks.self, from: data); return instance }
+        if typeName == "Block" { instance = try JSON.decoder.decode(Block.self, from: data); return instance }
+        if typeName == "Acknowledgment" { instance = try JSON.decoder.decode(Acknowledgment.self, from: data); return instance }
         throw DynamicsError.typeNotFound
     }
-
-
 
     /// This is a Dyamic Factory
     /// e.g: d.newInstanceOf(TimedText.typeName())
     /// - Parameter typeName: the class name
     /// - Returns: the new instance
-    open func newInstanceOf(_ typeName:String)throws->Any{
-        if typeName == "ReadUsersByQuery"{ return ReadUsersByQuery() }
-        if typeName == "DeleteUsers"{ return DeleteUsers() }
-        if typeName == "UpdateUsers"{ return UpdateUsers() }
-        if typeName == "ReadUsersByIds"{ return ReadUsersByIds() }
-        if typeName == "CreateUsers"{ return CreateUsers() }
-        if typeName == "DeleteUser"{ return DeleteUser() }
-        if typeName == "UpdateUser"{ return UpdateUser() }
-        if typeName == "CreateUser"{ return CreateUser() }
-        if typeName == "ReadUserById"{ return ReadUserById() }
-        if typeName == "ReadNodesByQuery"{ return ReadNodesByQuery() }
-        if typeName == "DeleteNodes"{ return DeleteNodes() }
-        if typeName == "UpdateNodes"{ return UpdateNodes() }
-        if typeName == "ReadNodesByIds"{ return ReadNodesByIds() }
-        if typeName == "CreateNodes"{ return CreateNodes() }
-        if typeName == "DeleteNode"{ return DeleteNode() }
-        if typeName == "UpdateNode"{ return UpdateNode() }
-        if typeName == "CreateNode"{ return CreateNode() }
-        if typeName == "ReadNodeById"{ return ReadNodeById() }
-        if typeName == "ReadLockersByQuery"{ return ReadLockersByQuery() }
-        if typeName == "DeleteLockers"{ return DeleteLockers() }
-        if typeName == "UpdateLockers"{ return UpdateLockers() }
-        if typeName == "ReadLockersByIds"{ return ReadLockersByIds() }
-        if typeName == "CreateLockers"{ return CreateLockers() }
-        if typeName == "DeleteLocker"{ return DeleteLocker() }
-        if typeName == "UpdateLocker"{ return UpdateLocker() }
-        if typeName == "CreateLocker"{ return CreateLocker() }
-        if typeName == "ReadLockerById"{ return ReadLockerById() }
-        if typeName == "ReadLocalizedDataByQuery"{ return ReadLocalizedDataByQuery() }
-        if typeName == "DeleteLocalizedData"{ return DeleteLocalizedData() }
-        if typeName == "ReadLocalizedDataByIds"{ return ReadLocalizedDataByIds() }
-        if typeName == "UpsertLocalizedData"{ return UpsertLocalizedData() }
-        if typeName == "DeleteLocalizedDatum"{ return DeleteLocalizedDatum() }
-        if typeName == "UpsertLocalizedDatum"{ return UpsertLocalizedDatum() }
-        if typeName == "ReadLocalizedDatumById"{ return ReadLocalizedDatumById() }
-        if typeName == "ReadBoxesByQuery"{ return ReadBoxesByQuery() }
-        if typeName == "DeleteBoxes"{ return DeleteBoxes() }
-        if typeName == "UpdateBoxes"{ return UpdateBoxes() }
-        if typeName == "ReadBoxesByIds"{ return ReadBoxesByIds() }
-        if typeName == "CreateBoxes"{ return CreateBoxes() }
-        if typeName == "DeleteBox"{ return DeleteBox() }
-        if typeName == "UpdateBox"{ return UpdateBox() }
-        if typeName == "CreateBox"{ return CreateBox() }
-        if typeName == "ReadBoxById"{ return ReadBoxById() }
-        if typeName == "ReadBlocksByQuery"{ return ReadBlocksByQuery() }
-        if typeName == "DeleteBlocks"{ return DeleteBlocks() }
-        if typeName == "UpdateBlocks"{ return UpdateBlocks() }
-        if typeName == "ReadBlocksByIds"{ return ReadBlocksByIds() }
-        if typeName == "CreateBlocks"{ return CreateBlocks() }
-        if typeName == "DeleteBlock"{ return DeleteBlock() }
-        if typeName == "UpdateBlock"{ return UpdateBlock() }
-        if typeName == "CreateBlock"{ return CreateBlock() }
-        if typeName == "ReadBlockById"{ return ReadBlockById() }
-        if typeName == "ManagedUsers"{ return ManagedUsers() }
-        if typeName == "User"{ return User() }
-        if typeName == "Trigger"{ return Trigger() }
-        if typeName == "StringValue"{ return StringValue() }
-        if typeName == "Report"{ return Report() }
-        if typeName == "ManagedPushOperations"{ return ManagedPushOperations() }
-        if typeName == "PushOperation"{ return PushOperation() }
-        if typeName == "Progression"{ return Progression() }
-        if typeName == "ManagedNodes"{ return ManagedNodes() }
-        if typeName == "Node"{ return Node() }
-        if typeName == "Metrics"{ return Metrics() }
-        if typeName == "MasterKey"{ return MasterKey() }
-        if typeName == "ManagedModel"{ return ManagedModel() }
-        if typeName == "LogEntry"{ return LogEntry() }
-        if typeName == "ManagedLockers"{ return ManagedLockers() }
-        if typeName == "Locker"{ return Locker() }
-        if typeName == "ManagedLocalizedData"{ return ManagedLocalizedData() }
-        if typeName == "LocalizedDatum"{ return LocalizedDatum() }
-        if typeName == "KeyedData"{ return KeyedData() }
-        if typeName == "KeyedChanges"{ return KeyedChanges() }
-        if typeName == "HTTPRequest"{ return HTTPRequest() }
-        if typeName == "HTTPContext"{ return HTTPContext() }
-        if typeName == "DocumentMetadata"{ return DocumentMetadata() }
-        if typeName == "DataValue"{ return DataValue() }
-        if typeName == "Container"{ return Container() }
-        if typeName == "Completion"{ return Completion() }
-        if typeName == "CollectionMetadatum"{ return CollectionMetadatum() }
-        if typeName == "ManagedBoxes"{ return ManagedBoxes() }
-        if typeName == "Box"{ return Box() }
-        if typeName == "ManagedBlocks"{ return ManagedBlocks() }
-        if typeName == "Block"{ return Block() }
-        if typeName == "Acknowledgment"{ return Acknowledgment() }
+    open func newInstanceOf(_ typeName: String) throws -> Any {
+        if typeName == "ReadUsersByQuery" { return ReadUsersByQuery() }
+        if typeName == "DeleteUsers" { return DeleteUsers() }
+        if typeName == "UpdateUsers" { return UpdateUsers() }
+        if typeName == "ReadUsersByIds" { return ReadUsersByIds() }
+        if typeName == "CreateUsers" { return CreateUsers() }
+        if typeName == "DeleteUser" { return DeleteUser() }
+        if typeName == "UpdateUser" { return UpdateUser() }
+        if typeName == "CreateUser" { return CreateUser() }
+        if typeName == "ReadUserById" { return ReadUserById() }
+        if typeName == "ReadNodesByQuery" { return ReadNodesByQuery() }
+        if typeName == "DeleteNodes" { return DeleteNodes() }
+        if typeName == "UpdateNodes" { return UpdateNodes() }
+        if typeName == "ReadNodesByIds" { return ReadNodesByIds() }
+        if typeName == "CreateNodes" { return CreateNodes() }
+        if typeName == "DeleteNode" { return DeleteNode() }
+        if typeName == "UpdateNode" { return UpdateNode() }
+        if typeName == "CreateNode" { return CreateNode() }
+        if typeName == "ReadNodeById" { return ReadNodeById() }
+        if typeName == "ReadLockersByQuery" { return ReadLockersByQuery() }
+        if typeName == "DeleteLockers" { return DeleteLockers() }
+        if typeName == "UpdateLockers" { return UpdateLockers() }
+        if typeName == "ReadLockersByIds" { return ReadLockersByIds() }
+        if typeName == "CreateLockers" { return CreateLockers() }
+        if typeName == "DeleteLocker" { return DeleteLocker() }
+        if typeName == "UpdateLocker" { return UpdateLocker() }
+        if typeName == "CreateLocker" { return CreateLocker() }
+        if typeName == "ReadLockerById" { return ReadLockerById() }
+        if typeName == "ReadLocalizedDataByQuery" { return ReadLocalizedDataByQuery() }
+        if typeName == "DeleteLocalizedData" { return DeleteLocalizedData() }
+        if typeName == "ReadLocalizedDataByIds" { return ReadLocalizedDataByIds() }
+        if typeName == "UpsertLocalizedData" { return UpsertLocalizedData() }
+        if typeName == "DeleteLocalizedDatum" { return DeleteLocalizedDatum() }
+        if typeName == "UpsertLocalizedDatum" { return UpsertLocalizedDatum() }
+        if typeName == "ReadLocalizedDatumById" { return ReadLocalizedDatumById() }
+        if typeName == "ReadBoxesByQuery" { return ReadBoxesByQuery() }
+        if typeName == "DeleteBoxes" { return DeleteBoxes() }
+        if typeName == "UpdateBoxes" { return UpdateBoxes() }
+        if typeName == "ReadBoxesByIds" { return ReadBoxesByIds() }
+        if typeName == "CreateBoxes" { return CreateBoxes() }
+        if typeName == "DeleteBox" { return DeleteBox() }
+        if typeName == "UpdateBox" { return UpdateBox() }
+        if typeName == "CreateBox" { return CreateBox() }
+        if typeName == "ReadBoxById" { return ReadBoxById() }
+        if typeName == "ReadBlocksByQuery" { return ReadBlocksByQuery() }
+        if typeName == "DeleteBlocks" { return DeleteBlocks() }
+        if typeName == "UpdateBlocks" { return UpdateBlocks() }
+        if typeName == "ReadBlocksByIds" { return ReadBlocksByIds() }
+        if typeName == "CreateBlocks" { return CreateBlocks() }
+        if typeName == "DeleteBlock" { return DeleteBlock() }
+        if typeName == "UpdateBlock" { return UpdateBlock() }
+        if typeName == "CreateBlock" { return CreateBlock() }
+        if typeName == "ReadBlockById" { return ReadBlockById() }
+        if typeName == "ManagedUsers" { return ManagedUsers() }
+        if typeName == "User" { return User() }
+        if typeName == "Trigger" { return Trigger() }
+        if typeName == "StringValue" { return StringValue() }
+        if typeName == "Report" { return Report() }
+        if typeName == "ManagedPushOperations" { return ManagedPushOperations() }
+        if typeName == "PushOperation" { return PushOperation() }
+        if typeName == "Progression" { return Progression() }
+        if typeName == "ManagedNodes" { return ManagedNodes() }
+        if typeName == "Node" { return Node() }
+        if typeName == "Metrics" { return Metrics() }
+        if typeName == "MasterKey" { return MasterKey() }
+        if typeName == "ManagedModel" { return ManagedModel() }
+        if typeName == "LogEntry" { return LogEntry() }
+        if typeName == "ManagedLockers" { return ManagedLockers() }
+        if typeName == "Locker" { return Locker() }
+        if typeName == "ManagedLocalizedData" { return ManagedLocalizedData() }
+        if typeName == "LocalizedDatum" { return LocalizedDatum() }
+        if typeName == "KeyedData" { return KeyedData() }
+        if typeName == "KeyedChanges" { return KeyedChanges() }
+        if typeName == "HTTPRequest" { return HTTPRequest() }
+        if typeName == "HTTPContext" { return HTTPContext() }
+        if typeName == "DocumentMetadata" { return DocumentMetadata() }
+        if typeName == "DataValue" { return DataValue() }
+        if typeName == "Container" { return Container() }
+        if typeName == "Completion" { return Completion() }
+        if typeName == "CollectionMetadatum" { return CollectionMetadatum() }
+        if typeName == "ManagedBoxes" { return ManagedBoxes() }
+        if typeName == "Box" { return Box() }
+        if typeName == "ManagedBlocks" { return ManagedBlocks() }
+        if typeName == "Block" { return Block() }
+        if typeName == "Acknowledgment" { return Acknowledgment() }
         throw DynamicsError.typeNotFound
     }
 
-   // MARK: - Patch
+    // MARK: - Patch
 
     /// You can patch some data providing default values.
     ///
@@ -250,31 +245,31 @@ open class BartlebysDynamics:Dynamics{
     ///   - data: the Data to patch
     ///   - patchDictionary: the dictionary with the default key / value. E.G: ["firtsName":"", "lastName":"","age":0]
     /// - Returns: the patched data
-    open func patchProperties(data:Data,patchDictionary:[String:Any])throws->Data{
-        if var jsonDictionary = try JSONSerialization.jsonObject(with: data, options: JSONSerialization.ReadingOptions.allowFragments) as? [String:Any]{
-            let isACollection = jsonDictionary.keys.contains("_storage") && jsonDictionary.keys.contains("_staged") &&  jsonDictionary.keys.contains("_deleted")
+    open func patchProperties(data: Data, patchDictionary: [String: Any]) throws -> Data {
+        if var jsonDictionary = try JSONSerialization.jsonObject(with: data, options: JSONSerialization.ReadingOptions.allowFragments) as? [String: Any] {
+            let isACollection = jsonDictionary.keys.contains("_storage") && jsonDictionary.keys.contains("_staged") && jsonDictionary.keys.contains("_deleted")
             if isACollection {
-                if var items = jsonDictionary["_storage"] as? [String:[String:Any]]{
-                    for (UID,_) in items{
-                        for (key,value) in patchDictionary{
-                            if !items[UID]!.keys.contains(key){
+                if var items = jsonDictionary["_storage"] as? [String: [String: Any]] {
+                    for (UID, _) in items {
+                        for (key, value) in patchDictionary {
+                            if !items[UID]!.keys.contains(key) {
                                 items[UID]![key] = value
                             }
                         }
                     }
-                    jsonDictionary["_storage"]=items
+                    jsonDictionary["_storage"] = items
                 }
-            }else{
-                for (key,value) in patchDictionary{
-                    if !jsonDictionary.keys.contains(key){
+            } else {
+                for (key, value) in patchDictionary {
+                    if !jsonDictionary.keys.contains(key) {
                         jsonDictionary[key] = value
                     }
                 }
             }
-            do{
+            do {
                 let r = try JSONSerialization.data(withJSONObject: jsonDictionary, options: [])
                 return r
-            }catch{
+            } catch {
                 print("\(#file) \(#line) Error while patching: \(patchDictionary)")
                 throw error
             }
@@ -290,27 +285,27 @@ open class BartlebysDynamics:Dynamics{
     ///   - keyPath: the insertion point
     ///   - forced: if set to true the key path will be replaced in any case (use carefully)
     /// - Returns: the patched data
-    open func patchItemsInCollection(data:Data,injectedDictionary:[String:Any],keyPath:DictionaryKeyPath,forced:Bool = false)throws->Data{
-        if var jsonDictionary = try JSONSerialization.jsonObject(with: data, options: JSONSerialization.ReadingOptions.allowFragments) as? [String:Any]{
-            let isACollection = jsonDictionary.keys.contains("_storage") && jsonDictionary.keys.contains("_staged") &&  jsonDictionary.keys.contains("_deleted")
+    open func patchItemsInCollection(data: Data, injectedDictionary: [String: Any], keyPath: DictionaryKeyPath, forced: Bool = false) throws -> Data {
+        if var jsonDictionary = try JSONSerialization.jsonObject(with: data, options: JSONSerialization.ReadingOptions.allowFragments) as? [String: Any] {
+            let isACollection = jsonDictionary.keys.contains("_storage") && jsonDictionary.keys.contains("_staged") && jsonDictionary.keys.contains("_deleted")
             if isACollection {
-                if var items = jsonDictionary["_storage"] as? [String:[String:Any]]{
-                    for (UID,_) in items{
+                if var items = jsonDictionary["_storage"] as? [String: [String: Any]] {
+                    for (UID, _) in items {
                         // We use a rare dynamic approach.
                         // Check `Bartleby.xOS/Core/DictionaryKetPath.swift` for details.
-                        if items[UID]![keyPath:keyPath] == nil || forced{
-                            items[UID]![keyPath:keyPath] = injectedDictionary
+                        if items[UID]![keyPath: keyPath] == nil || forced {
+                            items[UID]![keyPath: keyPath] = injectedDictionary
                         }
                     }
-                    jsonDictionary["_storage"]=items
+                    jsonDictionary["_storage"] = items
                 }
-            }else{
+            } else {
                 throw DynamicsError.collectionTypeRequired
             }
-            do{
+            do {
                 let r = try JSONSerialization.data(withJSONObject: jsonDictionary, options: [])
                 return r
-            }catch{
+            } catch {
                 print("\(#file) \(#line) Error while injecting: @\(keyPath.path) \n \(injectedDictionary)")
                 throw error
             }
@@ -325,34 +320,34 @@ open class BartlebysDynamics:Dynamics{
     ///   - oldName: the old property name (you can use KeyPaths)
     ///   - newName: the new property name
     /// - Returns: the patched data
-    open func changeItemsPropertyName(data:Data,oldName:String,newName:String)throws->Data{
-        if var jsonDictionary = try JSONSerialization.jsonObject(with: data, options: JSONSerialization.ReadingOptions.allowFragments) as? [String:Any]{
-            let isACollection = jsonDictionary.keys.contains("_storage") && jsonDictionary.keys.contains("_staged") &&  jsonDictionary.keys.contains("_deleted")
+    open func changeItemsPropertyName(data: Data, oldName: String, newName: String) throws -> Data {
+        if var jsonDictionary = try JSONSerialization.jsonObject(with: data, options: JSONSerialization.ReadingOptions.allowFragments) as? [String: Any] {
+            let isACollection = jsonDictionary.keys.contains("_storage") && jsonDictionary.keys.contains("_staged") && jsonDictionary.keys.contains("_deleted")
             if isACollection {
                 var components = oldName.components(separatedBy: ".")
                 components.removeLast()
                 components.append(newName)
                 let newNameKeyPath = DictionaryKeyPath(components.joined(separator: "."))
                 let oldKeyPath = DictionaryKeyPath(oldName)
-                if var items = jsonDictionary["_storage"] as? [String:[String:Any]]{
-                    for (UID,_) in items{
+                if var items = jsonDictionary["_storage"] as? [String: [String: Any]] {
+                    for (UID, _) in items {
                         // We use a rare dynamic approach.
                         // Check `Bartleby.xOS/Core/DictionaryKetPath.swift` for details.
-                        if items[UID]![keyPath:oldKeyPath] != nil{
-                            items[UID]![keyPath:newNameKeyPath] = items[UID]![keyPath:oldKeyPath]
-                            items[UID]![keyPath:oldKeyPath] = nil
+                        if items[UID]![keyPath: oldKeyPath] != nil {
+                            items[UID]![keyPath: newNameKeyPath] = items[UID]![keyPath: oldKeyPath]
+                            items[UID]![keyPath: oldKeyPath] = nil
                         }
                     }
-                    jsonDictionary["_storage"]=items
+                    jsonDictionary["_storage"] = items
                 }
 
-            }else{
+            } else {
                 throw DynamicsError.collectionTypeRequired
             }
-            do{
+            do {
                 let r = try JSONSerialization.data(withJSONObject: jsonDictionary, options: [])
                 return r
-            }catch{
+            } catch {
                 print("\(#file) \(#line) Error while changing propertyName: \(oldName) -> \(newName)")
                 throw error
             }

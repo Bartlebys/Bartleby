@@ -12,61 +12,56 @@ import Foundation
 #endif
 
 // MARK: Bartleby's Core: an object used to Acknowledge a Trigger
-@objc open class Acknowledgment : Metrics {
 
+@objc open class Acknowledgment: Metrics {
     // DeclaredTypeName support
-    override open class func typeName() -> String {
+    open override class func typeName() -> String {
         return "Acknowledgment"
     }
 
+    // The trigger index
+    @objc open dynamic var triggerIndex: Int = -1
 
-	//The trigger index
-	@objc dynamic open var triggerIndex:Int = -1
+    // The subjects UIDS
+    @objc open dynamic var uids: [String] = [String]()
 
-	//The subjects UIDS
-	@objc dynamic open var uids:[String] = [String]()
-
-	//The triggerRelayDuration is computed server side it integrates the semaphore impact. (it can be used for QOS computation)
-	@objc dynamic open var triggerRelayDuration:Double = 0
-
+    // The triggerRelayDuration is computed server side it integrates the semaphore impact. (it can be used for QOS computation)
+    @objc open dynamic var triggerRelayDuration: Double = 0
 
     // MARK: - Codable
 
-
-    public enum AcknowledgmentCodingKeys: String,CodingKey{
-		case triggerIndex
-		case uids
-		case triggerRelayDuration
+    public enum AcknowledgmentCodingKeys: String, CodingKey {
+        case triggerIndex
+        case uids
+        case triggerRelayDuration
     }
 
-    required public init(from decoder: Decoder) throws{
-		try super.init(from: decoder)
-        try self.quietThrowingChanges {
-			let values = try decoder.container(keyedBy: AcknowledgmentCodingKeys.self)
-			self.triggerIndex = try values.decode(Int.self,forKey:.triggerIndex)
-			self.uids = try values.decode([String].self,forKey:.uids)
-			self.triggerRelayDuration = try values.decode(Double.self,forKey:.triggerRelayDuration)
+    public required init(from decoder: Decoder) throws {
+        try super.init(from: decoder)
+        try quietThrowingChanges {
+            let values = try decoder.container(keyedBy: AcknowledgmentCodingKeys.self)
+            self.triggerIndex = try values.decode(Int.self, forKey: .triggerIndex)
+            self.uids = try values.decode([String].self, forKey: .uids)
+            self.triggerRelayDuration = try values.decode(Double.self, forKey: .triggerRelayDuration)
         }
     }
 
-    override open func encode(to encoder: Encoder) throws {
-		try super.encode(to:encoder)
-		var container = encoder.container(keyedBy: AcknowledgmentCodingKeys.self)
-		try container.encode(self.triggerIndex,forKey:.triggerIndex)
-		try container.encode(self.uids,forKey:.uids)
-		try container.encode(self.triggerRelayDuration,forKey:.triggerRelayDuration)
+    open override func encode(to encoder: Encoder) throws {
+        try super.encode(to: encoder)
+        var container = encoder.container(keyedBy: AcknowledgmentCodingKeys.self)
+        try container.encode(triggerIndex, forKey: .triggerIndex)
+        try container.encode(uids, forKey: .uids)
+        try container.encode(triggerRelayDuration, forKey: .triggerRelayDuration)
     }
-
 
     // MARK: - Exposed (Bartleby's KVC like generative implementation)
 
     /// Return all the exposed instance variables keys. (Exposed == public and modifiable).
-    override  open var exposedKeys:[String] {
-        var exposed=super.exposedKeys
-        exposed.append(contentsOf:["triggerIndex","uids","triggerRelayDuration"])
+    open override var exposedKeys: [String] {
+        var exposed = super.exposedKeys
+        exposed.append(contentsOf: ["triggerIndex", "uids", "triggerRelayDuration"])
         return exposed
     }
-
 
     /// Set the value of the given key
     ///
@@ -74,25 +69,24 @@ import Foundation
     /// - parameter key:   the key
     ///
     /// - throws: throws an Exception when the key is not exposed
-    override  open func setExposedValue(_ value:Any?, forKey key: String) throws {
+    open override func setExposedValue(_ value: Any?, forKey key: String) throws {
         switch key {
-            case "triggerIndex":
-                if let casted=value as? Int{
-                    self.triggerIndex=casted
-                }
-            case "uids":
-                if let casted=value as? [String]{
-                    self.uids=casted
-                }
-            case "triggerRelayDuration":
-                if let casted=value as? Double{
-                    self.triggerRelayDuration=casted
-                }
-            default:
-                return try super.setExposedValue(value, forKey: key)
+        case "triggerIndex":
+            if let casted = value as? Int {
+                triggerIndex = casted
+            }
+        case "uids":
+            if let casted = value as? [String] {
+                uids = casted
+            }
+        case "triggerRelayDuration":
+            if let casted = value as? Double {
+                triggerRelayDuration = casted
+            }
+        default:
+            return try super.setExposedValue(value, forKey: key)
         }
     }
-
 
     /// Returns the value of an exposed key.
     ///
@@ -101,20 +95,22 @@ import Foundation
     /// - throws: throws Exception when the key is not exposed
     ///
     /// - returns: returns the value
-    override  open func getExposedValueForKey(_ key:String) throws -> Any?{
+    open override func getExposedValueForKey(_ key: String) throws -> Any? {
         switch key {
-            case "triggerIndex":
-               return self.triggerIndex
-            case "uids":
-               return self.uids
-            case "triggerRelayDuration":
-               return self.triggerRelayDuration
-            default:
-                return try super.getExposedValueForKey(key)
+        case "triggerIndex":
+            return triggerIndex
+        case "uids":
+            return uids
+        case "triggerRelayDuration":
+            return triggerRelayDuration
+        default:
+            return try super.getExposedValueForKey(key)
         }
     }
+
     // MARK: - Initializable
-     required public init() {
+
+    public required init() {
         super.init()
     }
 }

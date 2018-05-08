@@ -11,9 +11,8 @@ import Foundation
 public protocol DictionaryRepresentation {
     /**
      returns a dictionary
-     
+
      - returns: the dictionary representation
      */
-    func dictionaryRepresentation()->[String:Any]
-
+    func dictionaryRepresentation() -> [String: Any]
 }

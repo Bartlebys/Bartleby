@@ -8,29 +8,25 @@
 
 import Foundation
 
-extension ManagedModel:Supervisable{
-
+extension ManagedModel: Supervisable {
     /**
      Adds a closure observer
 
      - parameter observer: the observer
      - parameter closure:  the closure to be called.
      */
-    open func addChangesSuperviser(_ superviser: Identifiable, closure: @escaping (_ key:String,_ oldValue:Any?,_ newValue:Any?) -> ()) {
-        self._supervisers[superviser.UID]=closure
+    open func addChangesSuperviser(_ superviser: Identifiable, closure: @escaping (_ key: String, _ oldValue: Any?, _ newValue: Any?) -> Void) {
+        _supervisers[superviser.UID] = closure
     }
-
-
 
     /**
      Remove the observer's closure
 
      - parameter observer: the observer.
      */
-    open func removeChangesSuperviser(_ superviser:Identifiable) {
-        if let _=self._supervisers[superviser.UID]{
-            self._supervisers.removeValue(forKey: superviser.UID)
+    open func removeChangesSuperviser(_ superviser: Identifiable) {
+        if let _ = self._supervisers[superviser.UID] {
+            _supervisers.removeValue(forKey: superviser.UID)
         }
     }
-
 }

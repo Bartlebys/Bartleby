@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-import XCTest
 @testable import CommandLineKitTests
+import XCTest
 
 XCTMain([testCase(CommandLineTests.allTests), testCase(StringExtensionTests.allTests)])

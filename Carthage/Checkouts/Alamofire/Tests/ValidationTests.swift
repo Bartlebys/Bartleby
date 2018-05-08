@@ -31,22 +31,22 @@ class StatusCodeValidationTestCase: BaseTestCase {
         // Given
         let urlString = "https://httpbin.org/status/200"
 
-        let expectation1 = self.expectation(description: "request should return 200 status code")
-        let expectation2 = self.expectation(description: "download should return 200 status code")
+        let expectation1 = expectation(description: "request should return 200 status code")
+        let expectation2 = expectation(description: "download should return 200 status code")
 
         var requestError: Error?
         var downloadError: Error?
 
         // When
         Alamofire.request(urlString)
-            .validate(statusCode: 200..<300)
+            .validate(statusCode: 200 ..< 300)
             .response { resp in
                 requestError = resp.error
                 expectation1.fulfill()
             }
 
         Alamofire.download(urlString)
-            .validate(statusCode: 200..<300)
+            .validate(statusCode: 200 ..< 300)
             .response { resp in
                 downloadError = resp.error
                 expectation2.fulfill()
@@ -63,8 +63,8 @@ class StatusCodeValidationTestCase: BaseTestCase {
         // Given
         let urlString = "https://httpbin.org/status/404"
 
-        let expectation1 = self.expectation(description: "request should return 404 status code")
-        let expectation2 = self.expectation(description: "download should return 404 status code")
+        let expectation1 = expectation(description: "request should return 404 status code")
+        let expectation2 = expectation(description: "download should return 404 status code")
 
         var requestError: Error?
         var downloadError: Error?
@@ -82,7 +82,7 @@ class StatusCodeValidationTestCase: BaseTestCase {
             .response { resp in
                 downloadError = resp.error
                 expectation2.fulfill()
-        }
+            }
 
         waitForExpectations(timeout: timeout, handler: nil)
 
@@ -104,8 +104,8 @@ class StatusCodeValidationTestCase: BaseTestCase {
         // Given
         let urlString = "https://httpbin.org/status/201"
 
-        let expectation1 = self.expectation(description: "request should return 201 status code")
-        let expectation2 = self.expectation(description: "download should return 201 status code")
+        let expectation1 = expectation(description: "request should return 201 status code")
+        let expectation2 = expectation(description: "download should return 201 status code")
 
         var requestError: Error?
         var downloadError: Error?
@@ -123,7 +123,7 @@ class StatusCodeValidationTestCase: BaseTestCase {
             .response { resp in
                 downloadError = resp.error
                 expectation2.fulfill()
-        }
+            }
 
         waitForExpectations(timeout: timeout, handler: nil)
 
@@ -149,8 +149,8 @@ class ContentTypeValidationTestCase: BaseTestCase {
         // Given
         let urlString = "https://httpbin.org/ip"
 
-        let expectation1 = self.expectation(description: "request should succeed and return ip")
-        let expectation2 = self.expectation(description: "download should succeed and return ip")
+        let expectation1 = expectation(description: "request should succeed and return ip")
+        let expectation2 = expectation(description: "download should succeed and return ip")
 
         var requestError: Error?
         var downloadError: Error?
@@ -185,8 +185,8 @@ class ContentTypeValidationTestCase: BaseTestCase {
         // Given
         let urlString = "https://httpbin.org/ip"
 
-        let expectation1 = self.expectation(description: "request should succeed and return ip")
-        let expectation2 = self.expectation(description: "download should succeed and return ip")
+        let expectation1 = expectation(description: "request should succeed and return ip")
+        let expectation2 = expectation(description: "download should succeed and return ip")
 
         var requestError: Error?
         var downloadError: Error?
@@ -221,8 +221,8 @@ class ContentTypeValidationTestCase: BaseTestCase {
         // Given
         let urlString = "https://httpbin.org/xml"
 
-        let expectation1 = self.expectation(description: "request should succeed and return xml")
-        let expectation2 = self.expectation(description: "download should succeed and return xml")
+        let expectation1 = expectation(description: "request should succeed and return xml")
+        let expectation2 = expectation(description: "download should succeed and return xml")
 
         var requestError: Error?
         var downloadError: Error?
@@ -263,8 +263,8 @@ class ContentTypeValidationTestCase: BaseTestCase {
         // Given
         let urlString = "https://httpbin.org/xml"
 
-        let expectation1 = self.expectation(description: "request should succeed and return xml")
-        let expectation2 = self.expectation(description: "download should succeed and return xml")
+        let expectation1 = expectation(description: "request should succeed and return xml")
+        let expectation2 = expectation(description: "download should succeed and return xml")
 
         var requestError: Error?
         var downloadError: Error?
@@ -305,8 +305,8 @@ class ContentTypeValidationTestCase: BaseTestCase {
         // Given
         let urlString = "https://httpbin.org/status/204"
 
-        let expectation1 = self.expectation(description: "request should succeed and return no data")
-        let expectation2 = self.expectation(description: "download should succeed and return no data")
+        let expectation1 = expectation(description: "request should succeed and return no data")
+        let expectation2 = expectation(description: "download should succeed and return no data")
 
         var requestError: Error?
         var downloadError: Error?
@@ -359,8 +359,7 @@ class ContentTypeValidationTestCase: BaseTestCase {
             override func download(
                 _ urlRequest: URLRequestConvertible,
                 to destination: DownloadRequest.DownloadFileDestination? = nil)
-                -> DownloadRequest
-            {
+                -> DownloadRequest {
                 do {
                     let originalRequest = try urlRequest.asURLRequest()
                     let originalTask = DownloadRequest.Downloadable.request(originalRequest)
@@ -422,8 +421,8 @@ class ContentTypeValidationTestCase: BaseTestCase {
 
         let urlString = "https://httpbin.org/delete"
 
-        let expectation1 = self.expectation(description: "request should be stubbed and return 204 status code")
-        let expectation2 = self.expectation(description: "download should be stubbed and return 204 status code")
+        let expectation1 = expectation(description: "request should be stubbed and return 204 status code")
+        let expectation2 = expectation(description: "download should be stubbed and return 204 status code")
 
         var requestResponse: DefaultDataResponse?
         var downloadResponse: DefaultDownloadResponse?
@@ -470,15 +469,15 @@ class MultipleValidationTestCase: BaseTestCase {
         // Given
         let urlString = "https://httpbin.org/ip"
 
-        let expectation1 = self.expectation(description: "request should succeed and return ip")
-        let expectation2 = self.expectation(description: "request should succeed and return ip")
+        let expectation1 = expectation(description: "request should succeed and return ip")
+        let expectation2 = expectation(description: "request should succeed and return ip")
 
         var requestError: Error?
         var downloadError: Error?
 
         // When
         Alamofire.request(urlString)
-            .validate(statusCode: 200..<300)
+            .validate(statusCode: 200 ..< 300)
             .validate(contentType: ["application/json"])
             .response { resp in
                 requestError = resp.error
@@ -486,7 +485,7 @@ class MultipleValidationTestCase: BaseTestCase {
             }
 
         Alamofire.download(urlString)
-            .validate(statusCode: 200..<300)
+            .validate(statusCode: 200 ..< 300)
             .validate(contentType: ["application/json"])
             .response { resp in
                 downloadError = resp.error
@@ -504,15 +503,15 @@ class MultipleValidationTestCase: BaseTestCase {
         // Given
         let urlString = "https://httpbin.org/xml"
 
-        let expectation1 = self.expectation(description: "request should succeed and return xml")
-        let expectation2 = self.expectation(description: "download should succeed and return xml")
+        let expectation1 = expectation(description: "request should succeed and return xml")
+        let expectation2 = expectation(description: "download should succeed and return xml")
 
         var requestError: Error?
         var downloadError: Error?
 
         // When
         Alamofire.request(urlString)
-            .validate(statusCode: 400..<600)
+            .validate(statusCode: 400 ..< 600)
             .validate(contentType: ["application/octet-stream"])
             .response { resp in
                 requestError = resp.error
@@ -520,7 +519,7 @@ class MultipleValidationTestCase: BaseTestCase {
             }
 
         Alamofire.download(urlString)
-            .validate(statusCode: 400..<600)
+            .validate(statusCode: 400 ..< 600)
             .validate(contentType: ["application/octet-stream"])
             .response { resp in
                 downloadError = resp.error
@@ -547,8 +546,8 @@ class MultipleValidationTestCase: BaseTestCase {
         // Given
         let urlString = "https://httpbin.org/xml"
 
-        let expectation1 = self.expectation(description: "request should succeed and return xml")
-        let expectation2 = self.expectation(description: "download should succeed and return xml")
+        let expectation1 = expectation(description: "request should succeed and return xml")
+        let expectation2 = expectation(description: "download should succeed and return xml")
 
         var requestError: Error?
         var downloadError: Error?
@@ -556,7 +555,7 @@ class MultipleValidationTestCase: BaseTestCase {
         // When
         Alamofire.request(urlString)
             .validate(contentType: ["application/octet-stream"])
-            .validate(statusCode: 400..<600)
+            .validate(statusCode: 400 ..< 600)
             .response { resp in
                 requestError = resp.error
                 expectation1.fulfill()
@@ -564,7 +563,7 @@ class MultipleValidationTestCase: BaseTestCase {
 
         Alamofire.download(urlString)
             .validate(contentType: ["application/octet-stream"])
-            .validate(statusCode: 400..<600)
+            .validate(statusCode: 400 ..< 600)
             .response { resp in
                 downloadError = resp.error
                 expectation2.fulfill()
@@ -597,8 +596,8 @@ class AutomaticValidationTestCase: BaseTestCase {
         var urlRequest = URLRequest(url: url)
         urlRequest.setValue("application/json", forHTTPHeaderField: "Accept")
 
-        let expectation1 = self.expectation(description: "request should succeed and return ip")
-        let expectation2 = self.expectation(description: "download should succeed and return ip")
+        let expectation1 = expectation(description: "request should succeed and return ip")
+        let expectation2 = expectation(description: "download should succeed and return ip")
 
         var requestError: Error?
         var downloadError: Error?
@@ -625,8 +624,8 @@ class AutomaticValidationTestCase: BaseTestCase {
         // Given
         let urlString = "https://httpbin.org/status/404"
 
-        let expectation1 = self.expectation(description: "request should return 404 status code")
-        let expectation2 = self.expectation(description: "download should return 404 status code")
+        let expectation1 = expectation(description: "request should return 404 status code")
+        let expectation2 = expectation(description: "download should return 404 status code")
 
         var requestError: Error?
         var downloadError: Error?
@@ -668,8 +667,8 @@ class AutomaticValidationTestCase: BaseTestCase {
         var urlRequest = URLRequest(url: url)
         urlRequest.setValue("application/*", forHTTPHeaderField: "Accept")
 
-        let expectation1 = self.expectation(description: "request should succeed and return ip")
-        let expectation2 = self.expectation(description: "download should succeed and return ip")
+        let expectation1 = expectation(description: "request should succeed and return ip")
+        let expectation2 = expectation(description: "download should succeed and return ip")
 
         var requestError: Error?
         var downloadError: Error?
@@ -700,8 +699,8 @@ class AutomaticValidationTestCase: BaseTestCase {
         let headerValue = "text/xml, application/xml, application/xhtml+xml, text/html;q=0.9, text/plain;q=0.8,*/*;q=0.5"
         urlRequest.setValue(headerValue, forHTTPHeaderField: "Accept")
 
-        let expectation1 = self.expectation(description: "request should succeed and return xml")
-        let expectation2 = self.expectation(description: "request should succeed and return xml")
+        let expectation1 = expectation(description: "request should succeed and return xml")
+        let expectation2 = expectation(description: "request should succeed and return xml")
 
         var requestError: Error?
         var downloadError: Error?
@@ -730,8 +729,8 @@ class AutomaticValidationTestCase: BaseTestCase {
         var urlRequest = URLRequest(url: url)
         urlRequest.setValue("application/json", forHTTPHeaderField: "Accept")
 
-        let expectation1 = self.expectation(description: "request should succeed and return xml")
-        let expectation2 = self.expectation(description: "download should succeed and return xml")
+        let expectation1 = expectation(description: "request should succeed and return xml")
+        let expectation2 = expectation(description: "download should succeed and return xml")
 
         var requestError: Error?
         var downloadError: Error?
@@ -773,7 +772,7 @@ private enum ValidationError: Error {
 
 extension DataRequest {
     func validateDataExists() -> Self {
-        return validate { request, response, data in
+        return validate { _, _, data in
             guard data != nil else { return .failure(ValidationError.missingData) }
             return .success
         }
@@ -786,13 +785,13 @@ extension DataRequest {
 
 extension DownloadRequest {
     func validateDataExists() -> Self {
-        return validate { request, response, _, _ in
+        return validate { _, _, _, _ in
             let fileURL = self.downloadDelegate.fileURL
 
             guard let validFileURL = fileURL else { return .failure(ValidationError.missingFile) }
 
             do {
-                let _ = try Data(contentsOf: validFileURL)
+                _ = try Data(contentsOf: validFileURL)
                 return .success
             } catch {
                 return .failure(ValidationError.fileReadFailed)
@@ -812,15 +811,15 @@ class CustomValidationTestCase: BaseTestCase {
         // Given
         let urlString = "https://httpbin.org/get"
 
-        let expectation1 = self.expectation(description: "request should return 200 status code")
-        let expectation2 = self.expectation(description: "download should return 200 status code")
+        let expectation1 = expectation(description: "request should return 200 status code")
+        let expectation2 = expectation(description: "download should return 200 status code")
 
         var requestError: Error?
         var downloadError: Error?
 
         // When
         Alamofire.request(urlString)
-            .validate { request, response, data in
+            .validate { _, _, data in
                 guard data != nil else { return .failure(ValidationError.missingData) }
                 return .success
             }
@@ -830,11 +829,11 @@ class CustomValidationTestCase: BaseTestCase {
             }
 
         Alamofire.download(urlString)
-            .validate { request, response, temporaryURL, destinationURL in
+            .validate { _, _, temporaryURL, _ in
                 guard let fileURL = temporaryURL else { return .failure(ValidationError.missingFile) }
 
                 do {
-                    let _ = try Data(contentsOf: fileURL)
+                    _ = try Data(contentsOf: fileURL)
                     return .success
                 } catch {
                     return .failure(ValidationError.fileReadFailed)
@@ -856,8 +855,8 @@ class CustomValidationTestCase: BaseTestCase {
         // Given
         let urlString = "https://httpbin.org/get"
 
-        let expectation1 = self.expectation(description: "request should return 200 status code")
-        let expectation2 = self.expectation(description: "download should return 200 status code")
+        let expectation1 = expectation(description: "request should return 200 status code")
+        let expectation2 = expectation(description: "download should return 200 status code")
 
         var requestError: Error?
         var downloadError: Error?
@@ -890,8 +889,8 @@ class CustomValidationTestCase: BaseTestCase {
         // Given
         let urlString = "https://httpbin.org/get"
 
-        let expectation1 = self.expectation(description: "request should return 200 status code")
-        let expectation2 = self.expectation(description: "download should return 200 status code")
+        let expectation1 = expectation(description: "request should return 200 status code")
+        let expectation2 = expectation(description: "download should return 200 status code")
 
         var requestError: Error?
         var downloadError: Error?
@@ -902,14 +901,14 @@ class CustomValidationTestCase: BaseTestCase {
             .response { resp in
                 requestError = resp.error
                 expectation1.fulfill()
-        }
+            }
 
         Alamofire.download(urlString)
             .validateDataExists()
             .response { resp in
                 downloadError = resp.error
                 expectation2.fulfill()
-        }
+            }
 
         waitForExpectations(timeout: timeout, handler: nil)
 
@@ -922,8 +921,8 @@ class CustomValidationTestCase: BaseTestCase {
         // Given
         let urlString = "https://httpbin.org/get"
 
-        let expectation1 = self.expectation(description: "request should return 200 status code")
-        let expectation2 = self.expectation(description: "download should return 200 status code")
+        let expectation1 = expectation(description: "request should return 200 status code")
+        let expectation2 = expectation(description: "download should return 200 status code")
 
         var requestError: Error?
         var downloadError: Error?

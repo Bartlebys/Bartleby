@@ -8,7 +8,6 @@
 
 import Foundation
 
-
 public protocol Committable {
 
     // MARK: Commit
@@ -21,13 +20,12 @@ public protocol Committable {
     func hasBeenCommitted()
 
     // Returns the current commit counter
-    var commitCounter:Int { get }
+    var commitCounter: Int { get }
 
     // MARK: Changes
 
     /// Perform changes without commit
     ///
     /// - parameter changes: the changes
-    func doNotCommit(_ changes:()->())
-
+    func doNotCommit(_ changes: () -> Void)
 }

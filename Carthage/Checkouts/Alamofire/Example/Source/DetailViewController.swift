@@ -143,7 +143,7 @@ class DetailViewController: UITableViewController {
 // MARK: - UITableViewDataSource
 
 extension DetailViewController {
-    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    override func tableView(_: UITableView, numberOfRowsInSection section: Int) -> Int {
         switch Sections(rawValue: section)! {
         case .headers:
             return headers.count
@@ -175,7 +175,7 @@ extension DetailViewController {
 // MARK: - UITableViewDelegate
 
 extension DetailViewController {
-    override func numberOfSections(in tableView: UITableView) -> Int {
+    override func numberOfSections(in _: UITableView) -> Int {
         return 2
     }
 
@@ -201,7 +201,7 @@ extension DetailViewController {
         }
     }
 
-    override func tableView(_ tableView: UITableView, titleForFooterInSection section: Int) -> String? {
+    override func tableView(_: UITableView, titleForFooterInSection section: Int) -> String? {
         if Sections(rawValue: section) == .body, let elapsedTime = elapsedTime {
             let elapsedTimeText = DetailViewController.numberFormatter.string(from: elapsedTime as NSNumber) ?? "???"
             return "Elapsed Time: \(elapsedTimeText) sec"

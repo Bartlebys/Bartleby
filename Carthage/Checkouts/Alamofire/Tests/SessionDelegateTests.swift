@@ -71,7 +71,7 @@ class SessionDelegateTestCase: BaseTestCase {
             var overrideClosureCalled = false
             var response: HTTPURLResponse?
 
-            manager.delegate.sessionDidReceiveChallenge = { session, challenge in
+            manager.delegate.sessionDidReceiveChallenge = { _, _ in
                 overrideClosureCalled = true
                 return (.performDefaultHandling, nil)
             }
@@ -103,7 +103,7 @@ class SessionDelegateTestCase: BaseTestCase {
             var overrideClosureCalled = false
             var response: HTTPURLResponse?
 
-            manager.delegate.sessionDidReceiveChallengeWithCompletion = { session, challenge, completion in
+            manager.delegate.sessionDidReceiveChallengeWithCompletion = { _, _, completion in
                 overrideClosureCalled = true
                 completion(.performDefaultHandling, nil)
             }
@@ -334,7 +334,7 @@ class SessionDelegateTestCase: BaseTestCase {
         let expectation = self.expectation(description: "Request should redirect to \(redirectURLString)")
         let delegate: SessionDelegate = manager.delegate
         var redirectExpectations = [XCTestExpectation]()
-        for index in 0..<redirectCount {
+        for index in 0 ..< redirectCount {
             redirectExpectations.insert(self.expectation(description: "Redirect #\(index) callback was received"), at: 0)
         }
 
@@ -380,7 +380,7 @@ class SessionDelegateTestCase: BaseTestCase {
 
         var redirectExpectations = [XCTestExpectation]()
 
-        for index in 0..<redirectCount {
+        for index in 0 ..< redirectCount {
             redirectExpectations.insert(self.expectation(description: "Redirect #\(index) callback was received"), at: 0)
         }
 
@@ -428,14 +428,13 @@ class SessionDelegateTestCase: BaseTestCase {
         // header. It appears that Apple's strips the `Authorization` header from the redirected URL request. If you
         // need to maintain the `Authorization` header, you need to manually append it to the redirected request.
 
-        manager.delegate.taskWillPerformHTTPRedirection = { session, task, response, request in
+        manager.delegate.taskWillPerformHTTPRedirection = { _, task, _, request in
             var redirectedRequest = request
 
             if
                 let originalRequest = task.originalRequest,
                 let headers = originalRequest.allHTTPHeaderFields,
-                let authorizationHeaderValue = headers["Authorization"]
-            {
+                let authorizationHeaderValue = headers["Authorization"] {
                 var mutableRequest = request
                 mutableRequest.setValue(authorizationHeaderValue, forHTTPHeaderField: "Authorization")
                 redirectedRequest = mutableRequest
@@ -478,7 +477,7 @@ class SessionDelegateTestCase: BaseTestCase {
         var overrideClosureCalled = false
         var response: HTTPURLResponse?
 
-        manager.delegate.dataTaskDidReceiveResponse = { session, task, response in
+        manager.delegate.dataTaskDidReceiveResponse = { _, _, _ in
             overrideClosureCalled = true
             return .allow
         }
@@ -503,7 +502,7 @@ class SessionDelegateTestCase: BaseTestCase {
         var overrideClosureCalled = false
         var response: HTTPURLResponse?
 
-        manager.delegate.dataTaskDidReceiveResponseWithCompletion = { session, task, response, completion in
+        manager.delegate.dataTaskDidReceiveResponseWithCompletion = { _, _, _, completion in
             overrideClosureCalled = true
             completion(.allow)
         }

@@ -13,17 +13,16 @@ import Foundation
 #endif
 
 /*
-The Monitoring protocol can be used by apps or XPC services to transmit progression or completion states
+ The Monitoring protocol can be used by apps or XPC services to transmit progression or completion states
  */
 @objc public protocol Monitoring {
-
     /**
      Called by an XPC service  (XPC -> app)
      Or by the app -> app to aggregate identified progressions
 
      - parameter progression: the progression state
      */
-    func receiveProgression(_ progression:Progression)
+    func receiveProgression(_ progression: Progression)
 
     /**
      Called by an XPC service (XPC -> app)
@@ -31,9 +30,8 @@ The Monitoring protocol can be used by apps or XPC services to transmit progress
 
      - parameter completion: the completion state
      */
-    func receiveCompletion(_ completion:Completion)
+    func receiveCompletion(_ completion: Completion)
 }
-
 
 /*
 
@@ -43,7 +41,6 @@ The Monitoring protocol can be used by apps or XPC services to transmit progress
 
  ## in the app
  ```
-
 
  // Lazy XPC bidirectionnal connection
  lazy var ydXPCConnection: NSXPCConnection = {
@@ -58,7 +55,6 @@ The Monitoring protocol can be used by apps or XPC services to transmit progress
  return connection
  }()
 
-
  // The XPC instance
  var ydXPC:YouDubXPCProtocol?{
  let remoteObjectProxy=ydXPCConnection.remoteObjectProxyWithErrorHandler { (error) -> Void in
@@ -69,7 +65,6 @@ The Monitoring protocol can be used by apps or XPC services to transmit progress
  }
  return nil
  }
-
 
  // MARK: Monitoring
 
@@ -103,7 +98,6 @@ The Monitoring protocol can be used by apps or XPC services to transmit progress
  }
 
  }
-
 
  // Create the listener and resume
  let delegate = ServiceDelegate()

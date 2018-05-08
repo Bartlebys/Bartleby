@@ -8,10 +8,8 @@
 
 import Foundation
 
-public enum BoxStates:StateMessage{
-
-    case isMounting(box:Box)
-    case hasBeenMounted(box:Box)
-    case mountingHasFailed(boxUID:String,message:String)
-
+public enum BoxStates: StateMessage {
+    case isMounting(box: Box)
+    case hasBeenMounted(box: Box)
+    case mountingHasFailed(boxUID: String, message: String)
 }

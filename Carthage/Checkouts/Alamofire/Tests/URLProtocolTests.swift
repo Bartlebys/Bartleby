@@ -71,7 +71,7 @@ class ProxyURLProtocol: URLProtocol {
         return request
     }
 
-    override class func requestIsCacheEquivalent(_ a: URLRequest, to b: URLRequest) -> Bool {
+    override class func requestIsCacheEquivalent(_: URLRequest, to _: URLRequest) -> Bool {
         return false
     }
 
@@ -96,11 +96,11 @@ extension ProxyURLProtocol: URLSessionDataDelegate {
 
     // MARK: NSURLSessionDelegate
 
-    func urlSession(_ session: URLSession, dataTask: URLSessionDataTask, didReceive data: Data) {
+    func urlSession(_: URLSession, dataTask _: URLSessionDataTask, didReceive data: Data) {
         client?.urlProtocol(self, didLoad: data)
     }
 
-    func urlSession(_ session: URLSession, task: URLSessionTask, didCompleteWithError error: Error?) {
+    func urlSession(_: URLSession, task: URLSessionTask, didCompleteWithError _: Error?) {
         if let response = task.response {
             client?.urlProtocol(self, didReceive: response, cacheStoragePolicy: .notAllowed)
         }

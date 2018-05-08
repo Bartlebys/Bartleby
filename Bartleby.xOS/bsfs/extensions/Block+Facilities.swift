@@ -8,36 +8,30 @@
 
 import Foundation
 
-extension Block:ConsolidableProgression{
-
-
-    public var node:Node?{
-        if let owner:Node = self.firstRelation(Relationship.ownedBy){
-             return owner
-        }else{
+extension Block: ConsolidableProgression {
+    public var node: Node? {
+        if let owner: Node = self.firstRelation(Relationship.ownedBy) {
+            return owner
+        } else {
             return nil
         }
     }
 
-
-    public var data:Data?{
-        do{
-            return try self.referentDocument?.dataForBlock(identifiedBy: self.digest)
-        }catch {
-             self.referentDocument?.log("\(error)", file: #file, function: #function, line: #line, category: Default.LOG_DEFAULT, decorative: false)
+    public var data: Data? {
+        do {
+            return try referentDocument?.dataForBlock(identifiedBy: digest)
+        } catch {
+            referentDocument?.log("\(error)", file: #file, function: #function, line: #line, category: Default.LOG_DEFAULT, decorative: false)
         }
         return nil
     }
 
-
-
     /// Computes the block relative Path
     ///
     /// - Returns: the relative path
-    public func blockRelativePath()->String{
-        return "/"+self.digest
+    public func blockRelativePath() -> String {
+        return "/" + digest
     }
-
 
     // MARK: - ConsolidableProgression
 
@@ -45,25 +39,24 @@ extension Block:ConsolidableProgression{
     ///
     /// - Parameter category: the category to be consolidated
     /// - Returns: return the progression state.
-    public func progressionState(for category:String)->Progression?{
-        if category==Default.CATEGORY_DOWNLOADS{
-            if downloadInProgress{
-                return self.downloadProgression
+    public func progressionState(for category: String) -> Progression? {
+        if category == Default.CATEGORY_DOWNLOADS {
+            if downloadInProgress {
+                return downloadProgression
             }
-        }else{
-            if uploadInProgress{
-                return self.uploadProgression
+        } else {
+            if uploadInProgress {
+                return uploadProgression
             }
         }
         return nil
     }
 
-
     /// Return all the children Progression states to be consolidated
     ///
     /// - Parameter category: the category
     /// - Returns: the array of Progression states
-    public func childrensProgression(for category:String)->[Progression]?{
+    public func childrensProgression(for _: String) -> [Progression]? {
         return nil
     }
 
@@ -71,31 +64,29 @@ extension Block:ConsolidableProgression{
     /// Each unique task is responsible to compute a consistent currentPercentProgress
     ///
     /// - Parameter category: the category to be consolidated
-    public func consolidateProgression(for category:String){
-        if let progression = self.progressionState(for: category){
-            if let childrensProgressions=self.childrensProgression(for: category){
-                var counter=0
-                var currentPercent:Double=0
-                var currentTaskIndex=0
-                var totalTaskCount=0
-                for childProgression in childrensProgressions{
+    public func consolidateProgression(for category: String) {
+        if let progression = self.progressionState(for: category) {
+            if let childrensProgressions = self.childrensProgression(for: category) {
+                var counter = 0
+                var currentPercent: Double = 0
+                var currentTaskIndex = 0
+                var totalTaskCount = 0
+                for childProgression in childrensProgressions {
                     counter += 1
                     currentPercent += childProgression.currentPercentProgress
                     currentTaskIndex += childProgression.currentTaskIndex
                     totalTaskCount += childProgression.totalTaskCount
                     // If there is nothing to do let's say it's done :)
-                    if childProgression.currentTaskIndex==0 && childProgression.totalTaskCount==0{
+                    if childProgression.currentTaskIndex == 0 && childProgression.totalTaskCount == 0 {
                         currentPercent += 100
                     }
                 }
-                progression.quietChanges{
-                    progression.currentTaskIndex=currentTaskIndex/counter
-                    progression.totalTaskCount=totalTaskCount/counter
+                progression.quietChanges {
+                    progression.currentTaskIndex = currentTaskIndex / counter
+                    progression.totalTaskCount = totalTaskCount / counter
                 }
-                progression.currentPercentProgress=currentPercent/Double(counter)
+                progression.currentPercentProgress = currentPercent / Double(counter)
             }
         }
     }
-
-    
 }

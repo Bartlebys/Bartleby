@@ -12,21 +12,18 @@
 
     // BXDocument is the base type for Documents.
     // Registry implements Identifiable
-    open class BXDocument:NSDocument{
+    open class BXDocument: NSDocument {
     }
 
-
-
 #elseif os(iOS)
-    
+
     import UIKit
 
     // BXDocument is the base type of Documents
     // Registry implements Identifiable
-    open class BXDocument:UIDocument{
+    open class BXDocument: UIDocument {
     }
-    
-    
+
 #elseif os(watchOS)
 #elseif os(tvOS)
 #endif

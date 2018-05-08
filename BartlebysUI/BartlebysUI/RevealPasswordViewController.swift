@@ -6,34 +6,33 @@
 //  Copyright © 2017 Chaosmos SAS. All rights reserved.
 //
 
-import Cocoa
 import BartlebyKit
+import Cocoa
 
 open class RevealPasswordViewController: StepViewController {
+    open override var nibName: NSNib.Name { return NSNib.Name("RevealPasswordViewController") }
 
-    override open var nibName : NSNib.Name { return NSNib.Name("RevealPasswordViewController") }
+    @IBOutlet var explanationsTextField: NSTextField!
 
-    @IBOutlet weak var explanationsTextField: NSTextField!
+    @IBOutlet var passwordTextField: NSTextField!
 
-    @IBOutlet weak var passwordTextField: NSTextField!
-
-    override open func viewDidLoad() {
+    open override func viewDidLoad() {
         super.viewDidLoad()
     }
 
-    override open func viewWillAppear() {
+    open override func viewWillAppear() {
         super.viewWillAppear()
-        if let document=self.documentProvider?.getDocument(){
+        if let document = self.documentProvider?.getDocument() {
             document.send(IdentificationStates.revealPassword)
-            let password=document.currentUser.password
-            self.passwordTextField.stringValue=password ?? Default.NO_PASSWORD
+            let password = document.currentUser.password
+            passwordTextField.stringValue = password ?? Default.NO_PASSWORD
         }
     }
 
-    override open func proceedToValidation(){
+    open override func proceedToValidation() {
         super.proceedToValidation()
-        if let _ = self.documentProvider?.getDocument(){
-            self.stepDelegate?.didValidateStep( self.stepIndex)
+        if let _ = self.documentProvider?.getDocument() {
+            stepDelegate?.didValidateStep(stepIndex)
         }
     }
 }

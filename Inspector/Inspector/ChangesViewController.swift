@@ -6,46 +6,44 @@
 //
 //
 
-import Cocoa
 import BartlebyKit
+import Cocoa
 
-class ChangesViewController: NSViewController,Editor,Identifiable{
+class ChangesViewController: NSViewController, Editor, Identifiable {
+    typealias EditorOf = ManagedModel
 
-    typealias EditorOf=ManagedModel
+    var UID: String = Bartleby.createUID()
 
-    var UID:String=Bartleby.createUID()
+    override var nibName: NSNib.Name { return NSNib.Name("ChangesViewController") }
 
-    override var nibName : NSNib.Name { return NSNib.Name("ChangesViewController") }
+    @IBOutlet var tableView: NSTableView!
 
-    @IBOutlet weak var tableView: NSTableView!
-    
-    override var representedObject: Any?{
-        willSet{
-            if let _=self._selectedItem{
-                self._selectedItem?.removeChangesSuperviser(self)
+    override var representedObject: Any? {
+        willSet {
+            if let _ = self._selectedItem {
+                _selectedItem?.removeChangesSuperviser(self)
             }
         }
-        didSet{
-            self._selectedItem=representedObject as? EditorOf
-            self._selectedItem?.addChangesSuperviser(self, closure: { (key, oldValue, newValue) in
-                    self.tableView.reloadData()
+        didSet {
+            _selectedItem = representedObject as? EditorOf
+            _selectedItem?.addChangesSuperviser(self, closure: { _, _, _ in
+                self.tableView.reloadData()
             })
-            syncOnMain{
+            syncOnMain {
                 self.tableView.reloadData()
             }
         }
     }
 
-    @objc fileprivate dynamic var _selectedItem:EditorOf?
+    @objc fileprivate dynamic var _selectedItem: EditorOf?
 
     override func viewDidLoad() {
         super.viewDidLoad()
     }
 
-
     override func viewDidAppear() {
         super.viewDidAppear()
-        NotificationCenter.default.addObserver(forName: Notification.Name(rawValue: DocumentInspector.CHANGES_HAS_BEEN_RESET_NOTIFICATION), object: nil, queue: nil) { (notification) in
+        NotificationCenter.default.addObserver(forName: Notification.Name(rawValue: DocumentInspector.CHANGES_HAS_BEEN_RESET_NOTIFICATION), object: nil, queue: nil) { _ in
             self.tableView.reloadData()
         }
     }
@@ -54,29 +52,27 @@ class ChangesViewController: NSViewController,Editor,Identifiable{
         NotificationCenter.default.removeObserver(self)
     }
 
-    func itemForRow(_ row:Int)->KeyedChanges?{
-        if let r:[KeyedChanges]=self._selectedItem?.changedKeys.reversed(){
-            if r.count>row{
+    func itemForRow(_ row: Int) -> KeyedChanges? {
+        if let r: [KeyedChanges] = self._selectedItem?.changedKeys.reversed() {
+            if r.count > row {
                 return r[row]
             }
         }
         return nil
     }
-
-
 }
 
-extension ChangesViewController:NSTableViewDataSource{
+extension ChangesViewController: NSTableViewDataSource {
 
     // MARK: NSTableViewDataSource
 
-    func numberOfRows(in tableView: NSTableView) -> Int{
-        let nb = self._selectedItem?.changedKeys.count ?? 0
+    func numberOfRows(in _: NSTableView) -> Int {
+        let nb = _selectedItem?.changedKeys.count ?? 0
         return nb
     }
 
-    func tableView(_ tableView: NSTableView, heightOfRow row: Int) -> CGFloat {
-        guard let item =  self.itemForRow(row) else {
+    func tableView(_: NSTableView, heightOfRow row: Int) -> CGFloat {
+        guard let item = self.itemForRow(row) else {
             return 20
         }
         if item.changes.count > 200 {
@@ -86,17 +82,15 @@ extension ChangesViewController:NSTableViewDataSource{
     }
 }
 
-
-extension ChangesViewController:NSTableViewDelegate{
+extension ChangesViewController: NSTableViewDelegate {
 
     // MARK: NSTableViewDelegate
 
-    func tableView(_ tableView: NSTableView, viewFor tableColumn: NSTableColumn?, row: Int) -> NSView?{
-
+    func tableView(_ tableView: NSTableView, viewFor tableColumn: NSTableColumn?, row: Int) -> NSView? {
         guard let item = self.itemForRow(row) else {
             return nil
         }
-        var text:String = ""
+        var text: String = ""
         var cellIdentifier: String = ""
 
         if tableColumn == tableView.tableColumns[0] {
@@ -111,10 +105,9 @@ extension ChangesViewController:NSTableViewDelegate{
         }
         if let cell = tableView.makeView(withIdentifier: NSUserInterfaceItemIdentifier(rawValue: cellIdentifier), owner: nil) as? NSTableCellView {
             cell.textField?.stringValue = text
-            //cell.imageView?.image = image ?? nil
+            // cell.imageView?.image = image ?? nil
             return cell
         }
         return nil
     }
-
 }

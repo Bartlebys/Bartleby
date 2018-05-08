@@ -6,13 +6,11 @@
 //  Copyright © 2017 Chaosmos SAS. All rights reserved.
 //
 
-import Cocoa
 import BartlebyKit
+import Cocoa
 
-@objc open class StepViewController: NSViewController ,DocumentDependent,Step{
-
-    open var stepDelegate:StepNavigation?
-
+@objc open class StepViewController: NSViewController, DocumentDependent, Step {
+    open var stepDelegate: StepNavigation?
 
     /// There are credentials for that Server.
     /// Use them an set - up the association
@@ -21,9 +19,9 @@ import BartlebyKit
 
     // MARK: - Step
 
-    open var stepIndex:Int = -1
+    open var stepIndex: Int = -1
 
-    open func proceedToValidation(){
+    open func proceedToValidation() {
         // On success You should call: self.stepDelegate?.didValidateStep(self.stepIndex)
         // Else you can embedd the navigation logic
     }

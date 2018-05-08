@@ -8,18 +8,13 @@
 
 import Foundation
 
-
-
-
-public enum Relationship:String{
-
+public enum Relationship: String {
     /// Serialized into the Object
-    case free = "free"
-    case ownedBy = "ownedBy"
+    case free
+    case ownedBy
 
     /// "owns" is Computed at runtime during registration to determine the the Subject
     /// Ownership is computed asynchronously for better resilience to distributed pressure
     /// Check ManagedCollection.propagate()
-    case owns = "owns"
-
+    case owns
 }

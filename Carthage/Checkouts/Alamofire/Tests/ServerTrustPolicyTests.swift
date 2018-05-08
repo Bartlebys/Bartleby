@@ -119,66 +119,66 @@ private enum TestTrusts {
             trust = TestTrusts.trustWithCertificates([
                 TestCertificates.leafWildcard,
                 TestCertificates.intermediateCA1,
-                TestCertificates.rootCA
+                TestCertificates.rootCA,
             ])
         case .leafMultipleDNSNames:
             trust = TestTrusts.trustWithCertificates([
                 TestCertificates.leafMultipleDNSNames,
                 TestCertificates.intermediateCA1,
-                TestCertificates.rootCA
+                TestCertificates.rootCA,
             ])
         case .leafSignedByCA1:
             trust = TestTrusts.trustWithCertificates([
                 TestCertificates.leafSignedByCA1,
                 TestCertificates.intermediateCA1,
-                TestCertificates.rootCA
+                TestCertificates.rootCA,
             ])
         case .leafDNSNameAndURI:
             trust = TestTrusts.trustWithCertificates([
                 TestCertificates.leafDNSNameAndURI,
                 TestCertificates.intermediateCA1,
-                TestCertificates.rootCA
+                TestCertificates.rootCA,
             ])
         case .leafExpired:
             trust = TestTrusts.trustWithCertificates([
                 TestCertificates.leafExpired,
                 TestCertificates.intermediateCA2,
-                TestCertificates.rootCA
+                TestCertificates.rootCA,
             ])
         case .leafMissingDNSNameAndURI:
             trust = TestTrusts.trustWithCertificates([
                 TestCertificates.leafMissingDNSNameAndURI,
                 TestCertificates.intermediateCA2,
-                TestCertificates.rootCA
+                TestCertificates.rootCA,
             ])
         case .leafSignedByCA2:
             trust = TestTrusts.trustWithCertificates([
                 TestCertificates.leafSignedByCA2,
                 TestCertificates.intermediateCA2,
-                TestCertificates.rootCA
+                TestCertificates.rootCA,
             ])
         case .leafValidDNSName:
             trust = TestTrusts.trustWithCertificates([
                 TestCertificates.leafValidDNSName,
                 TestCertificates.intermediateCA2,
-                TestCertificates.rootCA
+                TestCertificates.rootCA,
             ])
         case .leafValidURI:
             trust = TestTrusts.trustWithCertificates([
                 TestCertificates.leafValidURI,
                 TestCertificates.intermediateCA2,
-                TestCertificates.rootCA
+                TestCertificates.rootCA,
             ])
         case .leafValidDNSNameMissingIntermediate:
             trust = TestTrusts.trustWithCertificates([
                 TestCertificates.leafValidDNSName,
-                TestCertificates.rootCA
+                TestCertificates.rootCA,
             ])
         case .leafValidDNSNameWithIncorrectIntermediate:
             trust = TestTrusts.trustWithCertificates([
                 TestCertificates.leafValidDNSName,
                 TestCertificates.intermediateCA1,
-                TestCertificates.rootCA
+                TestCertificates.rootCA,
             ])
         }
 
@@ -227,7 +227,7 @@ class ServerTrustPolicyExplorationBasicX509PolicyValidationTestCase: ServerTrust
         let trust = TestTrusts.trustWithCertificates([
             TestCertificates.leafDNSNameAndURI,
             TestCertificates.intermediateCA1,
-            TestCertificates.rootCA
+            TestCertificates.rootCA,
         ])
 
         setRootCertificateAsLoneAnchorCertificateForTrust(trust)
@@ -288,7 +288,7 @@ class ServerTrustPolicyExplorationSSLPolicyValidationTestCase: ServerTrustPolicy
         let trust = TestTrusts.trustWithCertificates([
             TestCertificates.leafDNSNameAndURI,
             TestCertificates.intermediateCA1,
-            TestCertificates.rootCA
+            TestCertificates.rootCA,
         ])
 
         setRootCertificateAsLoneAnchorCertificateForTrust(trust)
@@ -375,7 +375,7 @@ class ServerTrustPolicyExplorationSSLPolicyValidationTestCase: ServerTrustPolicy
         let policies = [
             SecPolicyCreateSSL(true, "test.alamofire.org" as CFString),
             SecPolicyCreateSSL(true, "blog.alamofire.org" as CFString),
-            SecPolicyCreateSSL(true, "www.alamofire.org" as CFString)
+            SecPolicyCreateSSL(true, "www.alamofire.org" as CFString),
         ]
         SecTrustSetPolicies(trust, policies as CFTypeRef)
 
@@ -435,7 +435,7 @@ class ServerTrustPolicyPerformDefaultEvaluationTestCase: ServerTrustPolicyTestCa
         let host = "test.alamofire.org"
         let serverTrust = TestTrusts.trustWithCertificates([
             TestCertificates.leafValidDNSName,
-            TestCertificates.intermediateCA2
+            TestCertificates.intermediateCA2,
         ])
         let serverTrustPolicy = ServerTrustPolicy.performDefaultEvaluation(validateHost: false)
 
@@ -509,7 +509,7 @@ class ServerTrustPolicyPerformDefaultEvaluationTestCase: ServerTrustPolicyTestCa
         let host = "test.alamofire.org"
         let serverTrust = TestTrusts.trustWithCertificates([
             TestCertificates.leafValidDNSName,
-            TestCertificates.intermediateCA2
+            TestCertificates.intermediateCA2,
         ])
         let serverTrustPolicy = ServerTrustPolicy.performDefaultEvaluation(validateHost: true)
 
@@ -605,7 +605,7 @@ class ServerTrustPolicyPerformRevokedEvaluationTestCase: ServerTrustPolicyTestCa
         let host = "test.alamofire.org"
         let serverTrust = TestTrusts.trustWithCertificates([
             TestCertificates.leafValidDNSName,
-            TestCertificates.intermediateCA2
+            TestCertificates.intermediateCA2,
         ])
         let serverTrustPolicy = ServerTrustPolicy.performRevokedEvaluation(
             validateHost: false,
@@ -694,7 +694,7 @@ class ServerTrustPolicyPerformRevokedEvaluationTestCase: ServerTrustPolicyTestCa
         let host = "test.alamofire.org"
         let serverTrust = TestTrusts.trustWithCertificates([
             TestCertificates.leafValidDNSName,
-            TestCertificates.intermediateCA2
+            TestCertificates.intermediateCA2,
         ])
         let serverTrustPolicy = ServerTrustPolicy.performRevokedEvaluation(
             validateHost: true,
@@ -1190,10 +1190,10 @@ class ServerTrustPolicyPinCertificatesTestCase: ServerTrustPolicyTestCase {
 
         let certificates = [
             TestCertificates.leafMultipleDNSNames, // not in certificate chain
-            TestCertificates.leafSignedByCA1,      // not in certificate chain
-            TestCertificates.leafExpired,          // in certificate chain 👍🏼👍🏼
-            TestCertificates.leafWildcard,         // not in certificate chain
-            TestCertificates.leafDNSNameAndURI,    // not in certificate chain
+            TestCertificates.leafSignedByCA1, // not in certificate chain
+            TestCertificates.leafExpired, // in certificate chain 👍🏼👍🏼
+            TestCertificates.leafWildcard, // not in certificate chain
+            TestCertificates.leafDNSNameAndURI, // not in certificate chain
         ]
 
         let serverTrustPolicy = ServerTrustPolicy.pinCertificates(

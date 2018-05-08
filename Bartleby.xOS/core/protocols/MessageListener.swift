@@ -8,8 +8,6 @@
 
 import Foundation
 
-public protocol MessageListener:Identifiable{
-
-    func handle<T:StateMessage>(message:T)
-    
+public protocol MessageListener: Identifiable {
+    func handle<T: StateMessage>(message: T)
 }

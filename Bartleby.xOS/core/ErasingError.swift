@@ -8,6 +8,6 @@
 
 import Foundation
 
-public enum ErasingError:Error {
+public enum ErasingError: Error {
     case referentDocumentUndefined
 }

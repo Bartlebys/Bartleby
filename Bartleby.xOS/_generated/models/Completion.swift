@@ -12,79 +12,74 @@ import Foundation
 #endif
 
 // MARK: Bartleby's Commons: A completion state
-@objc open class Completion : UnManagedModel {
 
+@objc open class Completion: UnManagedModel {
     // DeclaredTypeName support
-    override open class func typeName() -> String {
+    open override class func typeName() -> String {
         return "Completion"
     }
 
+    // Success if set to true
+    @objc open dynamic var success: Bool = true
 
-	//Success if set to true
-	@objc dynamic open var success:Bool = true
+    // The status
+    @objc open dynamic var statusCode: Int = StatusOfCompletion.undefined.rawValue
 
-	//The status
-	@objc dynamic open var statusCode:Int = StatusOfCompletion.undefined.rawValue
+    // The Message
+    @objc open dynamic var message: String = ""
 
-	//The Message
-	@objc dynamic open var message:String = ""
+    // completion data
+    @objc open dynamic var data: Data?
 
-	//completion data
-	@objc dynamic open var data:Data?
+    // A category to discriminate bunch of completion states
+    @objc open dynamic var category: String = ""
 
-	//A category to discriminate bunch of completion states
-	@objc dynamic open var category:String = ""
-
-	//An external identifier
-	@objc dynamic open var externalIdentifier:String = ""
-
+    // An external identifier
+    @objc open dynamic var externalIdentifier: String = ""
 
     // MARK: - Codable
 
-
-    public enum CompletionCodingKeys: String,CodingKey{
-		case success
-		case statusCode
-		case message
-		case data
-		case category
-		case externalIdentifier
+    public enum CompletionCodingKeys: String, CodingKey {
+        case success
+        case statusCode
+        case message
+        case data
+        case category
+        case externalIdentifier
     }
 
-    required public init(from decoder: Decoder) throws{
-		try super.init(from: decoder)
-        try self.quietThrowingChanges {
-			let values = try decoder.container(keyedBy: CompletionCodingKeys.self)
-			self.success = try values.decode(Bool.self,forKey:.success)
-			self.statusCode = try values.decode(Int.self,forKey:.statusCode)
-			self.message = try values.decode(String.self,forKey:.message)
-			self.data = try values.decodeIfPresent(Data.self,forKey:.data)
-			self.category = try values.decode(String.self,forKey:.category)
-			self.externalIdentifier = try values.decode(String.self,forKey:.externalIdentifier)
+    public required init(from decoder: Decoder) throws {
+        try super.init(from: decoder)
+        try quietThrowingChanges {
+            let values = try decoder.container(keyedBy: CompletionCodingKeys.self)
+            self.success = try values.decode(Bool.self, forKey: .success)
+            self.statusCode = try values.decode(Int.self, forKey: .statusCode)
+            self.message = try values.decode(String.self, forKey: .message)
+            self.data = try values.decodeIfPresent(Data.self, forKey: .data)
+            self.category = try values.decode(String.self, forKey: .category)
+            self.externalIdentifier = try values.decode(String.self, forKey: .externalIdentifier)
         }
     }
 
-    override open func encode(to encoder: Encoder) throws {
-		try super.encode(to:encoder)
-		var container = encoder.container(keyedBy: CompletionCodingKeys.self)
-		try container.encode(self.success,forKey:.success)
-		try container.encode(self.statusCode,forKey:.statusCode)
-		try container.encode(self.message,forKey:.message)
-		try container.encodeIfPresent(self.data,forKey:.data)
-		try container.encode(self.category,forKey:.category)
-		try container.encode(self.externalIdentifier,forKey:.externalIdentifier)
+    open override func encode(to encoder: Encoder) throws {
+        try super.encode(to: encoder)
+        var container = encoder.container(keyedBy: CompletionCodingKeys.self)
+        try container.encode(success, forKey: .success)
+        try container.encode(statusCode, forKey: .statusCode)
+        try container.encode(message, forKey: .message)
+        try container.encodeIfPresent(data, forKey: .data)
+        try container.encode(category, forKey: .category)
+        try container.encode(externalIdentifier, forKey: .externalIdentifier)
     }
-
 
     // MARK: - Exposed (Bartleby's KVC like generative implementation)
 
     /// Return all the exposed instance variables keys. (Exposed == public and modifiable).
-    override  open var exposedKeys:[String] {
-        var exposed=super.exposedKeys
-        exposed.append(contentsOf:["success","statusCode","message","data","category","externalIdentifier"])
+    open override var exposedKeys: [String] {
+        var exposed = super.exposedKeys
+        exposed.append(contentsOf: ["success", "statusCode", "message", "data", "category", "externalIdentifier"])
         return exposed
     }
-
 
     /// Set the value of the given key
     ///
@@ -92,37 +87,36 @@ import Foundation
     /// - parameter key:   the key
     ///
     /// - throws: throws an Exception when the key is not exposed
-    override  open func setExposedValue(_ value:Any?, forKey key: String) throws {
+    open override func setExposedValue(_ value: Any?, forKey key: String) throws {
         switch key {
-            case "success":
-                if let casted=value as? Bool{
-                    self.success=casted
-                }
-            case "statusCode":
-                if let casted=value as? Int{
-                    self.statusCode=casted
-                }
-            case "message":
-                if let casted=value as? String{
-                    self.message=casted
-                }
-            case "data":
-                if let casted=value as? Data{
-                    self.data=casted
-                }
-            case "category":
-                if let casted=value as? String{
-                    self.category=casted
-                }
-            case "externalIdentifier":
-                if let casted=value as? String{
-                    self.externalIdentifier=casted
-                }
-            default:
-                return try super.setExposedValue(value, forKey: key)
+        case "success":
+            if let casted = value as? Bool {
+                success = casted
+            }
+        case "statusCode":
+            if let casted = value as? Int {
+                statusCode = casted
+            }
+        case "message":
+            if let casted = value as? String {
+                message = casted
+            }
+        case "data":
+            if let casted = value as? Data {
+                data = casted
+            }
+        case "category":
+            if let casted = value as? String {
+                category = casted
+            }
+        case "externalIdentifier":
+            if let casted = value as? String {
+                externalIdentifier = casted
+            }
+        default:
+            return try super.setExposedValue(value, forKey: key)
         }
     }
-
 
     /// Returns the value of an exposed key.
     ///
@@ -131,26 +125,28 @@ import Foundation
     /// - throws: throws Exception when the key is not exposed
     ///
     /// - returns: returns the value
-    override  open func getExposedValueForKey(_ key:String) throws -> Any?{
+    open override func getExposedValueForKey(_ key: String) throws -> Any? {
         switch key {
-            case "success":
-               return self.success
-            case "statusCode":
-               return self.statusCode
-            case "message":
-               return self.message
-            case "data":
-               return self.data
-            case "category":
-               return self.category
-            case "externalIdentifier":
-               return self.externalIdentifier
-            default:
-                return try super.getExposedValueForKey(key)
+        case "success":
+            return success
+        case "statusCode":
+            return statusCode
+        case "message":
+            return message
+        case "data":
+            return data
+        case "category":
+            return category
+        case "externalIdentifier":
+            return externalIdentifier
+        default:
+            return try super.getExposedValueForKey(key)
         }
     }
+
     // MARK: - Initializable
-     required public init() {
+
+    public required init() {
         super.init()
     }
 }

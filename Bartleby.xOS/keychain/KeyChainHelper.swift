@@ -7,11 +7,10 @@
 //  by Benoit Pereira da silva on 22/01/2017.
 //
 
-import Security
 import Foundation
+import Security
 
 open class KeyChainHelper {
-
     // The shared app access group e.g:
     open var accessGroup: String
 
@@ -23,10 +22,9 @@ open class KeyChainHelper {
     var keyPrefix = "" // Can be useful in test.
 
     /// Instantiate a KeyChainHelper object
-    public init(accessGroup:String) {
-        self.accessGroup=accessGroup
+    public init(accessGroup: String) {
+        self.accessGroup = accessGroup
     }
-
 
     /**
 
@@ -37,7 +35,6 @@ open class KeyChainHelper {
 
      */
     open var synchronizable: Bool = false
-
 
     /**
 
@@ -53,7 +50,6 @@ open class KeyChainHelper {
     @discardableResult
     open func set(_ value: String, forKey key: String,
                   withAccess access: KeyChainHelperAccessOptions? = nil) -> Bool {
-
         if let value = value.data(using: String.Encoding.utf8) {
             return set(value, forKey: key, withAccess: access)
         }
@@ -75,18 +71,17 @@ open class KeyChainHelper {
     @discardableResult
     open func set(_ value: Data, forKey key: String,
                   withAccess access: KeyChainHelperAccessOptions? = nil) -> Bool {
-
         delete(key) // Delete any existing key before saving it
 
         let accessible = access?.value ?? KeyChainHelperAccessOptions.defaultOption.value
 
         let prefixedKey = keyWithPrefix(key)
 
-        var query: [String : Any] = [
-            KeyChainHelperConstants.secClass    : kSecClassGenericPassword,
-            KeyChainHelperConstants.attrAccount : prefixedKey,
-            KeyChainHelperConstants.valueData   : value,
-            KeyChainHelperConstants.accessible  : accessible
+        var query: [String: Any] = [
+            KeyChainHelperConstants.secClass: kSecClassGenericPassword,
+            KeyChainHelperConstants.attrAccount: prefixedKey,
+            KeyChainHelperConstants.valueData: value,
+            KeyChainHelperConstants.accessible: accessible,
         ]
 
         query = addAccessGroupWhenPresent(query)
@@ -112,7 +107,6 @@ open class KeyChainHelper {
     @discardableResult
     open func set(_ value: Bool, forKey key: String,
                   withAccess access: KeyChainHelperAccessOptions? = nil) -> Bool {
-
         let bytes: [UInt8] = value ? [1] : [0]
         let data = Data(bytes: bytes)
 
@@ -150,10 +144,10 @@ open class KeyChainHelper {
         let prefixedKey = keyWithPrefix(key)
 
         var query: [String: Any] = [
-            KeyChainHelperConstants.secClass       : kSecClassGenericPassword,
-            KeyChainHelperConstants.attrAccount : prefixedKey,
-            KeyChainHelperConstants.returnData  : kCFBooleanTrue,
-            KeyChainHelperConstants.matchLimit  : kSecMatchLimitOne
+            KeyChainHelperConstants.secClass: kSecClassGenericPassword,
+            KeyChainHelperConstants.attrAccount: prefixedKey,
+            KeyChainHelperConstants.returnData: kCFBooleanTrue,
+            KeyChainHelperConstants.matchLimit: kSecMatchLimitOne,
         ]
 
         query = addAccessGroupWhenPresent(query)
@@ -198,8 +192,8 @@ open class KeyChainHelper {
         let prefixedKey = keyWithPrefix(key)
 
         var query: [String: Any] = [
-            KeyChainHelperConstants.secClass       : kSecClassGenericPassword,
-            KeyChainHelperConstants.attrAccount : prefixedKey
+            KeyChainHelperConstants.secClass: kSecClassGenericPassword,
+            KeyChainHelperConstants.attrAccount: prefixedKey,
         ]
 
         query = addAccessGroupWhenPresent(query)
@@ -220,7 +214,7 @@ open class KeyChainHelper {
      */
     @discardableResult
     open func clear() -> Bool {
-        var query: [String: Any] = [ kSecClass as String : kSecClassGenericPassword ]
+        var query: [String: Any] = [kSecClass as String: kSecClassGenericPassword]
         query = addAccessGroupWhenPresent(query)
         query = addSynchronizableIfRequired(query, addingItems: false)
         lastQueryParameters = query
@@ -259,15 +253,12 @@ open class KeyChainHelper {
     }
 }
 
-
-
 /**
 
  These options are used to determine when a keychain item should be readable. The default value is AccessibleWhenUnlocked.
 
  */
 public enum KeyChainHelperAccessOptions {
-
     /**
 
      The data in the keychain item can be accessed only while the device is unlocked by the user.
@@ -397,4 +388,3 @@ public struct KeyChainHelperConstants {
         return value as String
     }
 }
-

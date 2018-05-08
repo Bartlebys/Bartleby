@@ -9,9 +9,6 @@
 import Foundation
 
 public protocol GroupedCommits {
-
-
     /// Commits all the staged changes and planned deletions.
     func commitChanges()
-    
 }

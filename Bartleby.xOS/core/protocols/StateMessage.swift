@@ -10,6 +10,5 @@ import Foundation
 
 // StateMessages are relayed to listeners by the document
 
-public protocol StateMessage{
-
+public protocol StateMessage {
 }

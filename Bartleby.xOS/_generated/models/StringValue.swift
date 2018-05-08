@@ -12,49 +12,44 @@ import Foundation
 #endif
 
 // MARK: A simple String UnManagedModel
-@objc open class StringValue : UnManagedModel {
 
+@objc open class StringValue: UnManagedModel {
     // DeclaredTypeName support
-    override open class func typeName() -> String {
+    open override class func typeName() -> String {
         return "StringValue"
     }
 
-
-	//The value
-	@objc dynamic open var value:String = ""
-
+    // The value
+    @objc open dynamic var value: String = ""
 
     // MARK: - Codable
 
-
-    public enum StringValueCodingKeys: String,CodingKey{
-		case value
+    public enum StringValueCodingKeys: String, CodingKey {
+        case value
     }
 
-    required public init(from decoder: Decoder) throws{
-		try super.init(from: decoder)
-        try self.quietThrowingChanges {
-			let values = try decoder.container(keyedBy: StringValueCodingKeys.self)
-			self.value = try values.decode(String.self,forKey:.value)
+    public required init(from decoder: Decoder) throws {
+        try super.init(from: decoder)
+        try quietThrowingChanges {
+            let values = try decoder.container(keyedBy: StringValueCodingKeys.self)
+            self.value = try values.decode(String.self, forKey: .value)
         }
     }
 
-    override open func encode(to encoder: Encoder) throws {
-		try super.encode(to:encoder)
-		var container = encoder.container(keyedBy: StringValueCodingKeys.self)
-		try container.encode(self.value,forKey:.value)
+    open override func encode(to encoder: Encoder) throws {
+        try super.encode(to: encoder)
+        var container = encoder.container(keyedBy: StringValueCodingKeys.self)
+        try container.encode(value, forKey: .value)
     }
-
 
     // MARK: - Exposed (Bartleby's KVC like generative implementation)
 
     /// Return all the exposed instance variables keys. (Exposed == public and modifiable).
-    override  open var exposedKeys:[String] {
-        var exposed=super.exposedKeys
-        exposed.append(contentsOf:["value"])
+    open override var exposedKeys: [String] {
+        var exposed = super.exposedKeys
+        exposed.append(contentsOf: ["value"])
         return exposed
     }
-
 
     /// Set the value of the given key
     ///
@@ -62,17 +57,16 @@ import Foundation
     /// - parameter key:   the key
     ///
     /// - throws: throws an Exception when the key is not exposed
-    override  open func setExposedValue(_ value:Any?, forKey key: String) throws {
+    open override func setExposedValue(_ value: Any?, forKey key: String) throws {
         switch key {
-            case "value":
-                if let casted=value as? String{
-                    self.value=casted
-                }
-            default:
-                return try super.setExposedValue(value, forKey: key)
+        case "value":
+            if let casted = value as? String {
+                self.value = casted
+            }
+        default:
+            return try super.setExposedValue(value, forKey: key)
         }
     }
-
 
     /// Returns the value of an exposed key.
     ///
@@ -81,16 +75,18 @@ import Foundation
     /// - throws: throws Exception when the key is not exposed
     ///
     /// - returns: returns the value
-    override  open func getExposedValueForKey(_ key:String) throws -> Any?{
+    open override func getExposedValueForKey(_ key: String) throws -> Any? {
         switch key {
-            case "value":
-               return self.value
-            default:
-                return try super.getExposedValueForKey(key)
+        case "value":
+            return value
+        default:
+            return try super.getExposedValueForKey(key)
         }
     }
+
     // MARK: - Initializable
-     required public init() {
+
+    public required init() {
         super.init()
     }
 }

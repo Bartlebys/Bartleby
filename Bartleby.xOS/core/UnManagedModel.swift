@@ -11,102 +11,87 @@ import Foundation
 // Models can be :
 // - ManagedModel ( fully managed models)
 // - UnManagedModel (no supervision, no change provisionning )
-@objc(UnManagedModel) open class UnManagedModel: NSObject,Codable,Exposed,DeclaredTypeName {
-
+@objc(UnManagedModel) open class UnManagedModel: NSObject, Codable, Exposed, DeclaredTypeName {
     open class func typeName() -> String {
         return "UnManagedModel"
     }
 
-    required public override init() {
+    public required override init() {
         super.init()
     }
-
 
     /// Performs the deserialization without invoking provisionChanges
     ///
     /// - parameter changes: the changes closure
-    public func quietChanges(_  changes:()->()){
+    public func quietChanges(_ changes: () -> Void) {
         changes()
     }
 
-
     /// Performs the deserialization without invoking provisionChanges
     ///
     /// - parameter changes: the changes closure
-    public func quietThrowingChanges(_ changes:()throws->())rethrows{
+    public func quietThrowingChanges(_ changes: () throws -> Void) rethrows {
         try changes()
     }
 
-
     // MARK: - Codable
 
-    required public init(from decoder: Decoder) throws{
+    public required init(from _: Decoder) throws {
         super.init()
     }
 
-    open func encode(to encoder: Encoder) throws {
+    open func encode(to _: Encoder) throws {
     }
 
     // MARK: - Exposed
 
-    open var exposedKeys:[String] {
+    open var exposedKeys: [String] {
         return [String]()
     }
 
-    open func setExposedValue(_ value:Any?, forKey key: String) throws {
+    open func setExposedValue(_: Any?, forKey _: String) throws {
     }
 
-    open func getExposedValueForKey(_ key:String) throws -> Any?{
+    open func getExposedValueForKey(_: String) throws -> Any? {
         return nil
     }
 }
 
-extension UnManagedModel:DictionaryRepresentation{
-
-    open func dictionaryRepresentation() -> [String : Any] {
-        do{
+extension UnManagedModel: DictionaryRepresentation {
+    open func dictionaryRepresentation() -> [String: Any] {
+        do {
             let data = try JSON.encoder.encode(self)
-            if let dictionary = try JSONSerialization.jsonObject(with: data, options:.allowFragments) as? [String : Any]{
+            if let dictionary = try JSONSerialization.jsonObject(with: data, options: .allowFragments) as? [String: Any] {
                 return dictionary
             }
-        }catch{
+        } catch {
             // Silent catch
         }
-        return [String:Any]()
+        return [String: Any]()
     }
-
-
 }
 
-extension UnManagedModel:JSONString{
+extension UnManagedModel: JSONString {
 
-    // MARK:-  JSONString
+    // MARK: -  JSONString
 
-    open func toJSONString(_ prettyPrint:Bool)->String{
+    open func toJSONString(_ prettyPrint: Bool) -> String {
         let encoder = prettyPrint ? JSON.prettyEncoder : JSON.encoder
-        do{
+        do {
             let data = try encoder.encode(self)
             return data.optionalString(using: Default.STRING_ENCODING) ?? Default.DESERIALIZATION_HAS_FAILED
-        }catch{
+        } catch {
             return Default.DESERIALIZATION_HAS_FAILED
         }
     }
 
     // MARK: - CustomStringConvertible
 
-    override open var description: String {
-        get {
-            if self is Descriptible {
-                return (self as! Descriptible).toString()
-            }else{
-                return self.toJSONString(true)
-            }
-
+    open override var description: String {
+        if self is Descriptible {
+            return (self as! Descriptible).toString()
+        } else {
+            return toJSONString(true)
         }
     }
-
 }
-
-
-
-

@@ -9,77 +9,73 @@
 //
 import Foundation
 #if !USE_EMBEDDED_MODULES
-	#endif
+#endif
 
 // MARK: Bartleby's Synchronized File System: A box is a logical reference for Nodes and Blocks
-@objc open class Box : ManagedModel{
 
+@objc open class Box: ManagedModel {
     // Universal type support
-    override open class func typeName() -> String {
+    open override class func typeName() -> String {
         return "Box"
     }
 
-	//Turned to true when the box is mounted (not serializable, not supervisable)
-	@objc dynamic open var isMounted:Bool = false
+    // Turned to true when the box is mounted (not serializable, not supervisable)
+    @objc open dynamic var isMounted: Bool = false
 
-	//Turned to true if there is an Assembly in progress (used for progress consolidation optimization)
-	@objc dynamic open var assemblyInProgress:Bool = false
+    // Turned to true if there is an Assembly in progress (used for progress consolidation optimization)
+    @objc open dynamic var assemblyInProgress: Bool = false
 
-	//A volatile box is unmounted automatically
-	@objc dynamic open var volatile:Bool = true
+    // A volatile box is unmounted automatically
+    @objc open dynamic var volatile: Bool = true
 
-	//The upload Progression State (not serializable, not supervisable directly by : self.addChangesSuperviser use self.uploadProgression.addChangesSuperviser)
-	@objc dynamic open var uploadProgression:Progression = Progression()
+    // The upload Progression State (not serializable, not supervisable directly by : self.addChangesSuperviser use self.uploadProgression.addChangesSuperviser)
+    @objc open dynamic var uploadProgression: Progression = Progression()
 
-	//The Download Progression State (not serializable, not supervisable directly by : self.addChangesSuperviser use self.downloadProgression.addChangesSuperviser)
-	@objc dynamic open var downloadProgression:Progression = Progression()
+    // The Download Progression State (not serializable, not supervisable directly by : self.addChangesSuperviser use self.downloadProgression.addChangesSuperviser)
+    @objc open dynamic var downloadProgression: Progression = Progression()
 
-	//The Assembly Progression State (not serializable, not supervisable directly by : self.addChangesSuperviser use self.downloadProgression.addChangesSuperviser)
-	@objc dynamic open var assemblyProgression:Progression = Progression()
+    // The Assembly Progression State (not serializable, not supervisable directly by : self.addChangesSuperviser use self.downloadProgression.addChangesSuperviser)
+    @objc open dynamic var assemblyProgression: Progression = Progression()
 
-	//Turned to true if there is an upload in progress (used for progress consolidation optimization)
-	@objc dynamic open var uploadInProgress:Bool = false
+    // Turned to true if there is an upload in progress (used for progress consolidation optimization)
+    @objc open dynamic var uploadInProgress: Bool = false
 
-	//Turned to true if there is an upload in progress (used for progress consolidation optimization)
-	@objc dynamic open var downloadInProgress:Bool = false
-
+    // Turned to true if there is an upload in progress (used for progress consolidation optimization)
+    @objc open dynamic var downloadInProgress: Bool = false
 
     // MARK: - Codable
 
-
-    public enum BoxCodingKeys: String,CodingKey{
-		case isMounted
-		case assemblyInProgress
-		case volatile
-		case uploadProgression
-		case downloadProgression
-		case assemblyProgression
-		case uploadInProgress
-		case downloadInProgress
+    public enum BoxCodingKeys: String, CodingKey {
+        case isMounted
+        case assemblyInProgress
+        case volatile
+        case uploadProgression
+        case downloadProgression
+        case assemblyProgression
+        case uploadInProgress
+        case downloadInProgress
     }
 
-    required public init(from decoder: Decoder) throws{
-		try super.init(from: decoder)
-        try self.quietThrowingChanges {
-			let _ = try decoder.container(keyedBy: BoxCodingKeys.self)
+    public required init(from decoder: Decoder) throws {
+        try super.init(from: decoder)
+        try quietThrowingChanges {
+            _ = try decoder.container(keyedBy: BoxCodingKeys.self)
         }
     }
 
-    override open func encode(to encoder: Encoder) throws {
-		try super.encode(to:encoder)
-		var _ = encoder.container(keyedBy: BoxCodingKeys.self)
+    open override func encode(to encoder: Encoder) throws {
+        try super.encode(to: encoder)
+        _ = encoder.container(keyedBy: BoxCodingKeys.self)
     }
-
 
     // MARK: - Exposed (Bartleby's KVC like generative implementation)
 
     /// Return all the exposed instance variables keys. (Exposed == public and modifiable).
-    override  open var exposedKeys:[String] {
-        var exposed=super.exposedKeys
-        exposed.append(contentsOf:["isMounted","assemblyInProgress","volatile","uploadProgression","downloadProgression","assemblyProgression","uploadInProgress","downloadInProgress"])
+    open override var exposedKeys: [String] {
+        var exposed = super.exposedKeys
+        exposed.append(contentsOf: ["isMounted", "assemblyInProgress", "volatile", "uploadProgression", "downloadProgression", "assemblyProgression", "uploadInProgress", "downloadInProgress"])
         return exposed
     }
-
 
     /// Set the value of the given key
     ///
@@ -87,45 +83,44 @@ import Foundation
     /// - parameter key:   the key
     ///
     /// - throws: throws an Exception when the key is not exposed
-    override  open func setExposedValue(_ value:Any?, forKey key: String) throws {
+    open override func setExposedValue(_ value: Any?, forKey key: String) throws {
         switch key {
-            case "isMounted":
-                if let casted=value as? Bool{
-                    self.isMounted=casted
-                }
-            case "assemblyInProgress":
-                if let casted=value as? Bool{
-                    self.assemblyInProgress=casted
-                }
-            case "volatile":
-                if let casted=value as? Bool{
-                    self.volatile=casted
-                }
-            case "uploadProgression":
-                if let casted=value as? Progression{
-                    self.uploadProgression=casted
-                }
-            case "downloadProgression":
-                if let casted=value as? Progression{
-                    self.downloadProgression=casted
-                }
-            case "assemblyProgression":
-                if let casted=value as? Progression{
-                    self.assemblyProgression=casted
-                }
-            case "uploadInProgress":
-                if let casted=value as? Bool{
-                    self.uploadInProgress=casted
-                }
-            case "downloadInProgress":
-                if let casted=value as? Bool{
-                    self.downloadInProgress=casted
-                }
-            default:
-                return try super.setExposedValue(value, forKey: key)
+        case "isMounted":
+            if let casted = value as? Bool {
+                isMounted = casted
+            }
+        case "assemblyInProgress":
+            if let casted = value as? Bool {
+                assemblyInProgress = casted
+            }
+        case "volatile":
+            if let casted = value as? Bool {
+                volatile = casted
+            }
+        case "uploadProgression":
+            if let casted = value as? Progression {
+                uploadProgression = casted
+            }
+        case "downloadProgression":
+            if let casted = value as? Progression {
+                downloadProgression = casted
+            }
+        case "assemblyProgression":
+            if let casted = value as? Progression {
+                assemblyProgression = casted
+            }
+        case "uploadInProgress":
+            if let casted = value as? Bool {
+                uploadInProgress = casted
+            }
+        case "downloadInProgress":
+            if let casted = value as? Bool {
+                downloadInProgress = casted
+            }
+        default:
+            return try super.setExposedValue(value, forKey: key)
         }
     }
-
 
     /// Returns the value of an exposed key.
     ///
@@ -134,39 +129,42 @@ import Foundation
     /// - throws: throws Exception when the key is not exposed
     ///
     /// - returns: returns the value
-    override  open func getExposedValueForKey(_ key:String) throws -> Any?{
+    open override func getExposedValueForKey(_ key: String) throws -> Any? {
         switch key {
-            case "isMounted":
-               return self.isMounted
-            case "assemblyInProgress":
-               return self.assemblyInProgress
-            case "volatile":
-               return self.volatile
-            case "uploadProgression":
-               return self.uploadProgression
-            case "downloadProgression":
-               return self.downloadProgression
-            case "assemblyProgression":
-               return self.assemblyProgression
-            case "uploadInProgress":
-               return self.uploadInProgress
-            case "downloadInProgress":
-               return self.downloadInProgress
-            default:
-                return try super.getExposedValueForKey(key)
+        case "isMounted":
+            return isMounted
+        case "assemblyInProgress":
+            return assemblyInProgress
+        case "volatile":
+            return volatile
+        case "uploadProgression":
+            return uploadProgression
+        case "downloadProgression":
+            return downloadProgression
+        case "assemblyProgression":
+            return assemblyProgression
+        case "uploadInProgress":
+            return uploadInProgress
+        case "downloadInProgress":
+            return downloadInProgress
+        default:
+            return try super.getExposedValueForKey(key)
         }
     }
+
     // MARK: - Initializable
-    required public init() {
+
+    public required init() {
         super.init()
     }
 
     // MARK: - UniversalType
-    override  open class var collectionName:String{
+
+    open override class var collectionName: String {
         return "boxes"
     }
 
-    override  open var d_collectionName:String{
+    open override var d_collectionName: String {
         return Box.collectionName
     }
 }

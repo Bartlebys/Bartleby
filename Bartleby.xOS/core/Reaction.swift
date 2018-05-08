@@ -9,29 +9,27 @@
 import Foundation
 
 public enum Reaction {
-
     // No reaction
     case nothing
 
     // Adaptive Message
     // The final behaviour is determined by the Consignee but
     // When the reaction will be completed the transmit will be called
-    case dispatchAdaptiveMessage(context:Consignable, title:String, body:String, transmit:(_ selectedIndex:UInt)->())
+    case dispatchAdaptiveMessage(context: Consignable, title: String, body: String, transmit: (_ selectedIndex: UInt) -> Void)
 
-    //Explicit calls
+    // Explicit calls
 
     // Explicit interactive message
-    case presentInteractiveMessage(title:String, body:String, transmit:(_ selectedIndex:UInt)->())
+    case presentInteractiveMessage(title: String, body: String, transmit: (_ selectedIndex: UInt) -> Void)
 
     // Explicit volatile message
-    case presentVolatileMessage(title:String, body:String)
+    case presentVolatileMessage(title: String, body: String)
 
     // Explicit message logging
-    case putMessageInLogs(title:String, body:String)
+    case putMessageInLogs(title: String, body: String)
 
     // TRACKING
 
     // Tracks and possibly records the result for future inspection
-    case track(result:Any?, context:Consignable)
-    
+    case track(result: Any?, context: Consignable)
 }

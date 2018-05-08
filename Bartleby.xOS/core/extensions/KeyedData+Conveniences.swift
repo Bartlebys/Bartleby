@@ -8,12 +8,10 @@
 
 import Foundation
 
-extension KeyedData{
-
-    convenience init(key:String,data: Data) {
+extension KeyedData {
+    convenience init(key: String, data: Data) {
         self.init()
-        self.key=key
-        self.data=data
+        self.key = key
+        self.data = data
     }
-
 }

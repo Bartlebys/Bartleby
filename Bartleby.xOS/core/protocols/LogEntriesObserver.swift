@@ -8,7 +8,6 @@
 
 import Foundation
 
-
-public protocol LogEntriesObserver{
-    func receive(_ entry:LogEntry);
+public protocol LogEntriesObserver {
+    func receive(_ entry: LogEntry)
 }

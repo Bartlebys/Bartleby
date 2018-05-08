@@ -11,8 +11,7 @@ import Foundation
 /// Should be implemented by anything that want to acceed to a node.
 /// This protocol is simplier than NSFilePresenter/Coordinator
 /// It focuses on File consumers with read access to assembled files.
-public protocol NodeAccessor:Identifiable{
-
+public protocol NodeAccessor: Identifiable {
     /// Called when:
     /// - the current node assembled file will become temporaly unusable (for example on external update)
     /// - the Box has been unMounted
@@ -22,8 +21,7 @@ public protocol NodeAccessor:Identifiable{
     /// If the node accessor remain active, if the node become usable again it will receive a `fileIsAvailable(for node:Node)` call
     ///
     /// - Parameter node: the node
-    func willBecomeUnusable(node:Node)
-
+    func willBecomeUnusable(node: Node)
 
     /// Called after an `wantsAccess` demand  when
     /// - the current node assembled file becomes available (all the block are available, and the file has been assembled)
@@ -31,8 +29,7 @@ public protocol NodeAccessor:Identifiable{
     /// - Parameters:
     ///   - node: the node
     ///   - path: its file path (changes on each assembly)
-    func fileIsAvailable(for node:Node, at path:String)
-
+    func fileIsAvailable(for node: Node, at path: String)
 
     /// Called after an `wantsAccess` demand  when
     /// When the access to the node is refused.
@@ -40,7 +37,5 @@ public protocol NodeAccessor:Identifiable{
     /// - Parameters:
     ///   - node: the node
     ///   - explanations: the explanations
-    func accessRefused(to:Node,explanations:String)
-    
+    func accessRefused(to: Node, explanations: String)
 }
-

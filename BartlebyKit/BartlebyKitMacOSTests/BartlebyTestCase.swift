@@ -6,75 +6,71 @@
 //
 //
 
-import XCTest
 import BartlebyKit
+import XCTest
 
 /// A base test case with document and file oriented facilities
 public class BartlebyTestCase: XCTestCase {
+    static var documents = [BartlebyDocument]()
 
-    static var documents=[BartlebyDocument]()
+    static var createdURI = [URL]()
 
-    static var createdURI=[URL]()
-
-    public static func urlByAppending(path:String)->URL{
-        return URL(fileURLWithPath: Bartleby.getSearchPath(FileManager.SearchPathDirectory.desktopDirectory)!+"/"+path)
+    public static func urlByAppending(path: String) -> URL {
+        return URL(fileURLWithPath: Bartleby.getSearchPath(FileManager.SearchPathDirectory.desktopDirectory)! + "/" + path)
     }
 
-    public static var document:BartlebyDocument{
+    public static var document: BartlebyDocument {
         return documents.first ?? newDocument()
     }
 
-    public static func newDocument()->BartlebyDocument{
-        let document=BartlebyDocument()
+    public static func newDocument() -> BartlebyDocument {
+        let document = BartlebyDocument()
         document.configureSchema()
-        document.metadata.sugar=Bartleby.randomStringWithLength(1024)
+        document.metadata.sugar = Bartleby.randomStringWithLength(1024)
         Bartleby.sharedInstance.declare(document)
-        let group=AsyncGroup()
+        let group = AsyncGroup()
         group.enter()
-        let documentURL=urlByAppending(path:"testDocument\(documents.count+1).document")
-        var catched:Error?=nil
-        document.save(to:documentURL , ofType: "", for: NSDocument.SaveOperationType.saveOperation, completionHandler: { error in
-            catched=error
+        let documentURL = urlByAppending(path: "testDocument\(documents.count + 1).document")
+        var catched: Error?
+        document.save(to: documentURL, ofType: "", for: NSDocument.SaveOperationType.saveOperation, completionHandler: { error in
+            catched = error
             group.leave()
         })
         group.wait()
-        if let error = catched{
+        if let error = catched {
             assertionFailure("Setup Precondition failed \(error)")
-        }else{
+        } else {
             BartlebyTestCase.createdURI.append(documentURL)
         }
         documents.append(document)
         return document
     }
 
-
-   public static func createFile(size:UInt,fileName:String,letter:String="z"){
-        let data=String(repeating: letter, count: Int(size)).data(using: .utf8)!
-        do{
-            let u=urlByAppending(path: fileName)
-            try data.write(to: u )
+    public static func createFile(size: UInt, fileName: String, letter: String = "z") {
+        let data = String(repeating: letter, count: Int(size)).data(using: .utf8)!
+        do {
+            let u = urlByAppending(path: fileName)
+            try data.write(to: u)
             createdURI.append(u)
-        }catch{
+        } catch {
             XCTFail("Enable to create file \(fileName) \(error)")
         }
     }
 
-    override public static func setUp(){
+    public override static func setUp() {
         XCTestCase.setUp()
         Bartleby.sharedInstance.configureWith(TestsConfiguration.self)
-        Bartleby.ephemeral=true
+        Bartleby.ephemeral = true
     }
 
-    override public static func tearDown() {
+    public override static func tearDown() {
         XCTestCase.tearDown()
-        for url in BartlebyTestCase.createdURI{
-            do{
+        for url in BartlebyTestCase.createdURI {
+            do {
                 try FileManager.default.removeItem(at: url)
-            }catch{
+            } catch {
                 print("\(error)")
             }
         }
     }
-
-
 }

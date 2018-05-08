@@ -82,7 +82,7 @@ class RequestSubclassRequestPropertyTestCase: BaseTestCase {
     }
 
     private class AuthenticationAdapter: RequestAdapter {
-        func adapt(_ urlRequest: URLRequest) throws -> URLRequest {
+        func adapt(_: URLRequest) throws -> URLRequest {
             throw AuthenticationError.expiredAccessToken
         }
     }
@@ -295,7 +295,7 @@ class RequestResponseTestCase: BaseTestCase {
             "french": "français",
             "japanese": "日本語",
             "arabic": "العربية",
-            "emoji": "😃"
+            "emoji": "😃",
         ]
 
         let expectation = self.expectation(description: "request should succeed")
@@ -347,7 +347,7 @@ class RequestResponseTestCase: BaseTestCase {
         let parameters = [
             "email": "user@alamofire.org",
             "png_image": pngBase64EncodedString,
-            "jpeg_image": jpegBase64EncodedString
+            "jpeg_image": jpegBase64EncodedString,
         ]
 
         let expectation = self.expectation(description: "request should succeed")
@@ -412,16 +412,16 @@ class RequestExtensionTestCase: BaseTestCase {
         // When
         Alamofire.request(urlString)
             .preValidate {
-                responses.append("preValidate")
-            }
-            .validate()
-            .postValidate {
-                responses.append("postValidate")
-            }
-            .response { _ in
-                responses.append("response")
-                expectation.fulfill()
-            }
+            responses.append("preValidate")
+        }
+        .validate()
+        .postValidate {
+            responses.append("postValidate")
+        }
+        .response { _ in
+            responses.append("response")
+            expectation.fulfill()
+        }
 
         waitForExpectations(timeout: timeout, handler: nil)
 
@@ -469,6 +469,7 @@ class RequestDescriptionTestCase: BaseTestCase {
 // MARK: -
 
 class RequestDebugDescriptionTestCase: BaseTestCase {
+
     // MARK: Properties
 
     let manager: SessionManager = {
@@ -524,7 +525,7 @@ class RequestDebugDescriptionTestCase: BaseTestCase {
         let components = cURLCommandComponents(for: request)
 
         // Then
-        XCTAssertEqual(components[0..<3], ["$", "curl", "-v"])
+        XCTAssertEqual(components[0 ..< 3], ["$", "curl", "-v"])
         XCTAssertFalse(components.contains("-X"))
         XCTAssertEqual(components.last, "\"\(urlString)\"")
     }
@@ -534,12 +535,12 @@ class RequestDebugDescriptionTestCase: BaseTestCase {
         let urlString = "https://httpbin.org/get"
 
         // When
-        let headers = [ "Accept-Language": "en-GB" ]
+        let headers = ["Accept-Language": "en-GB"]
         let request = managerWithAcceptLanguageHeader.request(urlString, headers: headers)
         let components = cURLCommandComponents(for: request)
 
         // Then
-        XCTAssertEqual(components[0..<3], ["$", "curl", "-v"])
+        XCTAssertEqual(components[0 ..< 3], ["$", "curl", "-v"])
         XCTAssertFalse(components.contains("-X"))
         XCTAssertEqual(components.last, "\"\(urlString)\"")
 
@@ -558,8 +559,8 @@ class RequestDebugDescriptionTestCase: BaseTestCase {
         let components = cURLCommandComponents(for: request)
 
         // Then
-        XCTAssertEqual(components[0..<3], ["$", "curl", "-v"])
-        XCTAssertEqual(components[3..<5], ["-X", "POST"])
+        XCTAssertEqual(components[0 ..< 3], ["$", "curl", "-v"])
+        XCTAssertEqual(components[3 ..< 5], ["-X", "POST"])
         XCTAssertEqual(components.last, "\"\(urlString)\"")
     }
 
@@ -570,7 +571,7 @@ class RequestDebugDescriptionTestCase: BaseTestCase {
         let parameters = [
             "foo": "bar",
             "fo\"o": "b\"ar",
-            "f'oo": "ba'r"
+            "f'oo": "ba'r",
         ]
 
         // When
@@ -578,8 +579,8 @@ class RequestDebugDescriptionTestCase: BaseTestCase {
         let components = cURLCommandComponents(for: request)
 
         // Then
-        XCTAssertEqual(components[0..<3], ["$", "curl", "-v"])
-        XCTAssertEqual(components[3..<5], ["-X", "POST"])
+        XCTAssertEqual(components[0 ..< 3], ["$", "curl", "-v"])
+        XCTAssertEqual(components[3 ..< 5], ["-X", "POST"])
 
         XCTAssertNotNil(request.debugDescription.range(of: "-H \"Content-Type: application/json\""))
         XCTAssertNotNil(request.debugDescription.range(of: "-d \"{"))
@@ -609,10 +610,10 @@ class RequestDebugDescriptionTestCase: BaseTestCase {
         let components = cURLCommandComponents(for: request)
 
         // Then
-        XCTAssertEqual(components[0..<3], ["$", "curl", "-v"])
-        XCTAssertEqual(components[3..<5], ["-X", "POST"])
+        XCTAssertEqual(components[0 ..< 3], ["$", "curl", "-v"])
+        XCTAssertEqual(components[3 ..< 5], ["-X", "POST"])
         XCTAssertEqual(components.last, "\"\(urlString)\"")
-        XCTAssertEqual(components[5..<6], ["-b"])
+        XCTAssertEqual(components[5 ..< 6], ["-b"])
     }
 
     func testPOSTRequestWithCookiesDisabledDebugDescription() {
@@ -655,7 +656,7 @@ class RequestDebugDescriptionTestCase: BaseTestCase {
             to: urlString,
             encodingCompletion: { result in
                 switch result {
-                case .success(let upload, _, _):
+                case let .success(upload, _, _):
                     request = upload
                     components = self.cURLCommandComponents(for: upload)
 
@@ -671,7 +672,7 @@ class RequestDebugDescriptionTestCase: BaseTestCase {
         debugPrint(request!)
 
         // Then
-        XCTAssertEqual(components[0..<3], ["$", "curl", "-v"])
+        XCTAssertEqual(components[0 ..< 3], ["$", "curl", "-v"])
         XCTAssertTrue(components.contains("-X"))
         XCTAssertEqual(components.last, "\"\(urlString)\"")
 

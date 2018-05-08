@@ -9,105 +9,102 @@
 //
 import Foundation
 #if !USE_EMBEDDED_MODULES
-	#endif
+#endif
 
 // MARK: Bartleby's Core: an object used to provision serialized operation.
-@objc open class PushOperation : ManagedModel{
 
+@objc open class PushOperation: ManagedModel {
     // Universal type support
-    override open class func typeName() -> String {
+    open override class func typeName() -> String {
         return "PushOperation"
     }
 
-	//The store type of the operation 
-	@objc dynamic open var operationName:String = Default.NO_NAME
+    // The store type of the operation
+    @objc open dynamic var operationName: String = Default.NO_NAME
 
-	//The unique identifier of the related Command
-	@objc dynamic open var commandUID:String?
+    // The unique identifier of the related Command
+    @objc open dynamic var commandUID: String?
 
-	//The serialized action call
-	@objc dynamic open var serialized:Data?
+    // The serialized action call
+    @objc open dynamic var serialized: Data?
 
-	//The last response serialized data
-	open var responseData:Data?
+    // The last response serialized data
+    open var responseData: Data?
 
-	//The completion state of the operation
-	@objc dynamic open var completionState:Completion?
+    // The completion state of the operation
+    @objc open dynamic var completionState: Completion?
 
-	//The invocation Status None: on creation, Pending: can be pushed, InProgress: the endpoint has been called, Completed : The end point call has been completed
-	public enum Status:String{
-		case none = "none"
-		case pending = "pending"
-		case inProgress = "inProgress"
-		case completed = "completed"
-	}
-	open var status:Status = .none
+    // The invocation Status None: on creation, Pending: can be pushed, InProgress: the endpoint has been called, Completed : The end point call has been completed
+    public enum Status: String {
+        case none
+        case pending
+        case inProgress
+        case completed
+    }
 
-	//The invocation counter
-	@objc dynamic open var counter:Int = -1
+    open var status: Status = .none
 
-	//The creationdate
-	@objc dynamic open var creationDate:Date?
+    // The invocation counter
+    @objc open dynamic var counter: Int = -1
 
-	//The last invocation date
-	@objc dynamic open var lastInvocationDate:Date?
+    // The creationdate
+    @objc open dynamic var creationDate: Date?
 
+    // The last invocation date
+    @objc open dynamic var lastInvocationDate: Date?
 
     // MARK: - Codable
 
-
-    public enum PushOperationCodingKeys: String,CodingKey{
-		case operationName
-		case commandUID
-		case serialized
-		case responseData
-		case completionState
-		case status
-		case counter
-		case creationDate
-		case lastInvocationDate
+    public enum PushOperationCodingKeys: String, CodingKey {
+        case operationName
+        case commandUID
+        case serialized
+        case responseData
+        case completionState
+        case status
+        case counter
+        case creationDate
+        case lastInvocationDate
     }
 
-    required public init(from decoder: Decoder) throws{
-		try super.init(from: decoder)
-        try self.quietThrowingChanges {
-			let values = try decoder.container(keyedBy: PushOperationCodingKeys.self)
-			self.operationName = try values.decode(String.self,forKey:.operationName)
-			self.commandUID = try values.decodeIfPresent(String.self,forKey:.commandUID)
-			self.serialized = try values.decodeIfPresent(Data.self,forKey:.serialized)
-			self.responseData = try values.decodeIfPresent(Data.self,forKey:.responseData)
-			self.completionState = try values.decodeIfPresent(Completion.self,forKey:.completionState)
-			self.status = PushOperation.Status(rawValue: try values.decode(String.self,forKey:.status)) ?? .none
-			self.counter = try values.decode(Int.self,forKey:.counter)
-			self.creationDate = try values.decodeIfPresent(Date.self,forKey:.creationDate)
-			self.lastInvocationDate = try values.decodeIfPresent(Date.self,forKey:.lastInvocationDate)
+    public required init(from decoder: Decoder) throws {
+        try super.init(from: decoder)
+        try quietThrowingChanges {
+            let values = try decoder.container(keyedBy: PushOperationCodingKeys.self)
+            self.operationName = try values.decode(String.self, forKey: .operationName)
+            self.commandUID = try values.decodeIfPresent(String.self, forKey: .commandUID)
+            self.serialized = try values.decodeIfPresent(Data.self, forKey: .serialized)
+            self.responseData = try values.decodeIfPresent(Data.self, forKey: .responseData)
+            self.completionState = try values.decodeIfPresent(Completion.self, forKey: .completionState)
+            self.status = PushOperation.Status(rawValue: try values.decode(String.self, forKey: .status)) ?? .none
+            self.counter = try values.decode(Int.self, forKey: .counter)
+            self.creationDate = try values.decodeIfPresent(Date.self, forKey: .creationDate)
+            self.lastInvocationDate = try values.decodeIfPresent(Date.self, forKey: .lastInvocationDate)
         }
     }
 
-    override open func encode(to encoder: Encoder) throws {
-		try super.encode(to:encoder)
-		var container = encoder.container(keyedBy: PushOperationCodingKeys.self)
-		try container.encode(self.operationName,forKey:.operationName)
-		try container.encodeIfPresent(self.commandUID,forKey:.commandUID)
-		try container.encodeIfPresent(self.serialized,forKey:.serialized)
-		try container.encodeIfPresent(self.responseData,forKey:.responseData)
-		try container.encodeIfPresent(self.completionState,forKey:.completionState)
-		try container.encode(self.status.rawValue ,forKey:.status)
-		try container.encode(self.counter,forKey:.counter)
-		try container.encodeIfPresent(self.creationDate,forKey:.creationDate)
-		try container.encodeIfPresent(self.lastInvocationDate,forKey:.lastInvocationDate)
+    open override func encode(to encoder: Encoder) throws {
+        try super.encode(to: encoder)
+        var container = encoder.container(keyedBy: PushOperationCodingKeys.self)
+        try container.encode(operationName, forKey: .operationName)
+        try container.encodeIfPresent(commandUID, forKey: .commandUID)
+        try container.encodeIfPresent(serialized, forKey: .serialized)
+        try container.encodeIfPresent(responseData, forKey: .responseData)
+        try container.encodeIfPresent(completionState, forKey: .completionState)
+        try container.encode(status.rawValue, forKey: .status)
+        try container.encode(counter, forKey: .counter)
+        try container.encodeIfPresent(creationDate, forKey: .creationDate)
+        try container.encodeIfPresent(lastInvocationDate, forKey: .lastInvocationDate)
     }
-
 
     // MARK: - Exposed (Bartleby's KVC like generative implementation)
 
     /// Return all the exposed instance variables keys. (Exposed == public and modifiable).
-    override  open var exposedKeys:[String] {
-        var exposed=super.exposedKeys
-        exposed.append(contentsOf:["operationName","commandUID","serialized","responseData","completionState","status","counter","creationDate","lastInvocationDate"])
+    open override var exposedKeys: [String] {
+        var exposed = super.exposedKeys
+        exposed.append(contentsOf: ["operationName", "commandUID", "serialized", "responseData", "completionState", "status", "counter", "creationDate", "lastInvocationDate"])
         return exposed
     }
-
 
     /// Set the value of the given key
     ///
@@ -115,49 +112,48 @@ import Foundation
     /// - parameter key:   the key
     ///
     /// - throws: throws an Exception when the key is not exposed
-    override  open func setExposedValue(_ value:Any?, forKey key: String) throws {
+    open override func setExposedValue(_ value: Any?, forKey key: String) throws {
         switch key {
-            case "operationName":
-                if let casted=value as? String{
-                    self.operationName=casted
-                }
-            case "commandUID":
-                if let casted=value as? String{
-                    self.commandUID=casted
-                }
-            case "serialized":
-                if let casted=value as? Data{
-                    self.serialized=casted
-                }
-            case "responseData":
-                if let casted=value as? Data{
-                    self.responseData=casted
-                }
-            case "completionState":
-                if let casted=value as? Completion{
-                    self.completionState=casted
-                }
-            case "status":
-                if let casted=value as? PushOperation.Status{
-                    self.status=casted
-                }
-            case "counter":
-                if let casted=value as? Int{
-                    self.counter=casted
-                }
-            case "creationDate":
-                if let casted=value as? Date{
-                    self.creationDate=casted
-                }
-            case "lastInvocationDate":
-                if let casted=value as? Date{
-                    self.lastInvocationDate=casted
-                }
-            default:
-                return try super.setExposedValue(value, forKey: key)
+        case "operationName":
+            if let casted = value as? String {
+                operationName = casted
+            }
+        case "commandUID":
+            if let casted = value as? String {
+                commandUID = casted
+            }
+        case "serialized":
+            if let casted = value as? Data {
+                serialized = casted
+            }
+        case "responseData":
+            if let casted = value as? Data {
+                responseData = casted
+            }
+        case "completionState":
+            if let casted = value as? Completion {
+                completionState = casted
+            }
+        case "status":
+            if let casted = value as? PushOperation.Status {
+                status = casted
+            }
+        case "counter":
+            if let casted = value as? Int {
+                counter = casted
+            }
+        case "creationDate":
+            if let casted = value as? Date {
+                creationDate = casted
+            }
+        case "lastInvocationDate":
+            if let casted = value as? Date {
+                lastInvocationDate = casted
+            }
+        default:
+            return try super.setExposedValue(value, forKey: key)
         }
     }
-
 
     /// Returns the value of an exposed key.
     ///
@@ -166,41 +162,44 @@ import Foundation
     /// - throws: throws Exception when the key is not exposed
     ///
     /// - returns: returns the value
-    override  open func getExposedValueForKey(_ key:String) throws -> Any?{
+    open override func getExposedValueForKey(_ key: String) throws -> Any? {
         switch key {
-            case "operationName":
-               return self.operationName
-            case "commandUID":
-               return self.commandUID
-            case "serialized":
-               return self.serialized
-            case "responseData":
-               return self.responseData
-            case "completionState":
-               return self.completionState
-            case "status":
-               return self.status
-            case "counter":
-               return self.counter
-            case "creationDate":
-               return self.creationDate
-            case "lastInvocationDate":
-               return self.lastInvocationDate
-            default:
-                return try super.getExposedValueForKey(key)
+        case "operationName":
+            return operationName
+        case "commandUID":
+            return commandUID
+        case "serialized":
+            return serialized
+        case "responseData":
+            return responseData
+        case "completionState":
+            return completionState
+        case "status":
+            return status
+        case "counter":
+            return counter
+        case "creationDate":
+            return creationDate
+        case "lastInvocationDate":
+            return lastInvocationDate
+        default:
+            return try super.getExposedValueForKey(key)
         }
     }
+
     // MARK: - Initializable
-    required public init() {
+
+    public required init() {
         super.init()
     }
 
     // MARK: - UniversalType
-    override  open class var collectionName:String{
+
+    open override class var collectionName: String {
         return "pushOperations"
     }
 
-    override  open var d_collectionName:String{
+    open override var d_collectionName: String {
         return PushOperation.collectionName
     }
 }

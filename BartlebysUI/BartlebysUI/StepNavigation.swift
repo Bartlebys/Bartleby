@@ -8,12 +8,10 @@
 
 import Foundation
 
-
 // MARK: - StepNavigation
 
-public protocol StepNavigation{
-
-    func didValidateStep(_ step:Int)
+public protocol StepNavigation {
+    func didValidateStep(_ step: Int)
     func disableActions()
     func enableActions()
 

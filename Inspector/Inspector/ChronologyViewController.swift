@@ -6,120 +6,111 @@
 //
 //
 
-import Cocoa
 import BartlebyKit
 import BartlebysUI
+import Cocoa
 
+class ChronologyViewController: NSViewController, DocumentDependent, NSTableViewDelegate {
+    override var nibName: NSNib.Name { return NSNib.Name("ChronologyViewController") }
 
-class ChronologyViewController: NSViewController ,DocumentDependent,NSTableViewDelegate{
+    @objc internal dynamic var _document: BartlebyDocument?
 
-    override var nibName : NSNib.Name { return NSNib.Name("ChronologyViewController") }
+    @IBOutlet var tableView: BXTableView!
 
-    @objc internal dynamic var _document:BartlebyDocument?
-
-    @IBOutlet weak var tableView: BXTableView!
-
-    @IBOutlet weak var searchField: NSSearchField!
+    @IBOutlet var searchField: NSSearchField!
 
     @IBOutlet var arrayController: NSArrayController!
 
-    fileprivate var _lockFilterUpdate=false
+    fileprivate var _lockFilterUpdate = false
 
     @IBOutlet var metricsViewController: MetricsDetailsViewController!
 
+    // MARK: - DocumentDependent
 
-    // MARK - DocumentDependent
-
-    internal var documentProvider: DocumentProvider?{
-        didSet{
-            if let documentReference=self.documentProvider?.getDocument(){
-                self._document=documentReference
+    internal var documentProvider: DocumentProvider? {
+        didSet {
+            if let documentReference = self.documentProvider?.getDocument() {
+                _document = documentReference
             }
         }
     }
 
-    public func providerHasADocument(){}
-
-
+    public func providerHasADocument() {}
 
     // MARK: life Cycle
 
     override func viewDidAppear() {
         super.viewDidAppear()
-        self._updateFilter()
+        _updateFilter()
     }
-
 
     // Present the metricsViewController
     @IBAction func doubleClick(_ sender: BXTableView) {
-        if self.metricsViewController.presenting == nil{
-            if let metrics=arrayController.arrangedObjects as? [Metrics]{
-                let rows=sender.selectedRowIndexes
-                if rows.count>0 {
+        if metricsViewController.presenting == nil {
+            if let metrics = arrayController.arrangedObjects as? [Metrics] {
+                let rows = sender.selectedRowIndexes
+                if rows.count > 0 {
                     let frame = tableView.frameOfCell(atColumn: sender.clickedColumn, row: sender.clickedRow)
-                    var selectedMetrics:[Metrics]=[Metrics]()
-                    for idx in rows{
+                    var selectedMetrics: [Metrics] = [Metrics]()
+                    for idx in rows {
                         selectedMetrics.append(metrics[idx])
                     }
-                    selectedMetrics=selectedMetrics.sorted(by: { (rMetrics, lMetrics) -> Bool in
-                        return rMetrics.counter > lMetrics.counter
+                    selectedMetrics = selectedMetrics.sorted(by: { (rMetrics, lMetrics) -> Bool in
+                        rMetrics.counter > lMetrics.counter
                     })
-                    self.metricsViewController.arrayOfmetrics=selectedMetrics
-                    self.presentViewController(self.metricsViewController,
-                                               asPopoverRelativeTo: frame,
-                                               of: tableView,
-                                               preferredEdge:NSRectEdge(rawValue: 2)!,
-                                               behavior: NSPopover.Behavior.transient)
+                    metricsViewController.arrayOfmetrics = selectedMetrics
+                    presentViewController(metricsViewController,
+                                          asPopoverRelativeTo: frame,
+                                          of: tableView,
+                                          preferredEdge: NSRectEdge(rawValue: 2)!,
+                                          behavior: NSPopover.Behavior.transient)
                 }
             }
         }
     }
 
-    @IBAction func copyToPasteBoard(_ sender: AnyObject) {
-        var stringifyedMetrics=Default.NO_MESSAGE
-        if self.arrayController.selectedObjects.count>0{
+    @IBAction func copyToPasteBoard(_: AnyObject) {
+        var stringifyedMetrics = Default.NO_MESSAGE
+        if arrayController.selectedObjects.count > 0 {
             // Take the selection
-            if let m=self.arrayController.selectedObjects as? [Metrics]{
+            if let m = self.arrayController.selectedObjects as? [Metrics] {
                 let data = try? JSON.prettyEncoder.encode(m)
-                if let string = data?.optionalString(using:Default.STRING_ENCODING){
-                    stringifyedMetrics=string
+                if let string = data?.optionalString(using: Default.STRING_ENCODING) {
+                    stringifyedMetrics = string
                 }
             }
-        }else{
+        } else {
             // Take all the metricss
-            if let m=self.arrayController.arrangedObjects as? [Metrics]{
+            if let m = self.arrayController.arrangedObjects as? [Metrics] {
                 let data = try? JSON.prettyEncoder.encode(m)
-                if let string = data?.optionalString(using:Default.STRING_ENCODING){
-                    stringifyedMetrics=string
+                if let string = data?.optionalString(using: Default.STRING_ENCODING) {
+                    stringifyedMetrics = string
                 }
             }
         }
         NSPasteboard.general.clearContents()
-        let ns:NSString=stringifyedMetrics as NSString
+        let ns: NSString = stringifyedMetrics as NSString
         NSPasteboard.general.writeObjects([ns])
     }
 
     // MARK: Filtering
 
-
-    @IBAction func didChange(_ sender: AnyObject) {
-        self._updateFilter()
+    @IBAction func didChange(_: AnyObject) {
+        _updateFilter()
     }
 
-    fileprivate func _updateFilter() -> () {
-        if !self._lockFilterUpdate{
-            let predicate=NSPredicate { (object, _) -> Bool in
-                if let entry = object as? Metrics{
-                    let searched=PString.ltrim(self.searchField.stringValue)
-                    if searched != ""{
-                        return entry.operationName.contains(searched, compareOptions: [NSString.CompareOptions.caseInsensitive,NSString.CompareOptions.diacriticInsensitive])
+    fileprivate func _updateFilter() {
+        if !_lockFilterUpdate {
+            let predicate = NSPredicate { (object, _) -> Bool in
+                if let entry = object as? Metrics {
+                    let searched = PString.ltrim(self.searchField.stringValue)
+                    if searched != "" {
+                        return entry.operationName.contains(searched, compareOptions: [NSString.CompareOptions.caseInsensitive, NSString.CompareOptions.diacriticInsensitive])
                     }
                 }
                 return true
             }
-            self.arrayController.filterPredicate=predicate
+            arrayController.filterPredicate = predicate
         }
     }
-    
-
 }

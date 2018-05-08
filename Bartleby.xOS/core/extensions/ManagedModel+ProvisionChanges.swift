@@ -8,10 +8,7 @@
 
 import Foundation
 
-
-extension ManagedModel:ProvisionChanges{
-
-
+extension ManagedModel: ProvisionChanges {
     /**
      The change provisionning is related to multiple essential notions.
 
@@ -34,116 +31,108 @@ extension ManagedModel:ProvisionChanges{
      - parameter oldValue: the oldValue
      - parameter newValue: the newValue
      */
-    open func provisionChanges(forKey key:String,oldValue:Any?,newValue:Any?){
-
+    open func provisionChanges(forKey key: String, oldValue: Any?, newValue: Any?) {
         // Invoke the closures (changes Observers)
         // note that it occurs even changes are not inspectable.
-        for (_,supervisionClosure) in self._supervisers{
-            supervisionClosure(key,oldValue,newValue)
+        for (_, supervisionClosure) in _supervisers {
+            supervisionClosure(key, oldValue, newValue)
         }
-        
-       if self._autoCommitIsEnabled == true {
-            self.collection?.stage(self)
+
+        if _autoCommitIsEnabled == true {
+            collection?.stage(self)
         }
 
         // Changes propagation & Inspection
         // Propagate item changes to its collections
 
-        if key=="*" && !(self is BartlebyCollection){
-            if self.isInspectable {
+        if key == "*" && !(self is BartlebyCollection) {
+            if isInspectable {
                 // Dictionnary or NSData Patch
-                self._appendChanges(key:key,changes:"\(type(of: self).typeName()) \(self.UID) has been patched")
+                _appendChanges(key: key, changes: "\(type(of: self).typeName()) \(UID) has been patched")
             }
-            self.collection?.provisionChanges(forKey: "item", oldValue: self, newValue: self)
-        }else{
+            collection?.provisionChanges(forKey: "item", oldValue: self, newValue: self)
+        } else {
             if let collection = self as? BartlebyCollection {
-                if self.isInspectable {
-                    let entityName=Pluralization.singularize(collection.d_collectionName)
-                    if key=="_items"{
-                        if let oldArray=oldValue as? [ManagedModel], let newArray=newValue as? [ManagedModel]{
-                            if oldArray.count < newArray.count{
-                                let stringValue:String! = (newArray.last?.UID ?? "")
-                                self._appendChanges(key:key,changes:"Added a new \(entityName) \(stringValue))")
-                            }else{
-                                self._appendChanges(key:key,changes:"Removed One \(entityName)")
+                if isInspectable {
+                    let entityName = Pluralization.singularize(collection.d_collectionName)
+                    if key == "_items" {
+                        if let oldArray = oldValue as? [ManagedModel], let newArray = newValue as? [ManagedModel] {
+                            if oldArray.count < newArray.count {
+                                let stringValue: String! = (newArray.last?.UID ?? "")
+                                _appendChanges(key: key, changes: "Added a new \(entityName) \(stringValue))")
+                            } else {
+                                _appendChanges(key: key, changes: "Removed One \(entityName)")
                             }
                         }
                     }
                     if key == "item" {
-                        if let o = newValue as? ManagedModel{
-                            self._appendChanges(key:key,changes:"\(entityName) \(o.UID) has changed")
-                        }else{
-                            self._appendChanges(key:key,changes:"\(entityName) has changed anomaly")
+                        if let o = newValue as? ManagedModel {
+                            _appendChanges(key: key, changes: "\(entityName) \(o.UID) has changed")
+                        } else {
+                            _appendChanges(key: key, changes: "\(entityName) has changed anomaly")
                         }
                     }
                     if key == "*" {
-                        self._appendChanges(key:key,changes:"This collection has been patched")
+                        _appendChanges(key: key, changes: "This collection has been patched")
                     }
                 }
-            }else if let collectibleNewValue = newValue as? Collectible{
-                if self.isInspectable {
+            } else if let collectibleNewValue = newValue as? Collectible {
+                if isInspectable {
                     // Collectible objects
-                    self._appendChanges(key:key,changes:"\(collectibleNewValue.runTimeTypeName()) \(collectibleNewValue.UID) has changed")
+                    _appendChanges(key: key, changes: "\(collectibleNewValue.runTimeTypeName()) \(collectibleNewValue.UID) has changed")
                 }
                 // Relay the as a global change to the collection
-                self.collection?.provisionChanges(forKey: "item", oldValue: self, newValue: self)
-            }else{
+                collection?.provisionChanges(forKey: "item", oldValue: self, newValue: self)
+            } else {
                 // Natives types
                 let o = oldValue ?? "void"
                 let n = newValue ?? "void"
-                if self.isInspectable {
-                    self._appendChanges(key:key,changes:"\(o) ->\(n)")
+                if isInspectable {
+                    _appendChanges(key: key, changes: "\(o) ->\(n)")
                 }
                 // Relay the as a global change to the collection
-                self.collection?.provisionChanges(forKey: "item", oldValue: self, newValue: self)
+                collection?.provisionChanges(forKey: "item", oldValue: self, newValue: self)
             }
         }
-
     }
-
-
-
 
     /// Performs the deserialization without invoking provisionChanges
     ///
     /// - parameter changes: the changes closure
-    public func quietChanges(_  changes:()->()){
-        self._quietChanges=true
+    public func quietChanges(_ changes: () -> Void) {
+        _quietChanges = true
         changes()
-        self._quietChanges=false
+        _quietChanges = false
     }
-
 
     /// Performs the deserialization without invoking provisionChanges
     ///
     /// - parameter changes: the changes closure
-    public func quietThrowingChanges(_ changes:()throws->())rethrows{
-        self._quietChanges=true
+    public func quietThrowingChanges(_ changes: () throws -> Void) rethrows {
+        _quietChanges = true
         try changes()
-        self._quietChanges=false
+        _quietChanges = false
     }
 
-    // MARK : - 
+    // MARK: -
 
-    public var wantsQuietChanges:Bool{
-        return self._quietChanges
+    public var wantsQuietChanges: Bool {
+        return _quietChanges
     }
-
 
     /// **Inspection**
     /// Appends the change to the changedKey
     ///
     /// - parameter key:     the key
     /// - parameter changes: the description of the changes
-    private func _appendChanges(key:String,changes:String){
-        let kChanges=KeyedChanges()
-        kChanges.key=key
-        kChanges.changes=changes
-        self.changedKeys.append(kChanges)
+    private func _appendChanges(key: String, changes: String) {
+        let kChanges = KeyedChanges()
+        kChanges.key = key
+        kChanges.changes = changes
+        changedKeys.append(kChanges)
     }
 
-
-    open func stage(){
-        self.collection?.stage(self)
+    open func stage() {
+        collection?.stage(self)
     }
 }

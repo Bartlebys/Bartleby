@@ -12,73 +12,68 @@ import Foundation
 #endif
 
 // MARK: Bartleby's Core: an object that encapsulate the URL Request information
-@objc open class HTTPRequest : UnManagedModel {
 
+@objc open class HTTPRequest: UnManagedModel {
     // DeclaredTypeName support
-    override open class func typeName() -> String {
+    open override class func typeName() -> String {
         return "HTTPRequest"
     }
 
+    // The url
+    @objc open dynamic var url: URL?
 
-	//The url
-	@objc dynamic open var url:URL?
+    // The HTTP method
+    @objc open dynamic var httpMethod: String = "GET"
 
-	//The HTTP method
-	@objc dynamic open var httpMethod:String = "GET"
+    // The Headers
+    @objc open dynamic var headers: [String: String]?
 
-	//The Headers
-	@objc dynamic open var headers:[String:String]?
+    // This data is sent as the message body of the request
+    @objc open dynamic var httpBody: Data?
 
-	//This data is sent as the message body of the request
-	@objc dynamic open var httpBody:Data?
-
-	//The timeout
-	@objc dynamic open var timeout:Double = 10
-
+    // The timeout
+    @objc open dynamic var timeout: Double = 10
 
     // MARK: - Codable
 
-
-    public enum HTTPRequestCodingKeys: String,CodingKey{
-		case url
-		case httpMethod
-		case headers
-		case httpBody
-		case timeout
+    public enum HTTPRequestCodingKeys: String, CodingKey {
+        case url
+        case httpMethod
+        case headers
+        case httpBody
+        case timeout
     }
 
-    required public init(from decoder: Decoder) throws{
-		try super.init(from: decoder)
-        try self.quietThrowingChanges {
-			let values = try decoder.container(keyedBy: HTTPRequestCodingKeys.self)
-			self.url = try values.decodeIfPresent(URL.self,forKey:.url)
-			self.httpMethod = try values.decode(String.self,forKey:.httpMethod)
-			self.headers = try values.decodeIfPresent([String:String].self,forKey:.headers)
-			self.httpBody = try values.decodeIfPresent(Data.self,forKey:.httpBody)
-			self.timeout = try values.decode(Double.self,forKey:.timeout)
+    public required init(from decoder: Decoder) throws {
+        try super.init(from: decoder)
+        try quietThrowingChanges {
+            let values = try decoder.container(keyedBy: HTTPRequestCodingKeys.self)
+            self.url = try values.decodeIfPresent(URL.self, forKey: .url)
+            self.httpMethod = try values.decode(String.self, forKey: .httpMethod)
+            self.headers = try values.decodeIfPresent([String: String].self, forKey: .headers)
+            self.httpBody = try values.decodeIfPresent(Data.self, forKey: .httpBody)
+            self.timeout = try values.decode(Double.self, forKey: .timeout)
         }
     }
 
-    override open func encode(to encoder: Encoder) throws {
-		try super.encode(to:encoder)
-		var container = encoder.container(keyedBy: HTTPRequestCodingKeys.self)
-		try container.encodeIfPresent(self.url,forKey:.url)
-		try container.encode(self.httpMethod,forKey:.httpMethod)
-		try container.encodeIfPresent(self.headers,forKey:.headers)
-		try container.encodeIfPresent(self.httpBody,forKey:.httpBody)
-		try container.encode(self.timeout,forKey:.timeout)
+    open override func encode(to encoder: Encoder) throws {
+        try super.encode(to: encoder)
+        var container = encoder.container(keyedBy: HTTPRequestCodingKeys.self)
+        try container.encodeIfPresent(url, forKey: .url)
+        try container.encode(httpMethod, forKey: .httpMethod)
+        try container.encodeIfPresent(headers, forKey: .headers)
+        try container.encodeIfPresent(httpBody, forKey: .httpBody)
+        try container.encode(timeout, forKey: .timeout)
     }
-
 
     // MARK: - Exposed (Bartleby's KVC like generative implementation)
 
     /// Return all the exposed instance variables keys. (Exposed == public and modifiable).
-    override  open var exposedKeys:[String] {
-        var exposed=super.exposedKeys
-        exposed.append(contentsOf:["url","httpMethod","headers","httpBody","timeout"])
+    open override var exposedKeys: [String] {
+        var exposed = super.exposedKeys
+        exposed.append(contentsOf: ["url", "httpMethod", "headers", "httpBody", "timeout"])
         return exposed
     }
-
 
     /// Set the value of the given key
     ///
@@ -86,33 +81,32 @@ import Foundation
     /// - parameter key:   the key
     ///
     /// - throws: throws an Exception when the key is not exposed
-    override  open func setExposedValue(_ value:Any?, forKey key: String) throws {
+    open override func setExposedValue(_ value: Any?, forKey key: String) throws {
         switch key {
-            case "url":
-                if let casted=value as? URL{
-                    self.url=casted
-                }
-            case "httpMethod":
-                if let casted=value as? String{
-                    self.httpMethod=casted
-                }
-            case "headers":
-                if let casted=value as? [String:String]{
-                    self.headers=casted
-                }
-            case "httpBody":
-                if let casted=value as? Data{
-                    self.httpBody=casted
-                }
-            case "timeout":
-                if let casted=value as? Double{
-                    self.timeout=casted
-                }
-            default:
-                return try super.setExposedValue(value, forKey: key)
+        case "url":
+            if let casted = value as? URL {
+                url = casted
+            }
+        case "httpMethod":
+            if let casted = value as? String {
+                httpMethod = casted
+            }
+        case "headers":
+            if let casted = value as? [String: String] {
+                headers = casted
+            }
+        case "httpBody":
+            if let casted = value as? Data {
+                httpBody = casted
+            }
+        case "timeout":
+            if let casted = value as? Double {
+                timeout = casted
+            }
+        default:
+            return try super.setExposedValue(value, forKey: key)
         }
     }
-
 
     /// Returns the value of an exposed key.
     ///
@@ -121,24 +115,26 @@ import Foundation
     /// - throws: throws Exception when the key is not exposed
     ///
     /// - returns: returns the value
-    override  open func getExposedValueForKey(_ key:String) throws -> Any?{
+    open override func getExposedValueForKey(_ key: String) throws -> Any? {
         switch key {
-            case "url":
-               return self.url
-            case "httpMethod":
-               return self.httpMethod
-            case "headers":
-               return self.headers
-            case "httpBody":
-               return self.httpBody
-            case "timeout":
-               return self.timeout
-            default:
-                return try super.getExposedValueForKey(key)
+        case "url":
+            return url
+        case "httpMethod":
+            return httpMethod
+        case "headers":
+            return headers
+        case "httpBody":
+            return httpBody
+        case "timeout":
+            return timeout
+        default:
+            return try super.getExposedValueForKey(key)
         }
     }
+
     // MARK: - Initializable
-     required public init() {
+
+    public required init() {
         super.init()
     }
 }

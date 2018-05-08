@@ -6,24 +6,22 @@
 //
 //
 
-import Cocoa
 import BartlebyKit
+import Cocoa
 
-open class ReportWindowController: NSWindowController{
+open class ReportWindowController: NSWindowController {
+    open override var windowNibName: NSNib.Name? { return NSNib.Name("ReportWindowController") }
 
-    override open var windowNibName: NSNib.Name?{ return NSNib.Name("ReportWindowController") }
-
-    @IBOutlet var reportTabViewController: ReportTabViewController!{
-        didSet{
-            self.contentViewController=reportTabViewController
+    @IBOutlet var reportTabViewController: ReportTabViewController! {
+        didSet {
+            self.contentViewController = reportTabViewController
         }
     }
 
-     //MARK : Window
+    // MARK: Window
 
-    override open func windowDidLoad() {
+    open override func windowDidLoad() {
         super.windowDidLoad()
-        self.window?.title=NSLocalizedString("Report", tableName:"bartlebys.OSX-Apps", comment: "Report window title")
+        window?.title = NSLocalizedString("Report", tableName: "bartlebys.OSX-Apps", comment: "Report window title")
     }
-
 }

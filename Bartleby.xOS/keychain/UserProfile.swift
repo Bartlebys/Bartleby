@@ -8,14 +8,12 @@
 
 import Foundation
 
-open class UserProfile:Codable{
-
-    open var url:URL=Bartleby.configuration.API_BASE_URL
-    open var documentUID:String=Default.NO_UID
-    open var documentSpaceUID:String=Default.NO_UID
-    open var user:User?
-    open var requiresPatch=false
+open class UserProfile: Codable {
+    open var url: URL = Bartleby.configuration.API_BASE_URL
+    open var documentUID: String = Default.NO_UID
+    open var documentSpaceUID: String = Default.NO_UID
+    open var user: User?
+    open var requiresPatch = false
 
     public init() {}
-
 }

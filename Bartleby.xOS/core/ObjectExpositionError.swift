@@ -8,6 +8,6 @@
 
 import Foundation
 
-public enum ObjectExpositionError:Error {
-    case unknownKey(key:String,forTypeName:String)
+public enum ObjectExpositionError: Error {
+    case unknownKey(key: String, forTypeName: String)
 }

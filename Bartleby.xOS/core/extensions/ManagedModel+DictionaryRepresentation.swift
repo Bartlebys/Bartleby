@@ -8,18 +8,16 @@
 
 import Foundation
 
-extension ManagedModel:DictionaryRepresentation {
-
-    open func dictionaryRepresentation() -> [String : Any] {
-        do{
+extension ManagedModel: DictionaryRepresentation {
+    open func dictionaryRepresentation() -> [String: Any] {
+        do {
             let data = try JSON.encoder.encode(self)
-            if let dictionary = try JSONSerialization.jsonObject(with: data, options:.allowFragments) as? [String : Any]{
+            if let dictionary = try JSONSerialization.jsonObject(with: data, options: .allowFragments) as? [String: Any] {
                 return dictionary
             }
-        }catch{
+        } catch {
             // Silent catch
         }
-        return [String:Any]()
+        return [String: Any]()
     }
-
 }

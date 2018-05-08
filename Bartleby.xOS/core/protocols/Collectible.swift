@@ -9,19 +9,18 @@
 import Foundation
 
 // Collectible items are identifiable and serializable
-public protocol Collectible:  Referenced,Serializable,DataUpdatable,DictionaryRepresentation,Supervisable,Committable,ChangesInspectable,UniversalType,Exposed,Mergeable,JSONString,Relational,ProvisionChanges {
-
+public protocol Collectible: Referenced, Serializable, DataUpdatable, DictionaryRepresentation, Supervisable, Committable, ChangesInspectable, UniversalType, Exposed, Mergeable, JSONString, Relational, ProvisionChanges {
     // The UID of the collectible object
-    var UID:String { get set }
+    var UID: String { get set }
 
     // The collection of the item
-    var collection:CollectibleCollection? { get set }
+    var collection: CollectibleCollection? { get set }
 
     // The creator UID
     var creatorUID: String { get set }
 
     // You can associate and external ID
-    var externalID:String { get set }
+    var externalID: String { get set }
 
     // A summary that can be used for example by ExternalReferences to describe the instance
     var summary: String? { get set }
@@ -37,7 +36,6 @@ public protocol Collectible:  Referenced,Serializable,DataUpdatable,DictionaryRe
     // An accessor to the static collectionName
     var d_collectionName: String { get }
 
-
     /// - Parameter commit:
 
     /// Erases globally the instance and its dependent relations.
@@ -48,6 +46,5 @@ public protocol Collectible:  Referenced,Serializable,DataUpdatable,DictionaryRe
     ///   - commit: set to true by default (we set to false only  not to commit triggered Deletion)
     ///   - eraserUID: the eraser UID
     /// - Returns: N/A
-    func erase(commit:Bool,eraserUID:String)throws->()
+    func erase(commit: Bool, eraserUID: String) throws -> Void
 }
-

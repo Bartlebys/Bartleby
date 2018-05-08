@@ -9,7 +9,6 @@
 import Foundation
 
 struct BartlebysCommandFacade {
-
     static let args = Swift.CommandLine.arguments
 
     let executableName = NSString(string: args.first!).pathComponents.last!
@@ -18,29 +17,27 @@ struct BartlebysCommandFacade {
     func actOnArguments() {
         switch firstArgumentAfterExecutablePath {
         case nil:
-            print(self._noArgMessage())
+            print(_noArgMessage())
             exit(EX_NOINPUT)
         case "-h"?, "-help"?, "h"?, "help"?:
-            print(self._noArgMessage())
-            exit(EX_USAGE)        default:
+            print(_noArgMessage())
+            exit(EX_USAGE) default:
             // We want to propose the best verb candidate
-            let reference=[
+            let reference = [
                 "h", "help",
                 "install",
                 "create",
                 "generate",
-                "update"
+                "update",
             ]
-            let bestCandidate=firstArgumentAfterExecutablePath!.bestCandidate(candidates: reference).string
+            let bestCandidate = firstArgumentAfterExecutablePath!.bestCandidate(candidates: reference).string
             print("Hey ...\"bartleby \(firstArgumentAfterExecutablePath!)\" is unexpected!")
             print("Did you mean:\"bartleby \(bestCandidate)\"?")
         }
     }
 
-
-
     private func _noArgMessage() -> String {
-        var s=""
+        var s = ""
         s += "Bartleby's CLI"
         s += "\nCreated by Benoit Pereira da Silva"
         s += "\nhttps://pereira-da-silva.com for Chaosmos SAS"
@@ -65,6 +62,4 @@ struct BartlebysCommandFacade {
         s += "\n"
         return s
     }
-
-
 }

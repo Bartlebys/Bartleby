@@ -10,33 +10,33 @@
 //
 import Foundation
 #if !USE_EMBEDDED_MODULES
-	import Alamofire
+    import Alamofire
 #endif
-@objc public class ReadLocalizedDataByIdsParameters : ManagedModel {
-		// Universal type support
-	override open class func typeName() -> String {
-		 return "ReadLocalizedDataByIdsParameters"
-	}
-	// 
-	public var ids:[String]?
-	// 
-	public var result_fields:[String]?
-	// the sort (MONGO DB)
-	public var sort:[String:Int] = [String:Int]()
+@objc public class ReadLocalizedDataByIdsParameters: ManagedModel {
+    // Universal type support
+    open override class func typeName() -> String {
+        return "ReadLocalizedDataByIdsParameters"
+    }
 
-    required public init(){
+    //
+    public var ids: [String]?
+    //
+    public var result_fields: [String]?
+    // the sort (MONGO DB)
+    public var sort: [String: Int] = [String: Int]()
+
+    public required init() {
         super.init()
     }
 
     // MARK: - Exposed (Bartleby's KVC like generative implementation)
 
     /// Return all the exposed instance variables keys. (Exposed == public and modifiable).
-    override  open var exposedKeys:[String] {
-        var exposed=super.exposedKeys
-        exposed.append(contentsOf:["ids","result_fields","sort"])
+    open override var exposedKeys: [String] {
+        var exposed = super.exposedKeys
+        exposed.append(contentsOf: ["ids", "result_fields", "sort"])
         return exposed
     }
-
 
     /// Set the value of the given key
     ///
@@ -44,25 +44,24 @@ import Foundation
     /// - parameter key:   the key
     ///
     /// - throws: throws an Exception when the key is not exposed
-    override  open func setExposedValue(_ value:Any?, forKey key: String) throws {
+    open override func setExposedValue(_ value: Any?, forKey key: String) throws {
         switch key {
-            case "ids":
-                if let casted=value as? [String]{
-                    self.ids=casted
-                }
-            case "result_fields":
-                if let casted=value as? [String]{
-                    self.result_fields=casted
-                }
-            case "sort":
-                if let casted=value as? [String:Int]{
-                    self.sort=casted
-                }
-            default:
-                return try super.setExposedValue(value, forKey: key)
+        case "ids":
+            if let casted = value as? [String] {
+                ids = casted
+            }
+        case "result_fields":
+            if let casted = value as? [String] {
+                result_fields = casted
+            }
+        case "sort":
+            if let casted = value as? [String: Int] {
+                sort = casted
+            }
+        default:
+            return try super.setExposedValue(value, forKey: key)
         }
     }
-
 
     /// Returns the value of an exposed key.
     ///
@@ -71,159 +70,154 @@ import Foundation
     /// - throws: throws Exception when the key is not exposed
     ///
     /// - returns: returns the value
-    override  open func getExposedValueForKey(_ key:String) throws -> Any?{
+    open override func getExposedValueForKey(_ key: String) throws -> Any? {
         switch key {
-            case "ids":
-               return self.ids
-            case "result_fields":
-               return self.result_fields
-            case "sort":
-               return self.sort
-            default:
-                return try super.getExposedValueForKey(key)
+        case "ids":
+            return ids
+        case "result_fields":
+            return result_fields
+        case "sort":
+            return sort
+        default:
+            return try super.getExposedValueForKey(key)
         }
     }
+
     // MARK: - Codable
 
-
-    public enum CodingKeys: String,CodingKey{
-		case ids
-		case result_fields
-		case sort
+    public enum CodingKeys: String, CodingKey {
+        case ids
+        case result_fields
+        case sort
     }
 
-    required public init(from decoder: Decoder) throws{
-		try super.init(from: decoder)
-        try self.quietThrowingChanges {
-			let values = try decoder.container(keyedBy: CodingKeys.self)
-			self.ids = try values.decodeIfPresent([String].self,forKey:.ids)
-			self.result_fields = try values.decodeIfPresent([String].self,forKey:.result_fields)
-			self.sort = try values.decode([String:Int].self,forKey:.sort)
+    public required init(from decoder: Decoder) throws {
+        try super.init(from: decoder)
+        try quietThrowingChanges {
+            let values = try decoder.container(keyedBy: CodingKeys.self)
+            self.ids = try values.decodeIfPresent([String].self, forKey: .ids)
+            self.result_fields = try values.decodeIfPresent([String].self, forKey: .result_fields)
+            self.sort = try values.decode([String: Int].self, forKey: .sort)
         }
     }
 
-    override open func encode(to encoder: Encoder) throws {
-		try super.encode(to:encoder)
-		var container = encoder.container(keyedBy: CodingKeys.self)
-		try container.encodeIfPresent(self.ids,forKey:.ids)
-		try container.encodeIfPresent(self.result_fields,forKey:.result_fields)
-		try container.encode(self.sort,forKey:.sort)
+    open override func encode(to encoder: Encoder) throws {
+        try super.encode(to: encoder)
+        var container = encoder.container(keyedBy: CodingKeys.self)
+        try container.encodeIfPresent(ids, forKey: .ids)
+        try container.encodeIfPresent(result_fields, forKey: .result_fields)
+        try container.encode(sort, forKey: .sort)
     }
-
 }
 
-@objc(ReadLocalizedDataByIds) open class ReadLocalizedDataByIds : ManagedModel{
-
+@objc(ReadLocalizedDataByIds) open class ReadLocalizedDataByIds: ManagedModel {
     // Universal type support
-    override open class func typeName() -> String {
-           return "ReadLocalizedDataByIds"
+    open override class func typeName() -> String {
+        return "ReadLocalizedDataByIds"
     }
 
-
-    public static func execute(from documentUID:String,
-						parameters:ReadLocalizedDataByIdsParameters,
-						sucessHandler success:@escaping(_ localizedData:[LocalizedDatum])->(),
-						failureHandler failure:@escaping(_ context:HTTPContext)->()){
-	
+    public static func execute(from documentUID: String,
+                               parameters: ReadLocalizedDataByIdsParameters,
+                               sucessHandler success: @escaping (_ localizedData: [LocalizedDatum]) -> Void,
+                               failureHandler failure: @escaping (_ context: HTTPContext) -> Void) {
         if let document = Bartleby.sharedInstance.getDocumentByUID(documentUID) {
-            let pathURL=document.baseURL.appendingPathComponent("localizedData")
-            let dictionary:[String:Any]? = parameters.dictionaryRepresentation()
-            let urlRequest=HTTPManager.requestWithToken(inDocumentWithUID:document.UID,withActionName:"ReadLocalizedDataByIds" ,forMethod:"GET", and: pathURL)
-            
+            let pathURL = document.baseURL.appendingPathComponent("localizedData")
+            let dictionary: [String: Any]? = parameters.dictionaryRepresentation()
+            let urlRequest = HTTPManager.requestWithToken(inDocumentWithUID: document.UID, withActionName: "ReadLocalizedDataByIds", forMethod: "GET", and: pathURL)
+
             do {
-                let r=try URLEncoding().encode(urlRequest,with:dictionary)
-                request(r).responseData(completionHandler: { (response) in
-                  
-                    let request=response.request
-                    let result=response.result
-                    let timeline=response.timeline
-                    let statusCode=response.response?.statusCode ?? 0
-                    
-                    let context = HTTPContext( code: 3838596939,
-                        caller: "ReadLocalizedDataByIds.execute",
-                        relatedURL:request?.url,
-                        httpStatusCode: statusCode)
-                        
-                    if let request=request{
-                        context.request=HTTPRequest(urlRequest: request)
+                let r = try URLEncoding().encode(urlRequest, with: dictionary)
+                request(r).responseData(completionHandler: { response in
+
+                    let request = response.request
+                    let result = response.result
+                    let timeline = response.timeline
+                    let statusCode = response.response?.statusCode ?? 0
+
+                    let context = HTTPContext(code: 3_838_596_939,
+                                              caller: "ReadLocalizedDataByIds.execute",
+                                              relatedURL: request?.url,
+                                              httpStatusCode: statusCode)
+
+                    if let request = request {
+                        context.request = HTTPRequest(urlRequest: request)
                     }
 
                     if let data = response.data, let utf8Text = String(data: data, encoding: .utf8) {
-                        context.responseString=utf8Text
+                        context.responseString = utf8Text
                     }
 
-					let metrics=Metrics()
-					metrics.httpContext=context
-					metrics.operationName="ReadLocalizedDataByIds"
-					metrics.latency=timeline.latency
-					metrics.requestDuration=timeline.requestDuration
-					metrics.serializationDuration=timeline.serializationDuration
-					metrics.totalDuration=timeline.totalDuration
-					document.report(metrics)
+                    let metrics = Metrics()
+                    metrics.httpContext = context
+                    metrics.operationName = "ReadLocalizedDataByIds"
+                    metrics.latency = timeline.latency
+                    metrics.requestDuration = timeline.requestDuration
+                    metrics.serializationDuration = timeline.serializationDuration
+                    metrics.totalDuration = timeline.totalDuration
+                    document.report(metrics)
 
                     // React according to the situation
-                    var reactions = Array<Reaction> ()
-            
+                    var reactions = Array<Reaction>()
+
                     if result.isFailure {
-                       let failureReaction =  Reaction.dispatchAdaptiveMessage(
+                        let failureReaction = Reaction.dispatchAdaptiveMessage(
                             context: context,
-                            title: NSLocalizedString("Unsuccessfull attempt",comment: "Unsuccessfull attempt"),
-                            body:"\(String(describing: result.value))\n\(#file)\n\(#function)\nhttp Status code: (\(statusCode))",
-                            transmit:{ (selectedIndex) -> () in
+                            title: NSLocalizedString("Unsuccessfull attempt", comment: "Unsuccessfull attempt"),
+                            body: "\(String(describing: result.value))\n\(#file)\n\(#function)\nhttp Status code: (\(statusCode))",
+                            transmit: { (_) -> Void in
                         })
                         reactions.append(failureReaction)
                         failure(context)
-            
-                    }else{
-                          if 200...299 ~= statusCode {
-	                        do{
-	                            if let data = response.data{
-	                                let instance = try JSON.decoder.decode([LocalizedDatum].self,from:data)
-	                                success(instance)
-	                              }else{
-	                                throw BartlebyOperationError.dataNotFound
-	                              }
-	                            }catch{
-	                                let failureReaction =  Reaction.dispatchAdaptiveMessage(
-	                                    context: context,
-	                                    title:"\(error)",
-	                                    body: "\(String(describing: result.value))\n\(#file)\n\(#function)\nhttp Status code: (\(statusCode))",
-	                                    transmit: { (selectedIndex) -> () in
-	                                })
-	                                reactions.append(failureReaction)
-	                                failure(context)
-	                            }
-                         }else{
+
+                    } else {
+                        if 200 ... 299 ~= statusCode {
+                            do {
+                                if let data = response.data {
+                                    let instance = try JSON.decoder.decode([LocalizedDatum].self, from: data)
+                                    success(instance)
+                                } else {
+                                    throw BartlebyOperationError.dataNotFound
+                                }
+                            } catch {
+                                let failureReaction = Reaction.dispatchAdaptiveMessage(
+                                    context: context,
+                                    title: "\(error)",
+                                    body: "\(String(describing: result.value))\n\(#file)\n\(#function)\nhttp Status code: (\(statusCode))",
+                                    transmit: { (_) -> Void in
+                                })
+                                reactions.append(failureReaction)
+                                failure(context)
+                            }
+                        } else {
                             // Bartlby does not currenlty discriminate status codes 100 & 101
                             // and treats any status code >= 300 the same way
                             // because we consider that failures differentiations could be done by the caller.
-                            let failureReaction =  Reaction.dispatchAdaptiveMessage(
+                            let failureReaction = Reaction.dispatchAdaptiveMessage(
                                 context: context,
-                                title: NSLocalizedString("Unsuccessfull attempt",comment: "Unsuccessfull attempt"),
-                                body:"\(String(describing: result.value))\n\(#file)\n\(#function)\nhttp Status code: (\(statusCode))",
-                                transmit:{ (selectedIndex) -> () in
+                                title: NSLocalizedString("Unsuccessfull attempt", comment: "Unsuccessfull attempt"),
+                                body: "\(String(describing: result.value))\n\(#file)\n\(#function)\nhttp Status code: (\(statusCode))",
+                                transmit: { (_) -> Void in
                             })
-                           reactions.append(failureReaction)
-                           failure(context)
+                            reactions.append(failureReaction)
+                            failure(context)
                         }
-                        
-                 }
-                 //Let s react according to the context.
-                 document.perform(reactions, forContext: context)
-            })
-        }catch{
-                let context = HTTPContext( code:2 ,
-                caller: "ReadLocalizedDataByIds.execute",
-                relatedURL:nil,
-                httpStatusCode:500)
+                    }
+                    // Let s react according to the context.
+                    document.perform(reactions, forContext: context)
+                })
+            } catch {
+                let context = HTTPContext(code: 2,
+                                          caller: "ReadLocalizedDataByIds.execute",
+                                          relatedURL: nil,
+                                          httpStatusCode: 500)
                 failure(context)
+            }
+        } else {
+            let context = HTTPContext(code: 1,
+                                      caller: "ReadLocalizedDataByIds.execute",
+                                      relatedURL: nil,
+                                      httpStatusCode: 417)
+            failure(context)
         }
-      }else{
-         let context = HTTPContext( code: 1,
-                caller: "ReadLocalizedDataByIds.execute",
-                relatedURL:nil,
-                httpStatusCode: 417)
-         failure(context)
-       }
     }
 }

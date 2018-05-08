@@ -18,7 +18,6 @@ import Foundation
 public struct DictionaryKeyPath {
     var segments: [String]
 
-
     var isEmpty: Bool { return segments.isEmpty }
     var path: String {
         return segments.joined(separator: ".")
@@ -34,7 +33,6 @@ public struct DictionaryKeyPath {
     }
 }
 
-
 /// Initializes a DictionaryKeyPath with a string of the form "this.is.a.keypath"
 public extension DictionaryKeyPath {
     init(_ string: String) {
@@ -46,9 +44,11 @@ extension DictionaryKeyPath: ExpressibleByStringLiteral {
     public init(stringLiteral value: String) {
         self.init(value)
     }
+
     public init(unicodeScalarLiteral value: String) {
         self.init(value)
     }
+
     public init(extendedGraphemeClusterLiteral value: String) {
         self.init(value)
     }
@@ -68,7 +68,6 @@ extension String: StringProtocol {
 
 extension Dictionary where Key == String {
     subscript(keyPath keyPath: DictionaryKeyPath) -> Any? {
-
         get {
             switch keyPath.headAndTail() {
             case nil:
@@ -117,7 +116,4 @@ extension Dictionary where Key == String {
             }
         }
     }
-
-
 }
-

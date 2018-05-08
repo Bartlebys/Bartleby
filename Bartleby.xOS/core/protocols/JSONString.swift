@@ -8,7 +8,6 @@
 
 import Foundation
 
-
-public protocol JSONString:CustomStringConvertible{
-    func toJSONString(_ prettyPrint:Bool)->String
+public protocol JSONString: CustomStringConvertible {
+    func toJSONString(_ prettyPrint: Bool) -> String
 }

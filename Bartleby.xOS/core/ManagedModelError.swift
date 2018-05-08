@@ -8,6 +8,6 @@
 
 import Foundation
 
-enum ManagedModelError:Error{
+enum ManagedModelError: Error {
     case referentDocumentNotFound
 }

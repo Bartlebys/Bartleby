@@ -8,13 +8,11 @@
 
 import Foundation
 
-extension BartlebyDocument{
-
-
+extension BartlebyDocument {
     /// This extenion Allows to record undo action using the serialized state of ManagedModels
     /// It is a very powerful technique to implement undo redo
     ///
-    /// How to use it ? 
+    /// How to use it ?
     ///
     ///     1- call registerUndoChangesOn() - With the serialized states.
     ///     2- Then modify the instances.
@@ -24,13 +22,13 @@ extension BartlebyDocument{
     ///   - serializedRelationalObjects: the serialized managed Models instances
     ///   - undoActionName: the name of the action to undo
     ///   - doAfterAction: a closure called after undo / redo (e.g to update the UI)
-    public func registerUndoChangesOn<TargetType,ModelType>(withTarget target: TargetType,
-                                                            modelType:ModelType.Type,
-                                                            serializedRelationalObjects:[SerializedRelationalObject],
-                                                            undoActionName:String,
-                                                            doAfterAction:@escaping(TargetType)->(Swift.Void)) where TargetType : AnyObject , ModelType:Collectible {
-        do{
-            if let undoManager: UndoManager = self.undoManager{
+    public func registerUndoChangesOn<TargetType, ModelType>(withTarget target: TargetType,
+                                                             modelType: ModelType.Type,
+                                                             serializedRelationalObjects: [SerializedRelationalObject],
+                                                             undoActionName: String,
+                                                             doAfterAction: @escaping (TargetType) -> (Swift.Void)) where TargetType: AnyObject, ModelType: Collectible {
+        do {
+            if let undoManager: UndoManager = self.undoManager {
                 if undoManager.groupingLevel > 0 {
                     // Close the last group
                     undoManager.endUndoGrouping()
@@ -38,18 +36,18 @@ extension BartlebyDocument{
                     undoManager.beginUndoGrouping()
                 }
                 // @TODO control that implementation
-                for serialized in serializedRelationalObjects{
-                    let deserializedModel:ModelType = try serialized.instanciate()
-                    let currentModel:ModelType = try Bartleby.registredObjectByUID(deserializedModel.UID)
+                for serialized in serializedRelationalObjects {
+                    let deserializedModel: ModelType = try serialized.instanciate()
+                    let currentModel: ModelType = try Bartleby.registredObjectByUID(deserializedModel.UID)
                     try currentModel.mergeWith(deserializedModel)
                 }
-                undoManager.registerUndo(withTarget: self, handler: { (targetSelf) in
-                    targetSelf.registerUndoChangesOn(withTarget:target,
-                                                     modelType:modelType,
-                                                     serializedRelationalObjects:serializedRelationalObjects,
+                undoManager.registerUndo(withTarget: self, handler: { targetSelf in
+                    targetSelf.registerUndoChangesOn(withTarget: target,
+                                                     modelType: modelType,
+                                                     serializedRelationalObjects: serializedRelationalObjects,
                                                      undoActionName: undoActionName,
                                                      doAfterAction: doAfterAction)
-                    if Bartleby.configuration.DEVELOPER_MODE{
+                    if Bartleby.configuration.DEVELOPER_MODE {
                         Swift.print("Invocation of doAfterAction on \(target)")
                     }
                     // Invoke the closure
@@ -58,10 +56,9 @@ extension BartlebyDocument{
                 if !undoManager.isUndoing {
                     undoManager.setActionName(undoActionName)
                 }
-                
             }
-        }catch{
-            self.log("\(error)")
+        } catch {
+            log("\(error)")
         }
     }
 }

@@ -76,7 +76,7 @@ class SessionManagerTestCase: BaseTestCase {
             return urlRequest
         }
 
-        func should(_ manager: SessionManager, retry request: Request, with error: Error, completion: @escaping RequestRetryCompletion) {
+        func should(_: SessionManager, retry _: Request, with error: Error, completion: @escaping RequestRetryCompletion) {
             retryCount += 1
             retryErrors.append(error)
 
@@ -101,7 +101,7 @@ class SessionManagerTestCase: BaseTestCase {
             return urlRequest
         }
 
-        func should(_ manager: SessionManager, retry request: Request, with error: Error, completion: @escaping RequestRetryCompletion) {
+        func should(_: SessionManager, retry _: Request, with error: Error, completion: @escaping RequestRetryCompletion) {
             retryCount += 1
             retryErrors.append(error)
 
@@ -787,12 +787,13 @@ class SessionManagerConfigurationHeadersTestCase: BaseTestCase {
         // Given, When, Then
         executeAuthorizationHeaderTest(for: .ephemeral)
     }
-#if os(macOS)
-    func testThatBackgroundConfigurationHeadersAreSentWithRequest() {
-        // Given, When, Then
-        executeAuthorizationHeaderTest(for: .background)
-    }
-#endif
+
+    #if os(macOS)
+        func testThatBackgroundConfigurationHeadersAreSentWithRequest() {
+            // Given, When, Then
+            executeAuthorizationHeaderTest(for: .background)
+        }
+    #endif
 
     private func executeAuthorizationHeaderTest(for type: ConfigurationType) {
         // Given
@@ -843,8 +844,7 @@ class SessionManagerConfigurationHeadersTestCase: BaseTestCase {
             if
                 let response = response.result.value as? [String: Any],
                 let headers = response["headers"] as? [String: String],
-                let authorization = headers["Authorization"]
-            {
+                let authorization = headers["Authorization"] {
                 XCTAssertEqual(authorization, "Bearer 123456", "authorization header value does not match")
             } else {
                 XCTFail("failed to extract authorization header value")

@@ -8,22 +8,19 @@
 
 import Foundation
 
-extension BartlebyDocument{
-
-
+extension BartlebyDocument {
     /// Adds the metrics and computes the qosIndice
     ///
     /// - Parameter metrics: the metrics
-    open func report(_ metrics:Metrics){
-        metrics.counter=self.metrics.count+1
-        metrics.elapsed=Bartleby.elapsedTime
-        if metrics.streamOrientation == .upStream{
-            self.metadata.totalNumberOfUpMetrics += 1
-            self.metadata.cumulatedUpMetricsDuration += metrics.totalDuration
+    open func report(_ metrics: Metrics) {
+        metrics.counter = self.metrics.count + 1
+        metrics.elapsed = Bartleby.elapsedTime
+        if metrics.streamOrientation == .upStream {
+            metadata.totalNumberOfUpMetrics += 1
+            metadata.cumulatedUpMetricsDuration += metrics.totalDuration
             // Simple computation of the average total duration.
-            self.metadata.qosIndice = self.metadata.cumulatedUpMetricsDuration/Double(self.metadata.totalNumberOfUpMetrics)
+            metadata.qosIndice = metadata.cumulatedUpMetricsDuration / Double(metadata.totalNumberOfUpMetrics)
         }
         self.metrics.append(metrics)
     }
-
 }

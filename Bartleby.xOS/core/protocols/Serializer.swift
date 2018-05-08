@@ -6,7 +6,6 @@
 //  Copyright © 2015 https://pereira-da-silva.com for Chaosmos SAS
 //  All rights reserved you can ask for a license.
 
-
 import Foundation
 
 /// A Serializer is able to Serialize / Deserialize
@@ -27,16 +26,15 @@ public protocol Serializer {
     // MARK: -
 
     // The containing document reference
-    var document:BartlebyDocument { get }
+    var document: BartlebyDocument { get }
 
     /// The file extension for file based serializers. eg: "json" for JSONSerializer
     var fileExtension: String { get }
 
-
     /// The initializer
     ///
     /// - Parameter document: the document that contains the serializer
-    init(document:BartlebyDocument)
+    init(document: BartlebyDocument)
 
     // MARK: - Deserialization
 
@@ -47,8 +45,7 @@ public protocol Serializer {
     ///   - register: should we register to document and collection?
     /// - Returns: the deserialized object
     /// - Throws: Deserialization exceptions
-    func deserialize<T:Collectible>(_ data: Data,register:Bool) throws -> T
-
+    func deserialize<T: Collectible>(_ data: Data, register: Bool) throws -> T
 
     /// Deserializes from an UTF8 string
     /// - Parameters:
@@ -56,11 +53,9 @@ public protocol Serializer {
     ///   - register: should we register to document and collection?
     /// - Returns: the deserialized object
     /// - Throws: Variable exception (serializer based)
-    func deserializeFromUTF8String<T:Collectible>(_ string:String,register:Bool)throws ->T
-
+    func deserializeFromUTF8String<T: Collectible>(_ string: String, register: Bool) throws -> T
 
     // MARK: - Serialization
-
 
     ///  Serializes an instance
     ///
@@ -68,12 +63,9 @@ public protocol Serializer {
     /// - Returns: the data
     func serialize(_ instance: Collectible) -> Data
 
-
     /// Serializes the current instance to an UTF8 String
     ///
     /// - Parameter instance: the serializable instance
     /// - Returns: the UTF8 string
     func serializeToUTF8String(_ instance: Collectible) -> String
-
-
 }

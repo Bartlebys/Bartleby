@@ -9,81 +9,77 @@
 //
 import Foundation
 #if !USE_EMBEDDED_MODULES
-	#endif
+#endif
 
 // MARK: An entity used to associate localized name and informations
-@objc open class LocalizedDatum : ManagedModel{
 
+@objc open class LocalizedDatum: ManagedModel {
     // Universal type support
-    override open class func typeName() -> String {
+    open override class func typeName() -> String {
         return "LocalizedDatum"
     }
 
-	//the localized key
-	@objc dynamic open var key:String = "" {
-	    didSet { 
-	       if !self.wantsQuietChanges && key != oldValue {
-	            self.provisionChanges(forKey: "key",oldValue: oldValue,newValue: key) 
-	       } 
-	    }
-	}
-
-	//The localized string value
-	@objc dynamic open var stringValue:String? {
-	    didSet { 
-	       if !self.wantsQuietChanges && stringValue != oldValue {
-	            self.provisionChanges(forKey: "stringValue",oldValue: oldValue,newValue: stringValue) 
-	       } 
-	    }
-	}
-
-	//The localized data value
-	@objc dynamic open var dataValue:Data? {
-	    didSet { 
-	       if !self.wantsQuietChanges && dataValue != oldValue {
-	            self.provisionChanges(forKey: "dataValue",oldValue: oldValue,newValue: dataValue) 
-	       } 
-	    }
-	}
-
-
-    // MARK: - Codable
-
-
-    public enum LocalizedDatumCodingKeys: String,CodingKey{
-		case key
-		case stringValue
-		case dataValue
-    }
-
-    required public init(from decoder: Decoder) throws{
-		try super.init(from: decoder)
-        try self.quietThrowingChanges {
-			let values = try decoder.container(keyedBy: LocalizedDatumCodingKeys.self)
-			self.key = try values.decode(String.self,forKey:.key)
-			self.stringValue = try values.decodeIfPresent(String.self,forKey:.stringValue)
-			self.dataValue = try values.decodeIfPresent(Data.self,forKey:.dataValue)
+    //the localized key
+    @objc open dynamic var key: String = "" {
+        didSet {
+            if !self.wantsQuietChanges && key != oldValue {
+                self.provisionChanges(forKey: "key", oldValue: oldValue, newValue: key)
+            }
         }
     }
 
-    override open func encode(to encoder: Encoder) throws {
-		try super.encode(to:encoder)
-		var container = encoder.container(keyedBy: LocalizedDatumCodingKeys.self)
-		try container.encode(self.key,forKey:.key)
-		try container.encodeIfPresent(self.stringValue,forKey:.stringValue)
-		try container.encodeIfPresent(self.dataValue,forKey:.dataValue)
+    // The localized string value
+    @objc open dynamic var stringValue: String? {
+        didSet {
+            if !wantsQuietChanges && stringValue != oldValue {
+                provisionChanges(forKey: "stringValue", oldValue: oldValue, newValue: stringValue)
+            }
+        }
     }
 
+    // The localized data value
+    @objc open dynamic var dataValue: Data? {
+        didSet {
+            if !wantsQuietChanges && dataValue != oldValue {
+                provisionChanges(forKey: "dataValue", oldValue: oldValue, newValue: dataValue)
+            }
+        }
+    }
+
+    // MARK: - Codable
+
+    public enum LocalizedDatumCodingKeys: String, CodingKey {
+        case key
+        case stringValue
+        case dataValue
+    }
+
+    public required init(from decoder: Decoder) throws {
+        try super.init(from: decoder)
+        try quietThrowingChanges {
+            let values = try decoder.container(keyedBy: LocalizedDatumCodingKeys.self)
+            self.key = try values.decode(String.self, forKey: .key)
+            self.stringValue = try values.decodeIfPresent(String.self, forKey: .stringValue)
+            self.dataValue = try values.decodeIfPresent(Data.self, forKey: .dataValue)
+        }
+    }
+
+    open override func encode(to encoder: Encoder) throws {
+        try super.encode(to: encoder)
+        var container = encoder.container(keyedBy: LocalizedDatumCodingKeys.self)
+        try container.encode(key, forKey: .key)
+        try container.encodeIfPresent(stringValue, forKey: .stringValue)
+        try container.encodeIfPresent(dataValue, forKey: .dataValue)
+    }
 
     // MARK: - Exposed (Bartleby's KVC like generative implementation)
 
     /// Return all the exposed instance variables keys. (Exposed == public and modifiable).
-    override  open var exposedKeys:[String] {
-        var exposed=super.exposedKeys
-        exposed.append(contentsOf:["key","stringValue","dataValue"])
+    open override var exposedKeys: [String] {
+        var exposed = super.exposedKeys
+        exposed.append(contentsOf: ["key", "stringValue", "dataValue"])
         return exposed
     }
-
 
     /// Set the value of the given key
     ///
@@ -91,25 +87,24 @@ import Foundation
     /// - parameter key:   the key
     ///
     /// - throws: throws an Exception when the key is not exposed
-    override  open func setExposedValue(_ value:Any?, forKey key: String) throws {
+    open override func setExposedValue(_ value: Any?, forKey key: String) throws {
         switch key {
-            case "key":
-                if let casted=value as? String{
-                    self.key=casted
-                }
-            case "stringValue":
-                if let casted=value as? String{
-                    self.stringValue=casted
-                }
-            case "dataValue":
-                if let casted=value as? Data{
-                    self.dataValue=casted
-                }
-            default:
-                return try super.setExposedValue(value, forKey: key)
+        case "key":
+            if let casted = value as? String {
+                self.key = casted
+            }
+        case "stringValue":
+            if let casted = value as? String {
+                stringValue = casted
+            }
+        case "dataValue":
+            if let casted = value as? Data {
+                dataValue = casted
+            }
+        default:
+            return try super.setExposedValue(value, forKey: key)
         }
     }
-
 
     /// Returns the value of an exposed key.
     ///
@@ -118,29 +113,32 @@ import Foundation
     /// - throws: throws Exception when the key is not exposed
     ///
     /// - returns: returns the value
-    override  open func getExposedValueForKey(_ key:String) throws -> Any?{
+    open override func getExposedValueForKey(_ key: String) throws -> Any? {
         switch key {
-            case "key":
-               return self.key
-            case "stringValue":
-               return self.stringValue
-            case "dataValue":
-               return self.dataValue
-            default:
-                return try super.getExposedValueForKey(key)
+        case "key":
+            return self.key
+        case "stringValue":
+            return stringValue
+        case "dataValue":
+            return dataValue
+        default:
+            return try super.getExposedValueForKey(key)
         }
     }
+
     // MARK: - Initializable
-    required public init() {
+
+    public required init() {
         super.init()
     }
 
     // MARK: - UniversalType
-    override  open class var collectionName:String{
+
+    open override class var collectionName: String {
         return "localizedData"
     }
 
-    override  open var d_collectionName:String{
+    open override var d_collectionName: String {
         return LocalizedDatum.collectionName
     }
 }

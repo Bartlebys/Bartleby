@@ -6,14 +6,12 @@
 //
 //
 
-import Foundation
 import BartlebyKit
-
+import Foundation
 
 // You should start by the IdentityWindowController to understand the variety of possible workflows.
 // Bartleby supports a lot variations from distributed execution, to confined deployments.
-public enum IdentificationStates:StateMessage{
-
+public enum IdentificationStates: StateMessage {
     // Initial state
     case undefined
 
@@ -48,5 +46,4 @@ public enum IdentificationStates:StateMessage{
     // RecoverSugarViewController
     case recoverSugar
     case sugarHasBeenRecovered // just after DocumentStates.collectionsDataHasBeenDecrypted
-    
 }

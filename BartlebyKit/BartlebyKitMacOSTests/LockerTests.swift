@@ -6,14 +6,12 @@
 //
 //
 
-import XCTest
 import BartlebyKit
+import XCTest
 
 class LockerTests: XCTestCase {
-
     fileprivate static let _document = BartlebyDocument()
     fileprivate static var _spaceUID = Default.NO_UID
-
 
     fileprivate static var _creatorUser: User? {
         didSet {
@@ -26,30 +24,30 @@ class LockerTests: XCTestCase {
             }
         }
     }
-    fileprivate static var _creatorUserID: String="UNDEFINED"
-    fileprivate static var _creatorUserPassword: String="UNDEFINED"
+
+    fileprivate static var _creatorUserID: String = "UNDEFINED"
+    fileprivate static var _creatorUserPassword: String = "UNDEFINED"
     fileprivate static let _creatorEmail = "Creator@LockerTests"
 
     fileprivate static var _consumerUser: User?
-    fileprivate static var _consumerUserID: String="UNDEFINED"
-    fileprivate static var _consumerUserPassword: String="UNDEFINED"
+    fileprivate static var _consumerUserID: String = "UNDEFINED"
+    fileprivate static var _consumerUserPassword: String = "UNDEFINED"
     fileprivate static let _consumerPhone = "Consumer@LockerTests"
 
     fileprivate static var _locker: Locker?
-    fileprivate static var _lockerID: String="UNDEFINED"
-    fileprivate static var _lockerCode: String="UNDEFINED"
+    fileprivate static var _lockerID: String = "UNDEFINED"
+    fileprivate static var _lockerCode: String = "UNDEFINED"
 
     override static func setUp() {
         super.setUp()
         Bartleby.sharedInstance.configureWith(TestsConfiguration.self)
-        let document=LockerTests._document
+        let document = LockerTests._document
         Bartleby.sharedInstance.declare(document)
         LockerTests._spaceUID = document.spaceUID
         LockerTests._creatorUser = document.newManagedModel() as User
-        if let user =  LockerTests._creatorUser {
+        if let user = LockerTests._creatorUser {
             document.metadata.configureCurrentUser(user)
         }
-
     }
 
     // MARK: 1 - Creation of users and a locker
@@ -57,15 +55,15 @@ class LockerTests: XCTestCase {
     func test101_CreateUser_Creator() {
         let expectation = self.expectation(description: "CreateUser should respond")
 
-        if let creator=LockerTests._creatorUser {
+        if let creator = LockerTests._creatorUser {
             LockerTests._creatorUser = creator
             LockerTests._creatorUserID = creator.UID
             LockerTests._creatorUserPassword = creator.password ?? Default.NO_PASSWORD
 
             CreateUser.execute(creator, in: LockerTests._document.UID,
-                               sucessHandler: { (context) in
-                                expectation.fulfill()
-            }) { (context) in
+                               sucessHandler: { _ in
+                                   expectation.fulfill()
+            }) { context in
                 expectation.fulfill()
                 XCTFail("\(context)")
             }
@@ -88,9 +86,9 @@ class LockerTests: XCTestCase {
         LockerTests._consumerUserPassword = consumer.password ?? Default.NO_PASSWORD
 
         CreateUser.execute(consumer, in: LockerTests._document.UID,
-                           sucessHandler: { (context) in
-                            expectation.fulfill()
-        }) { (context) in
+                           sucessHandler: { _ in
+                               expectation.fulfill()
+        }) { context in
             expectation.fulfill()
             XCTFail("\(context)")
         }
@@ -101,9 +99,9 @@ class LockerTests: XCTestCase {
     func test103_LoginUser_Creator() {
         let expectation = self.expectation(description: "LoginUser should respond")
         if let user = LockerTests._creatorUser {
-            user.login(sucessHandler: { () -> () in
-                        expectation.fulfill()
-            }) { (context) -> () in
+            user.login(sucessHandler: { () -> Void in
+                expectation.fulfill()
+            }) { (context) -> Void in
                 expectation.fulfill()
                 XCTFail("\(context)")
             }
@@ -120,8 +118,8 @@ class LockerTests: XCTestCase {
         locker.associatedDocumentUID = LockerTests._document.UID
         locker.creatorUID = LockerTests._creatorUserID
         locker.userUID = LockerTests._consumerUserID
-        locker.startDate=Date.init(timeIntervalSinceNow:-3600)
-        locker.endDate=Date.distantFuture
+        locker.startDate = Date(timeIntervalSinceNow: -3600)
+        locker.endDate = Date.distantFuture
         locker.verificationMethod = .online
         LockerTests._locker = locker
         LockerTests._lockerCode = locker.code
@@ -129,9 +127,9 @@ class LockerTests: XCTestCase {
 
         CreateLocker.execute(locker,
                              in: LockerTests._document.UID,
-                             sucessHandler: { (context) in
-                                expectation.fulfill()
-        }) { (context) in
+                             sucessHandler: { _ in
+                                 expectation.fulfill()
+        }) { context in
             expectation.fulfill()
             XCTFail("\(context)")
         }
@@ -144,11 +142,11 @@ class LockerTests: XCTestCase {
 
         ReadLockerById.execute(from: LockerTests._document.UID,
                                lockerId: LockerTests._lockerID,
-                               sucessHandler: { (locker) in
-                                expectation.fulfill()
-                                XCTFail("Creator are not allowed to read locker")
+                               sucessHandler: { _ in
+                                   expectation.fulfill()
+                                   XCTFail("Creator are not allowed to read locker")
 
-        }) { (context) in
+        }) { context in
             expectation.fulfill()
             XCTAssertEqual(context.httpStatusCode, 403)
         }
@@ -164,12 +162,12 @@ class LockerTests: XCTestCase {
 
         ReadLockersByIds.execute(from: LockerTests._document.UID,
                                  parameters: p,
-                                 sucessHandler: { (lockers) in
-                                    expectation.fulfill()
-                                    XCTFail("Creator are not allowed to read locker")
-            }) { (context) in
-                expectation.fulfill()
-                XCTAssertEqual(context.httpStatusCode, 403)
+                                 sucessHandler: { _ in
+                                     expectation.fulfill()
+                                     XCTFail("Creator are not allowed to read locker")
+        }) { context in
+            expectation.fulfill()
+            XCTAssertEqual(context.httpStatusCode, 403)
         }
 
         waitForExpectations(timeout: TestsConfiguration.TIME_OUT_DURATION, handler: nil)
@@ -178,9 +176,9 @@ class LockerTests: XCTestCase {
     func test199_LogOut_Creator() {
         let expectation = self.expectation(description: "LogoutUser should respond")
         LogoutUser.execute(LockerTests._creatorUser!,
-                           sucessHandler: { () -> () in
-                            expectation.fulfill()
-        }) { (context) -> () in
+                           sucessHandler: { () -> Void in
+                               expectation.fulfill()
+        }) { (context) -> Void in
             expectation.fulfill()
             XCTFail("\(context)")
         }
@@ -194,13 +192,12 @@ class LockerTests: XCTestCase {
         let expectation = self.expectation(description: "LoginUser should respond")
 
         if let consumerUser = LockerTests._consumerUser {
-
             // (!) TO BECOME THE MAIN USER
             LockerTests._document.metadata.configureCurrentUser(consumerUser)
 
-            consumerUser.login(sucessHandler: { () -> () in
-                        expectation.fulfill()
-            }) { (context) -> () in
+            consumerUser.login(sucessHandler: { () -> Void in
+                expectation.fulfill()
+            }) { (context) -> Void in
                 expectation.fulfill()
                 XCTFail("\(context)")
             }
@@ -216,18 +213,16 @@ class LockerTests: XCTestCase {
 
         ReadLockerById.execute(from: LockerTests._document.UID,
                                lockerId: LockerTests._lockerID,
-                               sucessHandler: { (locker) in
-                                expectation.fulfill()
-                                XCTFail("Lockers should only be verifyed")
+                               sucessHandler: { _ in
+                                   expectation.fulfill()
+                                   XCTFail("Lockers should only be verifyed")
 
-        }) { (context) in
+        }) { _ in
             expectation.fulfill()
-
         }
 
         waitForExpectations(timeout: TestsConfiguration.TIME_OUT_DURATION, handler: nil)
     }
-
 
     func test203_VerifyLocker_online() {
         let expectation = self.expectation(description: "VerifyLocker should respond")
@@ -235,9 +230,9 @@ class LockerTests: XCTestCase {
         VerifyLocker.execute(LockerTests._lockerID,
                              inDocumentWithUID: LockerTests._document.UID,
                              code: LockerTests._lockerCode,
-                             accessGranted: { (locker) in
-                                expectation.fulfill()
-        }) { (context) in
+                             accessGranted: { _ in
+                                 expectation.fulfill()
+        }) { context in
             expectation.fulfill()
             XCTFail("\(String(describing: context.responseString))")
         }
@@ -248,9 +243,9 @@ class LockerTests: XCTestCase {
     func test299_LogOut_Consumer() {
         let expectation = self.expectation(description: "LogoutUser should respond")
         LogoutUser.execute(LockerTests._consumerUser!,
-                           sucessHandler: { () -> () in
-                            expectation.fulfill()
-        }) { (context) -> () in
+                           sucessHandler: { () -> Void in
+                               expectation.fulfill()
+        }) { (context) -> Void in
             expectation.fulfill()
             XCTFail("\(context)")
         }
@@ -258,21 +253,18 @@ class LockerTests: XCTestCase {
         waitForExpectations(timeout: TestsConfiguration.TIME_OUT_DURATION, handler: nil)
     }
 
-
     // MARK: 3 - Local verify locker tests
-
-
 
     func test302_VerifyLocker_BadCode() {
         let expectation = self.expectation(description: "VerifyLocker should respond")
 
         VerifyLocker.execute(LockerTests._lockerID,
-                                                inDocumentWithUID: LockerTests._document.UID,
-                                                code: "BADCOD",
-                                                accessGranted: { (locker) in
-                                                    expectation.fulfill()
-                                                    XCTFail("Verification should fail with bad code")
-        }) { (context) in
+                             inDocumentWithUID: LockerTests._document.UID,
+                             code: "BADCOD",
+                             accessGranted: { _ in
+                                 expectation.fulfill()
+                                 XCTFail("Verification should fail with bad code")
+        }) { context in
             expectation.fulfill()
             XCTAssertEqual(context.code, 1)
         }
@@ -283,13 +275,13 @@ class LockerTests: XCTestCase {
     func test303_VerifyLocker_BadLocker() {
         let expectation = self.expectation(description: "VerifyLocker should respond")
 
-        VerifyLocker.execute( "BADID",
-                                                 inDocumentWithUID: LockerTests._document.UID,
-                                                 code: LockerTests._lockerCode,
-                                                 accessGranted: { (locker) in
-                                                    expectation.fulfill()
-                                                    XCTFail("Verification should fail with bad locker ID")
-        }) { (context) in
+        VerifyLocker.execute("BADID",
+                             inDocumentWithUID: LockerTests._document.UID,
+                             code: LockerTests._lockerCode,
+                             accessGranted: { _ in
+                                 expectation.fulfill()
+                                 XCTFail("Verification should fail with bad locker ID")
+        }) { _ in
             expectation.fulfill()
         }
 
@@ -301,9 +293,9 @@ class LockerTests: XCTestCase {
     func test401_LoginUser_Creator() {
         let expectation = self.expectation(description: "LoginUser should respond")
         if let user = LockerTests._creatorUser {
-            user.login(sucessHandler: { () -> () in
-                        expectation.fulfill()
-            }) { (context) -> () in
+            user.login(sucessHandler: { () -> Void in
+                expectation.fulfill()
+            }) { (context) -> Void in
                 expectation.fulfill()
                 XCTFail("\(context)")
             }
@@ -315,33 +307,30 @@ class LockerTests: XCTestCase {
     }
 
     func test402_DeleteLocker() {
-        if LockerTests._locker == nil{
+        if LockerTests._locker == nil {
             XCTFail("LockerTests._locker is void")
-        }else{
+        } else {
             let expectation = self.expectation(description: "DeleteLocker should respond")
 
-            DeleteLocker.execute(LockerTests._locker!, from: LockerTests._document.UID, sucessHandler: { (context) in
+            DeleteLocker.execute(LockerTests._locker!, from: LockerTests._document.UID, sucessHandler: { _ in
                 expectation.fulfill()
-            }) { (context) in
+            }) { context in
                 expectation.fulfill()
                 XCTFail("\(context)")
             }
 
             waitForExpectations(timeout: TestsConfiguration.TIME_OUT_DURATION, handler: nil)
         }
-
-
     }
 
     func test403_DeleteUser_Consumer() {
-
         let expectation = self.expectation(description: "DeleteUser should respond")
 
         DeleteUser.execute(LockerTests._consumerUser!,
-                           from:LockerTests._document.UID,
-                           sucessHandler: { (context) -> () in
-                            expectation.fulfill()
-        }) { (context) -> () in
+                           from: LockerTests._document.UID,
+                           sucessHandler: { (_) -> Void in
+                               expectation.fulfill()
+        }) { (context) -> Void in
             expectation.fulfill()
             XCTFail("\(context)")
         }
@@ -350,14 +339,13 @@ class LockerTests: XCTestCase {
     }
 
     func test404_DeleteUser_Creator() {
-
         let expectation = self.expectation(description: "DeleteUser should respond")
 
         DeleteUser.execute(LockerTests._creatorUser!,
-                           from:LockerTests._document.UID,
-                           sucessHandler: { (context) -> () in
-                            expectation.fulfill()
-        }) { (context) -> () in
+                           from: LockerTests._document.UID,
+                           sucessHandler: { (_) -> Void in
+                               expectation.fulfill()
+        }) { (context) -> Void in
             expectation.fulfill()
             XCTFail("\(context)")
         }
@@ -368,9 +356,9 @@ class LockerTests: XCTestCase {
     func test405_LogOut_Creator() {
         let expectation = self.expectation(description: "LogoutUser should respond")
         LogoutUser.execute(LockerTests._creatorUser!,
-                           sucessHandler: { () -> () in
-                            expectation.fulfill()
-        }) { (context) -> () in
+                           sucessHandler: { () -> Void in
+                               expectation.fulfill()
+        }) { (context) -> Void in
             expectation.fulfill()
             XCTFail("\(context)")
         }

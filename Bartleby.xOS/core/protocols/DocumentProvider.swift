@@ -8,19 +8,15 @@
 
 import Foundation
 
-
 public protocol DocumentProvider {
-
     /// Returns a BartlebyDocument
     /// Generally used in conjunction with `DocumentDependent` protocol
     ///
     /// - Returns: the document
     func getDocument() -> BartlebyDocument?
-
 }
 
-public protocol AsyncDocumentProvider{
-
+public protocol AsyncDocumentProvider {
     /// Returns a BartlebyDocument
     /// Generally used in conjunction with `DocumentDependent` protocol
     ///
@@ -30,6 +26,5 @@ public protocol AsyncDocumentProvider{
     /// You can store document consumers
     /// To call `consumer.providerHasADocument()`
     /// - Parameter consumer: the document dependent consumer
-    func addDocumentConsumer(consumer:AsyncDocumentDependent)
-
+    func addDocumentConsumer(consumer: AsyncDocumentDependent)
 }

@@ -6,25 +6,22 @@
 //  Copyright © 2017 Chaosmos SAS. All rights reserved.
 //
 
-import Cocoa
 import BartlebyKit
-
+import Cocoa
 
 // Creates automatically a single User in off line mode
 open class CreateAnIsolatedUser: StepViewController {
+    open override var nibName: NSNib.Name { return NSNib.Name("CreateAnIsolatedUser") }
 
-    override open var nibName : NSNib.Name { return NSNib.Name("CreateAnIsolatedUser") }
-
-    override open func viewWillAppear() {
-        super .viewWillAppear()
-        self._createAnIsolatedUser()
-        self.stepDelegate?.didValidateStep(self.stepIndex)
+    open override func viewWillAppear() {
+        super.viewWillAppear()
+        _createAnIsolatedUser()
+        stepDelegate?.didValidateStep(stepIndex)
     }
 
-
-    fileprivate func _createAnIsolatedUser(){
-        if let document = self.documentProvider?.getDocument(){
-            let user:User = document.newManagedModel(commit:false)
+    fileprivate func _createAnIsolatedUser() {
+        if let document = self.documentProvider?.getDocument() {
+            let user: User = document.newManagedModel(commit: false)
             user.isIsolated = true
             document.metadata.isolatedUserMode = true
             document.metadata.configureCurrentUser(user)
@@ -32,18 +29,16 @@ open class CreateAnIsolatedUser: StepViewController {
             // But this sugar has not been stored on any server.
             // That why we will propose to save a MasterKey
             // There is no way to get back the data if the bowl is deleted.
-            document.metadata.sugar=Bartleby.randomStringWithLength(1024)
+            document.metadata.sugar = Bartleby.randomStringWithLength(1024)
             document.hasChanged()
-            do{
+            do {
                 try document.metadata.putSomeSugarInYourBowl() // Save the key
                 document.send(IdentificationStates.sugarHasBeenRecovered)
-                self.identityWindowController?.identificationIsValid = true
-                self.identityWindowController?.enableActions()
-            }catch{
-                document.log("\(error)",category: Default.LOG_IDENTITY)
+                identityWindowController?.identificationIsValid = true
+                identityWindowController?.enableActions()
+            } catch {
+                document.log("\(error)", category: Default.LOG_IDENTITY)
             }
-
         }
     }
-
 }

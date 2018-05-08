@@ -6,38 +6,36 @@
 //
 //
 
+import BartlebyKit
 import Cocoa
 import WebKit
-import BartlebyKit
 
-class WebStack: NSViewController,DocumentDependent,WebFrameLoadDelegate {
+class WebStack: NSViewController, DocumentDependent, WebFrameLoadDelegate {
+    override var nibName: NSNib.Name { return NSNib.Name("WebStack") }
 
-    override var nibName : NSNib.Name { return NSNib.Name("WebStack") }
-
-    @IBOutlet weak var webView: WebView!{
-        didSet{
-            webView.frameLoadDelegate=self
+    @IBOutlet var webView: WebView! {
+        didSet {
+            webView.frameLoadDelegate = self
         }
     }
 
-    fileprivate var URL:Foundation.URL?
+    fileprivate var URL: Foundation.URL?
 
-    fileprivate var _loadingAttempted:Bool=false
-
+    fileprivate var _loadingAttempted: Bool = false
 
     // MARK: - DocumentDependent
-    var documentProvider: DocumentProvider?{
-        didSet{
-            if let document=self.documentProvider?.getDocument(){
-                if let currentUser=document.metadata.currentUser{
-                    self.URL=currentUser.signInURL(for:document)
+
+    var documentProvider: DocumentProvider? {
+        didSet {
+            if let document = self.documentProvider?.getDocument() {
+                if let currentUser = document.metadata.currentUser {
+                    URL = currentUser.signInURL(for: document)
                 }
             }
         }
     }
 
-    public func providerHasADocument(){}
-
+    public func providerHasADocument() {}
 
     // MARK: - Life Cycle
 
@@ -47,19 +45,18 @@ class WebStack: NSViewController,DocumentDependent,WebFrameLoadDelegate {
 
     override func viewDidAppear() {
         super.viewDidAppear()
-        if !self._loadingAttempted {
-            if let URL=self.URL {
-                let r=URLRequest(url:URL)
-                self.webView.mainFrame.load(r)
-                self._loadingAttempted=true
+        if !_loadingAttempted {
+            if let URL = self.URL {
+                let r = URLRequest(url: URL)
+                webView.mainFrame.load(r)
+                _loadingAttempted = true
             }
         }
     }
 
     // Mark: - WebFrameLoadDelegate
-    
-    func webView(_ sender: WebView!, didFailLoadWithError error: Error!, for frame: WebFrame!){
-        self._loadingAttempted=false
-    }
 
+    func webView(_: WebView!, didFailLoadWithError _: Error!, for _: WebFrame!) {
+        _loadingAttempted = false
+    }
 }

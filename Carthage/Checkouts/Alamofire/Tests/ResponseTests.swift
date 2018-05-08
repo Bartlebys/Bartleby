@@ -278,8 +278,7 @@ class ResponseJSONTestCase: BaseTestCase {
 
         if
             let responseDictionary = response?.result.value as? [String: Any],
-            let args = responseDictionary["args"] as? [String: String]
-        {
+            let args = responseDictionary["args"] as? [String: String] {
             XCTAssertEqual(args, ["foo": "bar"], "args should match parameters")
         } else {
             XCTFail("args should not be nil")
@@ -314,8 +313,7 @@ class ResponseJSONTestCase: BaseTestCase {
 
         if
             let responseDictionary = response?.result.value as? [String: Any],
-            let form = responseDictionary["form"] as? [String: String]
-        {
+            let form = responseDictionary["form"] as? [String: String] {
             XCTAssertEqual(form, ["foo": "bar"], "form should match parameters")
         } else {
             XCTFail("form should not be nil")
@@ -429,7 +427,7 @@ class ResponseFlatMapTestCase: BaseTestCase {
 
         // When
         Alamofire.request(urlString, parameters: ["foo": "bar"]).responseData { resp in
-            response = resp.flatMap { json in
+            response = resp.flatMap { _ in
                 throw TransformError()
             }
 

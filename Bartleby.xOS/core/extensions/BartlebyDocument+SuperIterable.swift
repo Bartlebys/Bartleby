@@ -8,19 +8,18 @@
 
 import Foundation
 
+extension BartlebyDocument: SuperIterable {
 
-extension BartlebyDocument:SuperIterable{
-
-    // MARK : SuperIterable
+    // MARK: SuperIterable
 
     /**
      An iterator that permit dynamic approaches.
      - parameter on: the closure
      */
-    public func superIterate(_ on:@escaping (_ element: Collectible)->()) {
+    public func superIterate(_ on: @escaping (_ element: Collectible) -> Void) {
         // We want to super superIterate on each collection
-        for (_, collection) in self._collections {
-            collection.superIterate({ (element) in
+        for (_, collection) in _collections {
+            collection.superIterate({ element in
                 on(element)
             })
         }

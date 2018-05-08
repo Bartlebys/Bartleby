@@ -7,24 +7,22 @@
 
 import Foundation
 
-
 /// A data container that allows to serialize / deserialize Codable model
 /// If the model is Relational its `owns`property should be preserved
-public struct SerializedRelationalObject:Codable {
-
-    public var data:Data
-    public var owns:[String]
+public struct SerializedRelationalObject: Codable {
+    public var data: Data
+    public var owns: [String]
 
     /// Returns the managed Model from a serialized Entity
     ///
     /// - Parameter SerializedRelationalObject: the entity
     /// - Returns: the instance with its restored ownerships
-    public func instanciate<ModelType:RelationalCodable>()throws->ModelType{
-        let instance: ModelType = try JSON.decoder.decode(ModelType.self, from: self.data)
-        for owneeUID in self.owns{
-            if let ownee = Bartleby.registredManagedModelByUID(owneeUID){
+    public func instanciate<ModelType: RelationalCodable>() throws -> ModelType {
+        let instance: ModelType = try JSON.decoder.decode(ModelType.self, from: data)
+        for owneeUID in owns {
+            if let ownee = Bartleby.registredManagedModelByUID(owneeUID) {
                 instance.declaresOwnership(of: ownee)
-            }else{
+            } else {
                 throw SerializedEntityError.relationNotFound(UID: owneeUID)
             }
         }
@@ -34,35 +32,29 @@ public struct SerializedRelationalObject:Codable {
 
 public typealias RelationalCodable = Codable & Relational
 
-enum SerializedEntityError:Error{
-    case relationNotFound(UID:String)
+enum SerializedEntityError: Error {
+    case relationNotFound(UID: String)
 }
 
 // MARK: - Protocols
 
-public protocol ToSerializedRelationalObject{
-
+public protocol ToSerializedRelationalObject {
     /// Creates a `Codable` entity that encapsulates the serialized self and its typeName
     /// This entity is suitable for DynamicDeserialization
     ///
     /// - Returns: the serialized entity
-    func toSerializedRelationalObject()->SerializedRelationalObject
+    func toSerializedRelationalObject() -> SerializedRelationalObject
 }
-
-
 
 // MARK: - Managed models adopt ToSerializedRelationalObject
 
-extension ManagedModel:ToSerializedRelationalObject{
-
+extension ManagedModel: ToSerializedRelationalObject {
     /// Creates a `Codable` entity that encapsulates the serialized self and its typeName
     /// This entity is suitable for DynamicDeserialization
     ///
     /// - Returns: the serialized entity
-    open func toSerializedRelationalObject()->SerializedRelationalObject{
-        let data = self.serialize()
-        return SerializedRelationalObject(data:data,owns:self.owns)
+    open func toSerializedRelationalObject() -> SerializedRelationalObject {
+        let data = serialize()
+        return SerializedRelationalObject(data: data, owns: owns)
     }
 }
-
-

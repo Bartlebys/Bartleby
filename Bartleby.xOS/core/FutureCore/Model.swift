@@ -7,8 +7,7 @@
 //
 
 import Foundation
-open  class Model:Object,Codable{
-
+open class Model: Object, Codable {
 
     // MARK: - Initializable
 
@@ -18,19 +17,14 @@ open  class Model:Object,Codable{
 
     // MARK: - Codable
 
-    public enum ModelCodingKeys: String,CodingKey{
+    public enum ModelCodingKeys: String, CodingKey {
         case id
     }
 
-
-    public required init(from decoder: Decoder) throws{
+    public required init(from _: Decoder) throws {
         super.init()
     }
 
-    open func encode(to encoder: Encoder) throws {
+    open func encode(to _: Encoder) throws {
     }
-
-
-
 }
-

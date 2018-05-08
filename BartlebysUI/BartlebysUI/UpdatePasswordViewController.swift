@@ -6,37 +6,35 @@
 //  Copyright © 2016 Chaosmos SAS. All rights reserved.
 //
 
-import Cocoa
 import BartlebyKit
+import Cocoa
 
-open class UpdatePasswordViewController: StepViewController{
+open class UpdatePasswordViewController: StepViewController {
+    open override var nibName: NSNib.Name { return NSNib.Name("UpdatePasswordViewController") }
 
-    override open var nibName : NSNib.Name { return NSNib.Name("UpdatePasswordViewController") }
+    @IBOutlet var passwordTextField: NSTextField!
 
-    @IBOutlet weak var passwordTextField: NSTextField!
+    @IBOutlet var refreshButton: NSButton!
 
-    @IBOutlet weak var refreshButton: NSButton!
-
-    @IBOutlet weak var messageTextField: NSTextField!
-    override open func viewDidLoad() {
+    @IBOutlet var messageTextField: NSTextField!
+    open override func viewDidLoad() {
         super.viewDidLoad()
         // Do view setup here.
     }
 
-    override open func viewWillAppear() {
+    open override func viewWillAppear() {
         super.viewWillAppear()
-        self.refresh(self)
+        refresh(self)
     }
 
-    @IBAction func refresh(_ sender: Any) {
-        self.passwordTextField.stringValue=Bartleby.randomStringWithLength(8,signs:Bartleby.configuration.PASSWORD_CHAR_CART)
+    @IBAction func refresh(_: Any) {
+        passwordTextField.stringValue = Bartleby.randomStringWithLength(8, signs: Bartleby.configuration.PASSWORD_CHAR_CART)
     }
 
-    override open func proceedToValidation(){
+    open override func proceedToValidation() {
         super.proceedToValidation()
-        self.documentProvider?.getDocument()?.send(IdentificationStates.updatePassword)
-        self.identityWindowController?.passwordCandidate=self.passwordTextField.stringValue
-        self.stepDelegate?.didValidateStep( self.stepIndex)
+        documentProvider?.getDocument()?.send(IdentificationStates.updatePassword)
+        identityWindowController?.passwordCandidate = passwordTextField.stringValue
+        stepDelegate?.didValidateStep(stepIndex)
     }
-
 }
