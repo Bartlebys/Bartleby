@@ -197,6 +197,10 @@ public final class BSFS:TriggerHook{
             __popNode()
 
         } catch {
+
+            let resolvedBox:Box? = try? Bartleby.registredObjectByUID(boxUID)
+            resolvedBox?.assemblyInProgress = false
+
             completed(Completion.failureStateFromError(error))
             self._document.send(BoxStates.mountingHasFailed(boxUID:boxUID,message: "\(error)"))
         }
