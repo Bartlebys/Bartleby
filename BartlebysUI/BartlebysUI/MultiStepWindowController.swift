@@ -9,12 +9,21 @@
 import Cocoa
 import BartlebyKit
 
+
+public protocol StepNavigationDelegate{
+    func userDidCloseMultiStep()
+}
+
 // A window view controller used to display sequential view controllers
 // used by the IdentityWindowController
-open class MultiStepWindowController: NSWindowController,DocumentProvider,StepNavigation {
+open class MultiStepWindowController: NSWindowController, DocumentProvider, StepNavigation {
+
 
 
     override open var windowNibName: NSNib.Name? { return NSNib.Name("MultiStepWindowController") }
+
+    public var multiStepDelegate:StepNavigationDelegate?
+
 
     // MARK: - DocumentProvider
 
@@ -54,6 +63,20 @@ open class MultiStepWindowController: NSWindowController,DocumentProvider,StepNa
     // MARK: - Actions
 
     @IBAction func leftAction(_ sender: Any) {
+
+        // This Default implementation
+        // should generally not be called if you need to revert any state or data
+        guard  let sheetWindow = self.window else {
+            return
+        }
+
+        guard let parentWindow = (self.document as? BartlebyDocument)?.windowControllers.first?.window  else{
+            return
+        }
+        parentWindow.endSheet(sheetWindow)
+        
+        self.multiStepDelegate?.userDidCloseMultiStep()
+
     }
 
     @IBAction func rightAction(_ sender: Any) {
@@ -81,6 +104,11 @@ open class MultiStepWindowController: NSWindowController,DocumentProvider,StepNa
         self.leftButton.isEnabled=true
         self.rightButton.isEnabled=true
     }
+
+    public func enableCancellation() {
+        self.leftButton.isEnabled=true
+    }
+
 
     public func enableProgressIndicator(){
         self.progressIndicator.isHidden=false

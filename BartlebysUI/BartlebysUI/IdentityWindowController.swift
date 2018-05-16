@@ -11,7 +11,7 @@ import BartlebyKit
 
 // MARK: - IdentifactionDelegate
 
-public protocol IdentifactionDelegate{
+public protocol IdentifactionDelegate : StepNavigationDelegate{
     func userWantsToCloseIndentityController()
 }
 

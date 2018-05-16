@@ -15,6 +15,7 @@ public protocol StepNavigation{
 
     func didValidateStep(_ step:Int)
     func disableActions()
+    func enableCancellation()
     func enableActions()
 
     // The progress indicator
