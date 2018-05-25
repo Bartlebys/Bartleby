@@ -74,9 +74,7 @@ open class MultiStepWindowController: NSWindowController, DocumentProvider, Step
             return
         }
         parentWindow.endSheet(sheetWindow)
-        
         self.multiStepDelegate?.userDidCloseMultiStep()
-
     }
 
     @IBAction func rightAction(_ sender: Any) {

@@ -13,6 +13,7 @@ import BartlebyKit
 
 public protocol IdentifactionDelegate : StepNavigationDelegate{
     func userWantsToCloseIndentityController()
+    func identityControllerWantsToCloseDocument()
 }
 
 
@@ -208,7 +209,7 @@ open class IdentityWindowController: MultiStepWindowController {
                     self.append(viewController: self.revealPassword, selectImmediately: false)
                 }else if document.metadata.isolatedUserMode{
                     // Close automatically
-                    document.close()
+                    self.identificationDelegate?.identityControllerWantsToCloseDocument()
                 }else{
                     // Normal case.
                     self._userHasBeenControlled()
