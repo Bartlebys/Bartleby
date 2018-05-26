@@ -189,7 +189,6 @@ open class IdentityWindowController: MultiStepWindowController {
                 self.append(viewController: self.createAnIsolatedUser, selectImmediately: false)
                 self.append(viewController: self.revealPassword, selectImmediately: false)
             }else if document.metadata.isolatedUserMode{
-                // Close automatically
                 self.identificationDelegate?.identityControllerWantsToCloseDocument()
             }else{
                 // Normal case.
