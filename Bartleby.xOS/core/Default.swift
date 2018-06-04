@@ -204,7 +204,8 @@ public struct Default {
     static public let UID_KEY = "_id"
     static public let TYPE_NAME_KEY = "typeName"
 
-    static public let VOID_STRING=""
+    static public let VOID_STRING = ""
+    static public let VOID_JSON = "{}"
     static public let NO_STRING_ERROR: String="NO_STRING_ERROR"
     static public let NOT_OBSERVABLE: String="NOT_OBSERVABLE"
     static public let NO_UID: String="NO_UID"
