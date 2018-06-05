@@ -28,7 +28,7 @@ open class RelayActivationCode {
     ///   - body: the body `$code` will be replaced by the code server side
     ///   - success: the success closure
     ///   - failure: the failure closure
-    static open func execute(    baseURL:URL,
+    public static func execute(    baseURL:URL,
                                 documentUID:String,
                                 toEmail:String,
                                 toPhoneNumber:String,

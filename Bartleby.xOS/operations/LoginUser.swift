@@ -11,7 +11,7 @@ import Foundation
 
 open class LoginUser {
     
-    static open func execute(  _ user: User,
+    public static func execute(  _ user: User,
                                sucessHandler success:@escaping ()->(),
                                failureHandler failure:@escaping (_ context: HTTPContext)->()) {
 

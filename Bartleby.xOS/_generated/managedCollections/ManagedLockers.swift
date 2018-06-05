@@ -713,7 +713,7 @@ public extension Notification.Name {
         }
     }
 
-    open let selectedLockersUIDSKeys="selectedLockersUIDSKeys"
+    public let selectedLockersUIDSKeys="selectedLockersUIDSKeys"
 
     // Note :
     // If you use an ArrayController & Bartleby automation

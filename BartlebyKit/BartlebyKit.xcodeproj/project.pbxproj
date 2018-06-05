@@ -197,8 +197,8 @@
 		E5450F461F3A1F83008FD1C3 /* CryptoKeySize.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5450DD91F3A1F83008FD1C3 /* CryptoKeySize.swift */; };
 		E5450F471F3A1F83008FD1C3 /* Data+HMAC.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5450DDA1F3A1F83008FD1C3 /* Data+HMAC.swift */; };
 		E5450F481F3A1F83008FD1C3 /* Data+HMAC.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5450DDA1F3A1F83008FD1C3 /* Data+HMAC.swift */; };
-		E5450F491F3A1F83008FD1C3 /* HMAC.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5450DDB1F3A1F83008FD1C3 /* HMAC.swift */; };
-		E5450F4A1F3A1F83008FD1C3 /* HMAC.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5450DDB1F3A1F83008FD1C3 /* HMAC.swift */; };
+		E5450F491F3A1F83008FD1C3 /* BartlebysHMAC.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5450DDB1F3A1F83008FD1C3 /* BartlebysHMAC.swift */; };
+		E5450F4A1F3A1F83008FD1C3 /* BartlebysHMAC.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5450DDB1F3A1F83008FD1C3 /* BartlebysHMAC.swift */; };
 		E5450F4B1F3A1F83008FD1C3 /* HMACAlgorithms.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5450DDC1F3A1F83008FD1C3 /* HMACAlgorithms.swift */; };
 		E5450F4C1F3A1F83008FD1C3 /* HMACAlgorithms.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5450DDC1F3A1F83008FD1C3 /* HMACAlgorithms.swift */; };
 		E5450F4D1F3A1F83008FD1C3 /* NoCrypto.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5450DDD1F3A1F83008FD1C3 /* NoCrypto.swift */; };
@@ -707,7 +707,7 @@
 		E5450DD81F3A1F83008FD1C3 /* CryptoHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CryptoHelper.swift; sourceTree = "<group>"; };
 		E5450DD91F3A1F83008FD1C3 /* CryptoKeySize.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CryptoKeySize.swift; sourceTree = "<group>"; };
 		E5450DDA1F3A1F83008FD1C3 /* Data+HMAC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Data+HMAC.swift"; sourceTree = "<group>"; };
-		E5450DDB1F3A1F83008FD1C3 /* HMAC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HMAC.swift; sourceTree = "<group>"; };
+		E5450DDB1F3A1F83008FD1C3 /* BartlebysHMAC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BartlebysHMAC.swift; sourceTree = "<group>"; };
 		E5450DDC1F3A1F83008FD1C3 /* HMACAlgorithms.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HMACAlgorithms.swift; sourceTree = "<group>"; };
 		E5450DDD1F3A1F83008FD1C3 /* NoCrypto.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NoCrypto.swift; sourceTree = "<group>"; };
 		E5450DDE1F3A1F83008FD1C3 /* String+HMAC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "String+HMAC.swift"; sourceTree = "<group>"; };
@@ -1167,7 +1167,7 @@
 				E5450DD81F3A1F83008FD1C3 /* CryptoHelper.swift */,
 				E5450DD91F3A1F83008FD1C3 /* CryptoKeySize.swift */,
 				E5450DDA1F3A1F83008FD1C3 /* Data+HMAC.swift */,
-				E5450DDB1F3A1F83008FD1C3 /* HMAC.swift */,
+				E5450DDB1F3A1F83008FD1C3 /* BartlebysHMAC.swift */,
 				E5450DDC1F3A1F83008FD1C3 /* HMACAlgorithms.swift */,
 				E5450DDD1F3A1F83008FD1C3 /* NoCrypto.swift */,
 				E5450DDE1F3A1F83008FD1C3 /* String+HMAC.swift */,
@@ -1805,7 +1805,7 @@
 				E5E8C2412070CC4E00FCD5B6 /* ReadLocalizedDataByIds.swift in Sources */,
 				E54510591F3A1F84008FD1C3 /* HTTPManager.swift in Sources */,
 				E5450FFD1F3A1F84008FD1C3 /* JSONString.swift in Sources */,
-				E5450F491F3A1F83008FD1C3 /* HMAC.swift in Sources */,
+				E5450F491F3A1F83008FD1C3 /* BartlebysHMAC.swift in Sources */,
 				E54510351F3A1F84008FD1C3 /* String+Helpers.swift in Sources */,
 				E54510291F3A1F84008FD1C3 /* SerializedRelationalObject.swift in Sources */,
 				E5E72D911FE42C2A00849952 /* Object.swift in Sources */,
@@ -2063,7 +2063,7 @@
 				E5E8C2562070CC4E00FCD5B6 /* ReadLockerById.swift in Sources */,
 				E545105A1F3A1F84008FD1C3 /* HTTPManager.swift in Sources */,
 				E5450FFE1F3A1F84008FD1C3 /* JSONString.swift in Sources */,
-				E5450F4A1F3A1F83008FD1C3 /* HMAC.swift in Sources */,
+				E5450F4A1F3A1F83008FD1C3 /* BartlebysHMAC.swift in Sources */,
 				E54510361F3A1F84008FD1C3 /* String+Helpers.swift in Sources */,
 				E545102A1F3A1F84008FD1C3 /* SerializedRelationalObject.swift in Sources */,
 				E5E8C25D2070CC4E00FCD5B6 /* ReadUsersByIds.swift in Sources */,

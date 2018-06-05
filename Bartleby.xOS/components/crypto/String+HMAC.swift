@@ -11,27 +11,27 @@ import Foundation
 public extension String {
 
     var md5: String {
-        return HMAC.digestString(self, algo: HMACAlgorithms.MD5)
+        return BartlebysHMAC.digestString(self, algo: HMACAlgorithms.MD5)
     }
 
     var sha1: String {
-        return HMAC.digestString(self, algo: HMACAlgorithms.SHA1)
+        return BartlebysHMAC.digestString(self, algo: HMACAlgorithms.SHA1)
     }
 
     var sha224: String {
-        return HMAC.digestString(self, algo: HMACAlgorithms.SHA224)
+        return BartlebysHMAC.digestString(self, algo: HMACAlgorithms.SHA224)
     }
 
     var sha256: String {
-        return HMAC.digestString(self, algo: HMACAlgorithms.SHA256)
+        return BartlebysHMAC.digestString(self, algo: HMACAlgorithms.SHA256)
     }
 
     var sha384: String {
-        return HMAC.digestString(self, algo: HMACAlgorithms.SHA384)
+        return BartlebysHMAC.digestString(self, algo: HMACAlgorithms.SHA384)
     }
 
     var sha512: String {
-        return HMAC.digestString(self, algo: HMACAlgorithms.SHA512)
+        return BartlebysHMAC.digestString(self, algo: HMACAlgorithms.SHA512)
     }
 
 }

@@ -9,7 +9,7 @@
 import Foundation
 
 
-public struct HMAC {
+public struct BartlebysHMAC {
 
 
     /// Return the digest
@@ -20,8 +20,8 @@ public struct HMAC {
     /// - Returns: the digest string
     static func digestString(_ string: String, algo: HMACAlgorithms) -> String {
         if let stringData = string.data(using: String.Encoding.utf8, allowLossyConversion: false){
-            let digest=HMAC._digest(stringData, algo: algo)
-            return HMAC._hexStringFromData(digest)
+            let digest = BartlebysHMAC._digest(stringData, algo: algo)
+            return BartlebysHMAC._hexStringFromData(digest)
         }
         return ""
     }
@@ -33,8 +33,8 @@ public struct HMAC {
     ///   - algo: the algorythm to use
     /// - Returns: the digest string
     static func digestData(_ data: Data, algo: HMACAlgorithms) -> String {
-        let digest=HMAC._digest(data, algo: algo)
-        return HMAC._hexStringFromData(digest)
+        let digest = BartlebysHMAC._digest(data, algo: algo)
+        return BartlebysHMAC._hexStringFromData(digest)
     }
 
 

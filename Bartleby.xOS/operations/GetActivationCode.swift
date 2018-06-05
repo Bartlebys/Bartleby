@@ -28,7 +28,7 @@ open class GetActivationCode {
     ///   - body: the body message `$code` will be replaced by the code server side
     ///   - success: the success closure
     ///   - failure: the failure closure
-    static open func execute(    baseURL:URL,
+    public static func execute(    baseURL:URL,
                                  documentUID:String,
                                  lockerUID:String,
                                  title:String,

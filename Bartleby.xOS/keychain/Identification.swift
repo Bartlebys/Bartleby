@@ -20,11 +20,11 @@ open class Identification:Codable {
     // During Swift 4 migration we encountered a blocking issue
     // It is impossible to instantiate an Identification() from BartlebysUI
     // It causes a segfault during compilation
-    open static func newIdentification()->Identification{
+    public static func newIdentification()->Identification{
         return Identification()
     }
 
-    open static func identificationFrom(user:User)->Identification{
+    public static func identificationFrom(user:User)->Identification{
         let identification=Identification()
         identification.email=user.email
         identification.phoneCountryCode=user.phoneCountryCode

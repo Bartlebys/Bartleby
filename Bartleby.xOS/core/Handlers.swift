@@ -170,7 +170,7 @@ open class Handlers: NSObject {
 
      - returns: an Handlers instance
      */
-    open static func withoutCompletion() -> Handlers {
+    public static func withoutCompletion() -> Handlers {
         return Handlers.init(completionHandler: nil)
     }
 
@@ -224,7 +224,7 @@ open class Handlers: NSObject {
 
      - returns: an instance of Handlers
      */
-    open static func handlersFrom(_ composedHandler: @escaping ComposedHandler) -> Handlers {
+    public static func handlersFrom(_ composedHandler: @escaping ComposedHandler) -> Handlers {
 
         // Those handlers produce an adaptation
         // From the unique handler form

@@ -713,7 +713,7 @@ public extension Notification.Name {
         }
     }
 
-    open let selectedBoxesUIDSKeys="selectedBoxesUIDSKeys"
+    public let selectedBoxesUIDSKeys="selectedBoxesUIDSKeys"
 
     // Note :
     // If you use an ArrayController & Bartleby automation

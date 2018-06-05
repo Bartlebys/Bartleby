@@ -708,7 +708,7 @@ public extension Notification.Name {
         }
     }
 
-    open let selectedLocalizedDataUIDSKeys="selectedLocalizedDataUIDSKeys"
+    public let selectedLocalizedDataUIDSKeys="selectedLocalizedDataUIDSKeys"
 
     // Note :
     // If you use an ArrayController & Bartleby automation

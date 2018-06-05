@@ -44,14 +44,14 @@ open class Bartleby:NSObject,AliasResolution {
     open static let runUID: String=Bartleby.createUID()
 
     // The configuration
-    static open var configuration: BartlebyConfiguration.Type=BartlebyDefaultConfiguration.self
+    public static var configuration: BartlebyConfiguration.Type=BartlebyDefaultConfiguration.self
 
     // The crypto delegate
-    static open var cryptoDelegate: CryptoDelegate=NoCrypto()
+    public static var cryptoDelegate: CryptoDelegate=NoCrypto()
 
     // The File manager
     // #TODO REMOVE BartlebyFileIO (simplification)
-    static open var fileManager: BartlebyFileIO=BFileManager()
+    public static var fileManager: BartlebyFileIO=BFileManager()
 
     /**
      This method should be only used to cleanup in core unit test
@@ -101,7 +101,7 @@ open class Bartleby:NSObject,AliasResolution {
 
     // MARK: -
     // TODO: @md #crypto Check crypto key requirement
-    static open func isValidKey(_ key: String) -> Bool {
+    public static func isValidKey(_ key: String) -> Bool {
         return key.count >= 32
     }
 

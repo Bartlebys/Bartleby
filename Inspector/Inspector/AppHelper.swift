@@ -13,9 +13,10 @@ import BartlebyKit
 
 public class AppHelper:NSObject,NSSharingServiceDelegate {
 
-    open static let sharedInstance: AppHelper = {
+    public static let sharedInstance: AppHelper = {
         let instance = AppHelper()
         return instance
+        
     }()
 
 

@@ -14,9 +14,9 @@ import Foundation
 
 open class HTTPManager: NSObject {
 
-    static open let SPACE_UID_KEY="spaceUID"
-    static open let OBSERVATION_UID_KEY="observationUID"
-    static open let KVID_KEY="kvid"
+    public static let SPACE_UID_KEY="spaceUID"
+    public static let OBSERVATION_UID_KEY="observationUID"
+    public static let KVID_KEY="kvid"
 
 
     static var baseURLApi: URL?
@@ -33,7 +33,7 @@ open class HTTPManager: NSObject {
     /**
      Configure the Manager
      */
-    static open func configure()->() {
+    public static func configure()->() {
         if _hasBeenConfigured == false {
             let configuration = URLSessionConfiguration.default
             _ = SessionManager(configuration:configuration)
@@ -52,7 +52,7 @@ open class HTTPManager: NSObject {
 
      - returns: the mutable request
      */
-    static open func mutableRequestWithHeaders(_ method: String, url: URL) -> URLRequest {
+    public static func mutableRequestWithHeaders(_ method: String, url: URL) -> URLRequest {
         var request=URLRequest(url: url)
         request.httpMethod=method
         let headers=HTTPManager.baseHttpHeaders()
@@ -84,7 +84,7 @@ open class HTTPManager: NSObject {
     ///   - url: the url
     ///   - oUID: an optional observationUID if not set we will use the document.UID
     /// - Returns: return value description
-    static open func requestWithToken(inDocumentWithUID documentUID: String,
+    public static func requestWithToken(inDocumentWithUID documentUID: String,
                                       withActionName actionName: String,
                                       forMethod method: String,
                                       and url: URL,
@@ -120,7 +120,7 @@ open class HTTPManager: NSObject {
     ///   - actionName: the action Name (for token Permission level)
     ///   - oUID: an optional observationUID if not set we will use the document.UID
     /// - Returns: the HTTP headers
-    static open func httpHeadersWithToken(inDocumentWithUID documentUID: String,
+    public static func httpHeadersWithToken(inDocumentWithUID documentUID: String,
                                           withActionName actionName: String,
                                           observableBy oUID:String=Default.NO_UID)->[String:String]{
         var headers=HTTPManager.baseHttpHeaders()
@@ -162,7 +162,7 @@ open class HTTPManager: NSObject {
 
      - returns: the headers
      */
-    static open func baseHttpHeaders()->[String:String]{
+    public static func baseHttpHeaders()->[String:String]{
         var headers=[String:String]()
         Bartleby.requestCounter += 1
         headers["User-Agent"]=HTTPManager.userAgent
@@ -188,7 +188,7 @@ open class HTTPManager: NSObject {
      - parameter successHandler: called on success
      - parameter failureHandler: called on failure
      */
-    static open func apiIsReachable(_ baseURL: URL, successHandler:@escaping ()->(), failureHandler:@escaping (_ context: HTTPContext)->()) {
+    public static func apiIsReachable(_ baseURL: URL, successHandler:@escaping ()->(), failureHandler:@escaping (_ context: HTTPContext)->()) {
         let pathURL=baseURL.appendingPathComponent("/Reachable")
         let urlRequest=HTTPManager.requestWithToken(inDocumentWithUID:"", withActionName:"Reachable", forMethod:"GET", and: pathURL)
         request(urlRequest).validate().responseString { (response) in
@@ -255,7 +255,7 @@ open class HTTPManager: NSObject {
      - parameter successHandler: called on success
      - parameter failureHandler: called on failure
      */
-    static open func verifyCredentials(_ documentUID: String, baseURL: URL, successHandler:@escaping ()->(), failureHandler:@escaping (_ context: HTTPContext)->()) {
+    public static func verifyCredentials(_ documentUID: String, baseURL: URL, successHandler:@escaping ()->(), failureHandler:@escaping (_ context: HTTPContext)->()) {
         let pathURL=baseURL.appendingPathComponent("/verify/credentials")
         let document=Bartleby.sharedInstance.getDocumentByUID(documentUID)
         let urlRequest=HTTPManager.requestWithToken(inDocumentWithUID:documentUID, withActionName:"VerifyCredentials", forMethod:"GET", and: pathURL)
@@ -331,7 +331,7 @@ open class HTTPManager: NSObject {
 
      - returns: true if it is a valid email.
      */
-    static open func isValidEmail(_ testStr: String) -> Bool {
+    public static func isValidEmail(_ testStr: String) -> Bool {
         let emailRegEx = "[A-Z0-9a-z._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,4}"
         let emailTest = NSPredicate(format:"SELF MATCHES %@", emailRegEx)
         return emailTest.evaluate(with: testStr)
@@ -345,7 +345,7 @@ open class HTTPManager: NSObject {
 
      - returns: true if it is a valid phone Number.v
      */
-    static open func isValidPhoneNumber(_ testStr: String) -> Bool {
+    public static func isValidPhoneNumber(_ testStr: String) -> Bool {
             do {
                 let detector = try NSDataDetector(types: NSTextCheckingResult.CheckingType.phoneNumber.rawValue)
                 let matches = detector.matches(in: testStr, options: [], range: NSMakeRange(0, testStr.count))
@@ -368,7 +368,7 @@ open class HTTPManager: NSObject {
      
      - returns: the salted value
      */
-    static open func salt(_ string: String) -> String {
+    public static func salt(_ string: String) -> String {
         return CryptoHelper.hashString(string + Bartleby.configuration.SHARED_SALT)
     }
     

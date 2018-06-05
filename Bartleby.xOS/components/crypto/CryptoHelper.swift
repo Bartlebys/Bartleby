@@ -174,7 +174,7 @@ open class CryptoHelper: NSObject, CryptoDelegate {
 
     // MARK: - Hash
 
-    open static func hashString(_ string: String) -> String {
+    public static func hashString(_ string: String) -> String {
         return string.md5
     }
 

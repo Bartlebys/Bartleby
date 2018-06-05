@@ -12,26 +12,26 @@ import Foundation
 public extension Data {
 
     var md5: String {
-        return HMAC.digestData(self, algo: HMACAlgorithms.MD5)
+        return BartlebysHMAC.digestData(self, algo: HMACAlgorithms.MD5)
     }
 
     var sha1: String {
-        return HMAC.digestData(self, algo: HMACAlgorithms.SHA1)
+        return BartlebysHMAC.digestData(self, algo: HMACAlgorithms.SHA1)
     }
 
     var sha224: String {
-        return HMAC.digestData(self, algo: HMACAlgorithms.SHA224)
+        return BartlebysHMAC.digestData(self, algo: HMACAlgorithms.SHA224)
     }
 
     var sha256: String {
-        return HMAC.digestData(self, algo: HMACAlgorithms.SHA256)
+        return BartlebysHMAC.digestData(self, algo: HMACAlgorithms.SHA256)
     }
 
     var sha384: String {
-        return HMAC.digestData(self, algo: HMACAlgorithms.SHA384)
+        return BartlebysHMAC.digestData(self, algo: HMACAlgorithms.SHA384)
     }
 
     var sha512: String {
-        return HMAC.digestData(self, algo: HMACAlgorithms.SHA512)
+        return BartlebysHMAC.digestData(self, algo: HMACAlgorithms.SHA512)
     }
 }

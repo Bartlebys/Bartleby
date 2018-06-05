@@ -19,7 +19,7 @@ open class PatchUser {
     ///  1. user.supportsPasswordUpdate==false
     ///  2. user.supportsPasswordSyndication==false
 
-    static open func execute( baseURL:URL,
+    public static func execute( baseURL:URL,
                               documentUID:String,
                               userUID: String,
                               cryptoPassword:String,

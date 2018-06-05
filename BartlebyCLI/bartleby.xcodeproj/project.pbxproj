@@ -180,7 +180,7 @@
 		E5F43A281FA31B6F00AFC05B /* String+Helpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5F4391F1FA31B6F00AFC05B /* String+Helpers.swift */; };
 		E5F43A291FA31B6F00AFC05B /* UIX.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5F439211FA31B6F00AFC05B /* UIX.swift */; };
 		E5F43A2A1FA31B6F00AFC05B /* Data+HMAC.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5F439241FA31B6F00AFC05B /* Data+HMAC.swift */; };
-		E5F43A2B1FA31B6F00AFC05B /* HMAC.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5F439251FA31B6F00AFC05B /* HMAC.swift */; };
+		E5F43A2B1FA31B6F00AFC05B /* BartlebysHMAC.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5F439251FA31B6F00AFC05B /* BartlebysHMAC.swift */; };
 		E5F43A2C1FA31B6F00AFC05B /* CryptoHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5F439261FA31B6F00AFC05B /* CryptoHelper.swift */; };
 		E5F43A2D1FA31B6F00AFC05B /* HMACAlgorithms.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5F439271FA31B6F00AFC05B /* HMACAlgorithms.swift */; };
 		E5F43A2E1FA31B6F00AFC05B /* CryptoKeySize.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5F439281FA31B6F00AFC05B /* CryptoKeySize.swift */; };
@@ -475,7 +475,7 @@
 		E5F4391F1FA31B6F00AFC05B /* String+Helpers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "String+Helpers.swift"; sourceTree = "<group>"; };
 		E5F439211FA31B6F00AFC05B /* UIX.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIX.swift; sourceTree = "<group>"; };
 		E5F439241FA31B6F00AFC05B /* Data+HMAC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Data+HMAC.swift"; sourceTree = "<group>"; };
-		E5F439251FA31B6F00AFC05B /* HMAC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HMAC.swift; sourceTree = "<group>"; };
+		E5F439251FA31B6F00AFC05B /* BartlebysHMAC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BartlebysHMAC.swift; sourceTree = "<group>"; };
 		E5F439261FA31B6F00AFC05B /* CryptoHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CryptoHelper.swift; sourceTree = "<group>"; };
 		E5F439271FA31B6F00AFC05B /* HMACAlgorithms.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HMACAlgorithms.swift; sourceTree = "<group>"; };
 		E5F439281FA31B6F00AFC05B /* CryptoKeySize.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CryptoKeySize.swift; sourceTree = "<group>"; };
@@ -969,7 +969,7 @@
 			isa = PBXGroup;
 			children = (
 				E5F439241FA31B6F00AFC05B /* Data+HMAC.swift */,
-				E5F439251FA31B6F00AFC05B /* HMAC.swift */,
+				E5F439251FA31B6F00AFC05B /* BartlebysHMAC.swift */,
 				E5F439261FA31B6F00AFC05B /* CryptoHelper.swift */,
 				E5F439271FA31B6F00AFC05B /* HMACAlgorithms.swift */,
 				E5F439281FA31B6F00AFC05B /* CryptoKeySize.swift */,
@@ -1270,7 +1270,7 @@
 				E5F43A3C1FA31B6F00AFC05B /* Report.swift in Sources */,
 				E5F43A121FA31B6F00AFC05B /* DocumentProvider.swift in Sources */,
 				E5F43A061FA31B6F00AFC05B /* DataUpdatable.swift in Sources */,
-				E5F43A2B1FA31B6F00AFC05B /* HMAC.swift in Sources */,
+				E5F43A2B1FA31B6F00AFC05B /* BartlebysHMAC.swift in Sources */,
 				E5F43A681FA31B6F00AFC05B /* CreateBlock.swift in Sources */,
 				E5F43A8A1FA31B6F00AFC05B /* ManagedLockers.swift in Sources */,
 				E5F43A431FA31B6F00AFC05B /* PushOperation.swift in Sources */,

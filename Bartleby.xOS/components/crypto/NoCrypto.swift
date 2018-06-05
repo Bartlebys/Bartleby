@@ -62,7 +62,7 @@ open class NoCrypto: NSObject, CryptoDelegate {
 
     // MARK: -
 
-    open static func hashString(_ string: String) -> String {
+    public static func hashString(_ string: String) -> String {
         return string
     }
 

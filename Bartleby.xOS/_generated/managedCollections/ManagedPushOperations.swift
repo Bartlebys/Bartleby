@@ -642,7 +642,7 @@ public extension Notification.Name {
         }
     }
 
-    open let selectedPushOperationsUIDSKeys="selectedPushOperationsUIDSKeys"
+    public let selectedPushOperationsUIDSKeys="selectedPushOperationsUIDSKeys"
 
     // Note :
     // If you use an ArrayController & Bartleby automation
