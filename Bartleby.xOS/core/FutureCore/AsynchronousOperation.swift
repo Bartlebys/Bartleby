@@ -30,12 +30,16 @@ open class AsynchronousOperation: Operation {
 
     public var state = State.ready {
         willSet {
-            self.willChangeValue(forKey: self.state.keyPath)
-            self.willChangeValue(forKey: newValue.keyPath)
+            syncOnMain{
+                self.willChangeValue(forKey: self.state.keyPath)
+                self.willChangeValue(forKey: newValue.keyPath)
+            }
         }
         didSet {
-            self.didChangeValue(forKey: self.state.keyPath)
-            self.didChangeValue(forKey: oldValue.keyPath)
+            syncOnMain{
+                self.didChangeValue(forKey: self.state.keyPath)
+                self.didChangeValue(forKey: oldValue.keyPath)
+            }
         }
     }
 
