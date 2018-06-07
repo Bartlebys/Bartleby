@@ -26,5 +26,5 @@ Bartleby Major version should increment each 24 months.
 Publicly available this fall (Q4 2017 / Q1 2018).
 [bartlebys.org](https://bartlebys.org)
 
-## Contact 
+## Contact
 [Contact Benoit Pereira Da Silva] (https://pereira-da-silva.com/contact/)
