@@ -31,7 +31,7 @@ public protocol Dynamics{
     ///
     /// - Parameter typeName: the class name
     /// - Returns: the new instance
-    func newInstanceOf(_ typeName:String)throws->Any
+    func newInstanceOf(_ typeName:String) throws->Any
 
 
     // MARK : - Patch (migration support)
