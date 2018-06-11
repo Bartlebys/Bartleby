@@ -14,6 +14,15 @@ import Foundation
 extension ManagedModel{
 
 
+
+    /// A constructor that allows to define the UID of the object
+    ///
+    /// - Parameter uid: the desired UID
+    public convenience init(withUID uid:UID) {
+        self.init()
+        self._id = uid
+    }
+
     /// Return true if the inspector has been openned.
     open var isInspectable:Bool{
         get{
@@ -28,42 +37,6 @@ extension ManagedModel{
     // Returns the referent document UID
     open var documentUID:String{
         return self.referentDocument?.UID ?? Default.NO_UID
-    }
-
-
-
-    /// Changes the UID
-    /// This method can be used to change explicitly the UID
-    /// For example in the FeedClient
-    /// This method is computationaly intensive
-    ///
-    /// - Parameter newUID: the newUID
-    open func changeUID(newUID:UID){
-
-        guard let collection = self.collection else{
-            return
-        }
-
-        let ownedBy = self.ownedBy
-        let owns = self.owns
-        let freeRelations = self.freeRelations
-
-        // Remove from the collection
-        collection.removeObject(self, commit: false)
-
-        self._id = newUID
-        collection.add(self, commit: false, isUndoable: false)
-        ownedBy.forEach { (uid) in
-            Bartleby.registredManagedModelByUID(uid)?.declaresOwnership(of: self)
-        }
-        owns.forEach{ (uid) in
-            if let o =  Bartleby.registredManagedModelByUID(uid){
-                self.declaresOwnership(of: o)
-            }
-        }
-        freeRelations.forEach { (uid) in
-            Bartleby.registredManagedModelByUID(uid)?.declaresFreeRelationShip(to: self)
-        }
     }
 
 
