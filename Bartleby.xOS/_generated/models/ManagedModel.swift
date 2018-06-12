@@ -31,6 +31,15 @@ import Foundation
 	    }
 	}
 
+	//An external Version number (sometimes a timestamp) that can be used to define if the object as changed (e.g: used in App layer synchronization feeds)
+	@objc dynamic open var externalVersionNumber:Int = -1  {
+	    didSet { 
+	       if !self.wantsQuietChanges && externalVersionNumber != oldValue {
+	            self.provisionChanges(forKey: "externalVersionNumber",oldValue: oldValue,newValue: externalVersionNumber)  
+	       } 
+	    }
+	}
+
 	//Collectible protocol: The Creator UID - Can be used for ACL purposes automatically injected in new entities Factories
 	@objc dynamic open var creatorUID:String = Default.NO_UID
 
@@ -128,6 +137,7 @@ import Foundation
     public enum ManagedModelCodingKeys: String,CodingKey{
 		case _id
 		case externalID
+		case externalVersionNumber
 		case creatorUID
 		case languageCode
 		case ownedBy
@@ -148,6 +158,7 @@ import Foundation
 			let values = try decoder.container(keyedBy: ManagedModelCodingKeys.self)
 			self._id = try values.decode(String.self,forKey:._id)
 			self.externalID = try values.decode(String.self,forKey:.externalID)
+			self.externalVersionNumber = try values.decode(Int.self,forKey:.externalVersionNumber)
 			self.creatorUID = try values.decode(String.self,forKey:.creatorUID)
 			self.languageCode = try values.decode(String.self,forKey:.languageCode)
 			self.ownedBy = try values.decode([String].self,forKey:.ownedBy)
@@ -163,6 +174,7 @@ import Foundation
 		var container = encoder.container(keyedBy: ManagedModelCodingKeys.self)
 		try container.encode(self._id,forKey:._id)
 		try container.encode(self.externalID,forKey:.externalID)
+		try container.encode(self.externalVersionNumber,forKey:.externalVersionNumber)
 		try container.encode(self.creatorUID,forKey:.creatorUID)
 		try container.encode(self.languageCode,forKey:.languageCode)
 		try container.encode(self.ownedBy,forKey:.ownedBy)
@@ -180,7 +192,7 @@ import Foundation
     /// Return all the exposed instance variables keys. (Exposed == public and modifiable).
      open var exposedKeys:[String] {
         var exposed=[String]()
-        exposed.append(contentsOf:["_id","externalID","creatorUID","languageCode","ownedBy","freeRelations","owns","summary","ephemeral","changedKeys","commitCounter"])
+        exposed.append(contentsOf:["_id","externalID","externalVersionNumber","creatorUID","languageCode","ownedBy","freeRelations","owns","summary","ephemeral","changedKeys","commitCounter"])
         return exposed
     }
 
@@ -200,6 +212,10 @@ import Foundation
             case "externalID":
                 if let casted=value as? String{
                     self.externalID=casted
+                }
+            case "externalVersionNumber":
+                if let casted=value as? Int{
+                    self.externalVersionNumber=casted
                 }
             case "creatorUID":
                 if let casted=value as? String{
@@ -256,6 +272,8 @@ import Foundation
                return self._id
             case "externalID":
                return self.externalID
+            case "externalVersionNumber":
+               return self.externalVersionNumber
             case "creatorUID":
                return self.creatorUID
             case "languageCode":
