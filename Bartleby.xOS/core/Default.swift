@@ -182,54 +182,54 @@ public struct BartlebyDefaultConfiguration: BartlebyConfiguration {
 public struct Default {
 
     // To prevent Int over flow server side.
-    static public let MAX_INT:Int=Int(Int32.max)
-    static public let NO_INT_INDEX=MAX_INT
+    static public let MAX_INT: Int = Int(Int32.max)
+    static public let NO_INT_INDEX: Int = MAX_INT
 
     // Log categories
-    static public let LOG_DEFAULT="Default"
-    static public let LOG_WARNING="Warning"
-    static public let LOG_FAULT="FAULT"
-    static public let LOG_BSFS="BSFS"
-    static public let LOG_SECURITY="SECURITY"
-    static public let LOG_IDENTITY="IDENTITY"
+    static public let LOG_DEFAULT: String = "Default"
+    static public let LOG_WARNING: String = "Warning"
+    static public let LOG_FAULT: String = "FAULT"
+    static public let LOG_BSFS: String = "BSFS"
+    static public let LOG_SECURITY: String = "SECURITY"
+    static public let LOG_IDENTITY: String = "IDENTITY"
 
 
     //MARK: UserDefault key/values
-    static public let SERVER_KEY="user_default_server"
-    static public let USER_EMAIL_KEY="user_default_email"
-    static public let USER_PASSWORD_KEY="user_default_password"
+    static public let SERVER_KEY: String = "user_default_server"
+    static public let USER_EMAIL_KEY: String = "user_default_email"
+    static public let USER_PASSWORD_KEY: String = "user_default_password"
 
     //Misc constants
 
-    static public let UID_KEY = "_id"
-    static public let TYPE_NAME_KEY = "typeName"
+    static public let UID_KEY: String = "_id"
+    static public let TYPE_NAME_KEY: String = "typeName"
 
-    static public let VOID_STRING = ""
-    static public let VOID_JSON = "{}"
-    static public let NO_STRING_ERROR: String="NO_STRING_ERROR"
-    static public let NOT_OBSERVABLE: String="NOT_OBSERVABLE"
-    static public let NO_UID: String="NO_UID"
-    static public let NO_NAME: String="NO_NAME"
-    static public let NO_COMMENT: String="NO_COMMENT"
-    static public let NO_MESSAGE: String="NO_MESSAGE"
-    static public let NO_KEY: String="NO_KEY"
-    static public let NO_PATH: String="NO_PATH"
-    static public let NO_GEM: String="NO_GEM"
-    static public let NO_GROUP: String="NO_GROUP"
-    static public let NO_METHOD: String="NO_METHOD"
-    static public let NO_DIGEST: String="NO_DIGEST"
-    static public let NO_PASSWORD: String="NO_PASSWORD"
-    static public let NO_SUGAR: String="NO_SUGAR"
+    static public let VOID_STRING: String = ""
+    static public let VOID_JSON: String = "{}"
+    static public let NO_STRING_ERROR: String = "NO_STRING_ERROR"
+    static public let NOT_OBSERVABLE: String = "NOT_OBSERVABLE"
+    static public let NO_UID: String = "NO_UID"
+    static public let NO_NAME: String = "NO_NAME"
+    static public let NO_COMMENT: String = "NO_COMMENT"
+    static public let NO_MESSAGE: String = "NO_MESSAGE"
+    static public let NO_KEY: String = "NO_KEY"
+    static public let NO_PATH: String = "NO_PATH"
+    static public let NO_GEM: String = "NO_GEM"
+    static public let NO_GROUP: String = "NO_GROUP"
+    static public let NO_METHOD: String = "NO_METHOD"
+    static public let NO_DIGEST: String = "NO_DIGEST"
+    static public let NO_PASSWORD: String = "NO_PASSWORD"
+    static public let NO_SUGAR: String = "NO_SUGAR"
     static public let STRING_ENCODING = String.Encoding.utf8
 
-    static public let CATEGORY_DOWNLOADS = "downloads" // Used on Downloads
-    static public let CATEGORY_UPLOADS = "uploads" // Used on Uploads
-    static public let CATEGORY_ASSEMBLIES = "assemblies" // Used when mounting a box
+    static public let CATEGORY_DOWNLOADS: String = "downloads" // Used on Downloads
+    static public let CATEGORY_UPLOADS: String = "uploads" // Used on Uploads
+    static public let CATEGORY_ASSEMBLIES: String = "assemblies" // Used when mounting a box
     
     // A bunch of char in wich to pick to compose a random password
-    static public let DEFAULT_PASSWORD_CHAR_CART="123456789ABCDEFGHJKMNPQRSTUVWXYZ"
+    static public let DEFAULT_PASSWORD_CHAR_CART: String = "123456789ABCDEFGHJKMNPQRSTUVWXYZ"
 
 
-    static public let DESERIALIZATION_HAS_FAILED = NSLocalizedString("Deserialization has failed", comment: "Deserialization has failed")
+    static public let DESERIALIZATION_HAS_FAILED: String = NSLocalizedString("Deserialization has failed", comment: "Deserialization has failed")
 
 }
