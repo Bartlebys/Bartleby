@@ -115,20 +115,18 @@ public struct I18N {
 
         }
         let sortedLangages = languages.sorted(by: { (lLang, rLang) -> Bool in
-            return lLang.localizedDisplayName.compare(rLang.localizedDisplayName) == .orderedAscending
+            return lLang.code.compare(rLang.code) == .orderedAscending
         })
         I18N._languages = sortedLangages
         return I18N._languages!
     }
 
 
-    static public func dump(){
+    static public func dump( counterSeparator: String = ".", separator: String = "|"){
         var counter = 0
-        for language in I18N.languages.sorted(by: { (lL, rL) -> Bool in
-            return lL.code.compare(rL.code) == .orderedAscending
-        }){
+        for language in I18N.languages{
             counter += 1
-            Swift.print("\(counter). \(language.code)|\(language.displayName)|\(language.localizedDisplayName)")
+            Swift.print("\(counter)\(counterSeparator) \(language.code)\(separator)\(language.displayName)\(separator)\(language.localizedDisplayName)")
         }
     }
 
