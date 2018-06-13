@@ -9,16 +9,16 @@
 import Foundation
 
 #if os(OSX)
-    import AppKit
+import AppKit
 #else
-    import UIKit
+import UIKit
 #endif
 
 
 public struct Language{
-    let code:String
-    let localizedDisplayName:String
-    let displayName:String
+    public let code:String
+    public let localizedDisplayName:String
+    public let displayName:String
 }
 
 public struct I18N {
@@ -120,6 +120,18 @@ public struct I18N {
         I18N._languages = sortedLangages
         return I18N._languages!
     }
+
+
+    static public func dump(){
+        var counter = 0
+        for language in I18N.languages.sorted(by: { (lL, rL) -> Bool in
+            return lL.code.compare(rL.code) == .orderedAscending
+        }){
+            counter += 1
+            Swift.print("\(counter). \(language.code)|\(language.displayName)|\(language.localizedDisplayName)")
+        }
+    }
+
 }
 
 
