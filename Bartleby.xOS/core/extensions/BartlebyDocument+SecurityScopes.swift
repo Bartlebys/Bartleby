@@ -9,9 +9,9 @@
 import Foundation
 
 #if os(OSX)
-    import AppKit
+import AppKit
 #else
-    import UIKit
+import UIKit
 #endif
 
 
@@ -65,19 +65,17 @@ extension BartlebyDocument {
     /// - Throws: errors
     public func acquireSecurizedURLFrom(originalURL: URL, appScoped: Bool=false) throws ->URL {
         do{
-            if originalURL.isFileURL == false{
-                return originalURL
-            }
 
-            if originalURL.isInMainBundle{
+            guard  originalURL.isFileURL == false , originalURL.isInMainBundle, self.urlIsInAppContainer(url: originalURL) else{
+                // Do not acquire any distant url or containerized URL
                 return originalURL
             }
 
             #if os(OSX)
-                if !appScoped && self.isDraft{
-                    // The document must have an URL to create a Bookmark
-                    throw SecurityScopedBookMarkError.documentIsADraft
-                }
+            if !appScoped && self.isDraft{
+                // The document must have an URL to create a Bookmark
+                throw SecurityScopedBookMarkError.documentIsADraft
+            }
             #endif
 
             if let url=self._normalizeFileURL(originalURL){
@@ -114,6 +112,15 @@ extension BartlebyDocument {
     }
 
 
+    public func urlIsInAppContainer(url:URL)->Bool{
+        if let appGroupURL = FileManager.default.containerURL(forSecurityApplicationGroupIdentifier: self.metadata.appGroup){
+            if url.absoluteString.contains(string:appGroupURL.absoluteString){
+                return true
+            }
+        }
+        return false
+    }
+
 
     /// Release the access to the sandboxed securized URL
     /// Each acquireSecurizedURLFrom(...) must be balanced by releaseSecurizedUrl(...)
@@ -123,14 +130,17 @@ extension BartlebyDocument {
     ///   - appScoped: is it an app scoped Bookmark?
     public func releaseSecurizedUrl(originalURL:URL?,appScoped: Bool=false){
         if let url=self._normalizeFileURL(originalURL){
-            if url.isFileURL && !url.isInMainBundle {
-                if self._securityScopedBookmarkExits(url,appScoped:appScoped ){
-                    let key=self._getBookMarkKeyFor(url, appScoped: appScoped)
-                    self._stopAccessingToResourceIdentifiedBy(key)
-                }else{
-                    self.log("Unable to release Bookmark for \(url) appScoped: \(appScoped)", file: #file, function: #function, line: #line, category: Default.LOG_WARNING, decorative: false)
-                }
+            guard  url.isFileURL == false , url.isInMainBundle, self.urlIsInAppContainer(url: url) else{
+                // Block any distant url or containerized URL
+                return
             }
+            if self._securityScopedBookmarkExits(url,appScoped:appScoped ){
+                let key=self._getBookMarkKeyFor(url, appScoped: appScoped)
+                self._stopAccessingToResourceIdentifiedBy(key)
+            }else{
+                self.log("Unable to release Bookmark for \(url) appScoped: \(appScoped)", file: #file, function: #function, line: #line, category: Default.LOG_WARNING, decorative: false)
+            }
+
         }
     }
 
@@ -207,13 +217,13 @@ extension BartlebyDocument {
             // To create a document-scoped bookmark, use the absolute path (despite this parameter’s name) to the document file that is to own the new security-scoped bookmark.
 
             #if os(OSX)
-                data = try (url as URL).bookmarkData(options: URL.BookmarkCreationOptions.withSecurityScope,
-                                                     includingResourceValuesForKeys:nil,
-                                                     relativeTo: appScoped ? nil : ( self.fileURL ) )
+            data = try (url as URL).bookmarkData(options: URL.BookmarkCreationOptions.withSecurityScope,
+                                                 includingResourceValuesForKeys:nil,
+                                                 relativeTo: appScoped ? nil : ( self.fileURL ) )
             #else
-                data = try url.bookmarkData(options: URL.BookmarkCreationOptions.suitableForBookmarkFile,
-                                            includingResourceValuesForKeys: nil,
-                                            relativeTo: appScoped ? nil : ( self.fileURL ))
+            data = try url.bookmarkData(options: URL.BookmarkCreationOptions.suitableForBookmarkFile,
+                                        includingResourceValuesForKeys: nil,
+                                        relativeTo: appScoped ? nil : ( self.fileURL ))
 
             #endif
 
@@ -260,13 +270,13 @@ extension BartlebyDocument {
         var bookmarkIsStale: Bool = false
         do {
             #if os(OSX)
-                let securizedURL = try URL(resolvingBookmarkData: data,
-                                           options: URL.BookmarkResolutionOptions.withSecurityScope, relativeTo:  appScoped ? nil : self.fileURL,
-                                           bookmarkDataIsStale: &bookmarkIsStale)
+            let securizedURL = try URL(resolvingBookmarkData: data,
+                                       options: URL.BookmarkResolutionOptions.withSecurityScope, relativeTo:  appScoped ? nil : self.fileURL,
+                                       bookmarkDataIsStale: &bookmarkIsStale)
             #else
-                let securizedURL = try URL(resolvingBookmarkData: data,
-                                           options: URL.BookmarkResolutionOptions.withoutUI, relativeTo:  appScoped ? nil : self.fileURL,
-                                           bookmarkDataIsStale: &bookmarkIsStale)
+            let securizedURL = try URL(resolvingBookmarkData: data,
+                                       options: URL.BookmarkResolutionOptions.withoutUI, relativeTo:  appScoped ? nil : self.fileURL,
+                                       bookmarkDataIsStale: &bookmarkIsStale)
             #endif
             if (!bookmarkIsStale) {
                 return securizedURL!
