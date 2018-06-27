@@ -670,6 +670,7 @@ public extension Notification.Name {
     // to modify the current selection you should use the array controller
     // e.g: referentDocument.lockers.arrayController?.setSelectedObjects(lockers)
     // Do not use document.lockers.selectedLockers=lockers
+    // For universal support use referentDocument.lockers.setSelectedLockers(lockers)
 
     override open func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey : Any]?, context: UnsafeMutableRawPointer?) {
         guard context == &_KVOContext else {
@@ -719,6 +720,7 @@ public extension Notification.Name {
     // If you use an ArrayController & Bartleby automation
     // to modify the current selection you should use the array controller
     // e.g: referentDocument.lockers.arrayController?.setSelectedObjects(lockers)
+    // For universal support use referentDocument.lockers.setSelectedLockers(lockers)
     @objc dynamic open var selectedLockers:[Locker]?{
         didSet{
             syncOnMain {
@@ -735,6 +737,18 @@ public extension Notification.Name {
 
     // A facility
     open var firstSelectedLocker:Locker? { return self.selectedLockers?.first }
+
+
+    public func setSelectedLockers(_ lockers:[Locker]?){
+        #if os(OSX) && !USE_EMBEDDED_MODULES
+        if self.arrayController != nil{
+            self.arrayController?.setSelectedObjects(lockers ?? [Locker]())
+        }else{
+            self.selectedLockers = lockers        }
+        #else
+            self.selectedLockers = lockers
+        #endif
+    }
 
 
 

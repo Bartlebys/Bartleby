@@ -599,6 +599,7 @@ public extension Notification.Name {
     // to modify the current selection you should use the array controller
     // e.g: referentDocument.pushOperations.arrayController?.setSelectedObjects(pushOperations)
     // Do not use document.pushOperations.selectedPushOperations=pushOperations
+    // For universal support use referentDocument.pushOperations.setSelectedPushOperations(pushOperations)
 
     override open func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey : Any]?, context: UnsafeMutableRawPointer?) {
         guard context == &_KVOContext else {
@@ -648,6 +649,7 @@ public extension Notification.Name {
     // If you use an ArrayController & Bartleby automation
     // to modify the current selection you should use the array controller
     // e.g: referentDocument.pushOperations.arrayController?.setSelectedObjects(pushOperations)
+    // For universal support use referentDocument.pushOperations.setSelectedPushOperations(pushOperations)
     @objc dynamic open var selectedPushOperations:[PushOperation]?{
         didSet{
             syncOnMain {
@@ -664,6 +666,18 @@ public extension Notification.Name {
 
     // A facility
     open var firstSelectedPushOperation:PushOperation? { return self.selectedPushOperations?.first }
+
+
+    public func setSelectedPushOperations(_ pushOperations:[PushOperation]?){
+        #if os(OSX) && !USE_EMBEDDED_MODULES
+        if self.arrayController != nil{
+            self.arrayController?.setSelectedObjects(pushOperations ?? [PushOperation]())
+        }else{
+            self.selectedPushOperations = pushOperations        }
+        #else
+            self.selectedPushOperations = pushOperations
+        #endif
+    }
 
 
 

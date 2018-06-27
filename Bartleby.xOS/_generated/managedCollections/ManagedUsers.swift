@@ -669,6 +669,7 @@ public extension Notification.Name {
     // to modify the current selection you should use the array controller
     // e.g: referentDocument.users.arrayController?.setSelectedObjects(users)
     // Do not use document.users.selectedUsers=users
+    // For universal support use referentDocument.users.setSelectedUsers(users)
 
     override open func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey : Any]?, context: UnsafeMutableRawPointer?) {
         guard context == &_KVOContext else {
@@ -718,6 +719,7 @@ public extension Notification.Name {
     // If you use an ArrayController & Bartleby automation
     // to modify the current selection you should use the array controller
     // e.g: referentDocument.users.arrayController?.setSelectedObjects(users)
+    // For universal support use referentDocument.users.setSelectedUsers(users)
     @objc dynamic open var selectedUsers:[User]?{
         didSet{
             syncOnMain {
@@ -734,6 +736,18 @@ public extension Notification.Name {
 
     // A facility
     open var firstSelectedUser:User? { return self.selectedUsers?.first }
+
+
+    public func setSelectedUsers(_ users:[User]?){
+        #if os(OSX) && !USE_EMBEDDED_MODULES
+        if self.arrayController != nil{
+            self.arrayController?.setSelectedObjects(users ?? [User]())
+        }else{
+            self.selectedUsers = users        }
+        #else
+            self.selectedUsers = users
+        #endif
+    }
 
 
 

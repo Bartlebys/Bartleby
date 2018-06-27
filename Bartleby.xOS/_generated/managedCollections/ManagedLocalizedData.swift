@@ -665,6 +665,7 @@ public extension Notification.Name {
     // to modify the current selection you should use the array controller
     // e.g: referentDocument.localizedData.arrayController?.setSelectedObjects(localizedData)
     // Do not use document.localizedData.selectedLocalizedData=localizedData
+    // For universal support use referentDocument.localizedData.setSelectedLocalizedData(localizedData)
 
     override open func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey : Any]?, context: UnsafeMutableRawPointer?) {
         guard context == &_KVOContext else {
@@ -714,6 +715,7 @@ public extension Notification.Name {
     // If you use an ArrayController & Bartleby automation
     // to modify the current selection you should use the array controller
     // e.g: referentDocument.localizedData.arrayController?.setSelectedObjects(localizedData)
+    // For universal support use referentDocument.localizedData.setSelectedLocalizedData(localizedData)
     @objc dynamic open var selectedLocalizedData:[LocalizedDatum]?{
         didSet{
             syncOnMain {
@@ -730,6 +732,18 @@ public extension Notification.Name {
 
     // A facility
     open var firstSelectedLocalizedDatum:LocalizedDatum? { return self.selectedLocalizedData?.first }
+
+
+    public func setSelectedLocalizedData(_ localizedData:[LocalizedDatum]?){
+        #if os(OSX) && !USE_EMBEDDED_MODULES
+        if self.arrayController != nil{
+            self.arrayController?.setSelectedObjects(localizedData ?? [LocalizedDatum]())
+        }else{
+            self.selectedLocalizedData = localizedData        }
+        #else
+            self.selectedLocalizedData = localizedData
+        #endif
+    }
 
 
 

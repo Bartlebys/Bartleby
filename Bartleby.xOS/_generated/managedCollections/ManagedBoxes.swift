@@ -670,6 +670,7 @@ public extension Notification.Name {
     // to modify the current selection you should use the array controller
     // e.g: referentDocument.boxes.arrayController?.setSelectedObjects(boxes)
     // Do not use document.boxes.selectedBoxes=boxes
+    // For universal support use referentDocument.boxes.setSelectedBoxes(boxes)
 
     override open func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey : Any]?, context: UnsafeMutableRawPointer?) {
         guard context == &_KVOContext else {
@@ -719,6 +720,7 @@ public extension Notification.Name {
     // If you use an ArrayController & Bartleby automation
     // to modify the current selection you should use the array controller
     // e.g: referentDocument.boxes.arrayController?.setSelectedObjects(boxes)
+    // For universal support use referentDocument.boxes.setSelectedBoxes(boxes)
     @objc dynamic open var selectedBoxes:[Box]?{
         didSet{
             syncOnMain {
@@ -735,6 +737,18 @@ public extension Notification.Name {
 
     // A facility
     open var firstSelectedBox:Box? { return self.selectedBoxes?.first }
+
+
+    public func setSelectedBoxes(_ boxes:[Box]?){
+        #if os(OSX) && !USE_EMBEDDED_MODULES
+        if self.arrayController != nil{
+            self.arrayController?.setSelectedObjects(boxes ?? [Box]())
+        }else{
+            self.selectedBoxes = boxes        }
+        #else
+            self.selectedBoxes = boxes
+        #endif
+    }
 
 
 
