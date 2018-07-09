@@ -11,65 +11,64 @@
 
 #if os(OSX)
 
-    import AppKit
+import AppKit
 
-    public typealias XColor = NSColor
+public typealias XColor = NSColor
 
-    public typealias XView = NSView
+public typealias XView = NSView
 
-    public typealias XImage = NSImage
+public typealias XImage = NSImage
 
-    open class BXImageView:NSImageView,Identifiable{
-        open let UID=Bartleby.createUID()
-    }
+open class BXImageView: NSImageView, Identifiable{
+    open let UID = Bartleby.createUID()
+}
 
-    open class BXView:NSView,Identifiable{
-        open let UID=Bartleby.createUID()
-    }
+open class BXView: NSView, Identifiable{
+    open let UID = Bartleby.createUID()
+}
 
-    open class BXViewController:NSViewController,Identifiable,MessageListener{
-        open let UID=Bartleby.createUID()
-        open func handle<T:StateMessage>(message:T){}
-    }
+open class BXViewController: NSViewController, Identifiable ,MessageListener{
+    open let UID = Bartleby.createUID()
+    open func handle<T: StateMessage>(message: T){}
+}
 
-    open class BXWindowController: NSWindowController,MessageListener {
-        open let UID=Bartleby.createUID()
-        open func handle<T:StateMessage>(message:T){}
+open class BXWindowController: NSWindowController, MessageListener {
+    open let UID = Bartleby.createUID()
+    open func handle<T: StateMessage>(message: T){}
 
-    }
+}
 
-    open class BXTableView:NSTableView,Identifiable{
-        open let UID=Bartleby.createUID()
-    }
+open class BXTableView: NSTableView, Identifiable{
+    open let UID = Bartleby.createUID()
+}
 
 
 #elseif os(iOS)
 
-    import UIKit
+import UIKit
 
-    public typealias XColor = UIColor
+public typealias XColor = UIColor
 
-    public typealias XView = UIView
+public typealias XView = UIView
 
-    public typealias XImage = UIImage
+public typealias XImage = UIImage
 
-    open class BXImageView:UIImageView,Identifiable{
-        open let UID=Bartleby.createUID()
-    }
+open class BXImageView: UIImageView, Identifiable{
+    open let UID = Bartleby.createUID()
+}
 
-    open class BXView:UIView,Identifiable{
-        public let UID=Bartleby.createUID()
-    }
+open class BXView: UIView, Identifiable{
+    public let UID = Bartleby.createUID()
+}
 
-    open class BXViewController:UIViewController,Identifiable,MessageListener{
-        public let UID=Bartleby.createUID()
-        open func handle<T:StateMessage>(message:T){}
-    }
+open class BXViewController: UIViewController, Identifiable, MessageListener{
+    public let UID = Bartleby.createUID()
+    open func handle<T: StateMessage>(message: T){}
+}
 
-    open class BXTableView:UITableView,Identifiable{
-        public let UID=Bartleby.createUID()
-    }
-
+open class BXTableView: UITableView, Identifiable{
+    public let UID = Bartleby.createUID()
+}
 
 #elseif os(watchOS)
 #elseif os(tvOS)
