@@ -208,7 +208,7 @@ public struct Default {
     static public let VOID_JSON: String = "{}"
     static public let NO_STRING_ERROR: String = "NO_STRING_ERROR"
     static public let NOT_OBSERVABLE: String = "NOT_OBSERVABLE"
-    static public let NO_UID: String = "NO_UID"
+    static public let NO_UID: UID = "NO_UID"
     static public let NO_NAME: String = "NO_NAME"
     static public let NO_COMMENT: String = "NO_COMMENT"
     static public let NO_MESSAGE: String = "NO_MESSAGE"
