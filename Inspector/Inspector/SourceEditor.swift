@@ -11,26 +11,26 @@ import BartlebyKit
 
 class SourceEditor: NSViewController,Editor {
 
-    typealias EditorOf=ManagedModel
+    typealias EditorOf = ManagedModel
 
-    var UID:String=Bartleby.createUID()
+    var UID: String = Bartleby.createUID()
 
-    override var nibName : NSNib.Name { return NSNib.Name("SourceEditor") }
+    override var nibName: NSNib.Name { return NSNib.Name("SourceEditor") }
 
     override var representedObject: Any?{
         didSet{
-            self._selectedItem=representedObject as? Collectible
+            self._selectedItem = representedObject as? Collectible
             if let collection = self._selectedItem as? CollectibleCollection{
-                self.enableEdition=false
-                self.textView.string="{\"numberOfItems\":\(collection.count)}"
+                self.enableEdition = false
+                self.textView.string = "{\"numberOfItems\":\(collection.count)}"
             }else if self._selectedItem is ManagedModel{
-                let selectedJSON=self._selectedItem!.toJSONString(true)
-                self.textView.string=selectedJSON
-                self.enableEdition=true
+                let selectedJSON = self._selectedItem!.toJSONString(true)
+                self.textView.string = selectedJSON
+                self.enableEdition = true
             }else if let unManagedModel = representedObject as? UnManagedModel{
-                let selectedJSON=unManagedModel.toJSONString(true)
-                self.enableEdition=false
-                self.textView.string=selectedJSON
+                let selectedJSON = unManagedModel.toJSONString(true)
+                self.enableEdition = false
+                self.textView.string = selectedJSON
             }
         }
     }
@@ -89,10 +89,4 @@ class SourceEditor: NSViewController,Editor {
             }
         }
     }
-
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        // Do view setup here.
-    }
-    
 }
