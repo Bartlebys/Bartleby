@@ -739,7 +739,8 @@ public extension Notification.Name {
         if self.arrayController != nil{
             self.arrayController?.setSelectedObjects(localizedData ?? [LocalizedDatum]())
         }else{
-            self.selectedLocalizedData = localizedData        }
+            self.selectedLocalizedData = localizedData
+        }
         #else
             self.selectedLocalizedData = localizedData
         #endif

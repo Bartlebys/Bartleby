@@ -744,7 +744,8 @@ public extension Notification.Name {
         if self.arrayController != nil{
             self.arrayController?.setSelectedObjects(lockers ?? [Locker]())
         }else{
-            self.selectedLockers = lockers        }
+            self.selectedLockers = lockers
+        }
         #else
             self.selectedLockers = lockers
         #endif

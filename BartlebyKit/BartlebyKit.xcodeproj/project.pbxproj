@@ -7,11 +7,11 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		E50805C11DF6C26F0085E5C3 /* Alamofire.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E50805BF1DF6C26F0085E5C3 /* Alamofire.framework */; };
+		E50805C11DF6C26F0085E5C3 /* Alamofire.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E50805BF1DF6C26F0085E5C3 /* Alamofire.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 		E50805CA1DF6C3CC0085E5C3 /* Alamofire.framework.dSYM in CopyFiles */ = {isa = PBXBuildFile; fileRef = E50805C81DF6C3CC0085E5C3 /* Alamofire.framework.dSYM */; };
 		E50805CC1DF6C92D0085E5C3 /* Alamofire.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E50805BF1DF6C26F0085E5C3 /* Alamofire.framework */; };
 		E52385981F5E7FA200DB75F1 /* MasterKey.swift in Sources */ = {isa = PBXBuildFile; fileRef = E5ADEEA21F3F575E00371DA1 /* MasterKey.swift */; };
-		E52385991F5E826400DB75F1 /* Alamofire.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E50805C31DF6C2E00085E5C3 /* Alamofire.framework */; };
+		E52385991F5E826400DB75F1 /* Alamofire.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E50805C31DF6C2E00085E5C3 /* Alamofire.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 		E538F85C1F7642BB004E4E13 /* SequenceOfTasks.swift in Sources */ = {isa = PBXBuildFile; fileRef = E538F85B1F7642BB004E4E13 /* SequenceOfTasks.swift */; };
 		E538F85D1F7642BB004E4E13 /* SequenceOfTasks.swift in Sources */ = {isa = PBXBuildFile; fileRef = E538F85B1F7642BB004E4E13 /* SequenceOfTasks.swift */; };
 		E53E2C3C1DD358920040E32B /* PStringTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = E53E2C3B1DD358920040E32B /* PStringTests.swift */; };
@@ -556,13 +556,13 @@
 /* Begin PBXCopyFilesBuildPhase section */
 		E50805C71DF6C3B90085E5C3 /* CopyFiles */ = {
 			isa = PBXCopyFilesBuildPhase;
-			buildActionMask = 2147483647;
+			buildActionMask = 8;
 			dstPath = "";
 			dstSubfolderSpec = 16;
 			files = (
 				E50805CA1DF6C3CC0085E5C3 /* Alamofire.framework.dSYM in CopyFiles */,
 			);
-			runOnlyForDeploymentPostprocessing = 0;
+			runOnlyForDeploymentPostprocessing = 1;
 		};
 		E53E873D1C860D2D00CC6465 /* CopyFiles */ = {
 			isa = PBXCopyFilesBuildPhase;

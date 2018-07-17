@@ -744,7 +744,8 @@ public extension Notification.Name {
         if self.arrayController != nil{
             self.arrayController?.setSelectedObjects(boxes ?? [Box]())
         }else{
-            self.selectedBoxes = boxes        }
+            self.selectedBoxes = boxes
+        }
         #else
             self.selectedBoxes = boxes
         #endif

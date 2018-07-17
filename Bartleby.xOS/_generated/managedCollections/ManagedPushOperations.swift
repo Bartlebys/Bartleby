@@ -673,7 +673,8 @@ public extension Notification.Name {
         if self.arrayController != nil{
             self.arrayController?.setSelectedObjects(pushOperations ?? [PushOperation]())
         }else{
-            self.selectedPushOperations = pushOperations        }
+            self.selectedPushOperations = pushOperations
+        }
         #else
             self.selectedPushOperations = pushOperations
         #endif
