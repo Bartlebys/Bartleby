@@ -7,7 +7,8 @@
 //
 
 import Foundation
-open  class Model:Object,Codable{
+
+open class Model:Object,Codable{
 
 
     // MARK: - Initializable
