@@ -47,7 +47,7 @@ open class ViewsRecycler {
     /// Purges all the views (e.g on view controller deinit)
     open func purgeViews(){
         syncOnMain {
-            while var vs = self.viewsReferers.popLast(){
+            while let vs = self.viewsReferers.popLast(){
                 vs.view.removeFromSuperview()
                 vs.associatedUID = Default.NO_UID
                 vs.available = true
@@ -89,8 +89,20 @@ open class ViewsRecycler {
 
     /// The stats formatted in a String
     open var stringStats:String{
-        let stats = self.stats()
-        return "Total:\(stats.total) used:\(stats.used) available:\(stats.available)"
+        let stats: (total:Int,used:Int, available:Int) = self.stats()
+      var counter: [String:Int] = [String: Int]()
+        for referer in self.viewsReferers{
+            let className = referer.view.className
+            if !counter.keys.contains(className){
+                counter[className] = 0
+            }
+            counter[className]! =  counter[className]! + 1
+        }
+        var s: String = "Total:\(stats.total) used:\(stats.used) available:\(stats.available)"
+        for (className,nb) in counter{
+            s += "\n\(className): \(nb)"
+        }
+        return s
     }
 
 
