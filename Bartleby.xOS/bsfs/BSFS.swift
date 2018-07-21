@@ -1160,7 +1160,7 @@ public final class BSFS:TriggerHook{
     ///
     /// - Parameters:
     ///   - block: the block or the Block
-    open func deleteBlockFile(_ block:Block) {
+    public func deleteBlockFile(_ block:Block) {
         if let node:Node = block.firstRelation(Relationship.ownedBy){
             node.removeRelation(Relationship.owns, to: block)
             node.numberOfBlocks -= 1

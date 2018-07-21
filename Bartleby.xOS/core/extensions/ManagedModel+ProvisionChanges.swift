@@ -63,7 +63,7 @@ extension ManagedModel:ProvisionChanges{
                         if let oldArray=oldValue as? [ManagedModel], let newArray=newValue as? [ManagedModel]{
                             if oldArray.count < newArray.count{
                                 let stringValue:String! = (newArray.last?.UID ?? "")
-                                self._appendChanges(key:key,changes:"Added a new \(entityName) \(stringValue))")
+                                self._appendChanges(key:key,changes:"Added a new \(entityName) \(stringValue ?? "" ))")
                             }else{
                                 self._appendChanges(key:key,changes:"Removed One \(entityName)")
                             }
