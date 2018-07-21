@@ -13,7 +13,7 @@ import Foundation
 
 open class TriggersByIds {
 
-    open static func execute( from documentUID: String,
+    public static func execute( from documentUID: String,
                               ids: [String],
                               sucessHandler success:@escaping (_ triggers: [Trigger])->(),
                               failureHandler failure:@escaping (_ context: HTTPContext)->()) {

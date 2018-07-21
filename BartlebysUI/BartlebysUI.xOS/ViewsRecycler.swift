@@ -14,11 +14,11 @@ import BartlebyKit
 ///
 /// During a rendering loop The most efficient way to recycle views is to :
 ///
-/// 1 - `liberateViews(viewsGroupedBy groupNames:[String])`
+/// 1 - `liberateViews(viewsGroupedBy groupNames: [String])`
 /// 2 - `getHashedRecyclableViews(groupName:String,associatedUIDs:[String],viewFactory:()->(ViewType))->[UID:ViewType]`
 /// ... reconfigure the views
 /// 3 - `removeAllAvailableViewsFromSuperView()`
-/// You can call recycleView if necessary (but it is usually not the best Approach)
+/// You can call `recycle` if necessary (but it is usually not the best Approach because it removes the views from their superview on each call).
 open class ViewsRecycler {
 
     class ViewReferer {
@@ -115,7 +115,7 @@ open class ViewsRecycler {
     /// Recycle = liberateView + removeFromSuperview
     ///
     /// - Parameter view: the view to recycle
-    open func recycleView(view:XView){
+    open func recycle(view: XView){
         syncOnMain {
             view.removeFromSuperview()
             self.liberate(view: view)
@@ -123,17 +123,32 @@ open class ViewsRecycler {
     }
 
 
+    /// Recycle = liberateView + removeFromSuperview
+    ///
+    /// - Parameter view: the view to recycle
+    open func recycle(viewsGroupedBy groupNames: [String]){
+        syncOnMain {
+            self._viewsReferers.forEach({ (referer) in
+                if groupNames.contains(referer.groupName){
+                    referer.available = true
+                    referer.view.removeFromSuperview()
+                }
+            })
+        }
+    }
+
 
     /// Mark explicitely a view as available
     ///
     /// - Parameters:
-    ///   - view: the view to recycle
-    open func liberate(viewsGroupedBy groupNames:[String]){
-        let referers = self._viewsReferers.filter({ (referer) -> Bool in
-            return groupNames.contains(referer.groupName)
-        })
-        for referer in referers{
-            referer.available = true
+    ///   - groupNames: the group of view to recycle
+    open func liberate(viewsGroupedBy groupNames: [String]){
+        syncOnMain {
+            self._viewsReferers.forEach({ (referer) in
+                if groupNames.contains(referer.groupName){
+                    referer.available = true
+                }
+            })
         }
     }
 
@@ -141,7 +156,7 @@ open class ViewsRecycler {
     ///
     /// - Parameters:
     ///   - view: the view to recycle
-    open func liberate(view:XView){
+    open func liberate(view: XView){
         // Update the view status
         if let vs = self._viewsReferers.first(where: { (referer) -> Bool in
             return referer.view == view
@@ -188,7 +203,7 @@ open class ViewsRecycler {
                 return v
             }
         }else if let referer = firstAvailableReferer{
-             if let v = referer.view as? ViewType{
+            if let v = referer.view as? ViewType{
                 referer.available = false
                 referer.associatedUID = associatedUID
                 return v
@@ -211,12 +226,12 @@ open class ViewsRecycler {
     ///   - associatedUIDs: we try to propose the same referer for optimization purposes
     ///   - viewFactory:  the factory method to create a new view
     /// - Returns: a collection of XView hashed by their associatedUIDs
-    open func getHashedRecyclableViews<ViewType:XView>(groupName:String,associatedUIDs:[String],viewFactory:()->(ViewType)) -> [UID:ViewType]{
+    open func getHashedRecyclableViews<ViewType:XView>(groupName: String, associatedUIDs: [String], viewFactory: ()->(ViewType)) -> [UID:ViewType]{
         var result = [UID:ViewType]()
         var firstAvailableReferer:ViewReferer?
         for associatedUID in associatedUIDs{
             if let associatedReferer = self._viewsReferers.first(where: { (referer) -> Bool in
-                let matching = (referer.available && referer.groupName==groupName && referer.associatedUID == associatedUID)
+                let matching = (referer.available && referer.groupName == groupName && referer.associatedUID == associatedUID)
                 if firstAvailableReferer == nil && !matching && referer.available  && referer.groupName == groupName && !associatedUIDs.contains(referer.associatedUID) {
                     firstAvailableReferer = referer
                 }
@@ -241,7 +256,7 @@ open class ViewsRecycler {
                 // We need to create a new view
                 // let's call the factory
                 let view = viewFactory()
-                let vs = ViewReferer(view: view, groupName:groupName, available: false,associatedUID:associatedUID)
+                let vs = ViewReferer(view: view, groupName:groupName, available: false, associatedUID:associatedUID)
                 vs.associatedUID = associatedUID
                 result[associatedUID] = view
                 // We add the newly created view to our pool.
@@ -257,9 +272,9 @@ open class ViewsRecycler {
     ///
     /// - Parameter groupName: the array of group names
     /// - Returns: the collection of actives views
-    open func getAllActiveViews(groupedBy groupNames:[String])->[XView]{
+    open func getAllActiveViews(groupedBy groupNames: [String] ) -> [XView] {
         return self._viewsReferers.compactMap({ (referer) -> XView? in
-            if  ( groupNames.contains(referer.groupName) && !referer.available){
+            if ( groupNames.contains(referer.groupName) && !referer.available ){
                 return referer.view
             }else{
                 return nil

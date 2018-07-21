@@ -13,7 +13,7 @@ import Foundation
 extension MasterKey{
 
     #if os(OSX)
-    open static func save(from document:BartlebyDocument){
+    public static func save(from document:BartlebyDocument){
         do{
             // Create a master key from the current document.
             let masterKey = MasterKey()

@@ -18,20 +18,20 @@ open class TestsConfiguration: BartlebyConfiguration {
 
 
     // The cryptographic key used to encrypt/decrypt the data
-    open static let KEY: String=Bartleby.randomStringWithLength(1024)
+    public static let KEY: String=Bartleby.randomStringWithLength(1024)
 
 
-    open static let SHARED_SALT: String="xyx38-d890x-899h-123e-30x6-3234e"
+    public static let SHARED_SALT: String="xyx38-d890x-899h-123e-30x6-3234e"
 
     // To conform to crypto legal context
-    open static var KEY_SIZE: KeySize = .s128bits
+    public static var KEY_SIZE: KeySize = .s128bits
 
 
     //MARK: - URLS
 
     static let trackAllApiCalls=true
 
-    open static var API_BASE_URL=__BASE_URL
+    public static var API_BASE_URL=__BASE_URL
 
     public static var defaultBaseURLList: [String] {
         return ["http://yd.local:8001/api/v1","https://dev.api.lylo.tv/api/v1","https://api.lylo.tv/api/v1","https://demo.bartlebys.org/www/api/v1"]
@@ -40,51 +40,51 @@ open class TestsConfiguration: BartlebyConfiguration {
 
 
     // Bartleby Bprint
-    open static var ENABLE_GLOG: Bool=true
+    public static var ENABLE_GLOG: Bool=true
 
     // Should Bprint entries be printed
     public static var PRINT_GLOG_ENTRIES: Bool=true
 
     // Use NoCrypto as CryptoDelegate (should be false)
-    open static var DISABLE_DATA_CRYPTO: Bool=false
+    public static var DISABLE_DATA_CRYPTO: Bool=false
 
     //If set to true the created instances will be remove on maintenance Purge
-    open static var EPHEMERAL_MODE=true
+    public static var EPHEMERAL_MODE=true
 
     //Should the app try to be online by default
-    open static var ONLINE_BY_DEFAULT=true
+    public static var ONLINE_BY_DEFAULT=true
 
     // Consignation
-    open static var API_CALL_TRACKING_IS_ENABLED: Bool=true
-    open static var BPRINT_API_TRACKED_CALLS: Bool=true
+    public static var API_CALL_TRACKING_IS_ENABLED: Bool=true
+    public static var BPRINT_API_TRACKED_CALLS: Bool=true
 
 
     // Should we save the password by Default ?
-    open static var SAVE_PASSWORD_BY_DEFAULT: Bool=false
+    public static var SAVE_PASSWORD_BY_DEFAULT: Bool=false
 
     // If set to JSON for example would be Indented
-    open static var HUMAN_FORMATTED_SERIALIZATON_FORMAT: Bool=false
+    public static var HUMAN_FORMATTED_SERIALIZATON_FORMAT: Bool=false
 
     // Supervision loop interval (1 second min )
-    open static var LOOP_TIME_INTERVAL_IN_SECONDS: Double = 1
+    public static var LOOP_TIME_INTERVAL_IN_SECONDS: Double = 1
 
      // To guarantee the sequential Execution use 1
-    open static var MAX_OPERATIONS_BUNCH_SIZE: Int = 10
+    public static var MAX_OPERATIONS_BUNCH_SIZE: Int = 10
 
     // The min password size
-    open static var MIN_PASSWORD_SIZE: UInt=6
+    public static var MIN_PASSWORD_SIZE: UInt=6
 
     // E.g : Default.DEFAULT_PASSWORD_CHAR_CART
-    open static var PASSWORD_CHAR_CART: String="ABCDEFGH1234567890"
+    public static var PASSWORD_CHAR_CART: String="ABCDEFGH1234567890"
 
     // If set to true the keyed changes are stored in the ManagedModel - When opening the Inspector this default value is remplaced by true
     public static var CHANGES_ARE_INSPECTABLES_BY_DEFAULT: Bool = false
 
     // If set to true the confirmation code will be for example printed in the console...
-    open static let DEVELOPER_MODE: Bool = true // Should be turned to false in production
+    public static let DEVELOPER_MODE: Bool = true // Should be turned to false in production
 
     // If set to true identification will not require second auth factor.
-    open static var SECOND_AUTHENTICATION_FACTOR_IS_DISABLED:Bool = false
+    public static var SECOND_AUTHENTICATION_FACTOR_IS_DISABLED:Bool = false
 
     // Supports by default KeyChained password synchronization between multiple local accounts (false is more secured)
     public static let SUPPORTS_PASSWORD_SYNDICATION_BY_DEFAULT: Bool = false
@@ -128,10 +128,10 @@ open class TestsConfiguration: BartlebyConfiguration {
         }
     }
 
-    open static let TIME_OUT_DURATION = 10.0
+    public static let TIME_OUT_DURATION = 10.0
 
-    open static let LONG_TIME_OUT_DURATION = 360.0
+    public static let LONG_TIME_OUT_DURATION = 360.0
 
 
-    open static let ENABLE_TEST_OBSERVATION=true
+    public static let ENABLE_TEST_OBSERVATION=true
 }

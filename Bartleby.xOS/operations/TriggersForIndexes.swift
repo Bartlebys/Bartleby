@@ -14,7 +14,7 @@ import Foundation
 open class TriggersForIndexes {
 
 
-    open static func execute(  from documentUID: String,
+    public static func execute(  from documentUID: String,
                                indexes: [Int],
                                sucessHandler success:@escaping (_ triggers: [Trigger])->(),
                                failureHandler failure:@escaping (_ context: HTTPContext)->()) {

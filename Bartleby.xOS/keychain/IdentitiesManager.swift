@@ -32,7 +32,7 @@ open class IdentitiesManager {
     ///
     /// - Parameter document: the current document
     /// - Returns: the suggested profiles (can be used to propose a user account)
-    open static func suggestedIdentifications(forDocument document:BartlebyDocument)->[Identification]{
+    public static func suggestedIdentifications(forDocument document:BartlebyDocument)->[Identification]{
         var identifications=[Identification]()
         do{
             let allProfiles=try IdentitiesManager._suggestedProfiles(forDocument:document)
@@ -61,7 +61,7 @@ open class IdentitiesManager {
 
 
     /// Dumps the Identities founds in the key Chain
-    open static func dumpKeyChainedProfiles(_ document:BartlebyDocument){
+    public static func dumpKeyChainedProfiles(_ document:BartlebyDocument){
         if Bartleby.configuration.DEVELOPER_MODE{
             do{
                 if document.metadata.appGroup != ""{
@@ -97,7 +97,7 @@ open class IdentitiesManager {
     ///   - password: the current user password
     ///   - completed: this closure is called when all the syndicable update has been executed.
     ///
-    open static func synchronize(_ document:BartlebyDocument,password:String,completed:@escaping (Completion)->()){
+    public static func synchronize(_ document:BartlebyDocument,password:String,completed:@escaping (Completion)->()){
         if document.metadata.appGroup != ""{
             // We use the app Group has storage key
             Identities.storageKey="identities."+document.metadata.appGroup
@@ -129,7 +129,7 @@ open class IdentitiesManager {
     }
 
 
-    open static func profileMatching(identification:Identification, inDocument document:BartlebyDocument)->UserProfile?{
+    public static func profileMatching(identification:Identification, inDocument document:BartlebyDocument)->UserProfile?{
         if document.metadata.appGroup != ""{
             let identities=try? Identities.loadFromKeyChain(accessGroup: document.metadata.appGroup)
             if let profiles=identities?.profiles{

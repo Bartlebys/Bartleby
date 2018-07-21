@@ -28,7 +28,7 @@ open class VerifyLocker {
      - parameter success:   the sucess closure
      - parameter failure:   the failure closure
      */
-    open static  func execute( _ lockerUID: String,
+    public static  func execute( _ lockerUID: String,
                                inDocumentWithUID documentUID: String,
                                code: String,
                                accessGranted success:@escaping (_ locker: Locker)->(),

@@ -15,7 +15,7 @@ open class TriggersAfterIndex {
 
 
 
-    open static func execute( from documentUID: String,
+    public static func execute( from documentUID: String,
                               index: Int,
                               sucessHandler success:@escaping (_ triggers: [Trigger])->(),
                               failureHandler failure:@escaping (_ context: HTTPContext)->()) {

@@ -23,7 +23,7 @@ import Foundation
 open class Bartleby:NSObject,AliasResolution {
 
     /// The standard singleton shared instance
-    open static let sharedInstance: Bartleby = {
+    public static let sharedInstance: Bartleby = {
         let instance = Bartleby()
         return instance
     }()
@@ -31,17 +31,17 @@ open class Bartleby:NSObject,AliasResolution {
     static let b_version = "1.0"
     static let b_release = "0"
 
-    open static let defaultLanguageCode = I18N.defaultLanguageCode
+    public static let defaultLanguageCode = I18N.defaultLanguageCode
 
     /// The version string of Bartleby framework
-    open static var versionString: String {
+    public static var versionString: String {
         get {
             return "\(self.b_version).\(self.b_release)"
         }
     }
 
     // A unique run identifier that changes each time Bartleby is launched
-    open static let runUID: String=Bartleby.createUID()
+    public static let runUID: String=Bartleby.createUID()
 
     // The configuration
     public static var configuration: BartlebyConfiguration.Type=BartlebyDefaultConfiguration.self
@@ -63,9 +63,9 @@ open class Bartleby:NSObject,AliasResolution {
     /**
      * When using ephemeralMode on registration Instance are marked ephemeral
      */
-    open static var ephemeral=false
+    public static var ephemeral=false
 
-    open static var requestCounter=0
+    public static var requestCounter=0
 
     /**
      Should be called on Init of the Document.
@@ -95,7 +95,7 @@ open class Bartleby:NSObject,AliasResolution {
     }
 
     // Bartleby's favourite
-    open static func please(_ message: String) -> String {
+    public static func please(_ message: String) -> String {
         return "I would prefer not to!"
     }
 
@@ -170,7 +170,7 @@ open class Bartleby:NSObject,AliasResolution {
 
      - returns: the UID
      */
-    open static func createUID() -> UID {
+    public static func createUID() -> UID {
         // (!) NSUUID are not suitable for MONGODB as Primary Ids.
         // We need to encode them we have choosen base64
         let uid=UUID().uuidString
@@ -178,9 +178,9 @@ open class Bartleby:NSObject,AliasResolution {
         return utf8str!.base64EncodedString(options: Data.Base64EncodingOptions(rawValue:0))
     }
 
-    open static let startTime=CFAbsoluteTimeGetCurrent()
+    public static let startTime=CFAbsoluteTimeGetCurrent()
 
-    open static var elapsedTime:Double {
+    public static var elapsedTime:Double {
         return CFAbsoluteTimeGetCurrent()-Bartleby.startTime
     }
 
@@ -193,7 +193,7 @@ open class Bartleby:NSObject,AliasResolution {
 
      - returns: the string
      */
-    open static func randomStringWithLength (_ len: UInt, signs: String="abcdefghjkmnpqrstuvwxyzABCDEFGHJKMNPQRSTUVWXYZ23456789") -> String {
+    public static func randomStringWithLength (_ len: UInt, signs: String="abcdefghjkmnpqrstuvwxyzABCDEFGHJKMNPQRSTUVWXYZ23456789") -> String {
         var randomString = ""
         for _ in (0 ..< len) {
             let length = UInt32 (signs.count)
@@ -216,7 +216,7 @@ open class Bartleby:NSObject,AliasResolution {
 
      - returns: the path string
      */
-    open static func getSearchPath(_ searchPath: FileManager.SearchPathDirectory) -> String? {
+    public static func getSearchPath(_ searchPath: FileManager.SearchPathDirectory) -> String? {
         let urls = FileManager.default.urls(for: searchPath, in: .userDomainMask)
         if urls.count>0 {
             let path = urls[0].path
@@ -249,7 +249,7 @@ open class Bartleby:NSObject,AliasResolution {
 
 
     // The number of registred object
-    open static var numberOfRegistredObject: Int {
+    public static var numberOfRegistredObject: Int {
         get {
             return _instancesByUID.count
         }
@@ -260,7 +260,7 @@ open class Bartleby:NSObject,AliasResolution {
 
      - parameter instance: the Identifiable instance
      */
-    open static func register<T: Collectible>(_ instance: T) {
+    public static func register<T: Collectible>(_ instance: T) {
 
         // Store the instance by its UID
         self._instancesByUID[instance.UID]=instance
@@ -295,7 +295,7 @@ open class Bartleby:NSObject,AliasResolution {
 
      - parameter instance: the collectible instance
      */
-    open static func unRegister(_ instance: Collectible) {
+    public static func unRegister(_ instance: Collectible) {
         self._instancesByUID.removeValue(forKey: instance.UID)
     }
 
@@ -304,7 +304,7 @@ open class Bartleby:NSObject,AliasResolution {
 
      - parameter instance: the collectible instance
      */
-    open static func unRegister(_ instances: [Collectible]) {
+    public static func unRegister(_ instances: [Collectible]) {
         for instance in instances{
             self._instancesByUID.removeValue(forKey: instance.UID)
         }
@@ -320,7 +320,7 @@ open class Bartleby:NSObject,AliasResolution {
 
      - returns: the instance
      */
-    open static func registredObjectByUID<T: Collectible>(_ UID: UID) throws-> T {
+    public static func registredObjectByUID<T: Collectible>(_ UID: UID) throws-> T {
         if let instance=self._instancesByUID[UID]{
             if let casted=instance as? T{
                 return casted
@@ -337,7 +337,7 @@ open class Bartleby:NSObject,AliasResolution {
     /// You should most of the time use : `registredObjectByUID<T: Collectible>(_ UID: String) throws-> T`
     /// - parameter UID:
     /// - returns: the instance
-    open static func registredManagedModelByUID(_ UID: UID)-> ManagedModel? {
+    public static func registredManagedModelByUID(_ UID: UID)-> ManagedModel? {
         return try? Bartleby.registredObjectByUID(UID)
     }
 
@@ -347,7 +347,7 @@ open class Bartleby:NSObject,AliasResolution {
     /// You should most of the time use : `registredObjectByUID<T: Collectible>(_ UID: String) throws-> T`
     /// - parameter UID:
     /// - returns: the instance
-    open static func registredManagedModelByUIDs(_ UIDs: [UID])-> [ManagedModel]? {
+    public static func registredManagedModelByUIDs(_ UIDs: [UID])-> [ManagedModel]? {
         return try? Bartleby.registredObjectsByUIDs(UIDs)
     }
 
@@ -356,7 +356,7 @@ open class Bartleby:NSObject,AliasResolution {
     ///
     /// - Parameter UIDs: the UIDs
     /// - Returns: the registred Instances
-    open static func registredObjectsByUIDs<T: Collectible>(_ UIDs: [UID]) throws-> [T] {
+    public static func registredObjectsByUIDs<T: Collectible>(_ UIDs: [UID]) throws-> [T] {
         var items=[T]()
         for UID in UIDs{
             items.append(try Bartleby.registredObjectByUID(UID))
@@ -373,7 +373,7 @@ open class Bartleby:NSObject,AliasResolution {
      î
      - returns: the instance
      */
-    open static func collectibleInstanceByUID(_ UID: UID) -> Collectible? {
+    public static func collectibleInstanceByUID(_ UID: UID) -> Collectible? {
         return self._instancesByUID[UID]
     }
 
@@ -382,7 +382,7 @@ open class Bartleby:NSObject,AliasResolution {
     ///
     /// - Parameter alias: the alias
     /// - Returns: the reference
-    open static func instance(from alias:Alias)->Aliasable?{
+    public static func instance(from alias:Alias)->Aliasable?{
         return registredManagedModelByUID(alias.UID)
     }
 
@@ -404,7 +404,7 @@ open class Bartleby:NSObject,AliasResolution {
     /// - Parameters:
     ///   - ownee: the ownee
     ///   - ownerUID: the currently unavailable owner UID
-    open static func appendToDeferredOwnershipsList(_ ownee:Collectible,ownerUID:UID){
+    public static func appendToDeferredOwnershipsList(_ ownee:Collectible,ownerUID:UID){
         if self._deferredOwnerships.keys.contains(ownerUID) {
             self._deferredOwnerships[ownerUID]!.append(ownee.UID)
         }else{
@@ -434,7 +434,7 @@ open class Bartleby:NSObject,AliasResolution {
     // MARK: - Commit / Push Distribution (dynamic)
 
 
-    open static func markCommitted(_ instanceUID:UID){
+    public static func markCommitted(_ instanceUID:UID){
         if let instance=Bartleby.collectibleInstanceByUID(instanceUID){
             instance.hasBeenCommitted()
         }else{
