@@ -21,7 +21,7 @@ import BartlebyKit
 /// You can call `recycle` if necessary (but it is usually not the best Approach because it removes the views from their superview on each call).
 open class ViewsRecycler {
 
-    class ViewReferer {
+    public class ViewReferer {
 
         var view:XView
         var groupName:String
@@ -37,7 +37,7 @@ open class ViewsRecycler {
     }
 
     // We keep a reference on all views.
-    var _viewsReferers=[ViewReferer]()
+    public fileprivate(set) var viewsReferers: [ViewReferer] = [ViewReferer]()
 
     // You can for performance tuning determine a min distance to determine what should be considerated as recyclable
     var minOffScreenDistance:CGFloat = 100
@@ -47,8 +47,10 @@ open class ViewsRecycler {
     /// Purges all the views (e.g on view controller deinit)
     open func purgeViews(){
         syncOnMain {
-            while let vs = self._viewsReferers.popLast(){
+            while var vs = self.viewsReferers.popLast(){
                 vs.view.removeFromSuperview()
+                vs.associatedUID = Default.NO_UID
+                vs.available = true
             }
         }
     }
@@ -57,11 +59,11 @@ open class ViewsRecycler {
     /// Call this method if you consider there is possibly to much recyclable views
     open func purgeAvailableViews(){
         syncOnMain {
-            let r = self._viewsReferers.enumerated().reversed()
+            let r = self.viewsReferers.enumerated().reversed()
             for (i,referer) in  r{
                 if referer.available {
                     referer.view.removeFromSuperview()
-                    self._viewsReferers.remove(at: i)
+                    self.viewsReferers.remove(at: i)
                 }
             }
         }
@@ -72,10 +74,10 @@ open class ViewsRecycler {
     ///
     /// - Returns: the stats
     open func stats()->(total:Int,used:Int, available:Int){
-        let total = self._viewsReferers.count
+        let total = self.viewsReferers.count
         var used = 0
         var available = 0
-        for vs in self._viewsReferers{
+        for vs in self.viewsReferers{
             if vs.available {
                 available += 1
             }else{
@@ -95,7 +97,7 @@ open class ViewsRecycler {
     /// You must call this method regularly to recycle off screen views.
     open func liberateOffScreenViews(){
         syncOnMain {
-            for referer in self._viewsReferers{
+            for referer in self.viewsReferers{
                 if let superview = referer.view.superview{
                     if  referer.view.frame.origin.x + referer.view.frame.width + self.minOffScreenDistance < superview.frame.origin.x ||
                         referer.view.frame.origin.x > superview.frame.origin.x + superview.frame.width + self.minOffScreenDistance ||
@@ -128,7 +130,7 @@ open class ViewsRecycler {
     /// - Parameter view: the view to recycle
     open func recycle(viewsGroupedBy groupNames: [String]){
         syncOnMain {
-            self._viewsReferers.forEach({ (referer) in
+            self.viewsReferers.forEach({ (referer) in
                 if groupNames.contains(referer.groupName){
                     referer.available = true
                     referer.view.removeFromSuperview()
@@ -144,7 +146,7 @@ open class ViewsRecycler {
     ///   - groupNames: the group of view to recycle
     open func liberate(viewsGroupedBy groupNames: [String]){
         syncOnMain {
-            self._viewsReferers.forEach({ (referer) in
+            self.viewsReferers.forEach({ (referer) in
                 if groupNames.contains(referer.groupName){
                     referer.available = true
                 }
@@ -158,7 +160,7 @@ open class ViewsRecycler {
     ///   - view: the view to recycle
     open func liberate(view: XView){
         // Update the view status
-        if let vs = self._viewsReferers.first(where: { (referer) -> Bool in
+        if let vs = self.viewsReferers.first(where: { (referer) -> Bool in
             return referer.view == view
         }){
             vs.available = true
@@ -172,7 +174,7 @@ open class ViewsRecycler {
             // We liberate all the offscreen views
             self.liberateOffScreenViews()
             // And remove All the available views from their superview
-            for referer in self._viewsReferers{
+            for referer in self.viewsReferers{
                 if referer.available{
                     referer.view.removeFromSuperview()
                 }
@@ -191,7 +193,7 @@ open class ViewsRecycler {
     /// - Returns: a recyclable view
     open func getARecyclableView<ViewType:XView>(groupName: String, associatedUID: String, viewFactory:() -> (ViewType)) -> ViewType{
         var firstAvailableReferer:ViewReferer?
-        if let associatedReferer = self._viewsReferers.first(where: { (referer) -> Bool in
+        if let associatedReferer = self.viewsReferers.first(where: { (referer) -> Bool in
             let matching = (referer.available && referer.groupName==groupName && referer.associatedUID == associatedUID)
             if firstAvailableReferer == nil && !matching && referer.available  && referer.groupName==groupName {
                 firstAvailableReferer = referer
@@ -212,7 +214,7 @@ open class ViewsRecycler {
         let view = viewFactory()
         let vs = ViewReferer(view: view, groupName:groupName, available: false,associatedUID:associatedUID)
         vs.associatedUID = associatedUID
-        self._viewsReferers.append(vs)
+        self.viewsReferers.append(vs)
         return view
     }
 
@@ -230,7 +232,7 @@ open class ViewsRecycler {
         var result = [UID:ViewType]()
         var firstAvailableReferer:ViewReferer?
         for associatedUID in associatedUIDs{
-            if let associatedReferer = self._viewsReferers.first(where: { (referer) -> Bool in
+            if let associatedReferer = self.viewsReferers.first(where: { (referer) -> Bool in
                 let matching = (referer.available && referer.groupName == groupName && referer.associatedUID == associatedUID)
                 if firstAvailableReferer == nil && !matching && referer.available  && referer.groupName == groupName && !associatedUIDs.contains(referer.associatedUID) {
                     firstAvailableReferer = referer
@@ -260,7 +262,7 @@ open class ViewsRecycler {
                 vs.associatedUID = associatedUID
                 result[associatedUID] = view
                 // We add the newly created view to our pool.
-                self._viewsReferers.append(vs)
+                self.viewsReferers.append(vs)
             }
         }
         return result
@@ -273,7 +275,7 @@ open class ViewsRecycler {
     /// - Parameter groupName: the array of group names
     /// - Returns: the collection of actives views
     open func getAllActiveViews(groupedBy groupNames: [String] ) -> [XView] {
-        return self._viewsReferers.compactMap({ (referer) -> XView? in
+        return self.viewsReferers.compactMap({ (referer) -> XView? in
             if ( groupNames.contains(referer.groupName) && !referer.available ){
                 return referer.view
             }else{
@@ -289,7 +291,7 @@ open class ViewsRecycler {
     /// - Parameter groupName: the array of group names
     /// - Returns: the collection of actives views
     open func getAllViews(groupedBy groupNames:[String])->[XView]{
-        return self._viewsReferers.compactMap({ (referer) -> XView? in
+        return self.viewsReferers.compactMap({ (referer) -> XView? in
             if  groupNames.contains(referer.groupName){
                 return referer.view
             }else{
@@ -303,7 +305,7 @@ open class ViewsRecycler {
     ///
     /// - Returns: the collection of views
     open func getAllViews()->[XView]{
-        return self._viewsReferers.compactMap({ (referer) -> XView? in
+        return self.viewsReferers.compactMap({ (referer) -> XView? in
             return referer.view
         })
     }
