@@ -148,7 +148,7 @@ struct  Chunker {
                             progressionState.currentTaskIndex=counter
                         }
                         cumulatedChunks.append(contentsOf: chunks)
-                        progressionState.currentPercentProgress=Double(counter)*Double(100)/Double(progressionState.totalTaskCount)
+                        progressionState.currentPercentProgress =  progressionState.totalTaskCount != 0 ? Double(counter)*Double(100)/Double(progressionState.totalTaskCount) : -1
                         syncOnMain{
                             // Relay the progression
                             progression(progressionState)
@@ -377,10 +377,10 @@ struct  Chunker {
                     syncOnMain{
                         counter += 1
                         progressionState.quietChanges{
-                            progressionState.message=chunkRelativePath
-                            progressionState.currentTaskIndex=counter
+                            progressionState.message = chunkRelativePath
+                            progressionState.currentTaskIndex = counter
                         }
-                        progressionState.currentPercentProgress=Double(counter)*Double(100)/Double(progressionState.totalTaskCount)
+                        progressionState.currentPercentProgress = progressionState.totalTaskCount != 0 ? Double(counter)*Double(100)/Double(progressionState.totalTaskCount) : -1
                         // Relay the progression
                         progression(progressionState)
                     }
@@ -494,10 +494,10 @@ struct  Chunker {
                         createdPaths.append(path)
                     }
                     progressionState.quietChanges{
-                        progressionState.message=path
-                        progressionState.currentTaskIndex=counter
+                        progressionState.message = path
+                        progressionState.currentTaskIndex = counter
                     }
-                    progressionState.currentPercentProgress=Double(counter)*Double(100)/Double(progressionState.totalTaskCount)
+                    progressionState.currentPercentProgress = progressionState.totalTaskCount != 0 ? Double(counter)*Double(100)/Double(progressionState.totalTaskCount) : -1
                     // Relay the progression
                     syncOnMain{
                         progression(progressionState)
@@ -649,10 +649,10 @@ struct  Chunker {
                             syncOnMain{
                                 counter += 1
                                 progressionState.quietChanges{
-                                    progressionState.message=source
-                                    progressionState.currentTaskIndex=counter
+                                    progressionState.message = source
+                                    progressionState.currentTaskIndex = counter
                                 }
-                                progressionState.currentPercentProgress=Double(counter)*Double(100)/Double(progressionState.totalTaskCount)
+                                progressionState.currentPercentProgress = progressionState.totalTaskCount != 0 ? Double(counter)*Double(100)/Double(progressionState.totalTaskCount) : -1
                                 // Relay the progression
                                 progression(progressionState)
                             }

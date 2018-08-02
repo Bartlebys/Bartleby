@@ -93,10 +93,10 @@ extension Box:ConsolidableProgression{
                     }
                 }
                 progression.quietChanges{
-                    progression.currentTaskIndex=currentTaskIndex/counter
-                    progression.totalTaskCount=totalTaskCount/counter
+                    progression.currentTaskIndex = currentTaskIndex/counter
+                    progression.totalTaskCount = totalTaskCount/counter
                 }
-                progression.currentPercentProgress=currentPercent/Double(counter)
+                progression.currentPercentProgress = counter > 0 ? currentPercent / Double(counter) : -1
             }
         }
     }

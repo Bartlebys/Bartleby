@@ -114,26 +114,26 @@ extension Node:ConsolidableProgression{
     /// - Parameter category: the category to be consolidated
     public func consolidateProgression(for category:String){
         if let progression = self.progressionState(for: category){
-            if let childrensProgressions=self.childrensProgression(for: category){
-                var counter=0
-                var currentPercent:Double=0
-                var currentTaskIndex=0
-                var totalTaskCount=0
+            if let childrensProgressions = self.childrensProgression(for: category){
+                var counter = 0
+                var currentPercent:Double = 0
+                var currentTaskIndex = 0
+                var totalTaskCount = 0
                 for childProgression in childrensProgressions{
                     counter += 1
                     currentPercent += childProgression.currentPercentProgress
                     currentTaskIndex += childProgression.currentTaskIndex
                     totalTaskCount += childProgression.totalTaskCount
                     // If there is nothing to do let's say it's done :)
-                    if childProgression.currentTaskIndex==0 && childProgression.totalTaskCount==0{
+                    if childProgression.currentTaskIndex == 0 && childProgression.totalTaskCount == 0{
                         currentPercent += 100
                     }
                 }
                 progression.quietChanges{
-                    progression.currentTaskIndex=currentTaskIndex/counter
-                    progression.totalTaskCount=totalTaskCount/counter
+                    progression.currentTaskIndex = currentTaskIndex/counter
+                    progression.totalTaskCount = totalTaskCount/counter
                 }
-                progression.currentPercentProgress=currentPercent/Double(counter)
+                progression.currentPercentProgress = counter > 0 ? currentPercent / Double(counter) : -1
             }
         }
     }

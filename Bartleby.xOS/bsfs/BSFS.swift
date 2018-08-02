@@ -176,7 +176,7 @@ public final class BSFS:TriggerHook{
                         }, completed: { (completion) in
                             node.assemblyInProgress=false
                             box.assemblyProgression.currentTaskIndex += 1
-                            box.assemblyProgression.currentPercentProgress=Double(box.assemblyProgression.currentTaskIndex)*Double(100)/Double(box.assemblyProgression.totalTaskCount)
+                            box.assemblyProgression.currentPercentProgress = box.assemblyProgression.totalTaskCount != 0 ? Double(box.assemblyProgression.currentTaskIndex)*Double(100)/Double(box.assemblyProgression.totalTaskCount) : -1
                             __popNode()
                         })
                     }catch{

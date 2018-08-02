@@ -173,10 +173,10 @@ struct Flocker{
                         counter += 1
                     }
                     progressionState.quietChanges{
-                        progressionState.currentTaskIndex=counter
-                        progressionState.message=message
+                        progressionState.currentTaskIndex = counter
+                        progressionState.message = message
                     }
-                    progressionState.currentPercentProgress=Double(counter)*Double(100)/Double(progressionState.totalTaskCount)
+                    progressionState.currentPercentProgress = progressionState.totalTaskCount != 0 ? Double(counter)*Double(100)/Double(progressionState.totalTaskCount) : -1
                     syncOnMain{
                         // Relay the progression
                         progression(progressionState)
@@ -483,10 +483,10 @@ struct Flocker{
                             counter += 1
                         }
                         progressionState.quietChanges{
-                            progressionState.currentTaskIndex=counter
-                            progressionState.message=message
+                            progressionState.currentTaskIndex = counter
+                            progressionState.message = message
                         }
-                        progressionState.currentPercentProgress=Double(counter)*Double(100)/Double(progressionState.totalTaskCount)
+                        progressionState.currentPercentProgress = progressionState.totalTaskCount != 0 ? Double(counter)*Double(100)/Double(progressionState.totalTaskCount) : -1
                         syncOnMain{
                             // Relay the progression
                             progression(progressionState)
@@ -649,9 +649,9 @@ struct Flocker{
             }
             progressionState.quietChanges{
                 progressionState.message = (message == "") ? path : message
-                progressionState.currentTaskIndex=counter
+                progressionState.currentTaskIndex = counter
             }
-            progressionState.currentPercentProgress=Double(counter)*Double(100)/Double(progressionState.totalTaskCount)
+            progressionState.currentPercentProgress = progressionState.totalTaskCount != 0 ? Double(counter)*Double(100)/Double(progressionState.totalTaskCount) : -1
             // Relay the progression
             syncOnMain{
                 progression(progressionState)

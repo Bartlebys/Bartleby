@@ -157,8 +157,8 @@ extension BartlebyDocument {
 
         if self.metadata.pendingOperationsProgressionState==nil{
             // It is the first Bunch
-            self.metadata.totalNumberOfOperations=self.pushOperations.count
-            self.metadata.pendingOperationsProgressionState=Progression(currentTaskIndex: 0, totalTaskCount:totalNumberOfOperations, currentPercentProgress:0, message: self._messageForOperation(nil), data:nil).identifiedBy("Operations", identity:"Operations."+self.UID)
+            self.metadata.totalNumberOfOperations = self.pushOperations.count
+            self.metadata.pendingOperationsProgressionState = Progression(currentTaskIndex: 0, totalTaskCount:totalNumberOfOperations, currentPercentProgress:0, message: self._messageForOperation(nil), data:nil).identifiedBy("Operations", identity:"Operations."+self.UID)
         }
 
         let nbOfOperationsInCurrentBunch=bunchOfOperations.count
@@ -284,13 +284,13 @@ extension BartlebyDocument {
     }
 
     fileprivate func _updateProgressionState(_ completedOperation:PushOperation,_ currentOperationsCounter:Int)->Progression?{
-        if let progressionState=self.metadata.pendingOperationsProgressionState{
-            let total=Double(self.metadata.totalNumberOfOperations)
-            let completed=Double(self.metadata.totalNumberOfOperations-currentOperationsCounter)
-            let currentPercentProgress=completed*Double(100)/total
-            progressionState.currentTaskIndex=Int(completed)
-            progressionState.totalTaskCount=Int(total)
-            progressionState.currentPercentProgress=currentPercentProgress
+        if let progressionState = self.metadata.pendingOperationsProgressionState{
+            let total = Double(self.metadata.totalNumberOfOperations)
+            let completed = Double(self.metadata.totalNumberOfOperations-currentOperationsCounter)
+            let currentPercentProgress = total != 0 ? completed*Double(100)/total : -1
+            progressionState.currentTaskIndex = Int(completed)
+            progressionState.totalTaskCount = Int(total)
+            progressionState.currentPercentProgress = currentPercentProgress
             progressionState.message=self._messageForOperation(completedOperation)
             return progressionState
         }else{

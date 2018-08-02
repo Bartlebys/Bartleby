@@ -52,6 +52,22 @@ public extension Progression {
     }
 
 
+
+    /// Allows to convert a Progress object to a Progression
+    ///
+    /// - Parameter progress: the progress
+    /// - Returns: the encoded Progression
+    public static func from(_ progress: Progress) -> Progression{
+        let progression = Progression()
+        progression.totalTaskCount = Int(progress.totalUnitCount)
+        progression.currentTaskIndex = Int(progress.completedUnitCount)
+        progression.currentPercentProgress = progression.totalTaskCount != 0 ? Double( progression.currentTaskIndex)*Double(100)/Double(progression.totalTaskCount) : -1
+        progression.externalIdentifier = progress.kind?.rawValue != nil ? progress.kind!.rawValue : "?"
+        progression.message = progression.externalIdentifier 
+        return progression
+    }
+
+
     /// Update progression from Foundation.Progress
     ///
     /// - Parameter progress: the progress
