@@ -71,10 +71,19 @@ public extension Progression {
     /// Update progression from Foundation.Progress
     ///
     /// - Parameter progress: the progress
-    public func updateProgression(from progress:Foundation.Progress){
-        self.currentTaskIndex=min(Int(progress.completedUnitCount)+1,Int(progress.totalUnitCount))
+    public func updateProgression(from progress: Foundation.Progress){
+        self.currentTaskIndex=min(Int(progress.completedUnitCount) + 1, Int(progress.totalUnitCount) )
         self.totalTaskCount=Int(progress.totalUnitCount)
-        self.currentPercentProgress=Double(self.currentTaskIndex)*Double(100)/Double(self.totalTaskCount)
+        self.currentPercentProgress = self.totalTaskCount > 0 ? Double(self.currentTaskIndex)*Double(100)/Double(self.totalTaskCount) : -1
+    }
+
+    /// Update progression from Foundation.Progress
+    ///
+    /// - Parameter progression: the progression state
+    public func updateProgression(from progression: Progression){
+        self.currentTaskIndex = progression.currentTaskIndex
+        self.totalTaskCount = progression.totalTaskCount
+        self.currentPercentProgress = self.totalTaskCount > 0 ? Double(self.currentTaskIndex)*Double(100)/Double(self.totalTaskCount) : -1
     }
 
 
@@ -129,7 +138,7 @@ public extension Progression {
 
      - returns: the state
      */
-    public func identifiedBy(_ category:String,identity:String)->Progression{
+    public func identifiedBy(_ category: String, identity: String) -> Progression{
         self.category=category
         self.externalIdentifier=identity
         return self
@@ -143,6 +152,5 @@ public extension Progression {
     public static func defaultState() -> Progression {
          return Progression(currentTaskIndex: 0, totalTaskCount: 0, currentPercentProgress: 0, message: "", data: nil)
     }
-
 
 }
