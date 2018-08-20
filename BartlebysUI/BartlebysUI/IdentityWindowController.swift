@@ -180,7 +180,7 @@ open class IdentityWindowController: MultiStepWindowController {
 
     // MARK: - Actions
 
-    @IBAction override func leftAction(_ sender: Any) {
+    @IBAction override public func leftAction(_ sender: Any) {
         if let document = self.getDocument(){
             if (Bartleby.configuration.ALLOW_ISOLATED_MODE && self.currentStepIs(self.prepareUserCreation)){
                 // This can occur on very early stage cancelation

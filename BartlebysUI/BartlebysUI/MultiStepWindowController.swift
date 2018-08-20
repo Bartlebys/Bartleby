@@ -62,7 +62,7 @@ open class MultiStepWindowController: NSWindowController, DocumentProvider, Step
 
     // MARK: - Actions
 
-    @IBAction func leftAction(_ sender: Any) {
+    @IBAction public func leftAction(_ sender: Any) {
 
         // This Default implementation
         // should generally not be called if you need to revert any state or data
