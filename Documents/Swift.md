@@ -1,7 +1,8 @@
 
 # Bartleby's - Swift Stack
 
-You need perform `carthage update` before to be able to build.
+- You need perform `carthage update` before to be able to build. 
+- You can alternatively only build the targets with: `carthage build  --platform macOS,iOS` 
 
 [More about Carthage?] (https://github.com/Carthage/Carthage)
 
