@@ -28,9 +28,9 @@ class BlocksTests: BartlebyTestCase {
 
         let e = self.expectation(description: "Add a file to a box in the document")
         BlocksTests.createFile(size: 20*1000*1000+1, fileName: "file1.txt")
-        let url=BlocksTests.urlByAppending(path: "file1.txt")
-        let fr=FileReference.publicFileReference(at:url.path)
-        let box=BlocksTests.document.newManagedModel() as Box
+        let url: URL = BlocksTests.urlByAppending(path: "file1.txt")
+        let fr: FileReference = FileReference.publicFileReference(at:url.path)
+        let box:Box = BlocksTests.document.newManagedModel()
         BlocksTests.document.bsfs.add(reference: fr,
                                       in:box
             , to: "/a/file1.txt",

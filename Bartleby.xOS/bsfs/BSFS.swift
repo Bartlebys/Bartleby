@@ -135,7 +135,7 @@ public final class BSFS:TriggerHook{
                        completed:@escaping (Completion)->()){
         do {
 
-            let box = try Bartleby.registredObjectByUID(boxUID) as Box
+            let box: Box = try Bartleby.registredObjectByUID(boxUID)
             self._document.send(BoxStates.isMounting(box: box))
             if box.assemblyInProgress || box.isMounted {
                 throw BSFSError.attemptToMountBoxMultipleTime(boxUID: boxUID)
@@ -226,7 +226,7 @@ public final class BSFS:TriggerHook{
     public func unMount( boxUID:String,
                          completed:@escaping (Completion)->()){
         do {
-            let box = try Bartleby.registredObjectByUID(boxUID) as Box
+            let box: Box = try Bartleby.registredObjectByUID(boxUID)
             self.unMount(box: box)
             completed(Completion.successState())
         }catch{
