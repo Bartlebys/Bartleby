@@ -15,7 +15,7 @@ import Foundation
 extension Completion:Descriptible {
 
     public func toString() -> String {
-        return "Completion success:\(success) statusCode:\(statusCode) \(data?.count ?? 0 ) bytes of data.\n\(message) [\(category)/\(externalIdentifier)]"
+        return "Completion success: \(success) statusCode:\(statusCode) \(data?.count ?? 0 ) bytes of data.\n\(message) [\(category)/\(externalIdentifier)]"
     }
 
 }

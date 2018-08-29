@@ -715,7 +715,7 @@ struct Flocker{
                         }
                     }
                 }else{
-                    failuresMessages.append("Enable to create file Handle \(destinationFile)")
+                    failuresMessages.append("Unable to create file Handle \(destinationFile)")
                     __progressWithPath(destinationFile,error:true)
                     
                 }

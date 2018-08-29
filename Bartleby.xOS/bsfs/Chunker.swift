@@ -430,7 +430,7 @@ struct  Chunker {
                 }
             }else{
                 syncOnMain{
-                    failure(NSLocalizedString("Enable to create file Handle", tableName:"system", comment: "Enable to create file Handle")+" \(path)")
+                    failure(NSLocalizedString("Unable to create file Handle", tableName:"system", comment: "Unable to create file Handle")+" \(path)")
                 }
             }
             
@@ -664,7 +664,7 @@ struct  Chunker {
                     
                 }else{
                     syncOnMain{
-                        failure(NSLocalizedString("Enable to create file Handle", tableName:"system", comment: "Enable to create file Handle")+" \(destinationFilePath)")
+                        failure(NSLocalizedString("Unable to create file Handle", tableName:"system", comment: "Unable to create file Handle")+" \(destinationFilePath)")
                     }
                 }
             }catch{
