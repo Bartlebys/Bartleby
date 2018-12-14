@@ -32,7 +32,7 @@ import Foundation
     // MARK: - Codable
 
 
-    fileprivate enum CodingKeys: String,CodingKey{
+    public enum ReportCodingKeys: String,CodingKey{
 		case metadata
 		case logs
 		case metrics
@@ -41,7 +41,7 @@ import Foundation
     required public init(from decoder: Decoder) throws{
 		try super.init(from: decoder)
         try self.quietThrowingChanges {
-			let values = try decoder.container(keyedBy: CodingKeys.self)
+			let values = try decoder.container(keyedBy: ReportCodingKeys.self)
 			self.metadata = try values.decodeIfPresent(DocumentMetadata.self,forKey:.metadata)
 			self.logs = try values.decode([LogEntry].self,forKey:.logs)
 			self.metrics = try values.decode([Metrics].self,forKey:.metrics)
@@ -50,7 +50,7 @@ import Foundation
 
     override open func encode(to encoder: Encoder) throws {
 		try super.encode(to:encoder)
-		var container = encoder.container(keyedBy: CodingKeys.self)
+		var container = encoder.container(keyedBy: ReportCodingKeys.self)
 		try container.encodeIfPresent(self.metadata,forKey:.metadata)
 		try container.encode(self.logs,forKey:.logs)
 		try container.encode(self.metrics,forKey:.metrics)

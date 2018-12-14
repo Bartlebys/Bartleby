@@ -50,7 +50,7 @@ import Foundation
     // MARK: - Codable
 
 
-    fileprivate enum CodingKeys: String,CodingKey{
+    public enum LocalizedDatumCodingKeys: String,CodingKey{
 		case key
 		case stringValue
 		case dataValue
@@ -59,7 +59,7 @@ import Foundation
     required public init(from decoder: Decoder) throws{
 		try super.init(from: decoder)
         try self.quietThrowingChanges {
-			let values = try decoder.container(keyedBy: CodingKeys.self)
+			let values = try decoder.container(keyedBy: LocalizedDatumCodingKeys.self)
 			self.key = try values.decode(String.self,forKey:.key)
 			self.stringValue = try values.decodeIfPresent(String.self,forKey:.stringValue)
 			self.dataValue = try values.decodeIfPresent(Data.self,forKey:.dataValue)
@@ -68,7 +68,7 @@ import Foundation
 
     override open func encode(to encoder: Encoder) throws {
 		try super.encode(to:encoder)
-		var container = encoder.container(keyedBy: CodingKeys.self)
+		var container = encoder.container(keyedBy: LocalizedDatumCodingKeys.self)
 		try container.encode(self.key,forKey:.key)
 		try container.encodeIfPresent(self.stringValue,forKey:.stringValue)
 		try container.encodeIfPresent(self.dataValue,forKey:.dataValue)

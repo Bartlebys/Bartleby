@@ -45,7 +45,7 @@ import Foundation
     // MARK: - Codable
 
 
-    fileprivate enum CodingKeys: String,CodingKey{
+    public enum HTTPContextCodingKeys: String,CodingKey{
 		case caller
 		case code
 		case httpStatusCode
@@ -58,7 +58,7 @@ import Foundation
     required public init(from decoder: Decoder) throws{
 		try super.init(from: decoder)
         try self.quietThrowingChanges {
-			let values = try decoder.container(keyedBy: CodingKeys.self)
+			let values = try decoder.container(keyedBy: HTTPContextCodingKeys.self)
 			self.caller = try values.decode(String.self,forKey:.caller)
 			self.code = try values.decode(Int.self,forKey:.code)
 			self.httpStatusCode = try values.decode(Int.self,forKey:.httpStatusCode)
@@ -71,7 +71,7 @@ import Foundation
 
     override open func encode(to encoder: Encoder) throws {
 		try super.encode(to:encoder)
-		var container = encoder.container(keyedBy: CodingKeys.self)
+		var container = encoder.container(keyedBy: HTTPContextCodingKeys.self)
 		try container.encode(self.caller,forKey:.caller)
 		try container.encode(self.code,forKey:.code)
 		try container.encode(self.httpStatusCode,forKey:.httpStatusCode)

@@ -51,7 +51,7 @@ import Foundation
     // MARK: - Codable
 
 
-    fileprivate enum CodingKeys: String,CodingKey{
+    public enum ProgressionCodingKeys: String,CodingKey{
 		case startTime
 		case currentTaskIndex
 		case totalTaskCount
@@ -66,7 +66,7 @@ import Foundation
     required public init(from decoder: Decoder) throws{
 		try super.init(from: decoder)
         try self.quietThrowingChanges {
-			let values = try decoder.container(keyedBy: CodingKeys.self)
+			let values = try decoder.container(keyedBy: ProgressionCodingKeys.self)
 			self.startTime = try values.decodeIfPresent(Double.self,forKey:.startTime)
 			self.currentTaskIndex = try values.decode(Int.self,forKey:.currentTaskIndex)
 			self.totalTaskCount = try values.decode(Int.self,forKey:.totalTaskCount)
@@ -81,7 +81,7 @@ import Foundation
 
     override open func encode(to encoder: Encoder) throws {
 		try super.encode(to:encoder)
-		var container = encoder.container(keyedBy: CodingKeys.self)
+		var container = encoder.container(keyedBy: ProgressionCodingKeys.self)
 		try container.encodeIfPresent(self.startTime,forKey:.startTime)
 		try container.encode(self.currentTaskIndex,forKey:.currentTaskIndex)
 		try container.encode(self.totalTaskCount,forKey:.totalTaskCount)

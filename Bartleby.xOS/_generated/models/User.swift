@@ -187,7 +187,7 @@ import Foundation
     // MARK: - Codable
 
 
-    fileprivate enum CodingKeys: String,CodingKey{
+    public enum UserCodingKeys: String,CodingKey{
 		case spaceUID
 		case verificationMethod
 		case localAssociationID
@@ -211,7 +211,7 @@ import Foundation
     required public init(from decoder: Decoder) throws{
 		try super.init(from: decoder)
         try self.quietThrowingChanges {
-			let values = try decoder.container(keyedBy: CodingKeys.self)
+			let values = try decoder.container(keyedBy: UserCodingKeys.self)
 			self.spaceUID = try values.decode(String.self,forKey:.spaceUID)
 			self.verificationMethod = User.VerificationMethod(rawValue: try values.decode(String.self,forKey:.verificationMethod)) ?? .byPhoneNumber
 			self.localAssociationID = try values.decode(String.self,forKey:.localAssociationID)
@@ -234,7 +234,7 @@ import Foundation
 
     override open func encode(to encoder: Encoder) throws {
 		try super.encode(to:encoder)
-		var container = encoder.container(keyedBy: CodingKeys.self)
+		var container = encoder.container(keyedBy: UserCodingKeys.self)
 		try container.encode(self.spaceUID,forKey:.spaceUID)
 		try container.encode(self.verificationMethod.rawValue ,forKey:.verificationMethod)
 		try container.encode(self.localAssociationID,forKey:.localAssociationID)

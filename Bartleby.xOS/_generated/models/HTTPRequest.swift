@@ -39,7 +39,7 @@ import Foundation
     // MARK: - Codable
 
 
-    fileprivate enum CodingKeys: String,CodingKey{
+    public enum HTTPRequestCodingKeys: String,CodingKey{
 		case url
 		case httpMethod
 		case headers
@@ -50,7 +50,7 @@ import Foundation
     required public init(from decoder: Decoder) throws{
 		try super.init(from: decoder)
         try self.quietThrowingChanges {
-			let values = try decoder.container(keyedBy: CodingKeys.self)
+			let values = try decoder.container(keyedBy: HTTPRequestCodingKeys.self)
 			self.url = try values.decodeIfPresent(URL.self,forKey:.url)
 			self.httpMethod = try values.decode(String.self,forKey:.httpMethod)
 			self.headers = try values.decodeIfPresent([String:String].self,forKey:.headers)
@@ -61,7 +61,7 @@ import Foundation
 
     override open func encode(to encoder: Encoder) throws {
 		try super.encode(to:encoder)
-		var container = encoder.container(keyedBy: CodingKeys.self)
+		var container = encoder.container(keyedBy: HTTPRequestCodingKeys.self)
 		try container.encodeIfPresent(self.url,forKey:.url)
 		try container.encode(self.httpMethod,forKey:.httpMethod)
 		try container.encodeIfPresent(self.headers,forKey:.headers)
