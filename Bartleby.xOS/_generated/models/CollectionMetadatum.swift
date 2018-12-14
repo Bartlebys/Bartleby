@@ -42,7 +42,7 @@ import Foundation
     // MARK: - Codable
 
 
-    public enum CollectionMetadatumCodingKeys: String,CodingKey{
+    fileprivate enum CodingKeys: String,CodingKey{
 		case storage
 		case collectionName
 		case proxy
@@ -53,7 +53,7 @@ import Foundation
     required public init(from decoder: Decoder) throws{
 		try super.init(from: decoder)
         try self.quietThrowingChanges {
-			let values = try decoder.container(keyedBy: CollectionMetadatumCodingKeys.self)
+			let values = try decoder.container(keyedBy: CodingKeys.self)
 			self.storage = CollectionMetadatum.Storage(rawValue: try values.decode(String.self,forKey:.storage)) ?? .monolithicFileStorage
 			self.collectionName = try values.decode(String.self,forKey:.collectionName)
 			self.persistsDistantly = try values.decode(Bool.self,forKey:.persistsDistantly)
@@ -63,7 +63,7 @@ import Foundation
 
     override open func encode(to encoder: Encoder) throws {
 		try super.encode(to:encoder)
-		var container = encoder.container(keyedBy: CollectionMetadatumCodingKeys.self)
+		var container = encoder.container(keyedBy: CodingKeys.self)
 		try container.encode(self.storage.rawValue ,forKey:.storage)
 		try container.encode(self.collectionName,forKey:.collectionName)
 		try container.encode(self.persistsDistantly,forKey:.persistsDistantly)

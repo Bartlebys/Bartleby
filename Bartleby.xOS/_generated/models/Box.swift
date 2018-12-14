@@ -47,7 +47,7 @@ import Foundation
     // MARK: - Codable
 
 
-    public enum BoxCodingKeys: String,CodingKey{
+    fileprivate enum CodingKeys: String,CodingKey{
 		case isMounted
 		case assemblyInProgress
 		case volatile
@@ -61,13 +61,13 @@ import Foundation
     required public init(from decoder: Decoder) throws{
 		try super.init(from: decoder)
         try self.quietThrowingChanges {
-			let _ = try decoder.container(keyedBy: BoxCodingKeys.self)
+			let _ = try decoder.container(keyedBy: CodingKeys.self)
         }
     }
 
     override open func encode(to encoder: Encoder) throws {
 		try super.encode(to:encoder)
-		var _ = encoder.container(keyedBy: BoxCodingKeys.self)
+		var _ = encoder.container(keyedBy: CodingKeys.self)
     }
 
 

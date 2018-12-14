@@ -147,7 +147,7 @@ import Foundation
     // MARK: - Codable
 
 
-    public enum DocumentMetadataCodingKeys: String,CodingKey{
+    fileprivate enum CodingKeys: String,CodingKey{
 		case version
 		case spaceUID
 		case persistentUID
@@ -191,7 +191,7 @@ import Foundation
     required public init(from decoder: Decoder) throws{
 		try super.init(from: decoder)
         try self.quietThrowingChanges {
-			let values = try decoder.container(keyedBy: DocumentMetadataCodingKeys.self)
+			let values = try decoder.container(keyedBy: CodingKeys.self)
 			self.version = try values.decode(Int.self,forKey:.version)
 			self.spaceUID = try values.decode(String.self,forKey:.spaceUID)
 			self.persistentUID = try values.decode(String.self,forKey:.persistentUID)
@@ -227,7 +227,7 @@ import Foundation
 
     override open func encode(to encoder: Encoder) throws {
 		try super.encode(to:encoder)
-		var container = encoder.container(keyedBy: DocumentMetadataCodingKeys.self)
+		var container = encoder.container(keyedBy: CodingKeys.self)
 		try container.encode(self.version,forKey:.version)
 		try container.encode(self.spaceUID,forKey:.spaceUID)
 		try container.encode(self.persistentUID,forKey:.persistentUID)

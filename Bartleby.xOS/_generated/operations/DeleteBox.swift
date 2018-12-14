@@ -76,21 +76,21 @@ import Foundation
     // MARK: - Codable
 
 
-    public enum payloadCodingKeys: String,CodingKey{
+    fileprivate enum CodingKeys: String,CodingKey{
 		case _payload
     }
 
     required public init(from decoder: Decoder) throws{
 		try super.init(from: decoder)
         try self.quietThrowingChanges {
-			let values = try decoder.container(keyedBy: payloadCodingKeys.self)
+			let values = try decoder.container(keyedBy: CodingKeys.self)
 			self._payload = try values.decode(Data.self,forKey:._payload)
         }
     }
 
     override open func encode(to encoder: Encoder) throws {
 		try super.encode(to:encoder)
-		var container = encoder.container(keyedBy: payloadCodingKeys.self)
+		var container = encoder.container(keyedBy: CodingKeys.self)
 		try container.encode(self._payload,forKey:._payload)
     }
 

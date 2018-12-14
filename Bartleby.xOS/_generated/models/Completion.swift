@@ -42,7 +42,7 @@ import Foundation
     // MARK: - Codable
 
 
-    public enum CompletionCodingKeys: String,CodingKey{
+    fileprivate enum CodingKeys: String,CodingKey{
 		case success
 		case statusCode
 		case message
@@ -54,7 +54,7 @@ import Foundation
     required public init(from decoder: Decoder) throws{
 		try super.init(from: decoder)
         try self.quietThrowingChanges {
-			let values = try decoder.container(keyedBy: CompletionCodingKeys.self)
+			let values = try decoder.container(keyedBy: CodingKeys.self)
 			self.success = try values.decode(Bool.self,forKey:.success)
 			self.statusCode = try values.decode(Int.self,forKey:.statusCode)
 			self.message = try values.decode(String.self,forKey:.message)
@@ -66,7 +66,7 @@ import Foundation
 
     override open func encode(to encoder: Encoder) throws {
 		try super.encode(to:encoder)
-		var container = encoder.container(keyedBy: CompletionCodingKeys.self)
+		var container = encoder.container(keyedBy: CodingKeys.self)
 		try container.encode(self.success,forKey:.success)
 		try container.encode(self.statusCode,forKey:.statusCode)
 		try container.encode(self.message,forKey:.message)

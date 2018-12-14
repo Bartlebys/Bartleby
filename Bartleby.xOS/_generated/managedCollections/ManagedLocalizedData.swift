@@ -334,7 +334,7 @@ public extension Notification.Name {
      // MARK: - Codable
 
 
-    public enum CodingKeys: String,CodingKey{
+    fileprivate enum CodingKeys: String,CodingKey{
 		case _storage
 		case _staged
 		case _deleted

@@ -58,7 +58,7 @@ import Foundation
     // MARK: - Codable
 
 
-    public enum MetricsCodingKeys: String,CodingKey{
+    fileprivate enum CodingKeys: String,CodingKey{
 		case referentDocument
 		case operationName
 		case counter
@@ -74,7 +74,7 @@ import Foundation
     required public init(from decoder: Decoder) throws{
 		try super.init(from: decoder)
         try self.quietThrowingChanges {
-			let values = try decoder.container(keyedBy: MetricsCodingKeys.self)
+			let values = try decoder.container(keyedBy: CodingKeys.self)
 			self.operationName = try values.decode(String.self,forKey:.operationName)
 			self.counter = try values.decode(Int.self,forKey:.counter)
 			self.elapsed = try values.decode(Double.self,forKey:.elapsed)
@@ -89,7 +89,7 @@ import Foundation
 
     override open func encode(to encoder: Encoder) throws {
 		try super.encode(to:encoder)
-		var container = encoder.container(keyedBy: MetricsCodingKeys.self)
+		var container = encoder.container(keyedBy: CodingKeys.self)
 		try container.encode(self.operationName,forKey:.operationName)
 		try container.encode(self.counter,forKey:.counter)
 		try container.encode(self.elapsed,forKey:.elapsed)

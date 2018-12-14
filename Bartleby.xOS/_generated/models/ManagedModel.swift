@@ -134,7 +134,7 @@ import Foundation
     // MARK: - Codable
 
 
-    public enum ManagedModelCodingKeys: String,CodingKey{
+    fileprivate enum CodingKeys: String,CodingKey{
 		case _id
 		case externalID
 		case externalVersionNumber
@@ -155,7 +155,7 @@ import Foundation
     required public init(from decoder: Decoder) throws{
 		super.init()
         try self.quietThrowingChanges {
-			let values = try decoder.container(keyedBy: ManagedModelCodingKeys.self)
+			let values = try decoder.container(keyedBy: CodingKeys.self)
 			self._id = try values.decode(String.self,forKey:._id)
 			self.externalID = try values.decode(String.self,forKey:.externalID)
 			self.externalVersionNumber = try values.decode(Int.self,forKey:.externalVersionNumber)
@@ -171,7 +171,7 @@ import Foundation
     }
 
     override open func encode(to encoder: Encoder) throws {
-		var container = encoder.container(keyedBy: ManagedModelCodingKeys.self)
+		var container = encoder.container(keyedBy: CodingKeys.self)
 		try container.encode(self._id,forKey:._id)
 		try container.encode(self.externalID,forKey:.externalID)
 		try container.encode(self.externalVersionNumber,forKey:.externalVersionNumber)

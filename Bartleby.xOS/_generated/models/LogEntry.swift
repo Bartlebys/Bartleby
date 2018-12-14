@@ -51,7 +51,7 @@ import Foundation
     // MARK: - Codable
 
 
-    public enum LogEntryCodingKeys: String,CodingKey{
+    fileprivate enum CodingKeys: String,CodingKey{
 		case counter
 		case line
 		case elapsed
@@ -66,7 +66,7 @@ import Foundation
     required public init(from decoder: Decoder) throws{
 		try super.init(from: decoder)
         try self.quietThrowingChanges {
-			let values = try decoder.container(keyedBy: LogEntryCodingKeys.self)
+			let values = try decoder.container(keyedBy: CodingKeys.self)
 			self.counter = try values.decode(Int.self,forKey:.counter)
 			self.line = try values.decode(Int.self,forKey:.line)
 			self.elapsed = try values.decode(Double.self,forKey:.elapsed)
@@ -81,7 +81,7 @@ import Foundation
 
     override open func encode(to encoder: Encoder) throws {
 		try super.encode(to:encoder)
-		var container = encoder.container(keyedBy: LogEntryCodingKeys.self)
+		var container = encoder.container(keyedBy: CodingKeys.self)
 		try container.encode(self.counter,forKey:.counter)
 		try container.encode(self.line,forKey:.line)
 		try container.encode(self.elapsed,forKey:.elapsed)

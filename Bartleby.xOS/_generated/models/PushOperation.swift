@@ -56,7 +56,7 @@ import Foundation
     // MARK: - Codable
 
 
-    public enum PushOperationCodingKeys: String,CodingKey{
+    fileprivate enum CodingKeys: String,CodingKey{
 		case operationName
 		case commandUID
 		case serialized
@@ -71,7 +71,7 @@ import Foundation
     required public init(from decoder: Decoder) throws{
 		try super.init(from: decoder)
         try self.quietThrowingChanges {
-			let values = try decoder.container(keyedBy: PushOperationCodingKeys.self)
+			let values = try decoder.container(keyedBy: CodingKeys.self)
 			self.operationName = try values.decode(String.self,forKey:.operationName)
 			self.commandUID = try values.decodeIfPresent(String.self,forKey:.commandUID)
 			self.serialized = try values.decodeIfPresent(Data.self,forKey:.serialized)
@@ -86,7 +86,7 @@ import Foundation
 
     override open func encode(to encoder: Encoder) throws {
 		try super.encode(to:encoder)
-		var container = encoder.container(keyedBy: PushOperationCodingKeys.self)
+		var container = encoder.container(keyedBy: CodingKeys.self)
 		try container.encode(self.operationName,forKey:.operationName)
 		try container.encodeIfPresent(self.commandUID,forKey:.commandUID)
 		try container.encodeIfPresent(self.serialized,forKey:.serialized)

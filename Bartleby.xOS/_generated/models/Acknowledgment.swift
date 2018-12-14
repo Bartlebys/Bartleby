@@ -33,7 +33,7 @@ import Foundation
     // MARK: - Codable
 
 
-    public enum AcknowledgmentCodingKeys: String,CodingKey{
+    fileprivate enum CodingKeys: String,CodingKey{
 		case triggerIndex
 		case uids
 		case triggerRelayDuration
@@ -42,7 +42,7 @@ import Foundation
     required public init(from decoder: Decoder) throws{
 		try super.init(from: decoder)
         try self.quietThrowingChanges {
-			let values = try decoder.container(keyedBy: AcknowledgmentCodingKeys.self)
+			let values = try decoder.container(keyedBy: CodingKeys.self)
 			self.triggerIndex = try values.decode(Int.self,forKey:.triggerIndex)
 			self.uids = try values.decode([String].self,forKey:.uids)
 			self.triggerRelayDuration = try values.decode(Double.self,forKey:.triggerRelayDuration)
@@ -51,7 +51,7 @@ import Foundation
 
     override open func encode(to encoder: Encoder) throws {
 		try super.encode(to:encoder)
-		var container = encoder.container(keyedBy: AcknowledgmentCodingKeys.self)
+		var container = encoder.container(keyedBy: CodingKeys.self)
 		try container.encode(self.triggerIndex,forKey:.triggerIndex)
 		try container.encode(self.uids,forKey:.uids)
 		try container.encode(self.triggerRelayDuration,forKey:.triggerRelayDuration)

@@ -101,7 +101,7 @@ import Foundation
     // MARK: - Codable
 
 
-    public enum NodeCodingKeys: String,CodingKey{
+    fileprivate enum CodingKeys: String,CodingKey{
 		case type
 		case relativePath
 		case proxyPath
@@ -127,7 +127,7 @@ import Foundation
     required public init(from decoder: Decoder) throws{
 		try super.init(from: decoder)
         try self.quietThrowingChanges {
-			let values = try decoder.container(keyedBy: NodeCodingKeys.self)
+			let values = try decoder.container(keyedBy: CodingKeys.self)
 			self.type = try values.decode(String.self,forKey:.type)
 			self.relativePath = try values.decode(String.self,forKey:.relativePath)
 			self.proxyPath = try values.decodeIfPresent(String.self,forKey:.proxyPath)
@@ -148,7 +148,7 @@ import Foundation
 
     override open func encode(to encoder: Encoder) throws {
 		try super.encode(to:encoder)
-		var container = encoder.container(keyedBy: NodeCodingKeys.self)
+		var container = encoder.container(keyedBy: CodingKeys.self)
 		try container.encode(self.type,forKey:.type)
 		try container.encode(self.relativePath,forKey:.relativePath)
 		try container.encodeIfPresent(self.proxyPath,forKey:.proxyPath)

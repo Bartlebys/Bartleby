@@ -62,7 +62,7 @@ import Foundation
     // MARK: - Codable
 
 
-    public enum BlockCodingKeys: String,CodingKey{
+    fileprivate enum CodingKeys: String,CodingKey{
 		case digest
 		case rank
 		case startsAt
@@ -79,7 +79,7 @@ import Foundation
     required public init(from decoder: Decoder) throws{
 		try super.init(from: decoder)
         try self.quietThrowingChanges {
-			let values = try decoder.container(keyedBy: BlockCodingKeys.self)
+			let values = try decoder.container(keyedBy: CodingKeys.self)
 			self.digest = try values.decode(String.self,forKey:.digest)
 			self.rank = try values.decode(Int.self,forKey:.rank)
 			self.startsAt = try values.decode(Int.self,forKey:.startsAt)
@@ -92,7 +92,7 @@ import Foundation
 
     override open func encode(to encoder: Encoder) throws {
 		try super.encode(to:encoder)
-		var container = encoder.container(keyedBy: BlockCodingKeys.self)
+		var container = encoder.container(keyedBy: CodingKeys.self)
 		try container.encode(self.digest,forKey:.digest)
 		try container.encode(self.rank,forKey:.rank)
 		try container.encode(self.startsAt,forKey:.startsAt)

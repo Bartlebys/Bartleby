@@ -27,21 +27,21 @@ import Foundation
     // MARK: - Codable
 
 
-    public enum DataValueCodingKeys: String,CodingKey{
+    fileprivate enum CodingKeys: String,CodingKey{
 		case value
     }
 
     required public init(from decoder: Decoder) throws{
 		try super.init(from: decoder)
         try self.quietThrowingChanges {
-			let values = try decoder.container(keyedBy: DataValueCodingKeys.self)
+			let values = try decoder.container(keyedBy: CodingKeys.self)
 			self.value = try values.decodeIfPresent(Data.self,forKey:.value)
         }
     }
 
     override open func encode(to encoder: Encoder) throws {
 		try super.encode(to:encoder)
-		var container = encoder.container(keyedBy: DataValueCodingKeys.self)
+		var container = encoder.container(keyedBy: CodingKeys.self)
 		try container.encodeIfPresent(self.value,forKey:.value)
     }
 

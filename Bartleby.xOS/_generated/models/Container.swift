@@ -36,7 +36,7 @@ import Foundation
     // MARK: - Codable
 
 
-    public enum ContainerCodingKeys: String,CodingKey{
+    fileprivate enum CodingKeys: String,CodingKey{
 		case password
 		case boxes
 		case nodes
@@ -46,7 +46,7 @@ import Foundation
     required public init(from decoder: Decoder) throws{
 		try super.init(from: decoder)
         try self.quietThrowingChanges {
-			let values = try decoder.container(keyedBy: ContainerCodingKeys.self)
+			let values = try decoder.container(keyedBy: CodingKeys.self)
 			self.password = try values.decodeIfPresent(String.self,forKey:.password)
 			self.boxes = try values.decode([Box].self,forKey:.boxes)
 			self.nodes = try values.decode([Node].self,forKey:.nodes)
@@ -56,7 +56,7 @@ import Foundation
 
     override open func encode(to encoder: Encoder) throws {
 		try super.encode(to:encoder)
-		var container = encoder.container(keyedBy: ContainerCodingKeys.self)
+		var container = encoder.container(keyedBy: CodingKeys.self)
 		try container.encodeIfPresent(self.password,forKey:.password)
 		try container.encode(self.boxes,forKey:.boxes)
 		try container.encode(self.nodes,forKey:.nodes)

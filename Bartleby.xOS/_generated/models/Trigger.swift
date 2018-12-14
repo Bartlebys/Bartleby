@@ -60,7 +60,7 @@ import Foundation
     // MARK: - Codable
 
 
-    public enum TriggerCodingKeys: String,CodingKey{
+    fileprivate enum CodingKeys: String,CodingKey{
 		case index
 		case spaceUID
 		case observationUID
@@ -78,7 +78,7 @@ import Foundation
     required public init(from decoder: Decoder) throws{
 		try super.init(from: decoder)
         try self.quietThrowingChanges {
-			let values = try decoder.container(keyedBy: TriggerCodingKeys.self)
+			let values = try decoder.container(keyedBy: CodingKeys.self)
 			self.index = try values.decode(Int.self,forKey:.index)
 			self.spaceUID = try values.decodeIfPresent(String.self,forKey:.spaceUID)
 			self.observationUID = try values.decodeIfPresent(String.self,forKey:.observationUID)
@@ -96,7 +96,7 @@ import Foundation
 
     override open func encode(to encoder: Encoder) throws {
 		try super.encode(to:encoder)
-		var container = encoder.container(keyedBy: TriggerCodingKeys.self)
+		var container = encoder.container(keyedBy: CodingKeys.self)
 		try container.encode(self.index,forKey:.index)
 		try container.encodeIfPresent(self.spaceUID,forKey:.spaceUID)
 		try container.encodeIfPresent(self.observationUID,forKey:.observationUID)

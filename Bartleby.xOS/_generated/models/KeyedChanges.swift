@@ -33,7 +33,7 @@ import Foundation
     // MARK: - Codable
 
 
-    public enum KeyedChangesCodingKeys: String,CodingKey{
+    fileprivate enum CodingKeys: String,CodingKey{
 		case elapsed
 		case key
 		case changes
@@ -42,7 +42,7 @@ import Foundation
     required public init(from decoder: Decoder) throws{
 		try super.init(from: decoder)
         try self.quietThrowingChanges {
-			let values = try decoder.container(keyedBy: KeyedChangesCodingKeys.self)
+			let values = try decoder.container(keyedBy: CodingKeys.self)
 			self.elapsed = try values.decode(Double.self,forKey:.elapsed)
 			self.key = try values.decode(String.self,forKey:.key)
 			self.changes = try values.decode(String.self,forKey:.changes)
@@ -51,7 +51,7 @@ import Foundation
 
     override open func encode(to encoder: Encoder) throws {
 		try super.encode(to:encoder)
-		var container = encoder.container(keyedBy: KeyedChangesCodingKeys.self)
+		var container = encoder.container(keyedBy: CodingKeys.self)
 		try container.encode(self.elapsed,forKey:.elapsed)
 		try container.encode(self.key,forKey:.key)
 		try container.encode(self.changes,forKey:.changes)

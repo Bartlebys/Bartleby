@@ -132,7 +132,7 @@ import Foundation
     // MARK: - Codable
 
 
-    public enum LockerCodingKeys: String,CodingKey{
+    fileprivate enum CodingKeys: String,CodingKey{
 		case associatedDocumentUID
 		case subjectUID
 		case userUID
@@ -149,7 +149,7 @@ import Foundation
     required public init(from decoder: Decoder) throws{
 		try super.init(from: decoder)
         try self.quietThrowingChanges {
-			let values = try decoder.container(keyedBy: LockerCodingKeys.self)
+			let values = try decoder.container(keyedBy: CodingKeys.self)
 			self.associatedDocumentUID = try values.decodeIfPresent(String.self,forKey:.associatedDocumentUID)
 			self.subjectUID = try values.decode(String.self,forKey:.subjectUID)
 			self.userUID = try values.decode(String.self,forKey:.userUID)
@@ -166,7 +166,7 @@ import Foundation
 
     override open func encode(to encoder: Encoder) throws {
 		try super.encode(to:encoder)
-		var container = encoder.container(keyedBy: LockerCodingKeys.self)
+		var container = encoder.container(keyedBy: CodingKeys.self)
 		try container.encodeIfPresent(self.associatedDocumentUID,forKey:.associatedDocumentUID)
 		try container.encode(self.subjectUID,forKey:.subjectUID)
 		try container.encode(self.userUID,forKey:.userUID)
